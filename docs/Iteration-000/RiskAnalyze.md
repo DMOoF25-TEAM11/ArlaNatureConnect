@@ -19,7 +19,7 @@ Tekniske risici omfatter problemer i systemets arkitektur, kode eller infrastruk
 ### Risiko
 | ID | Risiko | Beskrivelse |
 |---|---|---|
-| RT1 | Sikkerhedssårbarheder | Potentiel risiko for SQL-injektion, XSS, CSRF m.fl. |
+| RT1 | Sikkerhedssårbarheder | Potentiel risiko for SQL-injektion, XSS m.fl. |
 | RT2 | Databrud | Uautoriseret adgang pga. svag autentifikation eller sessionsstyring |
 | RT3 | Afhængighed | Sårbarheder i tredjepartsbiblioteker eller frameworks |
 | RT4 | Databaseforbindelsesproblemer | Potentiale for nedetid eller ydeevneproblemer, især ved tunneling |
@@ -35,7 +35,7 @@ Tekniske risici omfatter problemer i systemets arkitektur, kode eller infrastruk
 ### Mitigation
 | ID | Mitigation |
 |---|---|
-| RT1 | Brug parameteriserede forespørgsler/ORM, inputvalidering, Content Security Policy, CSRF-tokens, sikkerhedstest (SAST/DAST). |
+| RT1 | Brug parameteriserede forespørgsler/ORM, inputvalidering, Content Security Policy, sikkerhedstest (SAST/DAST). |
 | RT2 | Implementer stærk autentifikation (MFA), kryptering i hvile og transit, adgangskontrol og rotation af nøgler/hemmeligheder. |
 | RT3 | Brug afhængighedsscanning (Dependabot/Snyk), regelmæssige opdateringer og sikkerhedsrevisioner. |
 | RT4 | Implementer connection pooling, retry-logik, overvågning og redundans samt performance-tuning. |
