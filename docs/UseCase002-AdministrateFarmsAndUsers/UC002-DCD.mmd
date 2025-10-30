@@ -1,2 +1,99 @@
+---
+title: Use Case002 - Design Class Diagram (DCD)
+---
 classDiagram
     direction TB
+
+    %% Domain classes
+    class User {
+        +String firstName
+        +String lastName
+        +String email
+        +String address
+        +bool activeStatus
+        +activate()
+        +deactivate(reason)
+        +assignRole(role)
+        +removeRole(role)
+    }
+
+    class Farmer {
+        +String farmName
+        +String location
+        +String cvr
+    }
+
+    class Role {
+        +String roleName
+    }
+
+    class Farm {
+        +String id
+        +String name
+        +String location
+        +String contactPerson
+        +String contactEmail
+        +String description
+    }
+
+    %% Repositories / persistence
+    class UserRepository {
+        +findById(id)
+        +findAll(filter)
+        +save(user)
+        +deactivate(userId, reason)
+    }
+
+    class FarmRepository {
+        +findById(id)
+        +findAll(filter)
+        +save(farm)
+        +archive(farmId)
+    }
+
+    %% Services / business logic
+    class UserService {
+        +createUser(dto)
+        +updateUser(id, dto)
+        +deactivateUser(id, reason)
+        +assignRoleToUser(userId, roleName)
+    }
+
+    class FarmService {
+        +createFarm(dto)
+        +updateFarm(id, dto)
+        +deactivateFarm(id)
+        +linkUserToFarm(userId, farmId)
+    }
+
+    class EmailService {
+        +sendAccountConfirmation(email)
+        +sendPasswordReset(email)
+    }
+
+    class AuditLog {
+        +log(action, actor, target, reason)
+        +query(criteria)
+    }
+
+    %% Relationships
+    User "1" -- "*" Role : has >
+    Farmer <|-- User
+    Farmer "*" -- "1" Farm : owns >
+
+    UserService ..> UserRepository : uses >
+    FarmService ..> FarmRepository : uses >
+    UserService ..> EmailService : uses >
+    UserService ..> AuditLog : logs >
+    FarmService ..> AuditLog : logs >
+
+    UserRepository ..> Farm : persists >
+    FarmRepository ..> Farm : persists >
+
+    note for User "Represents a system user with personal details and status; operations include activation, deactivation and role management."
+    note for Farmer "Specialized user representing a farmer; linked to one or more farms."
+    note for Role "Defines access roles and permissions assigned to users."
+    note for UserService "Contains business logic for user lifecycle and role management."
+    note for FarmService "Contains business logic for farm lifecycle and associations."
+    note for AuditLog "Centralized audit logging for administrative actions."
+
