@@ -1,1 +1,1 @@
-# ArlaCommunicationTool
+# Arla Nature Connect
