@@ -14,8 +14,4 @@
         <ProjectReference Include="..\ArlaNatureConnect.Core\ArlaNatureConnect.Core.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Persistence\" />
-    </ItemGroup>
-
 </Project>
