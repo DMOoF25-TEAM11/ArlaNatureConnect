@@ -11,9 +11,9 @@
 - Arla Employee  
 
 **Description:**  
-The user selects a role (Farmer, Consultant, or Arla Employee) on the front page to access the system.  
+The user selects a role (Landmand, Konsulent, or Arla Medarbejder) on the front page to access the system.  
 No password or email authentication is required, as this is a prototype.  
-After selecting a role, the system grants access to the appropriate view — either directly to the dashboard (for Arla Employee) or via a user selection dropdown (for Farmer or Consultant).  
+After selecting a role, the system grants access to the appropriate view — either directly to the dashboard (for Arla Nedarbejder) or via a user selection dropdown (for Landmand or Konsulent).  
 The role determines which functions and data are visible in the interface.
 
 **Preconditions:**  
