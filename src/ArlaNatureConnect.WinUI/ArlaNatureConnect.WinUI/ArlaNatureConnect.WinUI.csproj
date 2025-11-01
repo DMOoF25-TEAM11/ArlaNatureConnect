@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
         <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
@@ -10,8 +10,16 @@
         <UseWinUI>true</UseWinUI>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enabled</ImplicitUsings>
-
     </PropertyGroup>
+    <ItemGroup>
+      <Compile Remove="StartWindow - Copy.xaml.cs" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Remove="Assets\startUpImage.jpg" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Remove="StartWindow.xaml" />
+    </ItemGroup>
 
     <ItemGroup>
         <Manifest Include="$(ApplicationManifest)" />
@@ -24,6 +32,22 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\ArlaNatureConnect.Infrastructure\ArlaNatureConnect.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="Assets\startUpImage.jpg">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="StartWindow - Copy.xaml.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Page Update="StartWindow.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </Page>
     </ItemGroup>
 
     <!-- Publish Properties -->
