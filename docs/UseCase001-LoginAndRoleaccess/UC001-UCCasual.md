@@ -1,6 +1,6 @@
-# **Casual Use Case – UC01 Login & Role Access**
+# **Casual Use Case - UC01 Login & Role Access**
 
-**Use case:** UC01 – Login & Role Access  
+**Use case:** UC01 â€“ Login & Role Access  
 **Scope:** The prototype of the Arla Nature Connect system  
 **Level:** User goal  
 **Primary Actors:** Farmer, Consultant, Arla Employee  
