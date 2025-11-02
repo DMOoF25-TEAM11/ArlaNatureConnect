@@ -1,10 +1,19 @@
-using System;
+using ArlaNatureConnect.Core.Services;
+using ArlaNatureConnect.WinUI.Dialogs;
+using ArlaNatureConnect.WinUI.ViewModels;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 
 namespace ArlaNatureConnect.WinUI;
 
 public sealed partial class StartWindow : Window
 {
+    private readonly IConnectionStringService _connService = new ConnectionStringService();
+    private readonly TaskCompletionSource<bool> _initializationTcs = new(TaskCreationOptions.RunContinuationsAsynchronously);
+
+    // Public task the host can await to know when startup (including connection dialog) is done
+    public Task Initialization => _initializationTcs.Task;
+
     public StartWindow()
     {
         InitializeComponent();
@@ -47,10 +56,60 @@ public sealed partial class StartWindow : Window
             {
                 System.Diagnostics.Debug.WriteLine($"Image not found at either ms-appx or output folder: {filePath}");
             }
+
+
+
+            // Check for existing connection string
+            var exists = await _connService.ExistsAsync();
+            string? conn = null;
+            if (!exists)
+            {
+                await ShowConnectionDialogAndSaveAsync();
+            }
+            else
+            {
+                conn = await _connService.ReadAsync();
+                if (string.IsNullOrEmpty(conn))
+                {
+                    await ShowConnectionDialogAndSaveAsync();
+                }
+            }
+
+
+
+            // Login dialog should be done here
+
+
         }
+
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine($"Error loading startup image: {ex}");
+        }
+        finally
+        {
+            // Mark initialization complete regardless of result so host won't wait forever
+            _initializationTcs.TrySetResult(true);
+        }
+    }
+
+
+    private async Task ShowConnectionDialogAndSaveAsync()
+    {
+        var dialog = new ConnectionDialog();
+        // ensure the dialog is hosted correctly
+        dialog.XamlRoot = (this.Content as FrameworkElement)?.XamlRoot;
+
+        var vm = dialog.DataContext as ConnectionDialogViewModel ?? new ConnectionDialogViewModel();
+
+        var result = await dialog.ShowAsync();
+        if (result == ContentDialogResult.Primary)
+        {
+            var cs = vm.ConnectionString?.Trim();
+            if (!string.IsNullOrEmpty(cs))
+            {
+                await _connService.SaveAsync(cs);
+            }
         }
     }
 }

@@ -1,7 +1,12 @@
-using System.Threading.Tasks;
-using Microsoft.UI.Xaml;
+using ArlaNatureConnect.Core; // extension AddCoreServices
+using ArlaNatureConnect.Infrastructure; // extension AddInfrastructure
+using Microsoft.Extensions.DependencyInjection; // Add this using directive
+using Microsoft.Extensions.Hosting;
 
 namespace ArlaNatureConnect.WinUI;
+
+using Microsoft.UI.Xaml;
+
 
 /// <summary>
 /// Provides application-specific behavior to supplement the default Application class.
@@ -9,6 +14,7 @@ namespace ArlaNatureConnect.WinUI;
 public partial class App : Application
 {
     private Window? _window;
+    public static IHost HostInstance { get; private set; } = null!;
 
     /// <summary>
     /// Initializes the singleton application object.  This is the first line of authored code
@@ -29,19 +35,23 @@ public partial class App : Application
         var start = new StartWindow();
         start.Activate();
 
+        var delayTask = Task.Delay(800); // simulate initialization (0.8 seconds)
+        var initTask = start.Initialization; // task that completes when start window initialization (including any dialog) is done
 
-#if DEBUG
-        // perform any async startup work here
-        await Task.Delay(5000); // simulate initialization (5 seconds)
-#else
-        // perform any async startup work here
-        await Task.Delay(800); // simulate initialization (0.8 seconds)
-#endif
+        await Task.WhenAll(initTask, delayTask);
 
+        HostInstance = Host.CreateDefaultBuilder()
+            .ConfigureServices((context, services) =>
+            {
+                services
+                    .AddCoreServices()
+                    .AddInfrastructure()
+                    .AddSingleton<MainWindow>();
+            })
+            .Build();
 
-
-        // create and show main window
-        _window = new MainWindow();
+        // resolve and show main window from DI so its dependencies are injected
+        _window = HostInstance.Services.GetRequiredService<MainWindow>();
         _window.Activate();
 
         // close start window

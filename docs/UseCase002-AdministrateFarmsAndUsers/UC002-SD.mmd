@@ -1,2 +1,12 @@
-classDiagram
+---
+title: UC002 Sequence Diagram
+---
+sequenceDiagram
     direction TB
+
+    participant Admin
+    participant System
+
+    Admin->>System: Log in to the system
+    System-->>Admin: Display dashboard
+
