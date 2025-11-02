@@ -2,4 +2,13 @@
 title: Use Case 001 - Domain Model
 ---
 classDiagram
-    direction TB
+    class User {
+        name
+    }
+
+    class Role {
+        roleName
+    }
+
+    User "1" --> "1" Role : has
+
