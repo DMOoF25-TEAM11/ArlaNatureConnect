@@ -1,6 +1,6 @@
 # **Operation Contract – UC01a: SelectRole(role)**
 
-| **Item** | **Description** |
+| Item | Description |
 |-----------|-----------------|
 | **Operation** | `SelectRole(role)` |
 | **Cross References** | UC01 – Login & Role Access |
@@ -11,7 +11,7 @@
 
 # **Operation Contract – UC01b: ChooseUser(user)**
 
-| **Item** | **Description** |
+| Item | Description |
 |-----------|-----------------|
 | **Operation** | `ChooseUser(user)` |
 | **Cross References** | UC01 – Login & Role Access |
