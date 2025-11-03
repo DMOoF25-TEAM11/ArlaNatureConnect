@@ -1,55 +1,69 @@
 sequenceDiagram
     title UC01 – Login & Role Access
-
     actor User
-    participant StartWindow as "StartWindow.xaml (View)"
-    participant StartViewModel as "StartViewModel"
-    participant NavigationService
-    participant TargetPage as "RolePage (Farmer / Consultant / Employee)"
-    participant TargetViewModel as "RoleViewModel (Farmer / Consultant / Employee)"
+    participant LoginPage as "LoginPage.xaml (View)"
+    participant LoginPageViewModel
+    participant NavigationHandler
+    participant FarmerPage as "FarmerPage.xaml (View)"
+    participant FarmerPageViewModel
+    participant ConsultantPage as "ConsultantPage.xaml (View)"
+    participant ConsultantPageViewModel
+    participant ArlaEmployeePage as "ArlaEmployeePage.xaml (View)"
+    participant ArlaEmployeePageViewModel
 
     %% Step 1: Launch
-    User ->> StartWindow: LaunchApplication()
-    activate StartWindow
-    StartWindow -->> User: DisplayRoleButtons()
-    deactivate StartWindow
+    User ->> LoginPage: LaunchApplication()
+    activate LoginPage
+    LoginPage -->> User: DisplayRoleButtons()
+    deactivate LoginPage
 
-    %% Step 2: Select Role
-    User ->> StartWindow: ClickRoleButton(role)
-    activate StartWindow
-    StartWindow ->> StartViewModel: Execute SelectRoleCommand(role)
-    activate StartViewModel
-    StartViewModel ->> StartViewModel: SelectRole(role)
-    StartViewModel ->> NavigationService: Navigate(pageType, parameter=role)
-    activate NavigationService
-    NavigationService -->> StartViewModel: NavigationComplete()
-    deactivate NavigationService
-    StartViewModel -->> StartWindow: NotifyNavigationComplete()
-    deactivate StartViewModel
-    deactivate StartWindow
+    %% Step 2: Role selection
+    User ->> LoginPage: ClickRoleButton(role)
+    activate LoginPage
+    LoginPage ->> LoginPageViewModel: Execute SelectRoleCommand(role)
+    activate LoginPageViewModel
+    LoginPageViewModel ->> NavigationHandler: Navigate(pageType, parameter=role)
+    activate NavigationHandler
 
-    %% Step 3: Navigation
-    NavigationService ->> TargetPage: LoadPage(pageType)
-    activate TargetPage
-    TargetPage ->> TargetViewModel: Initialize(role)
-    activate TargetViewModel
-    TargetPage -->> User: DisplayDashboardOrUserSelection()
-    deactivate TargetViewModel
-    deactivate TargetPage
-
-    %% Step 4: Optional user selection
-    alt Role = Farmer or Consultant
-        User ->> TargetPage: SelectUser(user)
-        activate TargetPage
-        TargetPage ->> TargetViewModel: Execute ChooseUserCommand(user)
-        activate TargetViewModel
-        TargetViewModel ->> TargetViewModel: ChooseUser(user)
-        TargetViewModel ->> TargetViewModel: UpdateDashboard(user)
-        TargetPage -->> User: ConfirmUserLoaded()
-        deactivate TargetViewModel
-        deactivate TargetPage
+    %% Step 3: Navigation based on role
+    alt Role = Farmer
+        NavigationHandler ->> FarmerPage: LoadPage()
+        activate FarmerPage
+        FarmerPage ->> FarmerPageViewModel: Initialize(role)
+        activate FarmerPageViewModel
+        FarmerPage -->> User: DisplayUserDropdown()
+        User ->> FarmerPage: SelectUser(user)
+        FarmerPage ->> FarmerPageViewModel: Execute ChooseUserCommand(user)
+        FarmerPageViewModel ->> FarmerPageViewModel: ChooseUser(user)
+        FarmerPageViewModel ->> FarmerPage: UpdateDashboard(user)
+        FarmerPage -->> User: DisplayUserSpecificDashboard()
+        deactivate FarmerPageViewModel
+        deactivate FarmerPage
+    else Role = Consultant
+        NavigationHandler ->> ConsultantPage: LoadPage()
+        activate ConsultantPage
+        ConsultantPage ->> ConsultantPageViewModel: Initialize(role)
+        activate ConsultantPageViewModel
+        ConsultantPage -->> User: DisplayUserDropdown()
+        User ->> ConsultantPage: SelectUser(user)
+        ConsultantPage ->> ConsultantPageViewModel: Execute ChooseUserCommand(user)
+        ConsultantPageViewModel ->> ConsultantPageViewModel: ChooseUser(user)
+        ConsultantPageViewModel ->> ConsultantPage: UpdateDashboard(user)
+        ConsultantPage -->> User: DisplayUserSpecificDashboard()
+        deactivate ConsultantPageViewModel
+        deactivate ConsultantPage
     else Role = Arla Employee
-        TargetPage -->> User: DisplayEmployeeDashboard()
+        NavigationHandler ->> ArlaEmployeePage: LoadPage()
+        activate ArlaEmployeePage
+        ArlaEmployeePage ->> ArlaEmployeePageViewModel: Initialize(role)
+        activate ArlaEmployeePageViewModel
+        ArlaEmployeePage -->> User: DisplayEmployeeDashboard()
+        deactivate ArlaEmployeePageViewModel
+        deactivate ArlaEmployeePage
     end
 
-    
+    deactivate NavigationHandler
+    deactivate LoginPageViewModel
+    deactivate LoginPage
+
+  
