@@ -11,30 +11,25 @@ classDiagram
             +string FirstName
             +string LastName
             +string Email
-            +Role Role
-            +Address Address
+            +Guid RoleId
+            +Guid AddressId
             +bool IsActive
-            +int Version
-            +AddRole(role)
-            +Disable()
-            +Update(details)
         }
 
         class Role {
-            <<enumeration>>
-            Admin
-            Employee
-            Farmer
-            Consultant
+            +Guid Id
+            +string Name
         }
 
         class Farm {
             +Guid Id
             +string Name
             +string CVR
+            +Guid AddressId
         }
 
         class Address {
+            +Guid Id
             +string Street
             +string City
             +string PostalCode
