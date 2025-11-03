@@ -3,12 +3,7 @@ title: Use Case 001 - Domain Model
 ---
 classDiagram
     class User {
-        name
+        firstName
+        lastName
+        role
     }
-
-    class Role {
-        roleName
-    }
-
-    User "1" --> "1" Role : has
-
