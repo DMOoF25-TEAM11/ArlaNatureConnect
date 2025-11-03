@@ -1,2 +1,55 @@
-classDiagram
-    direction TB
+sequenceDiagram
+    title UC01 – Login & Role Access
+
+    actor User
+    participant StartWindow as "StartWindow.xaml (View)"
+    participant StartViewModel as "StartViewModel"
+    participant NavigationService
+    participant TargetPage as "RolePage (Farmer / Consultant / Employee)"
+    participant TargetViewModel as "RoleViewModel (Farmer / Consultant / Employee)"
+
+    %% Step 1: Launch
+    User ->> StartWindow: LaunchApplication()
+    activate StartWindow
+    StartWindow -->> User: DisplayRoleButtons()
+    deactivate StartWindow
+
+    %% Step 2: Select Role
+    User ->> StartWindow: ClickRoleButton(role)
+    activate StartWindow
+    StartWindow ->> StartViewModel: Execute SelectRoleCommand(role)
+    activate StartViewModel
+    StartViewModel ->> StartViewModel: SelectRole(role)
+    StartViewModel ->> NavigationService: Navigate(pageType, parameter=role)
+    activate NavigationService
+    NavigationService -->> StartViewModel: NavigationComplete()
+    deactivate NavigationService
+    StartViewModel -->> StartWindow: NotifyNavigationComplete()
+    deactivate StartViewModel
+    deactivate StartWindow
+
+    %% Step 3: Navigation
+    NavigationService ->> TargetPage: LoadPage(pageType)
+    activate TargetPage
+    TargetPage ->> TargetViewModel: Initialize(role)
+    activate TargetViewModel
+    TargetPage -->> User: DisplayDashboardOrUserSelection()
+    deactivate TargetViewModel
+    deactivate TargetPage
+
+    %% Step 4: Optional user selection
+    alt Role = Farmer or Consultant
+        User ->> TargetPage: SelectUser(user)
+        activate TargetPage
+        TargetPage ->> TargetViewModel: Execute ChooseUserCommand(user)
+        activate TargetViewModel
+        TargetViewModel ->> TargetViewModel: ChooseUser(user)
+        TargetViewModel ->> TargetViewModel: UpdateDashboard(user)
+        TargetPage -->> User: ConfirmUserLoaded()
+        deactivate TargetViewModel
+        deactivate TargetPage
+    else Role = Arla Employee
+        TargetPage -->> User: DisplayEmployeeDashboard()
+    end
+
+    
