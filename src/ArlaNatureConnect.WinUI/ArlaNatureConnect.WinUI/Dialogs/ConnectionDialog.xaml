@@ -1,0 +1,41 @@
+<ContentDialog
+ x:Class="ArlaNatureConnect.WinUI.Dialogs.ConnectionDialog"
+ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+ xmlns:local="using:ArlaNatureConnect.WinUI.Dialogs"
+ xmlns:vm="using:ArlaNatureConnect.WinUI.ViewModels"
+ xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ mc:Ignorable="d"
+ Title="Databasen forbindelsesstreng krævet"
+ PrimaryButtonText="Gem"
+ CloseButtonText="Annuller">
+
+    <ContentDialog.DataContext>
+        <vm:ConnectionDialogViewModel/>
+    </ContentDialog.DataContext>
+
+    <StackPanel Spacing="8" Padding="8">
+        <TextBlock Text="Auto-genereret forbindelsesstreng til databasen"/>
+
+        <StackPanel x:Name="RawPanel" Background="{StaticResource AccentFillColorDisabled}" Padding="4" Width="520">
+            <TextBlock Text="{Binding ConnectionString, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Foreground="{ThemeResource AccentFillColorDisabledBrush}" />
+        </StackPanel>
+
+        <StackPanel x:Name="FieldsPanel" Spacing="6">
+            <TextBox Header="Servernavn" Text="{Binding ServerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="520"/>
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <TextBlock Text="Godkendelse:" VerticalAlignment="Center"/>
+                <ToggleSwitch IsOn="{Binding IntegratedSecurity, Mode=TwoWay}" OnContent="Windows" OffContent="SQL Server" VerticalAlignment="Center"/>
+            </StackPanel>
+            <TextBox Header="Brugernavn" Text="{Binding UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="260"/>
+            <PasswordBox Header="Adgangskode" Password="{Binding Password, Mode=TwoWay}" Width="260"/>
+            <TextBox Header="Databasenavn" Text="{Binding DatabaseName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="520"/>
+            <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                <CheckBox Content="Krypter" IsChecked="{Binding Encrypt, Mode=TwoWay}"/>
+                <CheckBox Content="Stol på servercertifikat" IsChecked="{Binding TrustServerCertificate, Mode=TwoWay}"/>
+            </StackPanel>
+        </StackPanel>
+
+    </StackPanel>
+</ContentDialog>

@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
         <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
@@ -9,10 +9,10 @@
         <RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
         <UseWinUI>true</UseWinUI>
         <Nullable>enable</Nullable>
-        <ImplicitUsings>enabled</ImplicitUsings>
+        <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
     <ItemGroup>
-      <Compile Remove="StartWindow - Copy.xaml.cs" />
+      <Compile Remove="ViewModels\template.cs" />
     </ItemGroup>
     <ItemGroup>
         <Content Remove="Assets\startUpImage.jpg" />
@@ -26,6 +26,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
         <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.6901" />
         <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.251003001" />
     </ItemGroup>
@@ -41,7 +42,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Include="StartWindow - Copy.xaml.cs" />
+      <None Include="ViewModels\template.cs" />
     </ItemGroup>
 
     <ItemGroup>

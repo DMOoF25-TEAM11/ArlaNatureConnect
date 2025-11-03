@@ -5,7 +5,7 @@
         <RootNamespace>ArlaNatureConnect.Domain</RootNamespace>
         <RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
         <UseWinUI>true</UseWinUI>
-        <ImplicitUsings>enabled</ImplicitUsings>
+        <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
     <ItemGroup>
