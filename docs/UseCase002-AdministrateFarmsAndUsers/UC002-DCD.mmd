@@ -8,11 +8,12 @@ classDiagram
     namespace ArlaNatureConnect.Domain.Entities {
         class User {
             +Guid Id
+            +Guid RoleId
+            +Guid FarmId
+            +Guid AddressId
             +string FirstName
             +string LastName
             +string Email
-            +Role Role
-            +Address Address
             +bool IsActive
             +int Version
             +AddRole(role)
@@ -21,20 +22,19 @@ classDiagram
         }
 
         class Role {
-            <<enumeration>>
-            Admin
-            Employee
-            Farmer
-            Consultant
+            Guid Id
+            +string Name
         }
 
         class Farm {
             +Guid Id
+            +Guid AddressId
             +string Name
             +string CVR
         }
 
         class Address {
+            +Guid Id
             +string Street
             +string City
             +string PostalCode
@@ -68,14 +68,6 @@ classDiagram
 
         class IFarmRepository {
             <<interface>>
-        }
-
-        class IUserService {
-            +GetUsersAsync(GetUsersRequest) Task~GetUsersResponse~
-            +GetUserDetailsAsync(Guid userId) Task~GetUserDetailsResponse~
-            +CreateUserAsync(User user) Task~CreateUserResponse~
-            +UpdateUserAsync(User user) Task~UpdateUserResponse~
-            +DeleteUserAsync(Guid userId, bool anonymize = true) Task~DeleteUserResponse~
         }
     }
 
@@ -111,10 +103,10 @@ classDiagram
     Role --* IRoleRepository : manages
 
     %% Composition
-    User --* Role : has
-    User --* Address : has
-    User --* Farm : may have
-    Farm --* Address : has
+    User --o Role : has
+    User --o Address : has
+    User --o Farm : may have
+    Farm --o Address : has
 
     %% Inheritance and Implementation
     Repository --|> IRepository : implements
