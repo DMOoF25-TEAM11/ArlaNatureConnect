@@ -1,11 +1,11 @@
 erDiagram
     ROLE {
-        uniqueidentifier RoleID PK
+        uniqueidentifier ID PK
         nvarchar(50) Name
     }
 
-    USER {
-        uniqueidentifier UserID PK
+    USERS {
+        uniqueidentifier ID PK
         nvarchar(100) FirstName
         nvarchar(100) LastName 
         uniqueidentifier RoleID FK
@@ -20,5 +20,5 @@ erDiagram
     }
 
     %% blank line above fixes syntax error
-    ROLE ||--o{ USER : "has many users"
-    USER ||--o{ LOGIN_SESSION : "creates many sessions"
+    ROLE ||--o{ USERS : "has many users"
+    USERS ||--o{ LOGIN_SESSION : "creates many sessions"
