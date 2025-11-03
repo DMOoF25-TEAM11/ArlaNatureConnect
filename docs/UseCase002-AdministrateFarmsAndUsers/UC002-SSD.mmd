@@ -1,2 +1,32 @@
-classDiagram
-    direction TB
+---
+title: UC002 - System Sequence Diagram
+---
+sequenceDiagram
+    participant Admin as Administrator
+    participant System as System
+
+    Admin->>+System: Open Users management view
+    System-->>-Admin: Display list of users
+
+
+    alt Create user
+        Admin->>+System: AddUser(User)
+        System-->>Admin: Validation result / Confirmation
+        System-->>-Admin: Refresh list
+    end
+
+    alt Read user details
+        Admin->>System: GetUserDetails(userId)
+        System-->>Admin: User details
+    end
+
+    alt Update user
+        Admin->>System: UpdateUser(userId, changes)
+        System-->>Admin: Validation result / Confirmation
+        System-->>Admin: Refresh list
+    end
+
+    alt Delete user
+        Admin->>System: DeleteUser(userId)
+        System-->>Admin: Confirmation / Refresh list
+    end

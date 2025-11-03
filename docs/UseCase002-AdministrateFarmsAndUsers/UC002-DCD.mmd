@@ -1,2 +1,136 @@
+---
+title: "UC002: Domain Class Diagram for User and Farm Management"
+crossreferencer: UC002-DomainModel.mmd, UC002-SSD.mmd
+---
 classDiagram
     direction TB
+
+    namespace ArlaNatureConnect.Domain.Entities {
+        class User {
+            +Guid Id
+            +string FirstName
+            +string LastName
+            +string Email
+            +Role Role
+            +Address Address
+            +bool IsActive
+            +int Version
+            +AddRole(role)
+            +Disable()
+            +Update(details)
+        }
+
+        class Role {
+            <<enumeration>>
+            Admin
+            Employee
+            Farmer
+            Consultant
+        }
+
+        class Farm {
+            +Guid Id
+            +string Name
+            +string CVR
+        }
+
+        class Address {
+            +string Street
+            +string City
+            +string PostalCode
+            +string Country
+        }
+    }
+
+    namespace ArlaNatureConnect.Core.Abstract {
+        %% Repositories
+
+        class IRepository~TEntity~ {
+            <<interface>>
+            +GetByIdAsync(Guid id) Task~TEntity~
+            +GetAllAsync() Task~List__TEntity~
+            +AddAsync(TEntity entity) Task
+            +UpdateAsync(TEntity entity) Task
+            +DeleteAsync(Guid id) Task
+        }
+
+        class IRoleRepository {
+            <<interface>>
+        }
+
+        class IUserRepository {
+            <<interface>>
+        }
+
+        class IAddressRepository {
+            <<interface>>
+        }
+
+        class IFarmRepository {
+            <<interface>>
+        }
+
+        class IUserService {
+            +GetUsersAsync(GetUsersRequest) Task~GetUsersResponse~
+            +GetUserDetailsAsync(Guid userId) Task~GetUserDetailsResponse~
+            +CreateUserAsync(User user) Task~CreateUserResponse~
+            +UpdateUserAsync(User user) Task~UpdateUserResponse~
+            +DeleteUserAsync(Guid userId, bool anonymize = true) Task~DeleteUserResponse~
+        }
+    }
+
+    namespace ArlaNatureConnect.Infrastructure.Repositories {
+        class Repository~TEntity~ {
+            #AppDbContect _context
+            +Repository() void
+            +SaveChangesAsync(AppDbContext context) Task
+        }
+
+        class RoleRepository {
+            +RoleRepository() void
+        }
+
+        class UserRepository {
+            +UserRepository() void
+        }
+
+        class AddressRepository {
+            +AddressRepository() void
+        }
+
+        class FarmRepository {
+            +FarmRepository() void
+        }
+    }
+
+    %% Associations
+    Role --* RoleRepository : manages
+    User --* UserRepository : manages
+    Farm --* FarmRepository : manages
+    Address --* AddressRepository : manages
+    Role --* IRoleRepository : manages
+
+    %% Composition
+    User --* Role : has
+    User --* Address : has
+    User --* Farm : may have
+    Farm --* Address : has
+
+    %% Inheritance and Implementation
+    Repository --|> IRepository : implements
+    RoleRepository --|> IRoleRepository : implements
+    UserRepository --|> IUserRepository : implements
+    AddressRepository --|> IAddressRepository : implements
+    FarmRepository --|> IFarmRepository : implements
+
+    IRoleRepository --|> IRepository : implements
+    IUserRepository --|> IRepository : implements
+    IAddressRepository --|> IRepository : implements
+    IFarmRepository --|> IRepository : implements
+
+    RoleRepository ..|> Repository : inheritance
+    UserRepository ..|> Repository : inheritance
+    FarmRepository ..|> Repository : inheritance
+    AddressRepository ..|> Repository  : inheritance
+
+    %% note right of ArlaNatureConnect.Core.IUserService: Service enforces authorization, validation and mapping
