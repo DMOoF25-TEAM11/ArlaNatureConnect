@@ -9,7 +9,6 @@ classDiagram
         class User {
             +Guid Id
             +Guid RoleId
-            +Guid FarmId
             +Guid AddressId
             +string FirstName
             +string LastName
@@ -29,6 +28,7 @@ classDiagram
         class Farm {
             +Guid Id
             +Guid AddressId
+            +Guid UserId
             +string Name
             +string CVR
         }

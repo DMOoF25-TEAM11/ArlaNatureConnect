@@ -80,6 +80,7 @@ END
 /***************************************************************************************************
     Table: Farms
     Purpose: Stores farm information.
+    Note: `UserId` added to represent primary owner. FK to Users added after Users table creation to avoid forward reference.
 ***************************************************************************************************/
 IF OBJECT_ID(N'[dbo].[Farms]') IS NULL
 BEGIN
@@ -87,6 +88,7 @@ BEGIN
         [Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY DEFAULT NEWID(),
         [Name] NVARCHAR(200) NOT NULL,
         [AddressId] UNIQUEIDENTIFIER NULL,
+        [UserId] UNIQUEIDENTIFIER NULL,
         [CVR] NVARCHAR(50) NULL,
         CONSTRAINT [UQ_Farms_CVR] UNIQUE([CVR])
     );
@@ -95,6 +97,7 @@ END
 /***************************************************************************************************
     Table: Users
     Purpose: Stores user information.
+    Note: `FarmId` removed from Users. Use `Farms.UserId` and/or mapping table `UserFarms` for associations.
 ***************************************************************************************************/
 IF OBJECT_ID(N'[dbo].[Users]') IS NULL
 BEGIN
@@ -105,18 +108,26 @@ BEGIN
         [Email] NVARCHAR(256) NOT NULL,
         [RoleId] UNIQUEIDENTIFIER NOT NULL,
         [AddressId] UNIQUEIDENTIFIER NULL,
-        [FarmId] UNIQUEIDENTIFIER NULL,
         [IsActive] BIT NOT NULL DEFAULT (1),
         [CreatedAt] DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
         [UpdatedAt] DATETIME2 NULL,
         [RowVersion] ROWVERSION,
         CONSTRAINT [UQ_Users_Email] UNIQUE([Email]),
         CONSTRAINT [FK_Users_Roles] FOREIGN KEY ([RoleId]) REFERENCES [dbo].[Roles]([Id]),
-        CONSTRAINT [FK_Users_Address] FOREIGN KEY ([AddressId]) REFERENCES [dbo].[Address]([Id]),
-        CONSTRAINT [FK_Users_Farms] FOREIGN KEY ([FarmId]) REFERENCES [dbo].[Farms]([Id])
+        CONSTRAINT [FK_Users_Address] FOREIGN KEY ([AddressId]) REFERENCES [dbo].[Address]([Id])
     );
     CREATE INDEX [IX_Users_RoleId] ON [dbo].[Users]([RoleId]);
-    CREATE INDEX [IX_Users_FarmId] ON [dbo].[Users]([FarmId]);
+END
+
+-- Add FK from Farms to Users now that Users table exists
+IF OBJECT_ID(N'[dbo].[Farms]') IS NOT NULL AND OBJECT_ID(N'[dbo].[Users]') IS NOT NULL
+BEGIN
+ IF NOT EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = N'FK_Farms_Users')
+ BEGIN
+ ALTER TABLE [dbo].[Farms]
+ ADD CONSTRAINT [FK_Farms_Users] FOREIGN KEY ([UserId]) REFERENCES [dbo].[Users]([Id]);
+ CREATE INDEX [IX_Farms_UserId] ON [dbo].[Farms]([UserId]);
+ END
 END
 
 /***************************************************************************************************
