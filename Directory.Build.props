@@ -23,7 +23,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <!-- Ensure outputs and intermediates are written inside the repo to avoid external overlapping obj/bin locations -->
-    <BaseOutputPath>$(SolutionDriveRoot)bin\$(MSBuildProjectName)\$(Configuration)\</BaseOutputPath>
-    <BaseIntermediateOutputPath>$(SolutionDriveRoot)obj\$(MSBuildProjectName)\$(Configuration)\</BaseIntermediateOutputPath>
+    <BaseOutputPath>$(BaseOutputPath)bin\$(Configuration)\</BaseOutputPath>
+    <BaseIntermediateOutputPath>$(BaseOutputPath)obj\$(Configuration)\</BaseIntermediateOutputPath>
   </PropertyGroup>
 </Project>

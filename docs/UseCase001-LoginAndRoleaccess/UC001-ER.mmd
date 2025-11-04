@@ -1,2 +1,24 @@
-classDiagram
-    direction TB
+erDiagram
+    ROLE {
+        uniqueidentifier ID PK
+        nvarchar(50) Name
+    }
+
+    USERS {
+        uniqueidentifier ID PK
+        nvarchar(100) FirstName
+        nvarchar(100) LastName 
+        uniqueidentifier RoleID FK
+        bit IsActive
+    }
+
+    LOGIN_SESSION {
+        uniqueidentifier SessionID PK
+        uniqueidentifier UserID FK
+        datetime LoginTimestamp
+        datetime LogoutTimestamp  "nullable"
+    }
+
+    %% blank line above fixes syntax error
+    ROLE ||--o{ USERS : "has many users"
+    USERS ||--o{ LOGIN_SESSION : "creates many sessions"
