@@ -1,2 +1,39 @@
-classDiagram
-    direction TB
+---
+title: UC002 - Entity Relationship Diagram (Users & Farms)
+crossref: UC002-DCD.mmd, UC002-SD.mmd
+---
+erDiagram
+    ROLE {
+        string Id PK
+        string Name
+    }
+
+    USERS {
+        string Id PK
+        string FirstName
+        string LastName
+        string Email "UNIQUE"
+        string RoleId FK
+        string AddressId FK
+        string FarmId FK
+        boolean IsActive
+    }
+
+    FARMS {
+        string Id PK
+        string Name
+        string AddressId FK
+        string CVR "UNIQUE"
+    }
+
+    ADDRESS {
+        string Id PK
+        string Street
+        string City
+        string PostalCode
+        string Country
+    }
+
+    ROLE ||--o{ USERS : "has"
+    USERS }o--|| ADDRESS : "has"
+    USERS }o--o{ FARMS : "may_manage / belongs_to"
