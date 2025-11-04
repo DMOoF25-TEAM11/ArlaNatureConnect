@@ -1,15 +1,5 @@
-/*
- File: UC002-DDL.sql
- Purpose: Database DDL for Use Case UC002 - Administrate Farms and Users
- Safety: This script DROPS and RECREATES the database. Do NOT run in production.
 
- Use Case: UC002 - Administrate Farms and Users
- Description: This script creates the necessary database tables and stored procedures to manage farms and users.
 
- created: 2025-11-03
- change log:
-    - 2025-11-03: Initial creation
-*/
 
 SET QUOTED_IDENTIFIER ON;
 SET ANSI_NULLS ON;

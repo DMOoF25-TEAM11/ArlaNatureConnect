@@ -1,18 +1,9 @@
-/*
- File: UC002-DML.sql
- Purpose: Sample Data Insertion for UC002 - Administrate Farms and Users
- Safety: This script deletes table data and inserts sample data into the database. Safe for development environments only.
 
 
- Use Case: UC002 - Administrate Farms and Users
- Description: Sample data insertion script for UC002 to populate the database with roles, farms, users, and credentials.
 
- created:2025-11-04
- change log:
- -2025-11-04: Initial creation
-
-*/
-
+/***********************************************************************
+-- Add data for UC002 - Administrate Farms and Users
+***********************************************************************/
 
 SET NOCOUNT ON;
 
@@ -278,3 +269,4 @@ SELECT TOP 50 * FROM [dbo].[UserFarms] JOIN [dbo].[Users] u ON UserFarms.UserId 
 
 
 PRINT 'Sample data insertion completed.';
+

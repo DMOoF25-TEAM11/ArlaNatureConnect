@@ -1,14 +1,14 @@
 /*
- File: uspCreateUser.sql
- Purpose: Stored procedure to create a new user.
- safety: This script creates a stored procedure. Review before running in production.
+    File: uspCreateUser.sql
+    Purpose: Stored procedure to create a new user.
+    safety: This script creates a stored procedure. Review before running in production.
 
- Use Case: UC002 - Administrate Farms and Users
- Description: This stored procedure creates a new user with the specified username, password, and role.
+    Use Case: UC002 - Administrate Farms and Users
+    Description: This stored procedure creates a new user with the specified username, password, and role.
 
- created: 2025-11-03
- change log:
-    - 2025-11-03: Initial creation
+    created: 2025-11-03
+    change log:
+        - 2025-11-03: Initial creation
 */
 
 PRINT 'Using database [ArlaNatureConnect_Dev]...';
@@ -51,37 +51,39 @@ BEGIN
     BEGIN TRY
         BEGIN TRANSACTION;
 
-            -- Optional: insert address
+            -- Generate user id up front so we can set Farm.UserId when creating the farm
+            SET @CreatedUserId = NEWID();
+
+            -- Optional: insert address for user
             DECLARE @AddressId UNIQUEIDENTIFIER = NULL;
             IF @Street IS NOT NULL OR @City IS NOT NULL OR @PostalCode IS NOT NULL OR @Country IS NOT NULL
             BEGIN
-                SET @AddressId = NEWID();
-                INSERT INTO [dbo].[Address] ([Id], [Street], [City], [PostalCode], [Country])
-                VALUES (@AddressId, @Street, @City, @PostalCode, @Country);
+            SET @AddressId = NEWID();
+            INSERT INTO [dbo].[Address] ([Id], [Street], [City], [PostalCode], [Country])
+            VALUES (@AddressId, @Street, @City, @PostalCode, @Country);
             END
 
             -- Optional: insert farm address
             DECLARE @FarmAddressId UNIQUEIDENTIFIER = NULL;
             IF @FarmStreet IS NOT NULL OR @FarmCity IS NOT NULL OR @FarmPostalCode IS NOT NULL OR @FarmCountry IS NOT NULL
             BEGIN
-                SET @FarmAddressId = NEWID();
-                INSERT INTO [dbo].[Address] ([Id], [Street], [City], [PostalCode], [Country])
-                VALUES (@FarmAddressId, @FarmStreet, @FarmCity, @FarmPostalCode, @FarmCountry);
+            SET @FarmAddressId = NEWID();
+            INSERT INTO [dbo].[Address] ([Id], [Street], [City], [PostalCode], [Country])
+            VALUES (@FarmAddressId, @FarmStreet, @FarmCity, @FarmPostalCode, @FarmCountry);
             END
 
-            -- Optional: insert farm (if provided)
+            -- Optional: insert farm (if provided) and set its UserId to the newly created user
             DECLARE @FarmId UNIQUEIDENTIFIER = NULL;
             IF (@FarmName IS NOT NULL)
             BEGIN
-                SET @FarmId = NEWID();
-                INSERT INTO [dbo].[Farms] ([Id], [Name], [AddressID], [CVR])
-                VALUES (@FarmId, @FarmName, @FarmAddressId, @FarmCVR);
+            SET @FarmId = NEWID();
+            INSERT INTO [dbo].[Farms] ([Id], [Name], [AddressId], [UserId], [CVR])
+            VALUES (@FarmId, @FarmName, @FarmAddressId, @CreatedUserId, @FarmCVR);
             END
 
-            -- Insert user
-            SET @CreatedUserId = NEWID();
-            INSERT INTO [dbo].[Users] ([Id], [FirstName], [LastName], [Email], [RoleId], [AddressId], [FarmId], [IsActive])
-            VALUES (@CreatedUserId, @FirstName, @LastName, @Email, @RoleId, @AddressId, @FarmId,1);
+            -- Insert user (no FarmId column in Users table)
+            INSERT INTO [dbo].[Users] ([Id], [FirstName], [LastName], [Email], [RoleId], [AddressId], [IsActive])
+            VALUES (@CreatedUserId, @FirstName, @LastName, @Email, @RoleId, @AddressId,1);
 
             INSERT INTO [dbo].[AuditLog] ([ActorUserId], [TargetUserId], [Action], [Details])
             VALUES (@ActorUserId, @CreatedUserId, 'CreateUser', CONCAT('Created user ', @Email));
