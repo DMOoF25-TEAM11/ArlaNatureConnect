@@ -1,2 +1,60 @@
 classDiagram
     direction TB
+    %% === DCD – UC01: Login & Role Access ===
+
+    %% === DOMAIN ENTITIES ===
+    class User {
+        +Guid Id
+        +string FirstName
+        +string LastName
+        +Guid RoleId
+        +bool IsActive
+    }
+
+    class Role {
+        +Guid Id
+        +string Name
+    }
+
+    %% === VIEWMODELS (Application Layer) ===
+    class LoginPageViewModel {
+        - navigationHandler : NavigationHandler
+        - selectedRole : Role
+        + SelectRoleCommand : RelayCommand
+        + SelectRole(role : Role) void
+    }
+
+    class FarmerPageViewModel {
+        - navigationHandler : NavigationHandler
+        + LoadDashboard() void
+    }
+
+    class ConsultantPageViewModel {
+        - navigationHandler : NavigationHandler
+        + LoadDashboard() void
+    }
+
+    class ArlaEmployeePageViewModel {
+        - navigationHandler : NavigationHandler
+        + LoadDashboard() void
+    }
+
+    %% === SERVICES (Infrastructure Layer) ===
+    class NavigationHandler {
+        - frame : Frame
+        + Initialize(frame : Frame) void
+        + Navigate(pageType : Type, parameter : object) void
+    }
+
+    %% === RELATIONER ===
+    %% ViewModels → Services
+    LoginPageViewModel ..> NavigationHandler : uses
+    FarmerPageViewModel ..> NavigationHandler : uses
+    ConsultantPageViewModel ..> NavigationHandler : uses
+    ArlaEmployeePageViewModel ..> NavigationHandler : uses
+
+    %% ViewModels → Domain.Entities
+    LoginPageViewModel --> Role : selected
+
+    %% Domain relations
+    User o-- Role : has
