@@ -4,7 +4,7 @@ title: Use Case 002 - Domain Model
 classDiagram
     direction TB
 
-    class User {
+    class person {
         firstName
         lastName
         email
@@ -22,7 +22,7 @@ classDiagram
         roleName
     }
 
-    note for User "Represents a system user with personal details and active status."
+    note for Person "Represents a user personal entity with personal details and active status."
     note for Role "Defines a role that can be assigned to users for access control."
     note for Farmer "Extends User with additional attributes specific to farmers."
 

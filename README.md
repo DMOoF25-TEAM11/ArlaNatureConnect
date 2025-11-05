@@ -3,6 +3,8 @@ Welcome to the Arla Nature Connect project! This repository contains resources a
 
 ## Table of Contents
 
+## 📖 Overview
+
 ## 🚀 Getting Started
 To get started with the Arla Nature Connect project, follow these steps:
 
@@ -30,15 +32,15 @@ To get started with the Arla Nature Connect project, follow these steps:
 ## 📦 Project Structure
 ```plaintext
 ArlaNatureConnect/
-├── src/                                    # Source code for the project
-│   ├── ArlaNatureConnect.Domain/           # Domain models
-│   ├── ArlaNatureConnect.Core/             # Business logic
-│   ├── ArlaNatureConnect.Infrastructure/   # Data access and external services
-│   └── ArlaNatureConnect.WinUI/            # Windows application
-├── tests/                                  # Unit and integration tests
-├── images/                                 # Image assets for the project
-│   └── logo/                               # Logo images
-├── README.md                               # Project documentation
+├── 📂 src/                                      # Source code for the project
+│   ├── 📦 ArlaNatureConnect.Domain/             # Domain models
+│   ├── 📦 ArlaNatureConnect.Core/               # Business logic
+│   ├── 📦 ArlaNatureConnect.Infrastructure/     # Data access and external services
+│   └── 📦 ArlaNatureConnect.WinUI/              # Windows application
+├── 📂 tests/                                    # Unit and integration tests
+├── 🖼️ images/                                   # Image assets for the project
+├── 📄 docs/                                     # Documentation files
+├── 📄 README.md                                 # Project documentation
 └── .gitignore                              # Git ignore file
 ```
 

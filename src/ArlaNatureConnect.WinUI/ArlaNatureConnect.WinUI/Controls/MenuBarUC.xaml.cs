@@ -1,4 +1,3 @@
-using System;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
@@ -7,9 +6,9 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace ArlaNatureConnect.WinUI.Controls;
 
-public sealed partial class MenuBarView : UserControl
+public sealed partial class MenuBarUC : UserControl
 {
-    public MenuBarView()
+    public MenuBarUC()
     {
         this.InitializeComponent();
     }

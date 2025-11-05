@@ -1,32 +1,22 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
-        <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+        <TargetFramework>net9.0-windows10.0.22621.0</TargetFramework>
+        <TargetPlatformMinVersion>10.0.22621.0</TargetPlatformMinVersion>
         <RootNamespace>ArlaNatureConnect.WinUI</RootNamespace>
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <Platforms>x86;x64;ARM64</Platforms>
         <RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
         <UseWinUI>true</UseWinUI>
         <Nullable>enable</Nullable>
-        <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
-    <ItemGroup>
-      <Compile Remove="ViewModels\template.cs" />
-    </ItemGroup>
-    <ItemGroup>
-        <Content Remove="Assets\startUpImage.jpg" />
-    </ItemGroup>
-    <ItemGroup>
-        <None Remove="StartWindow.xaml" />
-    </ItemGroup>
 
     <ItemGroup>
         <Manifest Include="$(ApplicationManifest)" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.10" />
         <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.6901" />
         <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.251003001" />
     </ItemGroup>
@@ -35,27 +25,12 @@
         <ProjectReference Include="..\..\ArlaNatureConnect.Infrastructure\ArlaNatureConnect.Infrastructure.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-        <Content Include="Assets\startUpImage.jpg">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Include="ViewModels\template.cs" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Page Update="StartWindow.xaml">
-            <Generator>MSBuild:Compile</Generator>
-        </Page>
-    </ItemGroup>
-
     <!-- Publish Properties -->
     <PropertyGroup>
         <PublishReadyToRun Condition="'$(Configuration)' == 'Debug'">False</PublishReadyToRun>
         <PublishReadyToRun Condition="'$(Configuration)' != 'Debug'">True</PublishReadyToRun>
         <PublishTrimmed Condition="'$(Configuration)' == 'Debug'">False</PublishTrimmed>
         <PublishTrimmed Condition="'$(Configuration)' != 'Debug'">True</PublishTrimmed>
+        <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
 </Project>
