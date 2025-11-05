@@ -21,7 +21,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <controls:MenuBarView Grid.Row="0"/>
+        <controls:MenuBarUC Grid.Row="0"/>
 
         <Frame Grid.Row="1" x:Name="ContentFrame"/>
 

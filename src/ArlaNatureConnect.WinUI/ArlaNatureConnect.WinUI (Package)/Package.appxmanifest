@@ -8,11 +8,11 @@
   IgnorableNamespaces="uap rescap">
 
   <Identity
-    Name="90c761e9-d750-495a-9236-c6d68cfa4a94"
+    Name="2f409bd0-46ac-4cf1-828a-dc50025cf266"
     Publisher="CN=jenst"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="90c761e9-d750-495a-9236-c6d68cfa4a94" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="2f409bd0-46ac-4cf1-828a-dc50025cf266" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>ArlaNatureConnect.WinUI (Package)</DisplayName>
@@ -36,11 +36,11 @@
       <uap:VisualElements
         DisplayName="ArlaNatureConnect.WinUI (Package)"
         Description="ArlaNatureConnect.WinUI (Package)"
-        BackgroundColor="green"
+        BackgroundColor="transparent"
         Square150x150Logo="Images\Square150x150Logo.png"
         Square44x44Logo="Images\Square44x44Logo.png">
-        <uap:DefaultTile Wide310x150Logo="Images\Wide310x150Logo.png"  Square71x71Logo="Images\SmallTile.png" Square310x310Logo="Images\LargeTile.png"/>
-        <uap:SplashScreen Image="Images\SplashScreen.png"  BackgroundColor="white"/>
+        <uap:DefaultTile Wide310x150Logo="Images\Wide310x150Logo.png" />
+        <uap:SplashScreen Image="Images\SplashScreen.png" />
       </uap:VisualElements>
     </Application>
   </Applications>

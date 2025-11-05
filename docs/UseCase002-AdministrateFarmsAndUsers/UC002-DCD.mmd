@@ -1,12 +1,12 @@
 ---
-title: "UC002: Domain Class Diagram for User and Farm Management"
+title: "UC002: Domain Class Diagram for Person and Farm Management"
 crossreferencer: UC002-DomainModel.mmd, UC002-SSD.mmd
 ---
 classDiagram
     direction TB
 
     namespace ArlaNatureConnect.Domain.Entities {
-        class User {
+        class Person {
             +Guid Id
             +Guid RoleId
             +Guid AddressId
@@ -14,10 +14,6 @@ classDiagram
             +string LastName
             +string Email
             +bool IsActive
-            +int Version
-            +AddRole(role)
-            +Disable()
-            +Update(details)
         }
 
         class Role {
@@ -28,7 +24,7 @@ classDiagram
         class Farm {
             +Guid Id
             +Guid AddressId
-            +Guid UserId
+            +Guid PersonId
             +string Name
             +string CVR
         }
@@ -58,7 +54,7 @@ classDiagram
             <<interface>>
         }
 
-        class IUserRepository {
+        class IPersonRepository {
             <<interface>>
         }
 
@@ -82,8 +78,8 @@ classDiagram
             +RoleRepository() void
         }
 
-        class UserRepository {
-            +UserRepository() void
+        class PersonRepository {
+            +PersonRepository() void
         }
 
         class AddressRepository {
@@ -97,32 +93,32 @@ classDiagram
 
     %% Associations
     Role --* RoleRepository : manages
-    User --* UserRepository : manages
+    Person --* PersonRepository : manages
     Farm --* FarmRepository : manages
     Address --* AddressRepository : manages
     Role --* IRoleRepository : manages
 
     %% Composition
-    User --o Role : has
-    User --o Address : has
-    User --o Farm : may have
+    Person --o Role : has
+    Person --o Address : has
+    Person --o Farm : may have
     Farm --o Address : has
 
     %% Inheritance and Implementation
     Repository --|> IRepository : implements
     RoleRepository --|> IRoleRepository : implements
-    UserRepository --|> IUserRepository : implements
+    PersonRepository --|> IPersonRepository : implements
     AddressRepository --|> IAddressRepository : implements
     FarmRepository --|> IFarmRepository : implements
 
     IRoleRepository --|> IRepository : implements
-    IUserRepository --|> IRepository : implements
+    IPersonRepository --|> IRepository : implements
     IAddressRepository --|> IRepository : implements
     IFarmRepository --|> IRepository : implements
 
     RoleRepository ..|> Repository : inheritance
-    UserRepository ..|> Repository : inheritance
+    PersonRepository ..|> Repository : inheritance
     FarmRepository ..|> Repository : inheritance
     AddressRepository ..|> Repository  : inheritance
 
-    %% note right of ArlaNatureConnect.Core.IUserService: Service enforces authorization, validation and mapping
+    %% note right of ArlaNatureConnect.Core.IPersonService: Service enforces authorization, validation and mapping
