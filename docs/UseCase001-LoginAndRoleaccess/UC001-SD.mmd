@@ -1,6 +1,7 @@
 sequenceDiagram
     title UC01 – Login & Role Access
-    actor User
+
+    actor Person
     participant LoginPage as "LoginPage.xaml (View)"
     participant LoginPageViewModel
     participant NavigationHandler
@@ -12,13 +13,13 @@ sequenceDiagram
     participant ArlaEmployeePageViewModel
 
     %% Step 1: Launch
-    User ->> LoginPage: LaunchApplication()
+    Person ->> LoginPage: LaunchApplication()
     activate LoginPage
-    LoginPage -->> User: DisplayRoleButtons()
+    LoginPage -->> Person: DisplayRoleButtons()
     deactivate LoginPage
 
     %% Step 2: Role selection
-    User ->> LoginPage: ClickRoleButton(role)
+    Person ->> LoginPage: ClickRoleButton(role)
     activate LoginPage
     LoginPage ->> LoginPageViewModel: Execute SelectRoleCommand(role)
     activate LoginPageViewModel
@@ -31,12 +32,12 @@ sequenceDiagram
         activate FarmerPage
         FarmerPage ->> FarmerPageViewModel: Initialize(role)
         activate FarmerPageViewModel
-        FarmerPage -->> User: DisplayUserDropdown()
-        User ->> FarmerPage: SelectUser(user)
-        FarmerPage ->> FarmerPageViewModel: Execute ChooseUserCommand(user)
-        FarmerPageViewModel ->> FarmerPageViewModel: ChooseUser(user)
-        FarmerPageViewModel ->> FarmerPage: UpdateDashboard(user)
-        FarmerPage -->> User: DisplayUserSpecificDashboard()
+        FarmerPage -->> Person: DisplayPersonDropdown()
+        Person ->> FarmerPage: SelectPerson(person)
+        FarmerPage ->> FarmerPageViewModel: Execute ChoosePersonCommand(person)
+        FarmerPageViewModel ->> FarmerPageViewModel: ChoosePerson(person)
+        FarmerPageViewModel ->> FarmerPage: UpdateDashboard(person)
+        FarmerPage -->> Person: DisplayPersonSpecificDashboard()
         deactivate FarmerPageViewModel
         deactivate FarmerPage
     else Role = Consultant
@@ -44,12 +45,12 @@ sequenceDiagram
         activate ConsultantPage
         ConsultantPage ->> ConsultantPageViewModel: Initialize(role)
         activate ConsultantPageViewModel
-        ConsultantPage -->> User: DisplayUserDropdown()
-        User ->> ConsultantPage: SelectUser(user)
-        ConsultantPage ->> ConsultantPageViewModel: Execute ChooseUserCommand(user)
-        ConsultantPageViewModel ->> ConsultantPageViewModel: ChooseUser(user)
-        ConsultantPageViewModel ->> ConsultantPage: UpdateDashboard(user)
-        ConsultantPage -->> User: DisplayUserSpecificDashboard()
+        ConsultantPage -->> Person: DisplayPersonDropdown()
+        Person ->> ConsultantPage: SelectPerson(person)
+        ConsultantPage ->> ConsultantPageViewModel: Execute ChoosePersonCommand(person)
+        ConsultantPageViewModel ->> ConsultantPageViewModel: ChoosePerson(person)
+        ConsultantPageViewModel ->> ConsultantPage: UpdateDashboard(person)
+        ConsultantPage -->> Person: DisplayPersonSpecificDashboard()
         deactivate ConsultantPageViewModel
         deactivate ConsultantPage
     else Role = Arla Employee
@@ -57,7 +58,7 @@ sequenceDiagram
         activate ArlaEmployeePage
         ArlaEmployeePage ->> ArlaEmployeePageViewModel: Initialize(role)
         activate ArlaEmployeePageViewModel
-        ArlaEmployeePage -->> User: DisplayEmployeeDashboard()
+        ArlaEmployeePage -->> Person: DisplayEmployeeDashboard()
         deactivate ArlaEmployeePageViewModel
         deactivate ArlaEmployeePage
     end
@@ -65,5 +66,3 @@ sequenceDiagram
     deactivate NavigationHandler
     deactivate LoginPageViewModel
     deactivate LoginPage
-
-  
