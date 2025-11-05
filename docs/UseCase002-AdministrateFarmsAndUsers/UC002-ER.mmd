@@ -4,34 +4,34 @@ crossref: UC002-DCD.mmd, UC002-SD.mmd
 ---
 erDiagram
     ROLE {
-        string Id PK
-        string Name
+        UNIQUEIDENTIFIER Id PK
+        NVARCHAR(50) Name
     }
 
     USERS {
-        string Id PK
-        string FirstName
-        string LastName
-        string Email "UNIQUE"
-        string RoleId FK
-        string AddressId FK
-        string FarmId FK
-        boolean IsActive
+        UNIQUEIDENTIFIER Id PK
+        NVARCHAR(50) FirstName
+        NVARCHAR(50) LastName
+        NVARCHAR(50) Email "UNIQUE"
+        UNIQUEIDENTIFIER RoleId FK
+        UNIQUEIDENTIFIER AddressId FK
+        UNIQUEIDENTIFIER FarmId FK
+        BOOLEAN IsActive
     }
 
     FARMS {
-        string Id PK
-        string Name
-        string AddressId FK
-        string CVR "UNIQUE"
+        UNIQUEIDENTIFIER Id PK
+        NVARCHAR(50) Name
+        UNIQUEIDENTIFIER AddressId FK
+        NVARCHAR CVR "UNIQUE"
     }
 
     ADDRESS {
-        string Id PK
-        string Street
-        string City
-        string PostalCode
-        string Country
+        UNIQUEIDENTIFIER Id PK
+        NVARCHAR(100) Street
+        NVARCHAR(50) City
+        NVARCHAR(20) PostalCode
+        NVARCHAR(50) Country
     }
 
     ROLE ||--o{ USERS : "has"
