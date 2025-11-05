@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Windows.Security.Cryptography;
 using Windows.Security.Cryptography.DataProtection;
 using Windows.Storage.Streams;
@@ -39,7 +40,7 @@ public class ConnectionStringService : IConnectionStringService
         {
             // Use MemoryMarshal to safely create IBuffer from byte[]
             IBuffer buffer = CryptographicBuffer.CreateFromByteArray(encryptedData);
-            var provider = new DataProtectionProvider();
+            DataProtectionProvider provider = new DataProtectionProvider();
             IBuffer unprotected = await provider.UnprotectAsync(buffer);
             return CryptographicBuffer.ConvertBinaryToString(BinaryStringEncoding.Utf8, unprotected);
         }
@@ -52,7 +53,20 @@ public class ConnectionStringService : IConnectionStringService
     public async Task<string?> ReadAsync()
     {
         if (!File.Exists(_filePath)) return null;
-        var encrypted = await File.ReadAllBytesAsync(_filePath);
+        byte[] encrypted = await File.ReadAllBytesAsync(_filePath);
+#if DEBUG
+        // For debugging purposes, allow re-encryption of the file
+        var decrypted = await DecryptAsync(encrypted);
+        if (decrypted is not null)
+        {
+            var reEncrypted = await EncryptAsync(decrypted);
+            Debug.WriteLine($"*** {this}.ReadAsync() : decrypted connection string: {decrypted}");
+        }
+        else
+        {
+            Debug.WriteLine($"*** {this}.ReadAsync() : Failed to decrypt connection string during re-encryption.");
+        }
+#endif
         return await DecryptAsync(encrypted);
     }
 }
