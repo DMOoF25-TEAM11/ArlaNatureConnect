@@ -3,7 +3,7 @@ classDiagram
     %% === DCD – UC01: Login & Role Access ===
 
     %% === DOMAIN ENTITIES ===
-    class User {
+    class Person {
         +Guid Id
         +string FirstName
         +string LastName
@@ -57,4 +57,4 @@ classDiagram
     LoginPageViewModel --> Role : selected
 
     %% Domain relations
-    User o-- Role : has
+    Person o-- Role : has
