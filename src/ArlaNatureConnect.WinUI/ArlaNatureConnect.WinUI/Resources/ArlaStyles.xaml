@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- 🌿 PRIMARY COLOUR PALETTE -->
+    <Color x:Key="ArlaPrimaryColor">#007C3E</Color> <!-- Arla Green -->
+    <Color x:Key="ArlaPrimaryLightColor">#9FCB9F</Color>
+    <Color x:Key="ArlaPrimaryDarkColor">#004225</Color>
+
+    <!-- 🌾 SECONDARY COLOUR PALETTE -->
+    <Color x:Key="ArlaAccentColor">#F4C542</Color> <!-- Gold -->
+    <Color x:Key="ArlaSecondaryColor">#007C89</Color> <!-- Turquoise -->
+    <Color x:Key="ArlaNeutralLightColor">#F4F4F2</Color> <!-- Off White -->
+    <Color x:Key="ArlaNeutralDarkColor">#4D4D4F</Color> <!-- Charcoal -->
+    <Color x:Key="ArlaSurfaceColor">#FFFFFF</Color>
+    <Color x:Key="ArlaErrorColor">#9E463D</Color> <!-- Clay Red -->
+    <Color x:Key="ArlaLightGreyColor">#E0E0E0</Color> <!-- Light Grey for borders -->
+
+    <!-- 🪄 Brushes -->
+    <SolidColorBrush x:Key="ArlaPrimaryBrush" Color="{StaticResource ArlaPrimaryColor}" />
+    <SolidColorBrush x:Key="ArlaPrimaryLightBrush" Color="{StaticResource ArlaPrimaryLightColor}" />
+    <SolidColorBrush x:Key="ArlaPrimaryDarkBrush" Color="{StaticResource ArlaPrimaryDarkColor}" />
+    <SolidColorBrush x:Key="ArlaAccentBrush" Color="{StaticResource ArlaAccentColor}" />
+    <SolidColorBrush x:Key="ArlaSecondaryBrush" Color="{StaticResource ArlaSecondaryColor}" />
+    <SolidColorBrush x:Key="ArlaNeutralLightBrush" Color="{StaticResource ArlaNeutralLightColor}" />
+    <SolidColorBrush x:Key="ArlaNeutralDarkBrush" Color="{StaticResource ArlaNeutralDarkColor}" />
+    <SolidColorBrush x:Key="ArlaSurfaceBrush" Color="{StaticResource ArlaSurfaceColor}" />
+    <SolidColorBrush x:Key="ArlaErrorBrush" Color="{StaticResource ArlaErrorColor}" />
+    <SolidColorBrush x:Key="ArlaLightGreyBrush" Color="{StaticResource ArlaLightGreyColor}" />
+
+    <!-- 🌞 GLOBAL THEME -->
+    <SolidColorBrush x:Key="AppBackgroundBrush" Color="{StaticResource ArlaNeutralLightColor}" />
+    <SolidColorBrush x:Key="AppForegroundBrush" Color="{StaticResource ArlaNeutralDarkColor}" />
+    <SolidColorBrush x:Key="AppPrimaryBrush" Color="{StaticResource ArlaPrimaryColor}" />
+    <SolidColorBrush x:Key="AppAccentBrush" Color="{StaticResource ArlaAccentColor}" />
+
+    <!-- 🧱 PRIMARY BUTTON STYLE -->
+    <Style TargetType="Button" x:Key="ArlaPrimaryButton">
+        <Setter Property="Background" Value="{StaticResource ArlaPrimaryBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource ArlaNeutralLightBrush}" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Padding" Value="24,12" />
+        <Setter Property="BorderBrush" Value="{StaticResource ArlaPrimaryDarkBrush}" />
+        <Setter Property="BorderThickness" Value="1.5" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="MinWidth" Value="200" />
+        <Setter Property="MinHeight" Value="50" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="RootBorder"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="8">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="PointerOver">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootBorder" Storyboard.TargetProperty="Background">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ArlaPrimaryLightBrush}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ButtonText" Storyboard.TargetProperty="Foreground">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ArlaPrimaryDarkBrush}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootBorder" Storyboard.TargetProperty="Background">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ArlaPrimaryDarkBrush}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ButtonText" Storyboard.TargetProperty="Foreground">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ArlaNeutralLightBrush}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootBorder" Storyboard.TargetProperty="Background">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ArlaNeutralLightBrush}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ButtonText" Storyboard.TargetProperty="Foreground">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ArlaNeutralDarkBrush}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <DoubleAnimation Storyboard.TargetName="RootBorder" Storyboard.TargetProperty="Opacity" To="0.6" Duration="0"/>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <TextBlock x:Name="ButtonText"
+                            Text="{TemplateBinding Content}"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Foreground="{TemplateBinding Foreground}"
+                            FontWeight="{TemplateBinding FontWeight}"
+                            FontSize="{TemplateBinding FontSize}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- 🌿 SECONDARY BUTTON -->
+    <Style TargetType="Button" x:Key="ArlaSecondaryButton" BasedOn="{StaticResource ArlaPrimaryButton}">
+        <Setter Property="Background" Value="{StaticResource ArlaAccentBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource ArlaNeutralDarkBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource ArlaPrimaryDarkBrush}" />
+    </Style>
+
+    <!-- 🧩 TEXTBLOCK STYLES -->
+    <Style TargetType="TextBlock" x:Key="ArlaHeaderText">
+        <Setter Property="FontSize" Value="28" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Foreground" Value="{StaticResource ArlaPrimaryDarkBrush}" />
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="ArlaBodyText">
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="Foreground" Value="{StaticResource ArlaNeutralDarkBrush}" />
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="ArlaSubHeaderText">
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{StaticResource ArlaPrimaryDarkBrush}" />
+    </Style>
+
+    <!-- 📦 CARD STYLE -->
+    <Style TargetType="Border" x:Key="ArlaCard">
+        <Setter Property="Background" Value="{StaticResource ArlaSurfaceBrush}" />
+        <Setter Property="CornerRadius" Value="12" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{StaticResource ArlaLightGreyBrush}" />
+        <Setter Property="Padding" Value="16" />
+        <Setter Property="Margin" Value="8" />
+    </Style>
+
+    <!-- 📋 COMBOBOX STYLE -->
+    <Style TargetType="ComboBox" x:Key="ArlaComboBox">
+        <Setter Property="Background" Value="{StaticResource ArlaSurfaceBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource ArlaNeutralDarkBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource ArlaPrimaryBrush}" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="Padding" Value="12,8" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="MinWidth" Value="250" />
+        <Setter Property="MinHeight" Value="40" />
+    </Style>
+
+    <!-- 📝 TEXTBOX STYLE -->
+    <Style TargetType="TextBox" x:Key="ArlaTextBox">
+        <Setter Property="Background" Value="{StaticResource ArlaSurfaceBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource ArlaNeutralDarkBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource ArlaPrimaryBrush}" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="Padding" Value="12,8" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="MinHeight" Value="40" />
+        <Setter Property="CornerRadius" Value="8" />
+    </Style>
+
+    <!-- 🧭 NAVIGATIONVIEW STYLE -->
+    <Style TargetType="NavigationView" x:Key="ArlaNavigationView">
+        <Setter Property="Background" Value="Transparent" />
+    </Style>
+
+    <Style TargetType="NavigationViewItem" x:Key="ArlaNavigationViewItem">
+        <Setter Property="Foreground" Value="{StaticResource ArlaNeutralLightBrush}" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Padding" Value="20,12" />
+        <Setter Property="Margin" Value="5,0" />
+    </Style>
+
+</ResourceDictionary>
+
