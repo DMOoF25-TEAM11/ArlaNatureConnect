@@ -1,12 +1,12 @@
 sequenceDiagram
     title: UC01 SSD - Login & Role Access
 
-    actor Person
+    actor User
     participant System
 
-    Person ->> System: Select role (Farmer / Consultant / Arla Employee)
-    System -->> Person: Display role-specific dashboard
-    Person ->> System: Choose specific person (if applicable)
-    System -->> Person: Display person-specific data
+    User ->> System: Select role (Farmer / Consultant / Arla Employee)
+    System -->> User: Display role-specific dashboard
+    User ->> System: Choose specific person (if applicable)
+    System -->> User: Display person-specific data
 
-    Note over Person,System: Person selection only applies for Farmer and Consultant roles.
+    Note over User,System: Person selection only applies for Farmer and Consultant roles.
