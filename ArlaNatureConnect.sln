@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArlaNatureConnect.Infrastru
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArlaNatureConnect.Core", "src\ArlaNatureConnect.Core\ArlaNatureConnect.Core.csproj", "{12AE00D6-9333-4C1E-961D-CB29E1190475}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCore", "tests\ArlaNatureConnect\TestCore\TestCore.csproj", "{1AC39A9F-329E-4159-AD52-C7C621EE8599}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM64 = Debug|ARM64
@@ -89,9 +93,24 @@ Global
 		{12AE00D6-9333-4C1E-961D-CB29E1190475}.Release|x64.Build.0 = Release|Any CPU
 		{12AE00D6-9333-4C1E-961D-CB29E1190475}.Release|x86.ActiveCfg = Release|Any CPU
 		{12AE00D6-9333-4C1E-961D-CB29E1190475}.Release|x86.Build.0 = Release|Any CPU
+		{1AC39A9F-329E-4159-AD52-C7C621EE8599}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{1AC39A9F-329E-4159-AD52-C7C621EE8599}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{1AC39A9F-329E-4159-AD52-C7C621EE8599}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1AC39A9F-329E-4159-AD52-C7C621EE8599}.Debug|x64.Build.0 = Debug|Any CPU
+		{1AC39A9F-329E-4159-AD52-C7C621EE8599}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1AC39A9F-329E-4159-AD52-C7C621EE8599}.Debug|x86.Build.0 = Debug|Any CPU
+		{1AC39A9F-329E-4159-AD52-C7C621EE8599}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{1AC39A9F-329E-4159-AD52-C7C621EE8599}.Release|ARM64.Build.0 = Release|Any CPU
+		{1AC39A9F-329E-4159-AD52-C7C621EE8599}.Release|x64.ActiveCfg = Release|Any CPU
+		{1AC39A9F-329E-4159-AD52-C7C621EE8599}.Release|x64.Build.0 = Release|Any CPU
+		{1AC39A9F-329E-4159-AD52-C7C621EE8599}.Release|x86.ActiveCfg = Release|Any CPU
+		{1AC39A9F-329E-4159-AD52-C7C621EE8599}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1AC39A9F-329E-4159-AD52-C7C621EE8599} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F95CF33A-83CB-4D7C-9A56-85E9E545E990}
