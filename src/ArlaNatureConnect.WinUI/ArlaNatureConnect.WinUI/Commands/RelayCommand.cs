@@ -1,4 +1,3 @@
-using System;
 using System.Windows.Input;
 
 namespace ArlaNatureConnect.WinUI.Commands;
@@ -6,7 +5,7 @@ namespace ArlaNatureConnect.WinUI.Commands;
 /// <summary>
 /// Provides a basic implementation of the <see cref="ICommand"/> interface for relaying command logic.
 /// </summary>
-public sealed class RelayCommand : ICommand
+public sealed partial class RelayCommand : ICommand
 {
     /// <summary>
     /// The action to execute when the command is invoked.   

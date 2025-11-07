@@ -1,6 +1,5 @@
 using System.Diagnostics;
 using Windows.Security.Cryptography;
-using Windows.Security.Cryptography.DataProtection;
 using Windows.Storage.Streams;
 
 namespace ArlaNatureConnect.Core.Services;
@@ -20,8 +19,8 @@ public class ConnectionStringService : IConnectionStringService
 
     private static async Task<byte[]> EncryptAsync(string connectionString)
     {
-        var provider = new DataProtectionProvider("LOCAL=user");
         IBuffer buffer = CryptographicBuffer.ConvertStringToBinary(connectionString, BinaryStringEncoding.Utf8);
+        var provider = new Windows.Security.Cryptography.DataProtection.DataProtectionProvider("LOCAL=user");
         IBuffer protectedBuffer = await provider.ProtectAsync(buffer);
         CryptographicBuffer.CopyToByteArray(protectedBuffer, out byte[]? bytes);
         if (bytes is null) throw new InvalidOperationException("Failed to protect data");
@@ -38,9 +37,8 @@ public class ConnectionStringService : IConnectionStringService
     {
         try
         {
-            // Use MemoryMarshal to safely create IBuffer from byte[]
             IBuffer buffer = CryptographicBuffer.CreateFromByteArray(encryptedData);
-            DataProtectionProvider provider = new DataProtectionProvider();
+            var provider = new Windows.Security.Cryptography.DataProtection.DataProtectionProvider("LOCAL=user");
             IBuffer unprotected = await provider.UnprotectAsync(buffer);
             return CryptographicBuffer.ConvertBinaryToString(BinaryStringEncoding.Utf8, unprotected);
         }

@@ -13,6 +13,7 @@ namespace ArlaNatureConnect.WinUI.Converters
         {
             bool visible = false;
 
+            // Check if the input value is a boolean
             if (value is bool b)
             {
                 visible = b;
