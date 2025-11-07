@@ -10,6 +10,9 @@
         <UseWinUI>true</UseWinUI>
         <Nullable>enable</Nullable>
     </PropertyGroup>
+    <ItemGroup>
+      <None Remove="Controls\StatusBarUC.xaml" />
+    </ItemGroup>
 
     <ItemGroup>
         <Manifest Include="$(ApplicationManifest)" />
@@ -23,6 +26,12 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\ArlaNatureConnect.Infrastructure\ArlaNatureConnect.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Page Update="Controls\StatusBarUC.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </Page>
     </ItemGroup>
 
     <!-- Publish Properties -->
