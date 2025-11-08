@@ -9,10 +9,11 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
-                <!-- Other merged dictionaries here -->
+                <ResourceDictionary Source="Resources/ArlaStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <!-- Other app resources here -->
             <converters:BooleanToVisibilityConverter x:Key="BoolToVis" />
+            <converters:InvertBoolConverter x:Key="InvertBoolConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

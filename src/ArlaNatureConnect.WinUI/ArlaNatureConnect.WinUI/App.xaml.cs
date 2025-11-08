@@ -46,6 +46,7 @@ public partial class App : Application
                 services
                     .AddCoreServices()
                     .AddInfrastructure()
+                    .AddSingleton<Services.NavigationHandler>()
                     .AddSingleton<MainWindow>();
 
                 // register viewmodels used by controls
