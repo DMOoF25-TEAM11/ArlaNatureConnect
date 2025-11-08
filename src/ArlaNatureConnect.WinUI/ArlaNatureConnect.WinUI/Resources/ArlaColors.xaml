@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--  PRIMARY COLOUR PALETTE -->
+    <Color x:Key="ArlaPrimaryColor">#007C3E</Color> <!-- Arla Green -->
+    <Color x:Key="ArlaPrimaryLightColor">#9FCB9F</Color>
+    <Color x:Key="ArlaPrimaryDarkColor">#004225</Color>
+
+    <!--  SECONDARY COLOUR PALETTE -->
+    <Color x:Key="ArlaAccentColor">#F4C542</Color> <!-- Gold -->
+    <Color x:Key="ArlaSecondaryColor">#007C89</Color> <!-- Turquoise -->
+    <Color x:Key="ArlaNeutralLightColor">#F4F4F2</Color> <!-- Off White -->
+    <Color x:Key="ArlaNeutralDarkColor">#4D4D4F</Color> <!-- Charcoal -->
+    <Color x:Key="ArlaSurfaceColor">#FFFFFF</Color>
+    <Color x:Key="ArlaErrorColor">#9E463D</Color> <!-- Clay Red -->
+    <Color x:Key="ArlaLightGreyColor">#E0E0E0</Color> <!-- Light Grey for borders -->
+
+    <!--  Brushes -->
+    <SolidColorBrush x:Key="ArlaPrimaryBrush" Color="{StaticResource ArlaPrimaryColor}" />
+    <SolidColorBrush x:Key="ArlaPrimaryLightBrush" Color="{StaticResource ArlaPrimaryLightColor}" />
+    <SolidColorBrush x:Key="ArlaPrimaryDarkBrush" Color="{StaticResource ArlaPrimaryDarkColor}" />
+    <SolidColorBrush x:Key="ArlaAccentBrush" Color="{StaticResource ArlaAccentColor}" />
+    <SolidColorBrush x:Key="ArlaSecondaryBrush" Color="{StaticResource ArlaSecondaryColor}" />
+    <SolidColorBrush x:Key="ArlaNeutralLightBrush" Color="{StaticResource ArlaNeutralLightColor}" />
+    <SolidColorBrush x:Key="ArlaNeutralDarkBrush" Color="{StaticResource ArlaNeutralDarkColor}" />
+    <SolidColorBrush x:Key="ArlaSurfaceBrush" Color="{StaticResource ArlaSurfaceColor}" />
+    <SolidColorBrush x:Key="ArlaErrorBrush" Color="{StaticResource ArlaErrorColor}" />
+    <SolidColorBrush x:Key="ArlaLightGreyBrush" Color="{StaticResource ArlaLightGreyColor}" />
+
+    <!--  GLOBAL THEME -->
+    <SolidColorBrush x:Key="AppBackgroundBrush" Color="{StaticResource ArlaNeutralLightColor}" />
+    <SolidColorBrush x:Key="AppForegroundBrush" Color="{StaticResource ArlaNeutralDarkColor}" />
+    <SolidColorBrush x:Key="AppPrimaryBrush" Color="{StaticResource ArlaPrimaryColor}" />
+    <SolidColorBrush x:Key="AppAccentBrush" Color="{StaticResource ArlaAccentColor}" />
+
+</ResourceDictionary>
+
+
