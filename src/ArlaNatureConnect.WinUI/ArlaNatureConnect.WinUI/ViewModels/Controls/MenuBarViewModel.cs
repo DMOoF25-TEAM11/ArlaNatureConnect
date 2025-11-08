@@ -1,8 +1,7 @@
-﻿using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
+using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 
-namespace ArlaNatureConnect.WinUI.ViewModels
+namespace ArlaNatureConnect.WinUI.ViewModels.Controls;
+
+public class MenuBarViewModel : ViewModelBase
 {
-    public class MenuBarViewModel : ViewModelBase
-    {
-    }
 }

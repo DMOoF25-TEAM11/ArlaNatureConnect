@@ -11,6 +11,11 @@
     mc:Ignorable="d">
 
     <Grid>
-
+        <TextBlock Text="Manage User Page" 
+                   HorizontalAlignment="Center" 
+                   VerticalAlignment="Center" 
+                   FontSize="24"/>
+        
+        
     </Grid>
 </Page>

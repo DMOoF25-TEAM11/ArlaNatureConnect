@@ -1,5 +1,5 @@
 /*
-    File: uspCreateUser.sql
+    File: uspCreatePerson.sql
     Purpose: Stored procedure to create a new user.
     safety: This script creates a stored procedure. Review before running in production.
 
@@ -16,18 +16,18 @@ USE [ArlaNatureConnect_Dev];
 GO
 
 /***************************************************************************************************
- Stored Procedure: uspCreateUser
+ Stored Procedure: uspCreatePerson
  Purpose: Creates a new user with the specified username, password, and role.
  ***************************************************************************************************/
 
-IF OBJECT_ID(N'[dbo].[uspCreateUser]', N'P') IS NOT NULL
+IF OBJECT_ID(N'[dbo].[uspCreatePerson]', N'P') IS NOT NULL
 BEGIN
-    PRINT 'Dropping existing stored procedure [dbo].[uspCreateUser]...';
-    DROP PROCEDURE [dbo].[uspCreateUser];
+    PRINT 'Dropping existing stored procedure [dbo].[uspCreatePerson]...';
+    DROP PROCEDURE [dbo].[uspCreatePerson];
 END
 GO
 
-CREATE PROCEDURE [dbo].[uspCreateUser]
+CREATE PROCEDURE [dbo].[uspCreatePerson]
     @FirstName NVARCHAR(100),
     @LastName NVARCHAR(100),
     @Email NVARCHAR(256),
@@ -46,7 +46,7 @@ CREATE PROCEDURE [dbo].[uspCreateUser]
     @CreatedUserId UNIQUEIDENTIFIER OUTPUT
 AS
 BEGIN
-    PRINT 'Creating stored procedure [dbo].[uspCreateUser]...';
+    PRINT 'Creating stored procedure [dbo].[uspCreatePerson]...';
     SET NOCOUNT ON;
     BEGIN TRY
         BEGIN TRANSACTION;

@@ -25,7 +25,6 @@
 
         <Frame Grid.Row="1" x:Name="ContentFrame"/>
 
-        <TextBlock Grid.Row="2" Text="© 2025 Arla" HorizontalAlignment="Center" Margin="0,10"/>
-
+        <controls:StatusBarUC Grid.Row="2"/>
     </Grid>
 </Window>

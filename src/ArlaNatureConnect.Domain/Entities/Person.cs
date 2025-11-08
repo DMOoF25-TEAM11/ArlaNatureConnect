@@ -9,4 +9,14 @@ public class Person
     public string LastName { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public bool IsActive { get; set; }
+
+    public Person()
+    {
+        Farms = new List<Farm>().Where(farm => farm.PersonId == Id);
+    }
+
+    // Navigation properties
+    virtual public Role Role { get; set; } = null!;
+    virtual public Address Address { get; set; } = null!;
+    virtual public IEnumerable<Farm> Farms { get; set; } = [];
 }
