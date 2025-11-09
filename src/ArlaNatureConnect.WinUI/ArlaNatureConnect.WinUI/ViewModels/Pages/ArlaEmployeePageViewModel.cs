@@ -1,22 +1,24 @@
 using ArlaNatureConnect.Domain.Entities;
+using ArlaNatureConnect.WinUI.Commands;
 using ArlaNatureConnect.WinUI.Services;
 using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 
 namespace ArlaNatureConnect.WinUI.ViewModels.Pages;
 
 /// <summary>
-/// ViewModel for ArlaEmployeePage - håndterer dashboard-visning for Arla medarbejdere.
+/// ViewModel for ArlaEmployeePage - handles dashboard display for Arla employees.
 /// 
-/// Ansvar:
-/// - Modtager Role objekt fra LoginPage via Initialize()
-/// - Gemmer den valgte rolle for fremtidig brug
-/// - Forbereder dashboard-visning for Arla medarbejdere
+/// Responsibilities:
+/// - Receives Role object from LoginPage via Initialize()
+/// - Stores the selected role for future use
+/// - Handles navigation between different sections (Dashboards, Farms, Users)
+/// - Prepares dashboard display for Arla employees
 /// 
-/// Brug:
-/// Denne ViewModel bruges af ArlaEmployeePage.xaml til at vise dashboardet for Arla medarbejdere.
-/// I modsætning til FarmerPage og ConsultantPage, behøver Arla medarbejdere ikke vælge en specifik
-/// bruger, da de har direkte adgang til dashboardet. ViewModel'en er derfor simplere og håndterer
-/// kun initialisering med rollen.
+/// Usage:
+/// This ViewModel is used by ArlaEmployeePage.xaml to display the dashboard for Arla employees.
+/// Unlike FarmerPage and ConsultantPage, Arla employees do not need to select a specific
+/// user, as they have direct access to the dashboard. The ViewModel handles navigation between
+/// different content views and initialization with the role.
 /// </summary>
 public class ArlaEmployeePageViewModel : ViewModelBase
 {
@@ -27,11 +29,16 @@ public class ArlaEmployeePageViewModel : ViewModelBase
 
     #endregion
 
+    #region Properties
+
+    #endregion
+
     #region Constructor
 
     public ArlaEmployeePageViewModel(NavigationHandler navigationHandler)
     {
         _navigationHandler = navigationHandler ?? throw new ArgumentNullException(nameof(navigationHandler));
+        InitializeNavigation("Dashboards"); // Default to "Dashboards"
     }
 
     #endregion

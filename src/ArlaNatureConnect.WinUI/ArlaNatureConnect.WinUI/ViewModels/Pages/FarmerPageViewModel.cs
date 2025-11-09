@@ -7,20 +7,20 @@ using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 namespace ArlaNatureConnect.WinUI.ViewModels.Pages;
 
 /// <summary>
-/// ViewModel for FarmerPage - håndterer brugerudvalg og dashboard-visning for landmænd.
+/// ViewModel for FarmerPage - handles user selection and dashboard display for farmers.
 /// 
-/// Ansvar:
-/// - Modtager Role objekt fra LoginPage via InitializeAsync()
-/// - Loader alle tilgængelige personer med Farmer rolle fra repositories
-/// - Filtrerer personer baseret på rolle og aktiv status
-/// - Sorterer personer alfabetisk (fornavn, efternavn)
-/// - Håndterer brugerudvalg fra dropdown-menuen
-/// - Loader dashboard for den valgte landmand
+/// Responsibilities:
+/// - Receives Role object from LoginPage via InitializeAsync()
+/// - Loads all available persons with Farmer role from repositories
+/// - Filters persons based on role and active status
+/// - Sorts persons alphabetically (first name, last name)
+/// - Handles user selection from dropdown menu
+/// - Loads dashboard for the selected farmer
 /// 
-/// Brug:
-/// Denne ViewModel bruges af FarmerPage.xaml til at vise en dropdown med alle landmænd,
-/// og når en landmand vælges, vises deres dashboard. ViewModel'en håndterer også loading state
-/// for at vise progress indicator mens data loades.
+/// Usage:
+/// This ViewModel is used by FarmerPage.xaml to display a dropdown with all farmers,
+/// and when a farmer is selected, their dashboard is displayed. The ViewModel also handles loading state
+/// to show progress indicator while data is loading.
 /// </summary>
 public class FarmerPageViewModel : ViewModelBase
 {
@@ -40,7 +40,7 @@ public class FarmerPageViewModel : ViewModelBase
 
     /// <summary>
     /// Command to choose a user from the dropdown.
-    /// Modtager Person objekt som parameter og loader dashboardet for den valgte landmand.
+    /// Receives Person object as parameter and loads the dashboard for the selected farmer.
     /// </summary>
     public RelayCommand<Person> ChooseUserCommand { get; }
 
@@ -107,6 +107,7 @@ public class FarmerPageViewModel : ViewModelBase
         _roleRepository = roleRepository ?? throw new ArgumentNullException(nameof(roleRepository));
         
         ChooseUserCommand = new RelayCommand<Person>(ChooseUser, p => p != null);
+        InitializeNavigation("Dashboards"); // Default to "Dashboards"
     }
 
     #endregion

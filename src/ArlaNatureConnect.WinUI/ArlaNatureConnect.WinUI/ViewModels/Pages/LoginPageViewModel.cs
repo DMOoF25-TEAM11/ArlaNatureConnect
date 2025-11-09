@@ -6,18 +6,18 @@ using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 namespace ArlaNatureConnect.WinUI.ViewModels.Pages;
 
 /// <summary>
-/// ViewModel for LoginPage - håndterer rollevalg og navigation til de forskellige dashboards.
+/// ViewModel for LoginPage - handles role selection and navigation to different dashboards.
 /// 
-/// Ansvar:
-/// - Modtager rollevalg fra UI (Landmand, Konsulent, Arla Medarbejder)
-/// - Opretter Role objekt baseret på valget
-/// - Navigerer til den korrekte Page (FarmerPage, ConsultantPage, eller ArlaEmployeePage)
-/// - Overfører Role objektet til den næste Page via NavigationHandler
+/// Responsibilities:
+/// - Receives role selection from UI (Farmer, Consultant, Arla Employee)
+/// - Creates Role object based on the selection
+/// - Navigates to the correct Page (FarmerPage, ConsultantPage, or ArlaEmployeePage)
+/// - Passes the Role object to the next Page via NavigationHandler
 /// 
-/// Brug:
-/// Denne ViewModel bruges af LoginPage.xaml til at håndtere brugerens rollevalg.
-/// Når brugeren klikker på en rolle-knap, sendes rolle-navnet som parameter til SelectRoleCommand,
-/// som derefter navigerer til den korrekte Page med det valgte Role objekt.
+/// Usage:
+/// This ViewModel is used by LoginPage.xaml to handle the user's role selection.
+/// When the user clicks a role button, the role name is sent as a parameter to SelectRoleCommand,
+/// which then navigates to the correct Page with the selected Role object.
 /// </summary>
 public class LoginPageViewModel : ViewModelBase
 {
@@ -32,7 +32,7 @@ public class LoginPageViewModel : ViewModelBase
 
     /// <summary>
     /// Command to select a role and navigate to the appropriate page.
-    /// Modtager rolle-navn som string parameter (fx "Farmer", "Consultant", "ArlaEmployee").
+    /// Receives role name as string parameter (e.g., "Farmer", "Consultant", "ArlaEmployee").
     /// </summary>
     public RelayCommand<string> SelectRoleCommand { get; }
 

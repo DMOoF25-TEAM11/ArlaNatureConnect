@@ -7,21 +7,21 @@ using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 namespace ArlaNatureConnect.WinUI.ViewModels.Pages;
 
 /// <summary>
-/// ViewModel for ConsultantPage - håndterer brugerudvalg, navigation og dashboard-visning for konsulenter.
+/// ViewModel for ConsultantPage - handles user selection, navigation and dashboard display for consultants.
 /// 
-/// Ansvar:
-/// - Modtager Role objekt fra LoginPage via InitializeAsync()
-/// - Loader alle tilgængelige personer med Consultant rolle fra repositories
-/// - Filtrerer personer baseret på rolle og aktiv status
-/// - Sorterer personer alfabetisk (fornavn, efternavn)
-/// - Håndterer brugerudvalg fra dropdown-menuen
-/// - Håndterer navigation mellem forskellige sektioner (Dashboards, Gårde og Natur Check, Mine opgaver)
-/// - Loader dashboard for den valgte konsulent
+/// Responsibilities:
+/// - Receives Role object from LoginPage via InitializeAsync()
+/// - Loads all available persons with Consultant role from repositories
+/// - Filters persons based on role and active status
+/// - Sorts persons alphabetically (first name, last name)
+/// - Handles user selection from dropdown menu
+/// - Handles navigation between different sections (Dashboards, Farms and Nature Check, My Tasks)
+/// - Loads dashboard for the selected consultant
 /// 
-/// Brug:
-/// Denne ViewModel bruges af ConsultantPage.xaml til at vise en dropdown med alle konsulenter,
-/// navigation mellem forskellige sektioner, og når en konsulent vælges, vises deres dashboard.
-/// ViewModel'en håndterer også loading state for at vise progress indicator mens data loades.
+/// Usage:
+/// This ViewModel is used by ConsultantPage.xaml to display a dropdown with all consultants,
+/// navigation between different sections, and when a consultant is selected, their dashboard is displayed.
+/// The ViewModel also handles loading state to show progress indicator while data is loading.
 /// </summary>
 public class ConsultantPageViewModel : ViewModelBase
 {
@@ -35,7 +35,6 @@ public class ConsultantPageViewModel : ViewModelBase
     private List<Person> _availablePersons = new();
     private bool _isLoading;
     private object? _selectedNavigationItem;
-    private string _currentNavigationTag = "Farms"; // Default to "Gårde og Natur Check"
 
     #endregion
 
@@ -43,7 +42,7 @@ public class ConsultantPageViewModel : ViewModelBase
 
     /// <summary>
     /// Command to choose a user from the dropdown.
-    /// Modtager Person objekt som parameter og loader dashboardet for den valgte konsulent.
+    /// Receives Person object as parameter and loads the dashboard for the selected consultant.
     /// </summary>
     public RelayCommand<Person> ChooseUserCommand { get; }
 
@@ -123,6 +122,7 @@ public class ConsultantPageViewModel : ViewModelBase
         _roleRepository = roleRepository ?? throw new ArgumentNullException(nameof(roleRepository));
         
         ChooseUserCommand = new RelayCommand<Person>(ChooseUser, p => p != null);
+        InitializeNavigation("Farms"); // Default to "Farms and Nature Check"
     }
 
     #endregion
@@ -169,21 +169,7 @@ public class ConsultantPageViewModel : ViewModelBase
     /// <param name="tag">The tag of the selected navigation item.</param>
     public void OnNavigationItemSelected(string tag)
     {
-        _currentNavigationTag = tag;
-        // Handle navigation logic here
-        // For example, switch content based on tag
-        switch (tag)
-        {
-            case "Dashboards":
-                // Navigate to or show dashboards view
-                break;
-            case "Farms":
-                // Show farms and nature check view (current view)
-                break;
-            case "Tasks":
-                // Navigate to or show tasks view
-                break;
-        }
+        NavigateToView(tag);
     }
 
     #endregion
