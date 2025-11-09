@@ -1,0 +1,41 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = crlf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size =4
+
+[*.{cs,csproj,sln,props,targets}]
+charset = utf-8
+indent_style = space
+indent_size =4
+
+# C# code style preferences
+dotnet_sort_system_directives_first = true
+dotnet_separate_import_directive_groups = true
+
+# Prefer explicit types over 'var'
+csharp_style_var_for_built_in_types = false:suggestion
+csharp_style_var_when_type_is_apparent = false:suggestion
+csharp_style_var_elsewhere = false:suggestion
+
+# Expression-bodied members: prefer explicit bodies for clarity
+csharp_style_expression_bodied_methods = false:suggestion
+csharp_style_expression_bodied_properties = false:suggestion
+
+# Naming: private fields should use _camelCase
+dotnet_naming_symbols.private_fields.applicable_kinds = field
+dotnet_naming_symbols.private_fields.applicable_accessibilities = private
+
+dotnet_naming_style.underscore_style.required_prefix = _
+dotnet_naming_style.underscore_style.capitalization = camel_case
+
+dotnet_naming_rule.private_fields_underscore_required.symbols = private_fields
+dotnet_naming_rule.private_fields_underscore_required.style = underscore_style
+dotnet_naming_rule.private_fields_underscore_required.severity = suggestion
+
+[*.md]
+trim_trailing_whitespace = false
