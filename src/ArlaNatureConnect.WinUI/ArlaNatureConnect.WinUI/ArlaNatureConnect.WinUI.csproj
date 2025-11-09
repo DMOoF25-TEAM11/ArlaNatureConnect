@@ -4,7 +4,6 @@
         <TargetFramework>net9.0-windows10.0.26100.0</TargetFramework>
         <TargetPlatformMinVersion>10.0.22621.0</TargetPlatformMinVersion>
         <RootNamespace>ArlaNatureConnect.WinUI</RootNamespace>
-        <ApplicationManifest>app.manifest</ApplicationManifest>
         <Platforms>x86;x64;ARM64</Platforms>
         <RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
         <UseWinUI>true</UseWinUI>
@@ -34,6 +33,11 @@
       </Page>
     </ItemGroup>
 
+    <PropertyGroup Label="Globals">
+      <WebView2EnableCsWinRTProjection>True</WebView2EnableCsWinRTProjection>
+      <WebView2UseWinRT>False</WebView2UseWinRT>
+    </PropertyGroup>
+
     <!-- Publish Properties -->
     <PropertyGroup>
         <PublishReadyToRun Condition="'$(Configuration)' == 'Debug'">False</PublishReadyToRun>
@@ -41,5 +45,6 @@
         <PublishTrimmed Condition="'$(Configuration)' == 'Debug'">False</PublishTrimmed>
         <PublishTrimmed Condition="'$(Configuration)' != 'Debug'">True</PublishTrimmed>
         <ImplicitUsings>enable</ImplicitUsings>
+        <Copyright>Arla Nature Connect</Copyright>
     </PropertyGroup>
 </Project>
