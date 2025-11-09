@@ -7,10 +7,25 @@ using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 namespace ArlaNatureConnect.WinUI.ViewModels.Pages;
 
 /// <summary>
-/// ViewModel for the FarmerPage, handling user selection and dashboard display.
+/// ViewModel for FarmerPage - håndterer brugerudvalg og dashboard-visning for landmænd.
+/// 
+/// Ansvar:
+/// - Modtager Role objekt fra LoginPage via InitializeAsync()
+/// - Loader alle tilgængelige personer med Farmer rolle fra repositories
+/// - Filtrerer personer baseret på rolle og aktiv status
+/// - Sorterer personer alfabetisk (fornavn, efternavn)
+/// - Håndterer brugerudvalg fra dropdown-menuen
+/// - Loader dashboard for den valgte landmand
+/// 
+/// Brug:
+/// Denne ViewModel bruges af FarmerPage.xaml til at vise en dropdown med alle landmænd,
+/// og når en landmand vælges, vises deres dashboard. ViewModel'en håndterer også loading state
+/// for at vise progress indicator mens data loades.
 /// </summary>
 public class FarmerPageViewModel : ViewModelBase
 {
+    #region Fields
+
     private readonly NavigationHandler _navigationHandler;
     private readonly IPersonRepository _personRepository;
     private readonly IRoleRepository _roleRepository;
@@ -19,22 +34,19 @@ public class FarmerPageViewModel : ViewModelBase
     private List<Person> _availablePersons = new();
     private bool _isLoading;
 
-    public FarmerPageViewModel(
-        NavigationHandler navigationHandler,
-        IPersonRepository personRepository,
-        IRoleRepository roleRepository)
-    {
-        _navigationHandler = navigationHandler ?? throw new ArgumentNullException(nameof(navigationHandler));
-        _personRepository = personRepository ?? throw new ArgumentNullException(nameof(personRepository));
-        _roleRepository = roleRepository ?? throw new ArgumentNullException(nameof(roleRepository));
-        
-        ChooseUserCommand = new RelayCommand<Person>(ChooseUser, p => p != null);
-    }
+    #endregion
+
+    #region Commands
 
     /// <summary>
     /// Command to choose a user from the dropdown.
+    /// Modtager Person objekt som parameter og loader dashboardet for den valgte landmand.
     /// </summary>
     public RelayCommand<Person> ChooseUserCommand { get; }
+
+    #endregion
+
+    #region Properties
 
     /// <summary>
     /// List of available persons with the Farmer role.
@@ -81,6 +93,26 @@ public class FarmerPageViewModel : ViewModelBase
     /// </summary>
     public bool IsUserSelected => SelectedPerson != null;
 
+    #endregion
+
+    #region Constructor
+
+    public FarmerPageViewModel(
+        NavigationHandler navigationHandler,
+        IPersonRepository personRepository,
+        IRoleRepository roleRepository)
+    {
+        _navigationHandler = navigationHandler ?? throw new ArgumentNullException(nameof(navigationHandler));
+        _personRepository = personRepository ?? throw new ArgumentNullException(nameof(personRepository));
+        _roleRepository = roleRepository ?? throw new ArgumentNullException(nameof(roleRepository));
+        
+        ChooseUserCommand = new RelayCommand<Person>(ChooseUser, p => p != null);
+    }
+
+    #endregion
+
+    #region Load Handler
+
     /// <summary>
     /// Initializes the page with the selected role and loads available users.
     /// </summary>
@@ -90,6 +122,30 @@ public class FarmerPageViewModel : ViewModelBase
         _currentRole = role;
         await LoadAvailableUsersAsync();
     }
+
+    #endregion
+
+    #region OnChooseUser Command
+
+    /// <summary>
+    /// Chooses a user and loads their dashboard.
+    /// </summary>
+    /// <param name="person">The person to select.</param>
+    private void ChooseUser(Person? person)
+    {
+        if (person == null)
+        {
+            return;
+        }
+
+        SelectedPerson = person;
+        OnPropertyChanged(nameof(IsUserSelected));
+        LoadDashboard();
+    }
+
+    #endregion
+
+    #region Helpers
 
     /// <summary>
     /// Loads all available persons with the Farmer role.
@@ -128,28 +184,12 @@ public class FarmerPageViewModel : ViewModelBase
     }
 
     /// <summary>
-    /// Chooses a user and loads their dashboard.
-    /// </summary>
-    /// <param name="person">The person to select.</param>
-    private void ChooseUser(Person? person)
-    {
-        if (person == null)
-        {
-            return;
-        }
-
-        SelectedPerson = person;
-        OnPropertyChanged(nameof(IsUserSelected));
-        LoadDashboard();
-    }
-
-    /// <summary>
     /// Loads the dashboard for the selected user.
     /// </summary>
     private void LoadDashboard()
     {
         // Dashboard logic will be implemented here        
     }
+
+    #endregion
 }
-
-
