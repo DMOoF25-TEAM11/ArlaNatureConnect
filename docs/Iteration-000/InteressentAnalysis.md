@@ -8,7 +8,7 @@
 
 ## Eksterne interessenter
 - Myndigheder (Naturstyrelsen++)
-- Lokalsamfundet
+- Lokalsamfundet 
 
 --- 
 
