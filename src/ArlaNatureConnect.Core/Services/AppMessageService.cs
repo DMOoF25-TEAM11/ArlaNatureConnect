@@ -72,6 +72,11 @@ public class AppMessageService : IAppMessageService
         OnAppMessageChanged();
     }
 
+    public void ClearErrorMessages()
+    {
+        ErrorMessages = Enumerable.Empty<string>();
+        OnAppMessageChanged();
+    }
 
     protected void OnAppMessageChanged()
     {

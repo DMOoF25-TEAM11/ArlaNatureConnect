@@ -10,4 +10,5 @@ public interface IAppMessageService
 
     void AddInfoMessage(string message);
     void AddErrorMessage(string message);
+    void ClearErrorMessages();
 }
