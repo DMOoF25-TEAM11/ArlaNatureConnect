@@ -1,0 +1,33 @@
+<UserControl
+    x:Class="ArlaNatureConnect.WinUI.View.Pages.Consultant.ConsultantDashboards"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ArlaNatureConnect.WinUI.View.Pages.Consultant"
+    Background="{StaticResource AppBackgroundBrush}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Placeholder content - to be implemented -->
+        <StackPanel HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Spacing="16">            
+            <TextBlock Text="Dashboards" 
+                       Style="{StaticResource ArlaHeaderText}"
+                       FontSize="32"
+                       FontWeight="Bold"
+                       Foreground="{StaticResource ArlaPrimaryDarkBrush}"
+                       HorizontalAlignment="Center"
+                       Opacity="0.7"/>
+            <TextBlock Text="Dashboards - Coming soon.." 
+                       Style="{StaticResource ArlaBodyText}"
+                       HorizontalAlignment="Center"
+                       Foreground="{StaticResource ArlaNeutralDarkBrush}"
+                       FontSize="16"
+                       Opacity="0.6"/>
+        </StackPanel>
+    </Grid>
+</UserControl>
+
