@@ -1,3 +1,5 @@
+using System.Threading; // Add this at the top
+
 namespace ArlaNatureConnect.Core.Services;
 
 /// <summary>
@@ -7,11 +9,10 @@ namespace ArlaNatureConnect.Core.Services;
 /// Implements <see cref="IStatusInfoServices"/>.
 /// </summary>
 /// </summary>
-public class StatusInfoService : IStatusInfoServices
+public partial class StatusInfoService : IStatusInfoServices
 {
     #region Fields
     private int _loadingCount;
-    private readonly object _loadingLock = new();
     private bool _hasDbConnection;
     #endregion
 
@@ -28,19 +29,21 @@ public class StatusInfoService : IStatusInfoServices
 
     public bool IsLoading
     {
-        get => _loadingCount > 0;
-        // Setter kept to match the interface; setting true makes count =1, false clears all counts
+        get => _loadingCount >0;
         set
         {
-            bool raise;
-            lock (_loadingLock)
+            if (value)
             {
-                var wasLoading = _loadingCount > 0;
-                _loadingCount = value ? 1 : 0;
-                raise = wasLoading != (_loadingCount > 0);
+                // set to1 and raise only if previously zero
+                var prev = Interlocked.Exchange(ref _loadingCount,1);
+                if (prev ==0) OnStatusInfoChanged();
             }
-
-            if (raise) OnStatusInfoChanged();
+            else
+            {
+                // set to0 and raise if it was previously >0
+                var prev = Interlocked.Exchange(ref _loadingCount,0);
+                if (prev >0) OnStatusInfoChanged();
+            }
         }
     }
 
@@ -51,23 +54,27 @@ public class StatusInfoService : IStatusInfoServices
     /// </summary>
     public IDisposable BeginLoading()
     {
-        lock (_loadingLock)
+        var newVal = Interlocked.Increment(ref _loadingCount);
+        if (newVal ==1)
         {
-            var wasLoading = _loadingCount > 0;
-            _loadingCount++;
-            if (!wasLoading && _loadingCount > 0)
-            {
-                OnStatusInfoChanged();
-            }
+            OnStatusInfoChanged();
         }
 
         return new ActionOnDispose(() =>
         {
             bool raise = false;
-            lock (_loadingLock)
+
+            // Decrement safely without allowing negative counts
+            while (true)
             {
-                if (_loadingCount > 0) _loadingCount--;
-                if (_loadingCount == 0) raise = true;
+                var current = Volatile.Read(ref _loadingCount);
+                if (current <=0) break;
+                var desired = current -1;
+                if (Interlocked.CompareExchange(ref _loadingCount, desired, current) == current)
+                {
+                    if (desired ==0) raise = true;
+                    break;
+                }
             }
 
             if (raise) OnStatusInfoChanged();
@@ -101,7 +108,7 @@ public class StatusInfoService : IStatusInfoServices
     #endregion
 
     // Small private helper that runs an Action when disposed.
-    private sealed class ActionOnDispose : IDisposable
+    private sealed partial class ActionOnDispose : IDisposable
     {
         private readonly Action _onDispose;
         private int _disposed;
@@ -113,7 +120,7 @@ public class StatusInfoService : IStatusInfoServices
 
         public void Dispose()
         {
-            if (Interlocked.Exchange(ref _disposed, 1) == 0)
+            if (Interlocked.Exchange(ref _disposed,1) ==0)
             {
                 try
                 {

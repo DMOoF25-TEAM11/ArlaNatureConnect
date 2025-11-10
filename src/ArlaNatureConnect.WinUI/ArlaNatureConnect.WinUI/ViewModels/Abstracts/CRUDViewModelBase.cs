@@ -10,6 +10,8 @@ public abstract class CRUDViewModelBase<TRepos, TEntity> : ViewModelBase
     #region Fields
     // Service for displaying status information to the user
     IStatusInfoServices StatusInfoServices;
+    // Service for displaying application messages
+    IAppMessageService AppMessageService;
     // The repository for performing CRUD operations
     protected readonly TRepos _repository;
     // The entity being created, read, updated, or deleted
@@ -41,6 +43,7 @@ public abstract class CRUDViewModelBase<TRepos, TEntity> : ViewModelBase
         catch (Exception ex)
         {
             // Handle exceptions (e.g., log error, show message to user)
+            AppMessageService.ErrorMessages.Append("Error loading entity: " + ex.Message);
         }
         finally
         {

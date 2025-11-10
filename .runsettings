@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+    <DataCollectionRunSettings>
+        <DataCollectors>
+            <DataCollector friendlyName="Code Coverage" uri="datacollector://Microsoft/CodeCoverage/2.0">
+                <Configuration>
+                    <IncludeTestAssembly>False</IncludeTestAssembly>
+                    <CodeCoverage>
+                        <!-- Include only your product assemblies -->
+                        <ModulePaths>
+                            <Include>
+                                <!-- Adjust to your assemblies; this matches any path segment named ArlaNatureConnect... -->
+                                <ModulePath>.*[\\/]ArlaNatureConnect.*</ModulePath>
+                            </Include>
+                        </ModulePaths>
+
+                        <!-- Exclude the WinRT helpers by function/namespace -->
+                        <Functions>
+                            <Exclude>
+                                <!-- Everything under the namespace/class -->
+                                <Function>^WinRT\.ArlaNatureConnect_CoreGenericHelpers(\..*)?$</Function>
+                                <Function>^WinRT\.ArlaNatureConnect_CoreGenericHelpers.*</Function>
+                            </Exclude>
+                        </Functions>
+
+                        <!-- Also honor [ExcludeFromCodeCoverage] if you can tag code -->
+                        <Attributes>
+                            <Exclude>
+                                <Attribute>^System\.Diagnostics\.CodeAnalysis\.ExcludeFromCodeCoverageAttribute$</Attribute>
+                                <Attribute>^System\.Diagnostics\.DebuggerNonUserCodeAttribute$</Attribute>
+                                <Attribute>^System\.Diagnostics\.DebuggerHiddenAttribute$</Attribute>
+                                <Attribute>^System\.CodeDom\.Compiler\.GeneratedCodeAttribute$</Attribute>
+                            </Exclude>
+                        </Attributes>
+
+                        <UseVerifiableInstrumentation>True</UseVerifiableInstrumentation>
+                        <AllowLowIntegrityProcesses>True</AllowLowIntegrityProcesses>
+                    </CodeCoverage>
+                </Configuration>
+            </DataCollector>
+        </DataCollectors>
+    </DataCollectionRunSettings>
+</RunSettings>

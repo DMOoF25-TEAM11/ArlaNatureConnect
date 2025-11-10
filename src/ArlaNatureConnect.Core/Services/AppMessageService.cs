@@ -25,7 +25,7 @@ public class AppMessageService : IAppMessageService
     public IEnumerable<string> StatusMessages
     {
         get => _statusMessages;
-        set
+        private set
         {
             if (value != null)
             {
@@ -37,7 +37,7 @@ public class AppMessageService : IAppMessageService
     public IEnumerable<string> ErrorMessages
     {
         get => _errorMessages;
-        set
+        private set
         {
             _errorMessages = value ?? Enumerable.Empty<string>();
         }
@@ -51,6 +51,27 @@ public class AppMessageService : IAppMessageService
     public AppMessageService()
     {
     }
+
+    public void AddInfoMessage(string message)
+    {
+        if (!string.IsNullOrWhiteSpace(EntityName))
+        {
+            message = message.Replace(_entityNamePlaceholder, EntityName!);
+        }
+        StatusMessages = StatusMessages.Append(message);
+        OnAppMessageChanged();
+    }
+
+    public void AddErrorMessage(string message)
+    {
+        if (!string.IsNullOrWhiteSpace(EntityName))
+        {
+            message = message.Replace(_entityNamePlaceholder, EntityName!);
+        }
+        ErrorMessages = ErrorMessages.Append(message);
+        OnAppMessageChanged();
+    }
+
 
     protected void OnAppMessageChanged()
     {
