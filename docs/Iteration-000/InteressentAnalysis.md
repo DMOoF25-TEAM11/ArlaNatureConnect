@@ -154,7 +154,7 @@ Lokalsamfundet skal informeres gennem lokale medier og events om projektets milj
 |----------------------------------|--------------------------------------------------------|------------|--------------------|
 | 10 billeder per event            | Antal events * 10                                      | 100%       | Årlig              |
 | Vidensdeling                     | Klik per event                                         | 20%        | Hver tredje måned  |
-| Svartiderne                      | Svartid for konsulent mod svartid i systemet           | 5 min.     | Månedligt          |
+| Svartiderne                      | Svartid for konsulent mod svartid i systemet            | 5 min.     | Månedligt          |
 | NC frem for konsulenter          | (Arlas konsulenter / Arla Nature Connect )             | 80%        | Hver tredje måned  |
 | Brugervenlighed                  | Brugerundersøgelse hvor brugeren giver point 1-5       | gns >=3    | en gangs test      |
 | Systemet tilgås af flere brugere | Stress test med antal personer                         | 100        | Årlig              |
