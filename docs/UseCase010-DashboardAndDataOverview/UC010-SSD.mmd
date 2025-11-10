@@ -1,0 +1,18 @@
+sequenceDiagram
+    title: UC010 SSD - Dashboard & Data Overview
+
+    actor User
+    participant System
+
+    User ->> System: Select role (Farmer / Consultant / Arla Employee)
+    System -->> User: Display role-specific dashboard
+    User ->> System: Choose specific person (if applicable)
+    System -->> User: Display person-specific data
+    User ->> System: View data overview and analytics
+    System -->> User: Display data overview and analytics
+    User ->> System: Generate reports (if applicable)
+    System -->> User: Provide generated reports
+
+    Note over User,System: Person selection only applies for Farmer and Consultant roles.
+    Note over User,System: Report generation may be role-dependent.
+    Note over User,System: Data overview and analytics are tailored to the selected role and person.
