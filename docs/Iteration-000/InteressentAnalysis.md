@@ -126,6 +126,10 @@ Koncern ledelsen frekvente rapporter og opdateringer. Indgå i branchenetværk f
 
 Konsulenter & Nature Connect Team skal have frekvente rapporter og opdateringer. Derudover skal relevante arbejdsgrupper etableres.
 
+Myndigheder skal informeres om projektets fremdrift og resultater gennem officielle rapporter.
+
+Lokalsamfundet skal informeres gennem lokale medier og events om projektets miljømæssige fordele.
+
 ---
 
 ## Krav
