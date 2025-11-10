@@ -4,18 +4,18 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <!--  PRIMARY COLOUR PALETTE -->
-    <Color x:Key="ArlaPrimaryColor">#007C3E</Color> <!-- Arla Green -->
-    <Color x:Key="ArlaPrimaryLightColor">#9FCB9F</Color>
-    <Color x:Key="ArlaPrimaryDarkColor">#004225</Color>
+    <Color x:Key="ArlaPrimaryColor">#FF007C3E</Color> <!-- Arla Green -->
+    <Color x:Key="ArlaPrimaryLightColor">#FF9FCB9F</Color>
+    <Color x:Key="ArlaPrimaryDarkColor">#FF004225</Color>
 
     <!--  SECONDARY COLOUR PALETTE -->
-    <Color x:Key="ArlaAccentColor">#F4C542</Color> <!-- Gold -->
-    <Color x:Key="ArlaSecondaryColor">#007C89</Color> <!-- Turquoise -->
-    <Color x:Key="ArlaNeutralLightColor">#F4F4F2</Color> <!-- Off White -->
-    <Color x:Key="ArlaNeutralDarkColor">#4D4D4F</Color> <!-- Charcoal -->
-    <Color x:Key="ArlaSurfaceColor">#FFFFFF</Color>
-    <Color x:Key="ArlaErrorColor">#9E463D</Color> <!-- Clay Red -->
-    <Color x:Key="ArlaLightGreyColor">#E0E0E0</Color> <!-- Light Grey for borders -->
+    <Color x:Key="ArlaAccentColor">#FFF4C542</Color> <!-- Gold -->
+    <Color x:Key="ArlaSecondaryColor">#FF007C89</Color> <!-- Turquoise -->
+    <Color x:Key="ArlaNeutralLightColor">#FFF4F4F2</Color> <!-- Off White -->
+    <Color x:Key="ArlaNeutralDarkColor">#FF4D4D4F</Color> <!-- Charcoal -->
+    <Color x:Key="ArlaSurfaceColor">#FFFFFFFF</Color>
+    <Color x:Key="ArlaErrorColor">#FF9E463D</Color> <!-- Clay Red -->
+    <Color x:Key="ArlaLightGreyColor">#FFE0E0E0</Color> <!-- Light Grey for borders -->
 
     <!--  Brushes -->
     <SolidColorBrush x:Key="ArlaPrimaryBrush" Color="{StaticResource ArlaPrimaryColor}" />
@@ -36,5 +36,3 @@
     <SolidColorBrush x:Key="AppAccentBrush" Color="{StaticResource ArlaAccentColor}" />
 
 </ResourceDictionary>
-
-
