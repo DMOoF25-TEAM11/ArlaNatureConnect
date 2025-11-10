@@ -6,7 +6,7 @@ namespace TestCore.Services;
 public sealed class AppMessageServiceTests
 {
     [TestMethod]
-    public void Defaults_AreEmpty()
+    public void DefaultsAreEmpty()
     {
         var svc = new AppMessageService();
 
@@ -19,48 +19,63 @@ public sealed class AppMessageServiceTests
     }
 
     [TestMethod]
-    public void StatusMessages_Set_Get_And_Null_IsIgnored()
+    public void AddInfoMessagesAndRead()
     {
         var svc = new AppMessageService();
 
-        svc.StatusMessages = new[] { "one", "two" };
+        svc.AddInfoMessage("one");
+        svc.AddInfoMessage("two");
+
         Assert.IsTrue(svc.HasStatusMessages);
         CollectionAssert.AreEqual(new[] { "one", "two" }, svc.StatusMessages.ToList());
+    }
 
-        // setting null should be ignored (setter guards against null)
-        svc.StatusMessages = null!;
-        CollectionAssert.AreEqual(new[] { "one", "two" }, svc.StatusMessages.ToList());
+    [TestMethod]
+    public void AddErrorMessageAndRead()
+    {
+        var svc = new AppMessageService();
 
-        // clearing by assigning an empty enumerable should remove messages
-        svc.StatusMessages = Enumerable.Empty<string>();
+        svc.AddErrorMessage("err1");
+        Assert.IsTrue(svc.HasErrorMessages);
+        CollectionAssert.AreEqual(new[] { "err1" }, svc.ErrorMessages.ToList());
+    }
+
+    [TestMethod]
+    public async Task InfoMessagesAreAutoClearedAfterDuration()
+    {
+        var svc = new AppMessageService();
+
+        svc.AddInfoMessage("temp");
+        Assert.IsTrue(svc.HasStatusMessages);
+
+        // wait slightly longer than the configured auto-clear delay (3s)
+        await Task.Delay(3500);
+
         Assert.IsFalse(svc.HasStatusMessages);
     }
 
     [TestMethod]
-    public void ErrorMessages_Set_Get_And_Null_ResetsToEmpty()
-    {
-        var svc = new AppMessageService();
-
-        // null should become empty
-        svc.ErrorMessages = null!;
-        Assert.IsFalse(svc.HasErrorMessages);
-        Assert.IsFalse(svc.ErrorMessages.Any());
-
-        svc.ErrorMessages = new List<string> { "err1" };
-        Assert.IsTrue(svc.HasErrorMessages);
-        CollectionAssert.AreEqual(new[] { "err1" }, svc.ErrorMessages.ToList());
-
-        svc.ErrorMessages = Enumerable.Empty<string>();
-        Assert.IsFalse(svc.HasErrorMessages);
-    }
-
-    [TestMethod]
-    public void EntityName_Set_Get()
+    public void EntityNameSetGet()
     {
         var svc = new AppMessageService();
         Assert.IsNull(svc.EntityName);
 
         svc.EntityName = "MyEntity";
         Assert.AreEqual("MyEntity", svc.EntityName);
+    }
+
+    [TestMethod]
+    public void SubscriberExceptionsAreSwallowed()
+    {
+        var svc = new AppMessageService();
+
+        // subscriber that throws should not cause AddInfoMessage to throw
+        svc.AppMessageChanged += (s, e) => throw new System.InvalidOperationException("boom");
+
+        // This call should complete without throwing; message should still be added
+        svc.AddInfoMessage("safe");
+
+        Assert.IsTrue(svc.HasStatusMessages);
+        CollectionAssert.Contains(svc.StatusMessages.ToList(), "safe");
     }
 }

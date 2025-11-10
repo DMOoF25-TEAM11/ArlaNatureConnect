@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using Windows.Security.Cryptography;
 using Windows.Storage.Streams;
 
@@ -52,19 +51,6 @@ public class ConnectionStringService : IConnectionStringService
     {
         if (!File.Exists(_filePath)) return null;
         byte[] encrypted = await File.ReadAllBytesAsync(_filePath);
-#if DEBUG
-        // For debugging purposes, allow re-encryption of the file
-        var decrypted = await DecryptAsync(encrypted);
-        if (decrypted is not null)
-        {
-            var reEncrypted = await EncryptAsync(decrypted);
-            Debug.WriteLine($"*** {this}.ReadAsync() : decrypted connection string: {decrypted}");
-        }
-        else
-        {
-            Debug.WriteLine($"*** {this}.ReadAsync() : Failed to decrypt connection string during re-encryption.");
-        }
-#endif
         return await DecryptAsync(encrypted);
     }
 }
