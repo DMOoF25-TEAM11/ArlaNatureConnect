@@ -1,0 +1,39 @@
+---
+title: Use Case 010 - Domain Model
+---
+classDiagram
+    direction TB
+
+    class Dashboard {
+        NatureCheck
+        KPI
+        Graphs
+        Assignments
+    }
+    class DataOverview {
+        displayNatureCheck
+        displayKPI
+        displayGraphs
+        displayAssigments
+    }
+    class Role {
+        roleName
+    }
+    class Report {
+        createReport
+    }
+    class DataSet {
+        loadData
+        updateData
+    }
+
+    note for Dashboard "Represents the dashboard interface for users to view summaries and key metrics."
+    note for DataOverview "Provides detailed views and filtering options for datasets."
+    note for Role "Represents a user of the system with authentication capabilities."
+    note for Report "Handles the creation of reports based on data."
+    note for DataSet "Manages the loading and updating of datasets used in the application."
+    Dashboard "1" -- "*" DataOverview : contains >
+    Role "1" -- "*" Dashboard : accesses >
+    DataOverview "1" -- "*" DataSet : utilizes >
+    Report "1" -- "*" DataSet : generates from >
+    Role "1" -- "*" Report : creates >
