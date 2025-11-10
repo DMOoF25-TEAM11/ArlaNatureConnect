@@ -1,0 +1,58 @@
+using ArlaNatureConnect.Domain.Entities;
+using ArlaNatureConnect.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
+
+namespace TestInfrastructure.Persistence;
+
+[TestClass]
+public class AppDbContextTests
+{
+    private DbContextOptions<AppDbContext> CreateOptions()
+    {
+        return new DbContextOptionsBuilder<AppDbContext>()
+            .UseInMemoryDatabase(Guid.NewGuid().ToString())
+            .Options;
+    }
+
+    [TestMethod]
+    public void CanCreateContextAndDbSetsNotNull()
+    {
+        var options = CreateOptions();
+        using var ctx = new AppDbContext(options);
+
+        Assert.IsNotNull(ctx.Farms);
+        Assert.IsNotNull(ctx.Persons);
+        Assert.IsNotNull(ctx.Roles);
+        Assert.IsNotNull(ctx.Addresses);
+    }
+
+    [TestMethod]
+    public async Task CanAddAndRetrieveFarm()
+    {
+        var options = CreateOptions();
+        var farm = new Farm
+        {
+            Id = Guid.NewGuid(),
+            Name = "TestFarm",
+            CVR = "12345678",
+            PersonId = Guid.Empty,
+            AddressId = Guid.Empty
+        };
+
+        // Add entity
+        using (var ctx = new AppDbContext(options))
+        {
+            ctx.Farms.Add(farm);
+            await ctx.SaveChangesAsync();
+        }
+
+        // Retrieve in new context to ensure data persisted in the in-memory DB
+        using (var ctx = new AppDbContext(options))
+        {
+            var dbFarm = await ctx.Farms.FirstOrDefaultAsync(f => f.Id == farm.Id);
+            Assert.IsNotNull(dbFarm);
+            Assert.AreEqual(farm.Name, dbFarm!.Name);
+            Assert.AreEqual(farm.CVR, dbFarm.CVR);
+        }
+    }
+}

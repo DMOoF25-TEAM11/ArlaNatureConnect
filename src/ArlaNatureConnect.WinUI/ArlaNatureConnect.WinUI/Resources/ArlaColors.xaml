@@ -4,41 +4,25 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <!--  PRIMARY COLOUR PALETTE -->
-    <Color x:Key="ArlaPrimaryColor">#00693C</Color> <!-- Primary Green -->
-    <Color x:Key="ArlaPrimaryLightColor">#C8E1C1</Color> <!-- Light Green -->
-    <Color x:Key="ArlaPrimaryDarkColor">#004225</Color> <!-- Dark Green -->
-    <Color x:Key="ArlaSidebarLightColor">#C8E1C1</Color> <!-- Light Green for sidebar -->
-    <Color x:Key="ArlaTableHeaderColor">#6EA870</Color> <!-- Darker green for table header -->
-
+    <SolidColorBrush x:Key="ArlaPrimaryBrush" Color="#FF00693C" /> <!-- Primary Green -->
+    <SolidColorBrush x:Key="ArlaPrimaryLightBrush" Color="#FFC8E1C1" /> <!-- Light Green -->
+    <SolidColorBrush x:Key="ArlaPrimaryDarkBrush" Color="#FF004225" /> <!-- Dark Green -->
+    <SolidColorBrush x:Key="ArlaSidebarLightBrush" Color="#FFC8E1C1" /> <!-- Light Green for sidebar -->
+    <SolidColorBrush x:Key="ArlaTableHeaderBrush" Color="#FF6EA870" /> <!-- Table header color -->
+  
     <!--  SECONDARY COLOUR PALETTE -->
-    <Color x:Key="ArlaAccentColor">#FFD94A</Color> <!-- Updated yellow accent -->
-    <Color x:Key="ArlaSecondaryColor">#007C89</Color> <!-- Turquoise -->
-    <Color x:Key="ArlaNeutralLightColor">#F4F4F2</Color> <!-- Off White -->
-    <Color x:Key="ArlaNeutralDarkColor">#555555</Color> <!-- neutral gray text -->
-    <Color x:Key="ArlaSurfaceColor">#FFFFFF</Color>
-    <Color x:Key="ArlaErrorColor">#9E463D</Color> <!-- Clay Red -->
-    <Color x:Key="ArlaLightGreyColor">#E0E0E0</Color> <!-- Light Grey for borders -->
-
-    <!--  Brushes -->
-    <SolidColorBrush x:Key="ArlaPrimaryBrush" Color="{StaticResource ArlaPrimaryColor}" />
-    <SolidColorBrush x:Key="ArlaPrimaryLightBrush" Color="{StaticResource ArlaPrimaryLightColor}" />
-    <SolidColorBrush x:Key="ArlaPrimaryDarkBrush" Color="{StaticResource ArlaPrimaryDarkColor}" />
-    <SolidColorBrush x:Key="ArlaSidebarLightBrush" Color="{StaticResource ArlaSidebarLightColor}" />
-    <SolidColorBrush x:Key="ArlaTableHeaderBrush" Color="{StaticResource ArlaTableHeaderColor}" /> <!-- Table header color -->
-    <SolidColorBrush x:Key="ArlaAccentBrush" Color="{StaticResource ArlaAccentColor}" />
-    <SolidColorBrush x:Key="ArlaSecondaryBrush" Color="{StaticResource ArlaSecondaryColor}" />
-    <SolidColorBrush x:Key="ArlaNeutralLightBrush" Color="{StaticResource ArlaNeutralLightColor}" />
-    <SolidColorBrush x:Key="ArlaNeutralDarkBrush" Color="{StaticResource ArlaNeutralDarkColor}" />
-    <SolidColorBrush x:Key="ArlaSurfaceBrush" Color="{StaticResource ArlaSurfaceColor}" />
-    <SolidColorBrush x:Key="ArlaErrorBrush" Color="{StaticResource ArlaErrorColor}" />
-    <SolidColorBrush x:Key="ArlaLightGreyBrush" Color="{StaticResource ArlaLightGreyColor}" />
+    <SolidColorBrush x:Key="ArlaAccentBrush" Color="#FFF4C542" /> <!-- Gold -->
+    <SolidColorBrush x:Key="ArlaSecondaryBrush" Color="#FF007C89" /> <!-- Turquoise -->
+    <SolidColorBrush x:Key="ArlaNeutralLightBrush" Color="#FFF4F4F2" /> <!-- Off White -->
+    <SolidColorBrush x:Key="ArlaNeutralDarkBrush" Color="#FF4D4D4F" /> <!-- Charcoal -->
+    <SolidColorBrush x:Key="ArlaSurfaceBrush" Color="#FFFFFFFF" />
+    <SolidColorBrush x:Key="ArlaErrorBrush" Color="#FF9E463D" /> <!-- Clay Red -->
+    <SolidColorBrush x:Key="ArlaLightGreyBrush" Color="#FFE0E0E0" /> <!-- Light Grey for borders -->
 
     <!--  GLOBAL THEME -->
-    <SolidColorBrush x:Key="AppBackgroundBrush" Color="{StaticResource ArlaNeutralLightColor}" />
-    <SolidColorBrush x:Key="AppForegroundBrush" Color="{StaticResource ArlaNeutralDarkColor}" />
-    <SolidColorBrush x:Key="AppPrimaryBrush" Color="{StaticResource ArlaPrimaryColor}" />
-    <SolidColorBrush x:Key="AppAccentBrush" Color="{StaticResource ArlaAccentColor}" />
+    <SolidColorBrush x:Key="AppBackgroundBrush" Color="#FFF4F4F2" />
+    <SolidColorBrush x:Key="AppForegroundBrush" Color="#FF4D4D4F" />
+    <SolidColorBrush x:Key="AppPrimaryBrush" Color="#FF00693C" />
+    <SolidColorBrush x:Key="AppAccentBrush" Color="#FFF4C542" />
 
 </ResourceDictionary>
-
-

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ArlaNatureConnect.Infrastructure.Persistence;
 
-public class AppDbContext : DbContext
+public partial class AppDbContext : DbContext
 {
     public DbSet<Farm> Farms { get; set; } = null!;
     public DbSet<Person> Persons { get; set; } = null!;
