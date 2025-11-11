@@ -1,18 +1,9 @@
-/*
- File: UC002-DML.sql
- Purpose: Sample Data Insertion for UC002 - Administrate Farms and Person
- Safety: This script deletes table data and inserts sample data into the database. Safe for development environments only.
 
 
- Use Case: UC002 - Administrate Farms and Person
- Description: Sample data insertion script for UC002 to populate the database with roles, farms, Person, and credentials.
 
- created:2025-11-04
- change log:
- -2025-11-04: Initial creation
-
-*/
-
+/***********************************************************************
+-- Add data for UC002 - Administrate Farms and Persons
+***********************************************************************/
 
 SET NOCOUNT ON;
 
@@ -28,8 +19,8 @@ IF OBJECT_ID(N'[dbo].[UserFarms]', N'U') IS NOT NULL
 IF OBJECT_ID(N'[dbo].[Farms]', N'U') IS NOT NULL
     DELETE FROM [dbo].[Farms];
 
-IF OBJECT_ID(N'[dbo].[Person]', N'U') IS NOT NULL
-    DELETE FROM [dbo].[Person];
+IF OBJECT_ID(N'[dbo].[Persons]', N'U') IS NOT NULL
+    DELETE FROM [dbo].[Persons];
 
 IF OBJECT_ID(N'[dbo].[Address]', N'U') IS NOT NULL
     DELETE FROM [dbo].[Address];
@@ -64,7 +55,7 @@ BEGIN
         [PersonId] UNIQUEIDENTIFIER NOT NULL,
         [FarmId] UNIQUEIDENTIFIER NOT NULL,
         CONSTRAINT [PK_UserFarms] PRIMARY KEY ([PersonId],[FarmId]),
-        CONSTRAINT [FK_UserFarms_Person] FOREIGN KEY ([PersonId]) REFERENCES [dbo].[Person]([Id]) ON DELETE CASCADE,
+        CONSTRAINT [FK_UserFarms_Persons] FOREIGN KEY ([PersonId]) REFERENCES [dbo].[Persons]([Id]) ON DELETE CASCADE,
         CONSTRAINT [FK_UserFarms_Farms] FOREIGN KEY ([FarmId]) REFERENCES [dbo].[Farms]([Id]) ON DELETE CASCADE
     );
 END
@@ -178,7 +169,7 @@ VALUES
 (@A24, N'Bøstrup 7',        N'Henne',       N'6854', N'Denmark'),
 (@A25, N'Strandvej 9',      N'Blåvand',     N'6857', N'Denmark');
 
--- Insert 15 farmers (15 Person with farms)
+-- Insert 15 farmers (15 Persons with farms)
 DECLARE
     @U1 UNIQUEIDENTIFIER = NEWID(),  @U2 UNIQUEIDENTIFIER = NEWID(),
     @U3 UNIQUEIDENTIFIER = NEWID(),  @U4 UNIQUEIDENTIFIER = NEWID(),
@@ -189,7 +180,7 @@ DECLARE
     @U13 UNIQUEIDENTIFIER = NEWID(), @U14 UNIQUEIDENTIFIER = NEWID(),
     @U15 UNIQUEIDENTIFIER = NEWID();
 
-INSERT INTO [dbo].[Person] ([Id],[FirstName],[LastName],[Email],[RoleId],[AddressId],[IsActive])
+INSERT INTO [dbo].[Persons] ([Id],[FirstName],[LastName],[Email],[RoleId],[AddressId],[IsActive])
 VALUES
 (@U1, N'Anders', N'Hansen', N'anders.hansen@example.dk', @Role_Farmer, @A6,1),
 (@U2, N'Jens', N'Jensen', N'jens.jensen@example.dk', @Role_Farmer, @A21,1),
@@ -224,7 +215,7 @@ DECLARE
     @C3 UNIQUEIDENTIFIER = NEWID(), @C4 UNIQUEIDENTIFIER = NEWID(),
     @C5 UNIQUEIDENTIFIER = NEWID();
 
-INSERT INTO [dbo].[Person] ([Id],[FirstName],[LastName],[Email],[RoleId],[AddressId],[IsActive])
+INSERT INTO [dbo].[Persons] ([Id],[FirstName],[LastName],[Email],[RoleId],[AddressId],[IsActive])
 VALUES
 (@C1, N'Camilla', N'Jepsen',    N'camilla.jepsen@example.dk', @Role_Consultant, @A1, 1),
 (@C2, N'Maria',   N'Andersen',   N'maria.andersen@example.dk', @Role_Consultant, @A2, 1),
@@ -238,7 +229,7 @@ DECLARE
     @E3 UNIQUEIDENTIFIER = NEWID(), @E4 UNIQUEIDENTIFIER = NEWID(),
     @E5 UNIQUEIDENTIFIER = NEWID();
 
-INSERT INTO [dbo].[Person] ([Id],[FirstName],[LastName],[Email],[RoleId],[AddressId],[IsActive])
+INSERT INTO [dbo].[Persons] ([Id],[FirstName],[LastName],[Email],[RoleId],[AddressId],[IsActive])
 VALUES
 (@E1, N'Christian', N'Holm', N'christian.holm@example.dk', @Role_Employee, @A16,1),
 (@E2, N'Sofie', N'Kjær', N'sofie.kjaer@example.dk', @Role_Employee, @A17,1),
@@ -246,7 +237,7 @@ VALUES
 (@E4, N'Jonas', N'Hansen', N'jonas.hansen@example.dk', @Role_Employee, @A19,1),
 (@E5, N'Mathilde', N'Christoff',N'mathilde.christoff@example.dk', @Role_Employee, @A20,1);
 
--- After Person inserted: set primary owner on farms (F1..F15 -> U1..U15)
+-- After Persons inserted: set primary owner on farms (F1..F15 -> U1..U15)
 UPDATE [dbo].[Farms] SET [PersonId] = @U1 WHERE [Id] = @F1;
 UPDATE [dbo].[Farms] SET [PersonId] = @U2 WHERE [Id] = @F2;
 UPDATE [dbo].[Farms] SET [PersonId] = @U3 WHERE [Id] = @F3;
@@ -263,7 +254,7 @@ UPDATE [dbo].[Farms] SET [PersonId] = @U13 WHERE [Id] = @F13;
 UPDATE [dbo].[Farms] SET [PersonId] = @U14 WHERE [Id] = @F14;
 UPDATE [dbo].[Farms] SET [PersonId] = @U15 WHERE [Id] = @F15;
 
--- Also set owners for extra farms so three Person own two farms each
+-- Also set owners for extra farms so three Persons own two farms each
 UPDATE [dbo].[Farms] SET [PersonId] = @U1 WHERE [Id] = @F16;
 UPDATE [dbo].[Farms] SET [PersonId] = @U2 WHERE [Id] = @F17;
 UPDATE [dbo].[Farms] SET [PersonId] = @U3 WHERE [Id] = @F18;
@@ -272,9 +263,10 @@ UPDATE [dbo].[Farms] SET [PersonId] = @U3 WHERE [Id] = @F18;
 PRINT 'Using database [ArlaNatureConnect_Dev]...';
 USE [ArlaNatureConnect_Dev];
 GO
-SELECT TOP 20 * FROM [dbo].[Person];
+SELECT TOP 20 * FROM [dbo].[Persons];
 SELECT TOP 20 * FROM [dbo].[Farms];
-SELECT TOP 50 * FROM [dbo].[UserFarms] JOIN [dbo].[Person] u ON UserFarms.UserId = u.Id JOIN [dbo].[Farms] f ON UserFarms.FarmId = f.Id;
+SELECT TOP 50 * FROM [dbo].[UserFarms] JOIN [dbo].[Persons] u ON UserFarms.PersonId = u.Id JOIN [dbo].[Farms] f ON UserFarms.FarmId = f.Id;
 
 
 PRINT 'Sample data insertion completed.';
+

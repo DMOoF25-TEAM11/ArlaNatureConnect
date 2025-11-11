@@ -41,7 +41,7 @@ GO
 
 /***************************************************************************************************
  Table: ROLES
- Purpose: Stores user roles.
+ Purpose: Stores Person roles.
 ***************************************************************************************************/
 IF OBJECT_ID(N'[dbo].[Roles]') IS NULL
 BEGIN
@@ -70,7 +70,7 @@ END
 /***************************************************************************************************
     Table: Farms
     Purpose: Stores farm information.
-    Note: `UserId` added to represent primary owner. FK to Users added after Users table creation to avoid forward reference.
+    Note: `PersonId` added to represent primary owner. FK to Persons added after Persons table creation to avoid forward reference.
 ***************************************************************************************************/
 IF OBJECT_ID(N'[dbo].[Farms]') IS NULL
 BEGIN
@@ -78,20 +78,20 @@ BEGIN
         [Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY DEFAULT NEWID(),
         [Name] NVARCHAR(200) NOT NULL,
         [AddressId] UNIQUEIDENTIFIER NULL,
-        [UserId] UNIQUEIDENTIFIER NULL,
+        [PersonId] UNIQUEIDENTIFIER NULL,
         [CVR] NVARCHAR(50) NULL,
         CONSTRAINT [UQ_Farms_CVR] UNIQUE([CVR])
     );
 END
 
 /***************************************************************************************************
-    Table: Users
-    Purpose: Stores user information.
-    Note: `FarmId` removed from Users. Use `Farms.UserId` and/or mapping table `UserFarms` for associations.
+    Table: Persons
+    Purpose: Stores Person information.
+    Note: `FarmId` removed from Persons. Use `Farms.PersonId` and/or mapping table `PersonFarms` for associations.
 ***************************************************************************************************/
-IF OBJECT_ID(N'[dbo].[Users]') IS NULL
+IF OBJECT_ID(N'[dbo].[Persons]') IS NULL
 BEGIN
-    CREATE TABLE [dbo].[Users] (
+    CREATE TABLE [dbo].[Persons] (
         [Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY DEFAULT NEWID(),
         [FirstName] NVARCHAR(100) NOT NULL,
         [LastName] NVARCHAR(100) NOT NULL,
@@ -102,21 +102,21 @@ BEGIN
         [CreatedAt] DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
         [UpdatedAt] DATETIME2 NULL,
         [RowVersion] ROWVERSION,
-        CONSTRAINT [UQ_Users_Email] UNIQUE([Email]),
-        CONSTRAINT [FK_Users_Roles] FOREIGN KEY ([RoleId]) REFERENCES [dbo].[Roles]([Id]),
-        CONSTRAINT [FK_Users_Address] FOREIGN KEY ([AddressId]) REFERENCES [dbo].[Address]([Id])
+        CONSTRAINT [UQ_Persons_Email] UNIQUE([Email]),
+        CONSTRAINT [FK_Persons_Roles] FOREIGN KEY ([RoleId]) REFERENCES [dbo].[Roles]([Id]),
+        CONSTRAINT [FK_Persons_Address] FOREIGN KEY ([AddressId]) REFERENCES [dbo].[Address]([Id])
     );
-    CREATE INDEX [IX_Users_RoleId] ON [dbo].[Users]([RoleId]);
+    CREATE INDEX [IX_Persons_RoleId] ON [dbo].[Persons]([RoleId]);
 END
 
--- Add FK from Farms to Users now that Users table exists
-IF OBJECT_ID(N'[dbo].[Farms]') IS NOT NULL AND OBJECT_ID(N'[dbo].[Users]') IS NOT NULL
+-- Add FK from Farms to Persons now that Persons table exists
+IF OBJECT_ID(N'[dbo].[Farms]') IS NOT NULL AND OBJECT_ID(N'[dbo].[Persons]') IS NOT NULL
 BEGIN
- IF NOT EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = N'FK_Farms_Users')
+ IF NOT EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = N'FK_Farms_Persons')
  BEGIN
  ALTER TABLE [dbo].[Farms]
- ADD CONSTRAINT [FK_Farms_Users] FOREIGN KEY ([UserId]) REFERENCES [dbo].[Users]([Id]);
- CREATE INDEX [IX_Farms_UserId] ON [dbo].[Farms]([UserId]);
+ ADD CONSTRAINT [FK_Farms_Persons] FOREIGN KEY ([PersonId]) REFERENCES [dbo].[Persons]([Id]);
+ CREATE INDEX [IX_Farms_PersonId] ON [dbo].[Farms]([PersonId]);
  END
 END
 
