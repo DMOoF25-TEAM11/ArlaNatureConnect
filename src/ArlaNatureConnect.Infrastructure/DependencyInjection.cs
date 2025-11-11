@@ -2,6 +2,7 @@ using ArlaNatureConnect.Core.Abstract;
 using ArlaNatureConnect.Core.Services;
 using ArlaNatureConnect.Infrastructure.Persistence;
 using ArlaNatureConnect.Infrastructure.Repositories;
+
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,36 +14,31 @@ public static class DependencyInjection
     public static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {
         // Retrieve connection string from the ConnectionStringService
-        var connectionStringService = new ConnectionStringService();
-        string? connectionString = connectionStringService.ReadAsync().GetAwaiter().GetResult();
+        ConnectionStringService connectionStringService = new();
 
-        // Check if connection string is valid, otherwise use in-memory database as fallback
-        bool useInMemory = string.IsNullOrWhiteSpace(connectionString);
-        
-        if (!useInMemory)
+        // Avoid deadlock when calling async IO from a context-bound thread (UI thread).
+        // Run the async read on the thread-pool so its awaits won't attempt to resume on the UI sync context.
+        string? connectionString = Task.Run(() => connectionStringService.ReadAsync()).GetAwaiter().GetResult();
+
+        if (string.IsNullOrWhiteSpace(connectionString))
         {
-            try
-            {
-                // Try to validate the connection string by creating a SqlConnectionStringBuilder
-                var csb = new SqlConnectionStringBuilder(connectionString)
-                {
-                    MultipleActiveResultSets = true
-                };
-                
-                // Register SQL Server database
-                services.AddDbContext<AppDbContext>(options => options.UseSqlServer(csb.ConnectionString));
-            }
-            catch
-            {
-                // If connection string is invalid, fall back to in-memory database
-                useInMemory = true;
-            }
+            throw new InvalidOperationException("No connection string found. Ensure the StartWindow connection dialog was completed before building the host.");
         }
 
-        // Use in-memory database as fallback if connection string is missing or invalid
-        if (useInMemory)
+        try
         {
-            services.AddDbContext<AppDbContext>(options => options.UseInMemoryDatabase("ArlaNatureConnectDb"));
+            // Try to validate the connection string by creating a SqlConnectionStringBuilder
+            var csb = new SqlConnectionStringBuilder(connectionString)
+            {
+                MultipleActiveResultSets = true
+            };
+
+            // Register SQL Server database
+            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(csb.ConnectionString));
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException("The connection string is invalid or not found.", ex);
         }
 
         // Register infrastructure services here
@@ -50,7 +46,7 @@ public static class DependencyInjection
         services.AddScoped<IRoleRepository, RoleRepository>();
         services.AddScoped<IPersonRepository, PersonRepository>();
         services.AddScoped<IFarmRepository, FarmRepository>();
-        
+
         return services;
     }
 }
