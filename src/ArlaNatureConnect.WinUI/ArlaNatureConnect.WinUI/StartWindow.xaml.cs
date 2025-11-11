@@ -1,8 +1,11 @@
 using ArlaNatureConnect.Core.Services;
 using ArlaNatureConnect.WinUI.Dialogs;
 using ArlaNatureConnect.WinUI.ViewModels;
+
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+
+using Windows.Storage;
 
 namespace ArlaNatureConnect.WinUI;
 
@@ -38,8 +41,8 @@ public sealed partial class StartWindow : Window
             var uri = new Uri("ms-appx:///Assets/startUpImage.jpg");
             try
             {
-                var f = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(uri);
-                System.Diagnostics.Debug.WriteLine($"Found (packaged): {f.Path}");
+                StorageFile f = await StorageFile.GetFileFromApplicationUriAsync(uri);
+                //System.Diagnostics.Debug.WriteLine($"Found (packaged): {f.Path}");
             }
             catch
             {
@@ -55,12 +58,11 @@ public sealed partial class StartWindow : Window
             else
             {
                 System.Diagnostics.Debug.WriteLine($"Image not found at either ms-appx or output folder: {filePath}");
+                throw new FileNotFoundException("Startup image not found");
             }
 
-
-
             // Check for existing connection string
-            var exists = await _connService.ExistsAsync();
+            bool exists = await _connService.ExistsAsync();
             string? conn = null;
             if (!exists)
             {
@@ -100,9 +102,9 @@ public sealed partial class StartWindow : Window
         // ensure the dialog is hosted correctly
         dialog.XamlRoot = (this.Content as FrameworkElement)?.XamlRoot;
 
-        var vm = dialog.DataContext as ConnectionDialogViewModel ?? new ConnectionDialogViewModel();
+        ConnectionDialogViewModel vm = dialog.DataContext as ConnectionDialogViewModel ?? new ConnectionDialogViewModel();
 
-        var result = await dialog.ShowAsync();
+        ContentDialogResult result = await dialog.ShowAsync();
         if (result == ContentDialogResult.Primary)
         {
             var cs = vm.ConnectionString?.Trim();

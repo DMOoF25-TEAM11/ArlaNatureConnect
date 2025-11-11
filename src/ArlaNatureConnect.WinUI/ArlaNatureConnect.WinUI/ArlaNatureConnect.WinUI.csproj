@@ -11,16 +11,12 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Copyright>Arla Nature Connect</Copyright>
         <PublishProfile>win-$(Platform).pubxml</PublishProfile>
+
     </PropertyGroup>
 
     <ItemGroup>
         <Manifest Include="$(ApplicationManifest)" />
     </ItemGroup>
-
-    <!-- add this ItemGroup (place near other ItemGroup entries) -->
-    <!--<ItemGroup>
-        <DependencyDiagram Include="..\..\..\docs\Architecture\LayerDiagram.dgml" />
-    </ItemGroup>-->
 
     <ItemGroup>
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.10" />
@@ -32,22 +28,18 @@
         <ProjectReference Include="..\..\ArlaNatureConnect.Infrastructure\ArlaNatureConnect.Infrastructure.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Page Update="Controls\StatusBarUC.xaml">
-        <Generator>MSBuild:Compile</Generator>
-      </Page>
-    </ItemGroup>
-
-    <PropertyGroup Label="Globals">
-      <WebView2EnableCsWinRTProjection>True</WebView2EnableCsWinRTProjection>
-      <WebView2UseWinRT>False</WebView2UseWinRT>
-    </PropertyGroup>
-
     <!-- Publish Properties -->
     <PropertyGroup>
         <PublishReadyToRun Condition="'$(Configuration)' == 'Debug'">False</PublishReadyToRun>
         <PublishReadyToRun Condition="'$(Configuration)' != 'Debug'">True</PublishReadyToRun>
         <PublishTrimmed Condition="'$(Configuration)' == 'Debug'">False</PublishTrimmed>
         <PublishTrimmed Condition="'$(Configuration)' != 'Debug'">True</PublishTrimmed>
+        <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+    </PropertyGroup>
+    <PropertyGroup>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>portable</DebugType>
+        <Optimize>false</Optimize>
+        <IncludeSymbolsInPackage>true</IncludeSymbolsInPackage>
     </PropertyGroup>
 </Project>
