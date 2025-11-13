@@ -27,7 +27,7 @@
                                FontSize="22"
                                FontWeight="Bold"
                                TextWrapping="Wrap"/>
-                    
+
                     <!-- User Dropdown -->
                     <StackPanel Spacing="12">
                         <TextBlock Text="Landmand:" 

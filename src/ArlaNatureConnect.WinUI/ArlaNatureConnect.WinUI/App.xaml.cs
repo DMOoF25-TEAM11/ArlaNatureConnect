@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 namespace ArlaNatureConnect.WinUI;
 
 using ArlaNatureConnect.Core;
+using ArlaNatureConnect.WinUI.Services;
 
 using Microsoft.UI.Xaml;
 
@@ -48,7 +49,7 @@ public partial class App : Application
                 services
                     .AddCoreServices()
                     .AddInfrastructure()
-                    .AddSingleton<Services.NavigationHandler>()
+                    .AddSingleton<NavigationHandler>()
                     .AddSingleton<MainWindow>();
 
                 // register viewmodels used by controls

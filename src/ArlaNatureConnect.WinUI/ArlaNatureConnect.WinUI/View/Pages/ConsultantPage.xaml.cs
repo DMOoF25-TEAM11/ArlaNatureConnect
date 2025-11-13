@@ -6,6 +6,7 @@ using ArlaNatureConnect.WinUI.View.Pages.Consultant;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using ArlaNatureConnect.WinUI.Services;
 
 namespace ArlaNatureConnect.WinUI.View.Pages;
 

@@ -14,7 +14,9 @@ public sealed partial class FarmerSidebar : UserControl
     public FarmerSidebar()
     {
         InitializeComponent();
+        // Subscribe to Loaded event to initialize button styles
         Loaded += FarmerSidebar_Loaded;
+        // Subscribe to DataContextChanged event to handle ViewModel changes
         DataContextChanged += FarmerSidebar_DataContextChanged;
     }
 

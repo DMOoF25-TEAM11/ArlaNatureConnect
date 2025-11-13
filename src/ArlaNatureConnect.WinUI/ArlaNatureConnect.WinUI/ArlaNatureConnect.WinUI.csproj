@@ -13,6 +13,9 @@
         <PublishProfile>win-$(Platform).pubxml</PublishProfile>
 
     </PropertyGroup>
+    <ItemGroup>
+      <None Remove="View\Controls\MessageErrorSuccesUC.xaml" />
+    </ItemGroup>
 
     <ItemGroup>
         <Manifest Include="$(ApplicationManifest)" />
@@ -26,6 +29,18 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\ArlaNatureConnect.Infrastructure\ArlaNatureConnect.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Page Update="View\Controls\StatusBarUC.xaml">
+        <SubType>Designer</SubType>
+      </Page>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Page Update="View\Controls\MessageErrorSuccesUC.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </Page>
     </ItemGroup>
 
     <!-- Publish Properties -->
