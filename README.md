@@ -49,4 +49,4 @@ ArlaNatureConnect/
 When running the application in debug mode, the application will send debug meassages starting wih *** Namespace.Method : Message
 
 <!-- MARKDOWN LINKS & IMAGES -->
-[logo]: https://raw.githubusercontent.com//DMOoF25-TEAM11/ArlaNatureConnect/blob/main/images/logo/logo32x32.png
+[Logo]: images/logo/logo32x32.png "Arla Nature Connect Logo"
