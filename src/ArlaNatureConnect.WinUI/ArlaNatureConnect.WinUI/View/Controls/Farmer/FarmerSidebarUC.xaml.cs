@@ -7,11 +7,11 @@ namespace ArlaNatureConnect.WinUI.View.Pages.Farmer;
 /// UserControl for the Farmer sidebar navigation menu.
 /// Handles user selection dropdown and navigation buttons.
 /// </summary>
-public sealed partial class FarmerSidebar : UserControl
+public sealed partial class FarmerSidebarUC : UserControl
 {
     private ViewModels.Pages.FarmerPageViewModel? _previousViewModel;
 
-    public FarmerSidebar()
+    public FarmerSidebarUC()
     {
         InitializeComponent();
         // Subscribe to Loaded event to initialize button styles
