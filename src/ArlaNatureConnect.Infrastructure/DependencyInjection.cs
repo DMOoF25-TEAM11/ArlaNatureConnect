@@ -17,7 +17,7 @@ public static class DependencyInjection
         services.AddCoreServices();
 
         // resolve the registered IConnectionStringService from the service collection
-        using var tempProvider = services.BuildServiceProvider();
+        using ServiceProvider tempProvider = services.BuildServiceProvider();
         cs ??= tempProvider.GetService<IConnectionStringService>();
 
         string? connectionString = Task.Run(() => cs.ReadAsync()).GetAwaiter().GetResult();

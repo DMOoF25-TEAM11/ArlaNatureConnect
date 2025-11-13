@@ -28,6 +28,16 @@
         <ProjectReference Include="..\..\ArlaNatureConnect.Infrastructure\ArlaNatureConnect.Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Page Update="View\Controls\StatusBarUC.xaml">
+        <SubType>Designer</SubType>
+      </Page>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="View\Controls\Farmer\" />
+    </ItemGroup>
+
     <!-- Publish Properties -->
     <PropertyGroup>
         <PublishReadyToRun Condition="'$(Configuration)' == 'Debug'">False</PublishReadyToRun>

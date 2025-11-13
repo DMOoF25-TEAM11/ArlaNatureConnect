@@ -2,7 +2,10 @@ using ArlaNatureConnect.Core.Abstract;
 using ArlaNatureConnect.Domain.Entities;
 using ArlaNatureConnect.WinUI.Commands;
 using ArlaNatureConnect.WinUI.Services;
+using ArlaNatureConnect.WinUI.Services;
 using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
+using Microsoft.UI.Xaml.Controls;
+using ArlaNatureConnect.WinUI.View.Pages.Farmer;
 
 namespace ArlaNatureConnect.WinUI.ViewModels.Pages;
 
@@ -33,6 +36,7 @@ public class FarmerPageViewModel : ViewModelBase
     private Role? _currentRole;
     private List<Person> _availablePersons = new();
     private bool _isLoading;
+    private UserControl? _currentContent;
 
     #endregion
 
@@ -72,6 +76,7 @@ public class FarmerPageViewModel : ViewModelBase
             _selectedPerson = value;
             OnPropertyChanged();
             ChooseUserCommand.RaiseCanExecuteChanged();
+            OnPropertyChanged(nameof(IsUserSelected));
         }
     }
 
@@ -93,6 +98,21 @@ public class FarmerPageViewModel : ViewModelBase
     /// </summary>
     public bool IsUserSelected => SelectedPerson != null;
 
+    /// <summary>
+    /// The current content UserControl that should be displayed in the page's ContentPresenter.
+    /// The View owns rendering; ViewModel provides the content instance here for simplicity.
+    /// </summary>
+    public UserControl? CurrentContent
+    {
+        get => _currentContent;
+        private set
+        {
+            if (_currentContent == value) return;
+            _currentContent = value;
+            OnPropertyChanged();
+        }
+    }
+
     #endregion
 
     #region Constructor
@@ -108,6 +128,9 @@ public class FarmerPageViewModel : ViewModelBase
         
         ChooseUserCommand = new RelayCommand<Person>(ChooseUser, p => p != null);
         InitializeNavigation("Dashboards"); // Default to "Dashboards"
+
+        // Initialize the content for the default tag
+        SwitchContentView(CurrentNavigationTag);
     }
 
     #endregion
@@ -140,7 +163,6 @@ public class FarmerPageViewModel : ViewModelBase
         }
 
         SelectedPerson = person;
-        OnPropertyChanged(nameof(IsUserSelected));
         LoadDashboard();
     }
 
@@ -190,6 +212,38 @@ public class FarmerPageViewModel : ViewModelBase
     private void LoadDashboard()
     {
         // Dashboard logic will be implemented here        
+    }
+
+    /// <summary>
+    /// Overrides navigation to also switch the content view when the tag changes.
+    /// </summary>
+    protected override void NavigateToView(string? tag)
+    {
+        base.NavigateToView(tag);
+        // When CurrentNavigationTag is updated, switch the view content
+        SwitchContentView(CurrentNavigationTag);
+    }
+
+    /// <summary>
+    /// Switches the content view by creating the appropriate UserControl and assigning its DataContext.
+    /// Note: Creating UI controls in ViewModel is a pragmatic choice for this prototype.
+    /// </summary>
+    /// <param name="navigationTag">The tag to switch to.</param>
+    private void SwitchContentView(string? navigationTag)
+    {
+        UserControl? newContent = navigationTag switch
+        {
+            "Dashboards" => new FarmerDashboards(),
+            "Farms" => new FarmerNatureCheck(),
+            "Tasks" => new FarmerTasks(),
+            _ => new FarmerDashboards(),
+        };
+
+        if (newContent != null)
+        {
+            newContent.DataContext = this;
+            CurrentContent = newContent;
+        }
     }
 
     #endregion
