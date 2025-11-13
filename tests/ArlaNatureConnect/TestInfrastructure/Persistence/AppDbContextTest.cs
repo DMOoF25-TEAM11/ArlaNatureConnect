@@ -1,11 +1,12 @@
 using ArlaNatureConnect.Domain.Entities;
 using ArlaNatureConnect.Infrastructure.Persistence;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace TestInfrastructure.Persistence;
 
 [TestClass]
-public class AppDbContextTests
+public class AppDbContextTest
 {
     private DbContextOptions<AppDbContext> CreateOptions()
     {
