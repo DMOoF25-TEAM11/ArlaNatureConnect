@@ -31,9 +31,10 @@ public abstract class CRUDViewModelBase<TRepos, TEntity> : ViewModelBase
 
     #endregion
 
-    protected CRUDViewModelBase(IStatusInfoServices statusInfoServices, TRepos repository)
+    protected CRUDViewModelBase(IStatusInfoServices statusInfoServices, IAppMessageService appMessageService, TRepos repository)
     {
         _statusInfoServices = statusInfoServices;
+        _appMessageService = appMessageService;
         _repository = repository;
 
         AddCommand = new RelayCommand(async () => await OnAddAsync(), CanAdd);

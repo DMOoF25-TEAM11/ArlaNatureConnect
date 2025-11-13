@@ -6,7 +6,7 @@ namespace TestCore.Services;
 public sealed class AppMessageServiceTests
 {
     [TestMethod]
-    public void DefaultsAreEmpty()
+    public void Defaults_Are_Empty()
     {
         var svc = new AppMessageService();
 
@@ -19,7 +19,7 @@ public sealed class AppMessageServiceTests
     }
 
     [TestMethod]
-    public void AddInfoMessagesAndRead()
+    public void Add_Info_Messages_And_Read()
     {
         var svc = new AppMessageService();
 
@@ -31,7 +31,7 @@ public sealed class AppMessageServiceTests
     }
 
     [TestMethod]
-    public void AddErrorMessageAndRead()
+    public void Add_Error_Message_And_Read()
     {
         var svc = new AppMessageService();
 
@@ -41,7 +41,7 @@ public sealed class AppMessageServiceTests
     }
 
     [TestMethod]
-    public async Task InfoMessagesAreAutoClearedAfterDuration()
+    public async Task Info_Messages_Are_Auto_Cleared_After_Duration()
     {
         var svc = new AppMessageService();
 
@@ -55,7 +55,7 @@ public sealed class AppMessageServiceTests
     }
 
     [TestMethod]
-    public void EntityNameSetGet()
+    public void EntityName_Set_Get()
     {
         var svc = new AppMessageService();
         Assert.IsNull(svc.EntityName);
@@ -65,7 +65,7 @@ public sealed class AppMessageServiceTests
     }
 
     [TestMethod]
-    public void SubscriberExceptionsAreSwallowed()
+    public void Subscriber_Exceptions_Are_Swallowed()
     {
         var svc = new AppMessageService();
 
@@ -77,5 +77,26 @@ public sealed class AppMessageServiceTests
 
         Assert.IsTrue(svc.HasStatusMessages);
         CollectionAssert.Contains(svc.StatusMessages.ToList(), "safe");
+    }
+
+    [TestMethod]
+    public void Clear_Error_Messages_Removes_All_Errors_And_Raises_Event()
+    {
+        var svc = new AppMessageService();
+        bool eventRaised = false;
+        svc.AppMessageChanged += (s, e) => eventRaised = true;
+
+        svc.AddErrorMessage("err1");
+        svc.AddErrorMessage("err2");
+
+        Assert.IsTrue(svc.HasErrorMessages);
+        CollectionAssert.AreEqual(new[] { "err1", "err2" }, svc.ErrorMessages.ToList());
+
+        svc.ClearErrorMessages();
+
+        Assert.IsFalse(svc.HasErrorMessages);
+        Assert.IsNotNull(svc.ErrorMessages);
+        Assert.IsFalse(svc.ErrorMessages.Any());
+        Assert.IsTrue(eventRaised, "ClearErrorMessages should raise AppMessageChanged.");
     }
 }
