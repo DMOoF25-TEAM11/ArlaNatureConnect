@@ -1,7 +1,7 @@
 ﻿<Project Sdk="MSTest.Sdk/4.0.1">
 
     <PropertyGroup>
-        <TargetFramework>net9.0-windows10.0.26100.0</TargetFramework>
+        <TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
         <LangVersion>latest</LangVersion>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
@@ -20,6 +20,22 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\..\src\ArlaNatureConnect.WinUI\ArlaNatureConnect.WinUI\ArlaNatureConnect.WinUI.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Update="Microsoft.Testing.Extensions.CodeCoverage" Version="18.1.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Update="Microsoft.Testing.Extensions.TrxReport" Version="2.0.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Update="MSTest.TestAdapter" Version="4.0.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Update="MSTest.TestFramework" Version="4.0.2" />
     </ItemGroup>
 
 </Project>

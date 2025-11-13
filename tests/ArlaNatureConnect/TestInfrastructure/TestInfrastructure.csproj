@@ -1,7 +1,7 @@
 ﻿<Project Sdk="MSTest.Sdk/3.6.4">
 
   <PropertyGroup>
-    <TargetFramework>net9.0-windows10.0.26100.0</TargetFramework>
+    <TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
@@ -15,12 +15,14 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\ArlaNatureConnect.Infrastructure\ArlaNatureConnect.Infrastructure.csproj" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.10" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="10.0.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="MSTest.Analyzers" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Update="Microsoft.NET.Test.Sdk" Version="18.0.0" />
+    <PackageReference Update="Microsoft.NET.Test.Sdk" Version="18.0.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,22 +30,22 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Update="Microsoft.Testing.Extensions.TrxReport" Version="2.0.1" />
+    <PackageReference Update="Microsoft.Testing.Extensions.TrxReport" Version="2.0.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Update="MSTest.Analyzers" Version="4.0.1">
+    <PackageReference Update="MSTest.Analyzers" Version="4.0.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Update="MSTest.TestAdapter" Version="4.0.1" />
+    <PackageReference Update="MSTest.TestAdapter" Version="4.0.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Update="MSTest.TestFramework" Version="4.0.1" />
+    <PackageReference Update="MSTest.TestFramework" Version="4.0.2" />
   </ItemGroup>
 
 </Project>
