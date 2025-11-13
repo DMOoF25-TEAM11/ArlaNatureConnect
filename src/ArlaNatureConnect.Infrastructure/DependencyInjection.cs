@@ -1,3 +1,4 @@
+using ArlaNatureConnect.Core;
 using ArlaNatureConnect.Core.Abstract;
 using ArlaNatureConnect.Core.Services;
 using ArlaNatureConnect.Infrastructure.Persistence;
@@ -11,37 +12,23 @@ namespace ArlaNatureConnect.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services)
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConnectionStringService? cs = null)
     {
-        // Retrieve connection string from the ConnectionStringService
-        ConnectionStringService connectionStringService = new();
+        services.AddCoreServices();
 
-        // Avoid deadlock when calling async IO from a context-bound thread (UI thread).
-        // Run the async read on the thread-pool so its awaits won't attempt to resume on the UI sync context.
-        string? connectionString = Task.Run(() => connectionStringService.ReadAsync()).GetAwaiter().GetResult();
+        // resolve the registered IConnectionStringService from the service collection
+        using var tempProvider = services.BuildServiceProvider();
+        cs ??= tempProvider.GetService<IConnectionStringService>();
+
+        string? connectionString = Task.Run(() => cs.ReadAsync()).GetAwaiter().GetResult();
 
         if (string.IsNullOrWhiteSpace(connectionString))
-        {
             throw new InvalidOperationException("No connection string found. Ensure the StartWindow connection dialog was completed before building the host.");
-        }
 
-        try
-        {
-            // Try to validate the connection string by creating a SqlConnectionStringBuilder
-            var csb = new SqlConnectionStringBuilder(connectionString)
-            {
-                MultipleActiveResultSets = true
-            };
+        SqlConnectionStringBuilder csb = new(connectionString) { MultipleActiveResultSets = true };
+        services.AddDbContext<AppDbContext>(options => options.UseSqlServer(csb.ConnectionString));
 
-            // Register SQL Server database
-            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(csb.ConnectionString));
-        }
-        catch (Exception ex)
-        {
-            throw new InvalidOperationException("The connection string is invalid or not found.", ex);
-        }
-
-        // Register infrastructure services here
+        //services.AddSingleton<IConnectionStringService, ConnectionStringService>();
         services.AddScoped<IAddressRepository, AddressRepository>();
         services.AddScoped<IRoleRepository, RoleRepository>();
         services.AddScoped<IPersonRepository, PersonRepository>();

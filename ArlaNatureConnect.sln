@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.14.36616.10
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.11205.157
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "ArlaNatureConnect.WinUI (Package)", "src\ArlaNatureConnect.WinUI\ArlaNatureConnect.WinUI (Package)\ArlaNatureConnect.WinUI (Package).wapproj", "{EED6D5B4-20AF-4C13-879B-8147E2CC1468}"
 EndProject
@@ -18,6 +18,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCore", "tests\ArlaNatureConnect\TestCore\TestCore.csproj", "{1AC39A9F-329E-4159-AD52-C7C621EE8599}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestInfrastructure", "tests\ArlaNatureConnect\TestInfrastructure\TestInfrastructure.csproj", "{2C66F8CD-5134-A558-5A05-D3D4825A5918}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestTestWinUI", "tests\ArlaNatureConnect\TestTestWinUI\TestTestWinUI.csproj", "{A15F48BB-F5ED-4C41-A4EF-A244D311AD4D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -119,6 +121,18 @@ Global
 		{2C66F8CD-5134-A558-5A05-D3D4825A5918}.Release|x64.Build.0 = Release|Any CPU
 		{2C66F8CD-5134-A558-5A05-D3D4825A5918}.Release|x86.ActiveCfg = Release|Any CPU
 		{2C66F8CD-5134-A558-5A05-D3D4825A5918}.Release|x86.Build.0 = Release|Any CPU
+		{A15F48BB-F5ED-4C41-A4EF-A244D311AD4D}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{A15F48BB-F5ED-4C41-A4EF-A244D311AD4D}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{A15F48BB-F5ED-4C41-A4EF-A244D311AD4D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A15F48BB-F5ED-4C41-A4EF-A244D311AD4D}.Debug|x64.Build.0 = Debug|Any CPU
+		{A15F48BB-F5ED-4C41-A4EF-A244D311AD4D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A15F48BB-F5ED-4C41-A4EF-A244D311AD4D}.Debug|x86.Build.0 = Debug|Any CPU
+		{A15F48BB-F5ED-4C41-A4EF-A244D311AD4D}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{A15F48BB-F5ED-4C41-A4EF-A244D311AD4D}.Release|ARM64.Build.0 = Release|Any CPU
+		{A15F48BB-F5ED-4C41-A4EF-A244D311AD4D}.Release|x64.ActiveCfg = Release|Any CPU
+		{A15F48BB-F5ED-4C41-A4EF-A244D311AD4D}.Release|x64.Build.0 = Release|Any CPU
+		{A15F48BB-F5ED-4C41-A4EF-A244D311AD4D}.Release|x86.ActiveCfg = Release|Any CPU
+		{A15F48BB-F5ED-4C41-A4EF-A244D311AD4D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -126,6 +140,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{1AC39A9F-329E-4159-AD52-C7C621EE8599} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{2C66F8CD-5134-A558-5A05-D3D4825A5918} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{A15F48BB-F5ED-4C41-A4EF-A244D311AD4D} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F95CF33A-83CB-4D7C-9A56-85E9E545E990}

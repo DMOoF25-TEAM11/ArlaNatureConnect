@@ -1,10 +1,11 @@
 using ArlaNatureConnect.Core.Abstract;
 using ArlaNatureConnect.Infrastructure.Persistence;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace ArlaNatureConnect.Infrastructure.Repositories;
 
-public class Repository<TEntity> : IRepository<TEntity>
+public abstract class Repository<TEntity> : IRepository<TEntity>
     where TEntity : class
 {
     protected readonly AppDbContext _context;

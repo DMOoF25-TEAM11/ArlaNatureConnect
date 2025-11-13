@@ -20,6 +20,9 @@
                                 <!-- Everything under the namespace/class -->
                                 <Function>^WinRT\.ArlaNatureConnect_CoreGenericHelpers(\..*)?$</Function>
                                 <Function>^WinRT\.ArlaNatureConnect_CoreGenericHelpers.*</Function>
+                                <Function>^WinRT\.ArlaNatureConnect_WinUIGenericHelpers(\..*)?$</Function>
+                                <Function>^WinRT\.ArlaNatureConnect_WinUIGenericHelpers.*</Function>
+                                <Function>^WinRT\.ArlaNatureConnect_WinUIVtableClasses.*</Function>
                             </Exclude>
                         </Functions>
 

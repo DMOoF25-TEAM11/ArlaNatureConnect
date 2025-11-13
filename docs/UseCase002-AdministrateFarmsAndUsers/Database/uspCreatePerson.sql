@@ -43,7 +43,7 @@ CREATE PROCEDURE [dbo].[uspCreatePerson]
     @FarmCountry NVARCHAR(100) = NULL,
     @FarmCVR NVARCHAR(50) = NULL,
     @ActorUserId UNIQUEIDENTIFIER = NULL,
-    @CreatedUserId UNIQUEIDENTIFIER OUTPUT
+    @CreatedPersonId UNIQUEIDENTIFIER OUTPUT
 AS
 BEGIN
     PRINT 'Creating stored procedure [dbo].[uspCreatePerson]...';
@@ -52,7 +52,7 @@ BEGIN
         BEGIN TRANSACTION;
 
             -- Generate user id up front so we can set Farm.UserId when creating the farm
-            SET @CreatedUserId = NEWID();
+            SET @CreatedPersonId = NEWID();
 
             -- Optional: insert address for user
             DECLARE @AddressId UNIQUEIDENTIFIER = NULL;
@@ -77,16 +77,16 @@ BEGIN
             IF (@FarmName IS NOT NULL)
             BEGIN
             SET @FarmId = NEWID();
-            INSERT INTO [dbo].[Farms] ([Id], [Name], [AddressId], [UserId], [CVR])
-            VALUES (@FarmId, @FarmName, @FarmAddressId, @CreatedUserId, @FarmCVR);
+            INSERT INTO [dbo].[Farms] ([Id], [Name], [AddressId], [PersonId], [CVR])
+            VALUES (@FarmId, @FarmName, @FarmAddressId, @CreatedPersonId, @FarmCVR);
             END
 
             -- Insert user (no FarmId column in Users table)
-            INSERT INTO [dbo].[Users] ([Id], [FirstName], [LastName], [Email], [RoleId], [AddressId], [IsActive])
-            VALUES (@CreatedUserId, @FirstName, @LastName, @Email, @RoleId, @AddressId,1);
+            INSERT INTO [dbo].[Persons] ([Id], [FirstName], [LastName], [Email], [RoleId], [AddressId], [IsActive])
+            VALUES (@CreatedPersonId, @FirstName, @LastName, @Email, @RoleId, @AddressId,1);
 
             INSERT INTO [dbo].[AuditLog] ([ActorUserId], [TargetUserId], [Action], [Details])
-            VALUES (@ActorUserId, @CreatedUserId, 'CreateUser', CONCAT('Created user ', @Email));
+            VALUES (@ActorUserId, @CreatedPersonId, 'CreateUser', CONCAT('Created user ', @Email));
 
         COMMIT TRANSACTION;
     END TRY
