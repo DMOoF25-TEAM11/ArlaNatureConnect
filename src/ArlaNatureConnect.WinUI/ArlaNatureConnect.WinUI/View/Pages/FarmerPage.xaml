@@ -5,6 +5,7 @@
     xmlns:local="using:ArlaNatureConnect.WinUI.View.Pages"
     xmlns:farmer="using:ArlaNatureConnect.WinUI.View.Pages.Farmer"
     xmlns:domain="using:ArlaNatureConnect.Domain.Entities"
+    xmlns:controls="using:ArlaNatureConnect.WinUI.View.Controls"
     Background="{StaticResource AppBackgroundBrush}"
     Loaded="FarmerPage_Loaded">
 
@@ -19,10 +20,12 @@
                               Grid.Column="0"
                               DataContext="{Binding}"/>
 
-        <!-- Main Content Area - ContentPresenter for switching views -->
-        <ContentPresenter x:Name="ContentPresenter"
-                          Grid.Column="1"
+        <StackPanel Grid.Column="1" Orientation="Vertical">
+            <!-- Main Content Area - ContentPresenter for switching views -->
+            <ContentPresenter x:Name="ContentPresenter"
                           DataContext="{Binding}"/>
+            <controls:MessageErrorSuccesUC />
+        </StackPanel>
     </Grid>
 </Page>
 

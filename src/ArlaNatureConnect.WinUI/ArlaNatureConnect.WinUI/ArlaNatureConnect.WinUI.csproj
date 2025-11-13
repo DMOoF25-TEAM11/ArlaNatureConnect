@@ -13,6 +13,9 @@
         <PublishProfile>win-$(Platform).pubxml</PublishProfile>
 
     </PropertyGroup>
+    <ItemGroup>
+      <None Remove="View\Controls\MessageErrorSuccesUC.xaml" />
+    </ItemGroup>
 
     <ItemGroup>
         <Manifest Include="$(ApplicationManifest)" />
@@ -35,7 +38,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="View\Controls\Farmer\" />
+      <Page Update="View\Controls\MessageErrorSuccesUC.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </Page>
     </ItemGroup>
 
     <!-- Publish Properties -->
