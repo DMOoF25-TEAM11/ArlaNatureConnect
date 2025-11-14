@@ -13,31 +13,20 @@ namespace ArlaNatureConnect.WinUI.Controls;
 /// </summary>
 public sealed partial class StatusBarUC : UserControl
 {
+    private readonly IStatusInfoServices _statusInfoServices;
+
     public StatusBarUC()
     {
-        InitializeComponent();
-        Loaded += StatusBarUC_Loaded;
-    }
-
-    /// <summary>
-    /// Handle control loaded event.
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void StatusBarUC_Loaded(object sender, RoutedEventArgs e)
-    {
-        IStatusInfoServices status = App.HostInstance.Services.GetService<IStatusInfoServices>()!;
-
-        // Indicate loading during initialization
-        // On dispose of the returned IDisposable, the loading count is decremented
-        using (status.BeginLoading())
+        this.InitializeComponent();
+        if (App.HostInstance != null)
         {
-            if (this.DataContext is null)
-            {
-                // resolve viewmodel from host DI so it receives shared service
-                var vm = App.HostInstance.Services.GetService<StatusBarUCViewModel>();
-                if (vm is not null) this.DataContext = vm;
-            }
+            this.DataContext = App.HostInstance.Services.GetService<StatusBarUCViewModel>();
+            _statusInfoServices = App.HostInstance.Services.GetRequiredService<IStatusInfoServices>();
+        }
+        else
+        {
+            // Handle the case where HostInstance is null, e.g., throw or assign a default/mock
+            throw new InvalidOperationException("App.HostInstance is not initialized.");
         }
     }
 }

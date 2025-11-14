@@ -15,7 +15,5 @@
                    HorizontalAlignment="Center" 
                    VerticalAlignment="Center" 
                    FontSize="24"/>
-        
-        
     </Grid>
 </Page>

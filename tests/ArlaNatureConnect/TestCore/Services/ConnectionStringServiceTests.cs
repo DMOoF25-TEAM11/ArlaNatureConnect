@@ -70,14 +70,14 @@ public sealed class ConnectionStringServiceTests
         await svc.SaveAsync(_connectionString);
 
         // Inspect the private _filePath so we can assert the file actually contains bytes
-        var field = typeof(ConnectionStringService).GetField("_filePath", BindingFlags.Instance | BindingFlags.NonPublic);
+        FieldInfo? field = typeof(ConnectionStringService).GetField("_filePath", BindingFlags.Instance | BindingFlags.NonPublic);
         Assert.IsNotNull(field, "_filePath field should exist on ConnectionStringService.");
-        var path = field!.GetValue(svc) as string;
+        string? path = field!.GetValue(svc) as string;
         Assert.IsFalse(string.IsNullOrEmpty(path), "Internal file path must not be null or empty.");
 
         // File should exist and contain data
         Assert.IsTrue(File.Exists(path), $"Connection file should exist after SaveAsync. Path: {path}");
-        var fileBytes = File.ReadAllBytes(path);
+        byte[] fileBytes = File.ReadAllBytes(path);
         Assert.IsTrue(fileBytes.Length > 0, $"File was created but is empty (length={fileBytes.Length}).");
 
         // Keep the original assertions
@@ -105,27 +105,27 @@ public sealed class ConnectionStringServiceTests
     [TestMethod]
     public async Task EncryptAsync_DecryptAsync_Roundtrip_ReturnsOriginalString()
     {
-        var type = typeof(ConnectionStringService);
+        Type type = typeof(ConnectionStringService);
 
-        var encryptMethod = type.GetMethod("EncryptAsync", BindingFlags.NonPublic | BindingFlags.Static);
+        MethodInfo? encryptMethod = type.GetMethod("EncryptAsync", BindingFlags.NonPublic | BindingFlags.Static);
         Assert.IsNotNull(encryptMethod, "EncryptAsync method should exist");
 
-        var decryptMethod = type.GetMethod("DecryptAsync", BindingFlags.NonPublic | BindingFlags.Static);
+        MethodInfo? decryptMethod = type.GetMethod("DecryptAsync", BindingFlags.NonPublic | BindingFlags.Static);
         Assert.IsNotNull(decryptMethod, "DecryptAsync method should exist");
 
         // Use a unique connection string for the test
-        var original = $"Server=localhost;Database=TestDb;Uid=user;Pwd={Guid.NewGuid():N}";
+        string original = $"Server=localhost;Database=TestDb;Uid=user;Pwd={Guid.NewGuid():N}";
 
         // Invoke EncryptAsync via reflection and await the returned Task<byte[]>
-        var encryptTaskObj = encryptMethod!.Invoke(null, new object[] { original })!;
-        var encrypted = await (Task<byte[]>)encryptTaskObj;
+        object encryptTaskObj = encryptMethod!.Invoke(null, new object[] { original })!;
+        byte[] encrypted = await (Task<byte[]>)encryptTaskObj;
 
         Assert.IsNotNull(encrypted, "Encrypted bytes should not be null");
         Assert.IsTrue(encrypted.Length > 0, "Encrypted bytes should not be empty");
 
         // Invoke DecryptAsync via reflection and await the returned Task<string?>
-        var decryptTaskObj = decryptMethod!.Invoke(null, new object[] { encrypted })!;
-        var decrypted = await (Task<string?>)decryptTaskObj;
+        object decryptTaskObj = decryptMethod!.Invoke(null, new object[] { encrypted })!;
+        string? decrypted = await (Task<string?>)decryptTaskObj;
 
         Assert.IsNotNull(decrypted, "Decrypted string should not be null");
         Assert.AreEqual(original, decrypted, "Decrypted string should match the original");
@@ -145,27 +145,27 @@ public sealed class ConnectionStringServiceTests
         //    return;
         //}
 
-        var type = typeof(ConnectionStringService);
+        Type type = typeof(ConnectionStringService);
 
-        var encryptMethod = type.GetMethod("EncryptAsync", BindingFlags.NonPublic | BindingFlags.Static);
+        MethodInfo? encryptMethod = type.GetMethod("EncryptAsync", BindingFlags.NonPublic | BindingFlags.Static);
         Assert.IsNotNull(encryptMethod, "EncryptAsync method should exist");
 
-        var decryptMethod = type.GetMethod("DecryptAsync", BindingFlags.NonPublic | BindingFlags.Static);
+        MethodInfo? decryptMethod = type.GetMethod("DecryptAsync", BindingFlags.NonPublic | BindingFlags.Static);
         Assert.IsNotNull(decryptMethod, "DecryptAsync method should exist");
 
         // Use a unique connection string for the test
         var original = $"Server=localhost;Database=TestDb;Uid=user;Pwd={Guid.NewGuid():N}";
 
         // Invoke EncryptAsync via reflection and await the returned Task<byte[]>
-        var encryptTaskObj = encryptMethod!.Invoke(null, new object[] { original })!;
-        var encrypted = await (Task<byte[]>)encryptTaskObj;
+        object encryptTaskObj = encryptMethod!.Invoke(null, new object[] { original })!;
+        byte[] encrypted = await (Task<byte[]>)encryptTaskObj;
 
         Assert.IsNotNull(encrypted, "Encrypted bytes should not be null");
         Assert.IsTrue(encrypted.Length > 0, "Encrypted bytes should not be empty");
 
         // Invoke DecryptAsync via reflection and await the returned Task<string?>
-        var decryptTaskObj = decryptMethod!.Invoke(null, new object[] { encrypted })!;
-        var decrypted = await (Task<string?>)decryptTaskObj;
+        object decryptTaskObj = decryptMethod!.Invoke(null, new object[] { encrypted })!;
+        string? decrypted = await (Task<string?>)decryptTaskObj;
 
         Assert.IsNotNull(decrypted, "Decrypted string should not be null");
         Assert.AreEqual(original, decrypted, "Decrypted string should match the original");
@@ -273,7 +273,7 @@ public sealed class ConnectionStringServiceTests
     {
         try
         {
-            var fileNameField = typeof(ConnectionStringService).GetField("_fileName", BindingFlags.Instance | BindingFlags.NonPublic);
+            FieldInfo? fileNameField = typeof(ConnectionStringService).GetField("_fileName", BindingFlags.Instance | BindingFlags.NonPublic);
             var filePathField = typeof(ConnectionStringService).GetField("_filePath", BindingFlags.Instance | BindingFlags.NonPublic);
 
             Directory.CreateDirectory(_dir);

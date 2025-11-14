@@ -18,22 +18,52 @@ public class StatusBarUCViewModel : ViewModelBase
 
     public StatusBarUCViewModel(IStatusInfoServices statusInfoServices)
     {
-        _statusInfoServices = statusInfoServices ?? throw new ArgumentNullException(nameof(statusInfoServices));
-        // subscribe to status changes so the viewmodel can notify the view
-        _statusInfoServices.StatusInfoChanged += StatusInfoServices_StatusInfoChanged;
+        _statusInfoServices = statusInfoServices;
+        using (_statusInfoServices.BeginLoading())
+        {
+            // perform any async initialization here
+            InitializeAsync().ConfigureAwait(false);
+            // subscribe to status changes so the viewmodel can notify the view
+            _statusInfoServices.StatusInfoChanged += StatusInfoServices_StatusInfoChanged;
+        }
     }
 
     #region Properties
 
     // Expose current busy state (maps to service.IsLoading)
-    public bool IsBusy => _statusInfoServices.IsLoading;
+    public bool IsBusy
+    {
+        get
+        {
+            return _statusInfoServices.IsLoading;
+        }
+    }
 
     // Expose database connection state
-    public bool HasDbConnection => _statusInfoServices.HasDbConnection;
+    public bool HasDbConnection
+    {
+        get
+        {
+            return _statusInfoServices.HasDbConnection;
+        }
+    }
 
     // Simple symbol properties (can be bound to a TextBlock/Glyph) - use emoji to avoid relying on font glyphs
-    public string BusySymbol => IsBusy ? "⏳" : string.Empty;
-    public string DbConnectionSymbol => HasDbConnection ? "✅" : "❌";
+    public string BusySymbol
+    {
+        get
+        {
+            return IsBusy ? "⏳" : string.Empty;
+        }
+    }
+
+    public string DbConnectionSymbol
+    {
+        get
+        {
+            return HasDbConnection ? "✅" : "❌";
+        }
+    }
 
     #endregion
 
@@ -53,6 +83,15 @@ public class StatusBarUCViewModel : ViewModelBase
     #endregion
 
     #region Helpers
+    public async Task InitializeAsync()
+    {
+        using (_statusInfoServices.BeginLoading())
+        {
+            // perform async initialization here
+            await Task.Delay(200); // example
+        }
+    }
+
     private void StatusInfoServices_StatusInfoChanged(object? sender, EventArgs e)
     {
         // raise property changed for dependent properties

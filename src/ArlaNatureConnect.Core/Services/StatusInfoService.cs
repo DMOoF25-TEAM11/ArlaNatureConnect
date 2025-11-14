@@ -1,4 +1,5 @@
 using System.Threading; // Add this at the top
+using Microsoft.Data.SqlClient;
 
 namespace ArlaNatureConnect.Core.Services;
 
@@ -9,76 +10,52 @@ namespace ArlaNatureConnect.Core.Services;
 /// Implements <see cref="IStatusInfoServices"/>.
 /// </summary>
 /// </summary>
-public partial class StatusInfoService : IStatusInfoServices
+public partial class StatusInfoService : IStatusInfoServices, IDisposable
 {
     #region Fields
     private int _loadingCount;
     private bool _hasDbConnection;
+    private readonly IConnectionStringService? _connectionStringService;
+    private readonly Timer? _timer;
+    private bool _disposed;
     #endregion
 
     #region Event handlers
     public event EventHandler? StatusInfoChanged;
     #endregion
 
-    public StatusInfoService()
+    public StatusInfoService(IConnectionStringService? connectionStringService = null)
     {
+        _connectionStringService = connectionStringService;
 
+        // Start a periodic timer to check DB connectivity every 10 seconds if a connection-string service is available
+        if (_connectionStringService != null)
+        {
+            // due to TimerCallback signature we use an async void lambda
+            _timer = new Timer(async _ => await CheckDbConnectionAsync().ConfigureAwait(false), null, TimeSpan.Zero, TimeSpan.FromSeconds(10));
+        }
     }
 
     #region Properties
 
     public bool IsLoading
     {
-        get => _loadingCount >0;
+        get => _loadingCount > 0;
         set
         {
             if (value)
             {
                 // set to1 and raise only if previously zero
-                var prev = Interlocked.Exchange(ref _loadingCount,1);
-                if (prev ==0) OnStatusInfoChanged();
+                int prev = Interlocked.Exchange(ref _loadingCount, 1);
+                if (prev == 0) OnStatusInfoChanged();
             }
             else
             {
                 // set to0 and raise if it was previously >0
-                var prev = Interlocked.Exchange(ref _loadingCount,0);
-                if (prev >0) OnStatusInfoChanged();
+                int prev = Interlocked.Exchange(ref _loadingCount, 0);
+                if (prev > 0) OnStatusInfoChanged();
             }
         }
-    }
-
-    /// <summary>
-    /// Acquire a loading token. When the returned IDisposable is disposed the loading count is decremented.
-    /// Use this when multiple independent callers need to indicate "loading" and you want IsLoading to be true
-    /// until every caller has finished (disposed their token).
-    /// </summary>
-    public IDisposable BeginLoading()
-    {
-        var newVal = Interlocked.Increment(ref _loadingCount);
-        if (newVal ==1)
-        {
-            OnStatusInfoChanged();
-        }
-
-        return new ActionOnDispose(() =>
-        {
-            bool raise = false;
-
-            // Decrement safely without allowing negative counts
-            while (true)
-            {
-                var current = Volatile.Read(ref _loadingCount);
-                if (current <=0) break;
-                var desired = current -1;
-                if (Interlocked.CompareExchange(ref _loadingCount, desired, current) == current)
-                {
-                    if (desired ==0) raise = true;
-                    break;
-                }
-            }
-
-            if (raise) OnStatusInfoChanged();
-        });
     }
 
     public bool HasDbConnection
@@ -107,7 +84,48 @@ public partial class StatusInfoService : IStatusInfoServices
     }
     #endregion
 
-    // Small private helper that runs an Action when disposed.
+    #region Helpers
+    /// <summary>
+    /// Acquire a loading token. When the returned IDisposable is disposed the loading count is decremented.
+    /// Use this when multiple independent callers need to indicate "loading" and you want IsLoading to be true
+    /// until every caller has finished (disposed their token).
+    /// </summary>
+    public IDisposable BeginLoading()
+    {
+        var newVal = Interlocked.Increment(ref _loadingCount);
+        if (newVal == 1)
+        {
+            OnStatusInfoChanged();
+        }
+
+        return new ActionOnDispose(() =>
+        {
+            bool raise = false;
+
+            // Decrement safely without allowing negative counts
+            while (true)
+            {
+                int current = Volatile.Read(ref _loadingCount);
+                if (current <= 0) break;
+                int desired = current - 1;
+                if (Interlocked.CompareExchange(ref _loadingCount, desired, current) == current)
+                {
+                    if (desired == 0) raise = true;
+                    break;
+                }
+            }
+
+            if (raise) OnStatusInfoChanged();
+        });
+    }
+
+
+    /// <summary>
+    /// Provides a disposable object that executes a specified action when disposed.
+    /// </summary>
+    /// <remarks>Use this class to ensure that a particular action is performed when the object is disposed,
+    /// such as releasing resources or performing cleanup logic. The action is guaranteed to be invoked at most once,
+    /// even if Dispose is called multiple times. This class is thread-safe.</remarks>
     private sealed partial class ActionOnDispose : IDisposable
     {
         private readonly Action _onDispose;
@@ -120,7 +138,7 @@ public partial class StatusInfoService : IStatusInfoServices
 
         public void Dispose()
         {
-            if (Interlocked.Exchange(ref _disposed,1) ==0)
+            if (Interlocked.Exchange(ref _disposed, 1) == 0)
             {
                 try
                 {
@@ -133,4 +151,57 @@ public partial class StatusInfoService : IStatusInfoServices
             }
         }
     }
+
+    private async Task CheckDbConnectionAsync()
+    {
+        try
+        {
+            string? cs = await _connectionStringService!.ReadAsync();
+            if (string.IsNullOrWhiteSpace(cs))
+            {
+                HasDbConnection = false;
+                return;
+            }
+
+            // ensure a short connect timeout so UI isn't blocked waiting for long network timeouts
+            var builder = new SqlConnectionStringBuilder(cs)
+            {
+                ConnectTimeout = 2
+            };
+
+            using var conn = new SqlConnection(builder.ConnectionString);
+            try
+            {
+                // attempt to open connection
+                await conn.OpenAsync();
+                HasDbConnection = true;
+            }
+            catch
+            {
+                HasDbConnection = false;
+            }
+            finally
+            {
+                try { await conn.CloseAsync(); } catch { }
+            }
+        }
+        catch
+        {
+            // if anything fails treat as no connection but don't throw
+            HasDbConnection = false;
+        }
+    }
+
+    public void Dispose()
+    {
+        if (_disposed) return;
+        _disposed = true;
+        try
+        {
+            _timer?.Dispose();
+        }
+        catch { }
+    }
+
+    #endregion
 }

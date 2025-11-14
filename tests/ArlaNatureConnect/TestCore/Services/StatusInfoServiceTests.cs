@@ -16,11 +16,11 @@ public sealed class StatusInfoServiceTests
         Assert.IsFalse(svc.IsLoading);
         Assert.AreEqual(0, events);
 
-        var t1 = svc.BeginLoading();
+        IDisposable t1 = svc.BeginLoading();
         Assert.IsTrue(svc.IsLoading);
         Assert.AreEqual(1, events);
 
-        var t2 = svc.BeginLoading();
+        IDisposable t2 = svc.BeginLoading();
         Assert.IsTrue(svc.IsLoading);
         Assert.AreEqual(1, events, "Second BeginLoading should not raise when already loading.");
 
@@ -37,7 +37,7 @@ public sealed class StatusInfoServiceTests
     [TestMethod]
     public void IsLoading_Setter_Raises_Only_On_Change()
     {
-        var svc = new StatusInfoService();
+        StatusInfoService svc = new StatusInfoService();
         int events = 0;
         svc.StatusInfoChanged += (_, _) => events++;
 
@@ -57,7 +57,7 @@ public sealed class StatusInfoServiceTests
     [TestMethod]
     public void HasDbConnection_Raises_Event_On_Change()
     {
-        var svc = new StatusInfoService();
+        StatusInfoService svc = new StatusInfoService();
         int events = 0;
         svc.StatusInfoChanged += (_, _) => events++;
 

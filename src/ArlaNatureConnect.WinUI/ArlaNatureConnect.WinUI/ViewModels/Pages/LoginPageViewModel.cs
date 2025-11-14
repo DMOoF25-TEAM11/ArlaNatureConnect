@@ -20,7 +20,7 @@ namespace ArlaNatureConnect.WinUI.ViewModels.Pages;
 /// When the user clicks a role button, the role name is sent as a parameter to SelectRoleCommand,
 /// which then navigates to the correct Page with the selected Role object.
 /// </summary>
-public class LoginPageViewModel : ViewModelBase
+public class LoginPageViewModel : NavigationViewModelBase
 {
     #region Fields
 

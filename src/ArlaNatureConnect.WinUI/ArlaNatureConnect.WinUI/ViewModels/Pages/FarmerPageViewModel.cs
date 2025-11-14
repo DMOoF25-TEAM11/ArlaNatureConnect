@@ -25,7 +25,7 @@ namespace ArlaNatureConnect.WinUI.ViewModels.Pages;
 /// and when a farmer is selected, their dashboard is displayed. The ViewModel also handles loading state
 /// to show progress indicator while data is loading.
 /// </summary>
-public class FarmerPageViewModel : ViewModelBase
+public class FarmerPageViewModel : NavigationViewModelBase
 {
     #region Fields
 

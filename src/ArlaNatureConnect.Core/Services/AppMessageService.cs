@@ -1,3 +1,5 @@
+using System.ComponentModel;
+
 namespace ArlaNatureConnect.Core.Services;
 
 public class AppMessageService : IAppMessageService
@@ -47,6 +49,7 @@ public class AppMessageService : IAppMessageService
     #endregion
     #region Event handlers
     public event EventHandler? AppMessageChanged;
+    public event PropertyChangedEventHandler? PropertyChanged;
     #endregion
     public AppMessageService()
     {
