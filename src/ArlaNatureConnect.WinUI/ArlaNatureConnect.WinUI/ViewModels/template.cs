@@ -10,9 +10,9 @@ public class TemplateViewModel : ViewModelBase
     #endregion
     #region Event handlers
     #endregion
-    public TemplateViewModel()
-    {
-    }
+
+    ctor
+
     #region Properties
     #endregion
     #region Observables Properties
