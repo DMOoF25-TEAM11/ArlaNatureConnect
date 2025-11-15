@@ -4,6 +4,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Windowing;
 using Windows.Graphics;
 using WinRT.Interop;
+using Microsoft.UI;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -35,13 +36,32 @@ public sealed partial class MainWindow : Window
     private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
     {
         // Set window size
-        var windowHandle = WindowNative.GetWindowHandle(this);
-        var windowId = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(windowHandle);
-        var appWindow = AppWindow.GetFromWindowId(windowId);
+        nint windowHandle = WindowNative.GetWindowHandle(this);
+        WindowId windowId = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(windowHandle);
+        AppWindow appWindow = AppWindow.GetFromWindowId(windowId);
         if (appWindow != null)
         {
-            var size = new SizeInt32(1300, 1000);
+            SizeInt32 size = new(1300, 1000);
             appWindow.Resize(size);
+
+            try
+            {
+                // Center the window in the display work area
+                var displayArea = DisplayArea.GetFromWindowId(windowId, DisplayAreaFallback.Primary);
+                if (displayArea != null)
+                {
+                    RectInt32 work = displayArea.WorkArea;
+                    int centerX = work.X + (work.Width - size.Width) / 2;
+                    int centerY = work.Y + (work.Height - size.Height) / 2;
+
+                    PointInt32 position = new(centerX, centerY);
+                    appWindow.Move(position);
+                }
+            }
+            catch
+            {
+                // If centering fails for any reason, ignore and keep resized position
+            }
         }
         
         // Unsubscribe after first activation
