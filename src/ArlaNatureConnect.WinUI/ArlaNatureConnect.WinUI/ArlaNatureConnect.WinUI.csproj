@@ -14,11 +14,18 @@
 
     </PropertyGroup>
     <ItemGroup>
+      <Compile Remove="ViewModels\template.cs" />
+    </ItemGroup>
+    <ItemGroup>
       <None Remove="View\Controls\MessageErrorSuccesUC.xaml" />
     </ItemGroup>
 
     <ItemGroup>
         <Manifest Include="$(ApplicationManifest)" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="ViewModels\template.cs" />
     </ItemGroup>
 
     <ItemGroup>
