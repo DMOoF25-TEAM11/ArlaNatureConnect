@@ -24,7 +24,7 @@ namespace ArlaNatureConnect.WinUI.ViewModels.Pages;
 /// navigation between different sections, and when a consultant is selected, their dashboard is displayed.
 /// The ViewModel also handles loading state to show progress indicator while data is loading.
 /// </summary>
-public class ConsultantPageViewModel : ViewModelBase
+public class ConsultantPageViewModel : NavigationViewModelBase
 {
     #region Fields
 

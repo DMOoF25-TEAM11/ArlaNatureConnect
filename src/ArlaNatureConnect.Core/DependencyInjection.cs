@@ -11,7 +11,7 @@ public static class DependencyInjection
         // register core application services here
         // Status info is app-wide state; register as singleton so views and viewmodels share the same instance
         services.AddSingleton<IStatusInfoServices, StatusInfoService>();
-        services.AddTransient<IAppMessageService, AppMessageService>();
+        services.AddSingleton<IAppMessageService, AppMessageService>();
         services.AddSingleton<IConnectionStringService, ConnectionStringService>();
 
         return services;

@@ -9,5 +9,9 @@
     mc:Ignorable="d">
 
     <Grid>
+        <StackPanel Orientation="Vertical">
+            <TextBlock Text="{Binding StatusMessage}" Foreground="Green" Visibility="{Binding IsSuccessVisible, Converter={StaticResource BoolToVis}}" />
+            <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" Visibility="{Binding IsErrorVisible, Converter={StaticResource BoolToVis}}" />
+        </StackPanel>
     </Grid>
 </UserControl>

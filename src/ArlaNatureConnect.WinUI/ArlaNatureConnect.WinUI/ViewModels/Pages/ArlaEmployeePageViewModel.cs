@@ -20,7 +20,7 @@ namespace ArlaNatureConnect.WinUI.ViewModels.Pages;
 /// user, as they have direct access to the dashboard. The ViewModel handles navigation between
 /// different content views and initialization with the role.
 /// </summary>
-public class ArlaEmployeePageViewModel : ViewModelBase
+public class ArlaEmployeePageViewModel : NavigationViewModelBase
 {
     #region Fields
 

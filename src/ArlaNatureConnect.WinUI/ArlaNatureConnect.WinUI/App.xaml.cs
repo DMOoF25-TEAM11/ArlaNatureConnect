@@ -50,10 +50,10 @@ public partial class App : Application
                     .AddCoreServices()
                     .AddInfrastructure()
                     .AddSingleton<NavigationHandler>()
-                    .AddSingleton<MainWindow>();
+                    .AddSingleton<MainWindow>()
 
-                // register viewmodels used by controls
-                //services.AddTransient<ArlaNatureConnect.WinUI.ViewModels.Controls.StatusBarUCViewModel>();
+                    // register viewmodels used by controls so controls can resolve a runtime DataContext
+                    .AddSingleton<ArlaNatureConnect.WinUI.ViewModels.Controls.StatusBarUCViewModel>();
             })
             .Build();
 

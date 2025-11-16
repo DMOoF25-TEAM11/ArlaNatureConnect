@@ -16,7 +16,7 @@
         </Grid.ColumnDefinitions>
 
         <!-- Sidebar Navigation -->
-        <farmer:FarmerSidebar x:Name="Sidebar"
+        <farmer:FarmerSidebarUC x:Name="Sidebar"
                               Grid.Column="0"
                               DataContext="{Binding}"/>
 

@@ -1,6 +1,9 @@
+using System;
+using System.ComponentModel;
+
 namespace ArlaNatureConnect.Core.Services;
 
-public interface IAppMessageService
+public interface IAppMessageService : INotifyPropertyChanged
 {
     string? EntityName { get; set; }
     bool HasStatusMessages { get; }

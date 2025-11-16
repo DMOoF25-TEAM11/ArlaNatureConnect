@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <UserControl
     x:Class="ArlaNatureConnect.WinUI.Controls.StatusBarUC"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -11,9 +10,11 @@
     <Grid>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="8">
             <TextBlock Text="Busy:" VerticalAlignment="Center" Margin="0,0,4,0"/>
+            <!-- Bind to symbol (string) instead of bool so UI shows emoji/text -->
             <TextBlock Text="{Binding BusySymbol}" VerticalAlignment="Center" FontSize="16" Margin="0,0,12,0" MinWidth="20"/>
 
             <TextBlock Text="DB:" VerticalAlignment="Center" Margin="0,0,4,0"/>
+            <!-- Bind to symbol (string) instead of bool so UI shows emoji/text -->
             <TextBlock Text="{Binding DbConnectionSymbol}" VerticalAlignment="Center" FontSize="16" MinWidth="20"/>
         </StackPanel>
     </Grid>
