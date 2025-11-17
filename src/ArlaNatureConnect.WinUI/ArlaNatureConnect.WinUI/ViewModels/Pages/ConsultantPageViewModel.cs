@@ -2,7 +2,6 @@ using ArlaNatureConnect.Core.Abstract;
 using ArlaNatureConnect.Domain.Entities;
 using ArlaNatureConnect.WinUI.Commands;
 using ArlaNatureConnect.WinUI.Services;
-using ArlaNatureConnect.WinUI.Services;
 using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 
 namespace ArlaNatureConnect.WinUI.ViewModels.Pages;

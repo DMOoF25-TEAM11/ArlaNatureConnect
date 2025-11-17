@@ -40,7 +40,7 @@ public sealed class ArlaEmployeePageViewModelTests
     public void Initialize_WithArlaEmployeeRole_StoresRole()
     {
         // Arrange
-        var role = new Role { Id = Guid.NewGuid(), Name = "ArlaEmployee" };
+        Role role = new Role { Id = Guid.NewGuid(), Name = "ArlaEmployee" };
 
         // Act
         _viewModel.Initialize(role);
@@ -60,8 +60,7 @@ public sealed class ArlaEmployeePageViewModelTests
     {
         // Act & Assert
         _viewModel.Initialize(null);
-        // If we reach here, no exception was thrown
-        Assert.IsTrue(true);
+        // If we reach here, no exception was thrown - test passes
     }
 
     /// <summary>
@@ -125,7 +124,7 @@ public sealed class ArlaEmployeePageViewModelTests
     public void NavigationCommand_WithEmptyTag_DoesNotChangeNavigationTag()
     {
         // Arrange
-        var initialTag = _viewModel.CurrentNavigationTag;
+        string initialTag = _viewModel.CurrentNavigationTag;
 
         // Act
         _viewModel.NavigationCommand?.Execute(string.Empty);
@@ -142,7 +141,7 @@ public sealed class ArlaEmployeePageViewModelTests
     public void NavigationCommand_WithNullTag_DoesNotChangeNavigationTag()
     {
         // Arrange
-        var initialTag = _viewModel.CurrentNavigationTag;
+        string initialTag = _viewModel.CurrentNavigationTag;
 
         // Act
         _viewModel.NavigationCommand?.Execute(null);
@@ -159,7 +158,7 @@ public sealed class ArlaEmployeePageViewModelTests
     public void NavigationCommand_WithWhitespaceTag_DoesNotChangeNavigationTag()
     {
         // Arrange
-        var initialTag = _viewModel.CurrentNavigationTag;
+        string initialTag = _viewModel.CurrentNavigationTag;
 
         // Act
         _viewModel.NavigationCommand?.Execute("   ");
@@ -195,16 +194,15 @@ public sealed class ArlaEmployeePageViewModelTests
     public void Initialize_CalledMultipleTimes_HandlesCorrectly()
     {
         // Arrange
-        var role1 = new Role { Id = Guid.NewGuid(), Name = "ArlaEmployee" };
-        var role2 = new Role { Id = Guid.NewGuid(), Name = "ArlaEmployee" };
+        Role role1 = new Role { Id = Guid.NewGuid(), Name = "ArlaEmployee" };
+        Role role2 = new Role { Id = Guid.NewGuid(), Name = "ArlaEmployee" };
 
         // Act
         _viewModel.Initialize(role1);
         _viewModel.Initialize(role2);
 
         // Assert
-        // If we reach here, no exception was thrown
-        Assert.IsTrue(true);
+        // If we reach here, no exception was thrown - test passes
     }
 }
 

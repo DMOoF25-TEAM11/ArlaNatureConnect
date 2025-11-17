@@ -12,6 +12,8 @@
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <IsTestProject>true</IsTestProject>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <!-- Suppress CA1416 warnings for Windows-specific APIs in test project -->
+    <NoWarn>$(NoWarn);CA1416</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
