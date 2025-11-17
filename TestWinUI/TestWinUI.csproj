@@ -1,0 +1,30 @@
+﻿<Project Sdk="MSTest.Sdk/4.0.2">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <TestingPlatformShowTestsFailure>true</TestingPlatformShowTestsFailure>
+    <SupportedOSPlatformVersion>10.0.22621.0</SupportedOSPlatformVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\src\ArlaNatureConnect.WinUI\ArlaNatureConnect.WinUI\ArlaNatureConnect.WinUI.csproj" />
+    <ProjectReference Include="..\src\ArlaNatureConnect.Core\ArlaNatureConnect.Core.csproj" />
+    <ProjectReference Include="..\src\ArlaNatureConnect.Domain\ArlaNatureConnect.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Ensure consistent test package versions across test projects -->
+    <PackageReference Update="Microsoft.NET.Test.Sdk" Version="18.0.1" />
+    <PackageReference Update="MSTest.Analyzers" Version="4.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Update="MSTest.TestAdapter" Version="4.0.2" />
+    <PackageReference Update="MSTest.TestFramework" Version="4.0.2" />
+    <PackageReference Include="Moq" Version="4.20.70" />
+  </ItemGroup>
+
+</Project>
