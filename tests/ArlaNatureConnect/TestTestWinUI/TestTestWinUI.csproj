@@ -1,4 +1,4 @@
-<Project Sdk="MSTest.Sdk/4.0.2">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
@@ -7,27 +7,27 @@
         <Nullable>enable</Nullable>
         <EnablePlaywright>false</EnablePlaywright>
         <SupportedOSPlatformVersion>10.0.22621.1</SupportedOSPlatformVersion>
-        <OutputType>WinExe</OutputType>
+        <IsTestProject>true</IsTestProject>
+        <!-- Keep OutputType if you need WinExe behavior for UI tests, otherwise default is library -->
+        <!-- <OutputType>WinExe</OutputType> -->
         
-        <!-- Keep test project as WinExe for WinUI UI tests; make it self-contained to match referenced app -->
-        <OutputType>WinExe</OutputType>
-        <!-- NEW: make this test project self-contained and set the RID to match the app's publish/runtime RID -->
-        <SelfContained>true</SelfContained>
-        <!-- Replace this RID with the one the WinUI project uses (or use win-x64) -->
+        <!-- Self-contained and RID removed to avoid NETSDK1150 when referencing executables -->
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <PlatformTarget>x64</PlatformTarget>
         <RuntimeIdentifier>win-x64</RuntimeIdentifier>
-
     </PropertyGroup>
 
     <ItemGroup>
+        <!-- Re-add ProjectReference so tests can reference ViewModels in the WinUI project. Ensure WinUI is not self-contained. -->
         <ProjectReference Include="..\..\..\src\ArlaNatureConnect.WinUI\ArlaNatureConnect.WinUI\ArlaNatureConnect.WinUI.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Update="Microsoft.Testing.Extensions.CodeCoverage" Version="18.1.0" />
-      <PackageReference Update="Microsoft.Testing.Extensions.TrxReport" Version="2.0.2" />
-      <PackageReference Update="MSTest.TestAdapter" Version="4.0.2" />
-      <PackageReference Update="MSTest.TestFramework" Version="4.0.2" />
-      <PackageReference Update="Microsoft.NET.Test.Sdk" Version="18.0.1" />
+      <PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" Version="18.1.0" />
+      <PackageReference Include="Microsoft.Testing.Extensions.TrxReport" Version="2.0.2" />
+      <PackageReference Include="MSTest.TestAdapter" Version="4.0.2" />
+      <PackageReference Include="MSTest.TestFramework" Version="4.0.2" />
+      <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
     </ItemGroup>
 
 </Project>
