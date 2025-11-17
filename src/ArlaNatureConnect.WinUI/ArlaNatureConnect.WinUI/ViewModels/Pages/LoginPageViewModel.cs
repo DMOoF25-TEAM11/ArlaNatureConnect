@@ -79,30 +79,33 @@ public class LoginPageViewModel : NavigationViewModelBase
             return;
         }
 
-        // Create a role object for the selected role
-        SelectedRole = new Role { Name = roleName };
-
         // Navigate based on role
         switch (roleName.ToLowerInvariant())
         {
             case "farmer":
             case "landmand":
+                // Create a role object for the selected role
+                SelectedRole = new Role { Name = roleName };
                 _navigationHandler.Navigate(typeof(ArlaNatureConnect.WinUI.View.Pages.FarmerPage), SelectedRole);
                 break;
 
             case "consultant":
             case "konsulent":
+                // Create a role object for the selected role
+                SelectedRole = new Role { Name = roleName };
                 _navigationHandler.Navigate(typeof(ArlaNatureConnect.WinUI.View.Pages.ConsultantPage), SelectedRole);
                 break;
 
             case "arlaemployee":
             case "arla medarbejder":
             case "arlamedarbejder":
+                // Create a role object for the selected role
+                SelectedRole = new Role { Name = roleName };
                 _navigationHandler.Navigate(typeof(ArlaNatureConnect.WinUI.View.Pages.ArlaEmployeePage), SelectedRole);
                 break;
 
             default:
-                // Unknown role, do nothing
+                // Unknown role, do nothing - don't set SelectedRole
                 break;
         }
     }

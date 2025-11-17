@@ -18,14 +18,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-<<<<<<< Updated upstream
         <!-- Re-add ProjectReference so tests can reference ViewModels in the WinUI project. Ensure WinUI is not self-contained. -->
-=======
-      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.0" />
-    </ItemGroup>
-
-    <ItemGroup>
->>>>>>> Stashed changes
         <ProjectReference Include="..\..\..\src\ArlaNatureConnect.WinUI\ArlaNatureConnect.WinUI\ArlaNatureConnect.WinUI.csproj" />
     </ItemGroup>
 

@@ -1,8 +1,4 @@
-<<<<<<< Updated upstream
 <Project Sdk="Microsoft.NET.Sdk">
-=======
-﻿<Project Sdk="MSTest.Sdk/4.0.2">
->>>>>>> Stashed changes
 
   <PropertyGroup>
     <TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
@@ -17,11 +13,9 @@
     <SupportedOSPlatformVersion>10.0.22621.0</SupportedOSPlatformVersion>
     <IsTestProject>true</IsTestProject>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <!-- Ensure tests run as x64 to match WinUI native runtime architecture -->
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.0" />
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\ArlaNatureConnect.Core\ArlaNatureConnect.Core.csproj" />
