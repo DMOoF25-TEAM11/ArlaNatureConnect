@@ -13,10 +13,6 @@
         <PublishProfile>win-$(Platform).pubxml</PublishProfile>
         <PlatformTarget>x64</PlatformTarget>
         <RuntimeIdentifier>win-x64</RuntimeIdentifier>
-
-        <!-- Enable app-local Windows App SDK runtime deployment so the WinUI/WinRT COM types are present
-             when running unpackaged. This deploys required runtime artifacts next to your exe. -->
-        <WindowsAppSdkSelfContained>true</WindowsAppSdkSelfContained>
     </PropertyGroup>
     <ItemGroup>
       <Compile Remove="ViewModels\template.cs" />
@@ -36,7 +32,7 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.0" />
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.0" />
-        <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.6901" />
+        <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.7175" />
         <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.251106002" />
     </ItemGroup>
 

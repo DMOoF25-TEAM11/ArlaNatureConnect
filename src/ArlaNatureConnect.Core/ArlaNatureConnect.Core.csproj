@@ -4,10 +4,6 @@
         <RootNamespace>ArlaNatureConnect.Core</RootNamespace>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <!-- Ensure PDBs are produced and optimizations are disabled for debugging -->
-        <DebugSymbols>true</DebugSymbols>
-        <DebugType>portable</DebugType>
-
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.3" />
