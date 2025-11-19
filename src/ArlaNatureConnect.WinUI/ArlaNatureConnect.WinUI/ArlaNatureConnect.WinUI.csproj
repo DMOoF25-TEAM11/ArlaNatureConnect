@@ -16,27 +16,22 @@
 
         <!-- Enable app-local Windows App SDK runtime deployment so the WinUI/WinRT COM types are present
              when running unpackaged. This deploys required runtime artifacts next to your exe. -->
-        <WindowsAppSdkSelfContained>true</WindowsAppSdkSelfContained>
+        <!--<WindowsAppSdkSelfContained>true</WindowsAppSdkSelfContained>-->
     </PropertyGroup>
-    <ItemGroup>
-      <Compile Remove="ViewModels\template.cs" />
-    </ItemGroup>
-    <ItemGroup>
-      <None Remove="View\Controls\MessageErrorSuccesUC.xaml" />
-    </ItemGroup>
 
     <ItemGroup>
         <Manifest Include="$(ApplicationManifest)" />
     </ItemGroup>
 
     <ItemGroup>
-      <None Include="ViewModels\template.cs" />
+        <None Include="ViewModels\template.cs" />
+        <Compile Remove="ViewModels\template.cs" />
     </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.0" />
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.0" />
-        <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.6901" />
+        <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.7175" />
         <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.251106002" />
     </ItemGroup>
 
@@ -45,15 +40,15 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Page Update="View\Controls\StatusBarUC.xaml">
-        <SubType>Designer</SubType>
-      </Page>
+        <Page Update="View\Controls\StatusBarUC.xaml">
+            <SubType>Designer</SubType>
+        </Page>
     </ItemGroup>
 
     <ItemGroup>
-      <Page Update="View\Controls\MessageErrorSuccesUC.xaml">
-        <Generator>MSBuild:Compile</Generator>
-      </Page>
+        <Page Update="View\Controls\MessageErrorSuccesUC.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </Page>
     </ItemGroup>
 
     <!-- Publish Properties -->
