@@ -28,10 +28,7 @@ public class DependencyInjectionTests
         var msgA = provider.GetRequiredService<IAppMessageService>();
         var msgB = provider.GetRequiredService<IAppMessageService>();
         Assert.IsNotNull(msgA);
-        Assert.IsNotNull(msgB);
-        Assert.AreNotSame(msgA, msgB, "IAppMessageService should be registered as transient.");
+        Assert.AreSame(msgA, msgB, "IAppMessageService should be registered as singleton.");
     }
-
-
 }
 
