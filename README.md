@@ -1,4 +1,4 @@
-# ![Logo][Logo] 🌿 Arla Nature Connect
+# ![Logo][Logo] Arla Nature Connect
 Welcome to the Arla Nature Connect project! This repository contains resources and information for a prototype application designed for communication and collaboration on sustainability initiatives within the Arla Nature Connect community.
 
 ## 📚 Table of Contents
