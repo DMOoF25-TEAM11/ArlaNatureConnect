@@ -5,7 +5,6 @@ using ArlaNatureConnect.WinUI.View.Pages.ArlaEmployee;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using ArlaNatureConnect.WinUI.Services;
 
 namespace ArlaNatureConnect.WinUI.View.Pages;
 

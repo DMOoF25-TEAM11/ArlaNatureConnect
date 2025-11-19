@@ -2,7 +2,6 @@ using ArlaNatureConnect.Core.Abstract;
 using ArlaNatureConnect.Domain.Entities;
 using ArlaNatureConnect.WinUI.Commands;
 using ArlaNatureConnect.WinUI.Services;
-using ArlaNatureConnect.WinUI.Services;
 using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 
 namespace ArlaNatureConnect.WinUI.ViewModels.Pages;
@@ -186,7 +185,7 @@ public class ConsultantPageViewModel : NavigationViewModelBase
         try
         {
             // Get all roles to find Consultant role
-            var allRoles = await _roleRepository.GetAllAsync();
+            var allRoles = await _roleRepository.GetAllAsync(CancellationToken.None);
             var consultantRole = allRoles.FirstOrDefault(r => 
                 r.Name.Equals("Consultant", StringComparison.OrdinalIgnoreCase) ||
                 r.Name.Equals("Konsulent", StringComparison.OrdinalIgnoreCase));
@@ -198,7 +197,7 @@ public class ConsultantPageViewModel : NavigationViewModelBase
             }
 
             // Get all persons
-            var allPersons = await _personRepository.GetAllAsync();
+            var allPersons = await _personRepository.GetAllAsync(CancellationToken.None);
             
             // Filter by role and active status
             AvailablePersons = allPersons

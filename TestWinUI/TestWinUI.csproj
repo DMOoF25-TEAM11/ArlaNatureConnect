@@ -5,20 +5,21 @@
     <LangVersion>latest</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <!--
-      Displays error on console in addition to the log file. Note that this feature comes with a performance impact.
-      For more information, visit https://learn.microsoft.com/dotnet/core/testing/unit-testing-platform-integration-dotnet-test#show-failure-per-test
-      -->
     <TestingPlatformShowTestsFailure>true</TestingPlatformShowTestsFailure>
     <SupportedOSPlatformVersion>10.0.22621.0</SupportedOSPlatformVersion>
+    <!-- Ensure tests run as x64 to match referenced WinUI native runtime -->
+    <PlatformTarget>x64</PlatformTarget>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <IsTestProject>true</IsTestProject>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <!-- Ensure tests run as x64 to match WinUI native runtime architecture -->
-    <PlatformTarget>x64</PlatformTarget>
+    <!-- Suppress CA1416 warnings for Windows-specific APIs in test project -->
+    <NoWarn>$(NoWarn);CA1416</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\ArlaNatureConnect.Core\ArlaNatureConnect.Core.csproj" />
+    <ProjectReference Include="..\src\ArlaNatureConnect.WinUI\ArlaNatureConnect.WinUI\ArlaNatureConnect.WinUI.csproj" />
+    <ProjectReference Include="..\src\ArlaNatureConnect.Core\ArlaNatureConnect.Core.csproj" />
+    <ProjectReference Include="..\src\ArlaNatureConnect.Domain\ArlaNatureConnect.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,6 +31,7 @@
     </PackageReference>
     <PackageReference Include="MSTest.TestAdapter" Version="4.0.2" />
     <PackageReference Include="MSTest.TestFramework" Version="4.0.2" />
+    <PackageReference Include="Moq" Version="4.20.70" />
   </ItemGroup>
 
 </Project>

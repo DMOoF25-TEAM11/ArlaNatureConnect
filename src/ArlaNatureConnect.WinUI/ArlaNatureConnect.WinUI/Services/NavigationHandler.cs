@@ -23,7 +23,7 @@ public class NavigationHandler
     /// </summary>
     /// <param name="pageType">The type of page to navigate to.</param>
     /// <param name="parameter">Optional parameter to pass to the page.</param>
-    public void Navigate(Type pageType, object? parameter = null)
+    public virtual void Navigate(Type pageType, object? parameter = null)
     {
         if (_frame == null)
         {

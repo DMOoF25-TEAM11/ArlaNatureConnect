@@ -15,8 +15,9 @@ public partial class MessageErrorSuccesUCViewModel : ViewModelBase
     #region Event handlers
     #endregion
 
-    public MessageErrorSuccesUCViewModel()
+    public MessageErrorSuccesUCViewModel(IAppMessageService appMessageService)
     {
+        _appMessageService = appMessageService ?? throw new ArgumentNullException(nameof(appMessageService));
         _appMessageService.AddErrorMessage("loading");
         //_appMessageService.StatusMessageChanged += OnStatusMessageChanged;
         //_appMessageService.ErrorMessageChanged += OnErrorMessageChanged;
