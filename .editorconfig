@@ -1,19 +1,78 @@
-# Remove the line below if you want to inherit .editorconfig settings from higher directories
+; This file is for unifying the coding style for different editors and IDEs.
+; More information at http://editorconfig.org
+
+# This file is the top-most EditorConfig file
 root = true
 
-# C# files
-[*.cs]
+##########################################
+# Common Settings
+##########################################
 
-#### Core EditorConfig Options ####
-
-# Indentation and spacing
-indent_size = 4
+[*]
 indent_style = space
-tab_width = 4
-
-# New line preferences
 end_of_line = crlf
-insert_final_newline = false
+trim_trailing_whitespace = true
+insert_final_newline = true
+charset = utf-8
+
+##########################################
+# File Extension Settings
+##########################################
+
+[*.sln]
+indent_style = tab
+indent_size = 2
+
+[*.{csproj,proj,projitems,shproj}]
+indent_size = 2
+
+[*.{json,slnf}]
+indent_size = 2
+end_of_line = lf
+
+[*.{props,targets}]
+indent_size = 2
+
+[*.xaml]
+indent_size = 2
+charset = utf-8-bom
+
+[*.xml]
+indent_size = 2
+end_of_line = lf
+
+[*.manifest]
+indent_size = 2
+
+[*.appxmanifest]
+indent_size = 2
+
+[*.{json,css,webmanifest}]
+indent_size = 2
+end_of_line = lf
+
+[web.config]
+indent_size = 2
+end_of_line = lf
+
+[*.sh]
+indent_size = 2
+end_of_line = lf
+
+[*.md]
+indent_size = 2
+end_of_line = lf
+trim_trailing_whitespace = false
+
+[*.cs]
+# EOL should be normalized by Git. See https://github.com/dotnet/format/issues/1099
+end_of_line = unset
+
+# See https://github.com/dotnet/roslyn/issues/20356#issuecomment-310143926
+trim_trailing_whitespace = false
+
+tab_width = 4
+indent_size = 4
 
 #### .NET Code Actions ####
 
@@ -29,14 +88,14 @@ dotnet_search_reference_assemblies = true
 
 # Organize usings
 dotnet_separate_import_directive_groups = true
-dotnet_sort_system_directives_first = true
+dotnet_sort_system_directives_first = false
 file_header_template = unset
 
 # this. and Me. preferences
-dotnet_style_qualification_for_event = false
-dotnet_style_qualification_for_field = false
-dotnet_style_qualification_for_method = false
-dotnet_style_qualification_for_property = false
+dotnet_style_qualification_for_event = false:suggestion
+dotnet_style_qualification_for_field = false:suggestion
+dotnet_style_qualification_for_method = false:suggestion
+dotnet_style_qualification_for_property = false:suggestion
 
 # Language keywords vs BCL types preferences
 dotnet_style_predefined_type_for_locals_parameters_members = true
@@ -121,14 +180,14 @@ csharp_style_prefer_readonly_struct = true
 csharp_style_prefer_readonly_struct_member = true
 
 # Code-block preferences
-csharp_prefer_braces = true
+csharp_prefer_braces = false
 csharp_prefer_simple_using_statement = true
 csharp_prefer_system_threading_lock = true
-csharp_style_namespace_declarations = block_scoped
+csharp_style_namespace_declarations = file_scoped
 csharp_style_prefer_method_group_conversion = true
 csharp_style_prefer_primary_constructors = true
 csharp_style_prefer_simple_property_accessors = true
-csharp_style_prefer_top_level_statements = true
+csharp_style_prefer_top_level_statements = false
 
 # Expression-level preferences
 csharp_prefer_simple_default_expression = true
