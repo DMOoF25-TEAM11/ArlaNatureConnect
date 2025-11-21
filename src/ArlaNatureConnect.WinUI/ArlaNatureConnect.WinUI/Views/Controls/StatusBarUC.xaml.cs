@@ -1,10 +1,10 @@
 using ArlaNatureConnect.Core.Services;
 using ArlaNatureConnect.WinUI.ViewModels.Controls;
+
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
-namespace ArlaNatureConnect.WinUI.Controls;
+namespace ArlaNatureConnect.WinUI.Views.Controls;
 
 /// <summary>
 /// A status bar user control.

@@ -18,7 +18,7 @@ public class AppDbContextTest
     [TestMethod]
     public void CanCreateContextAndDbSetsNotNull()
     {
-        var options = CreateOptions();
+        DbContextOptions<AppDbContext> options = CreateOptions();
         using var ctx = new AppDbContext(options);
 
         Assert.IsNotNull(ctx.Farms);
@@ -30,7 +30,7 @@ public class AppDbContextTest
     [TestMethod]
     public async Task CanAddAndRetrieveFarm()
     {
-        var options = CreateOptions();
+        DbContextOptions<AppDbContext> options = CreateOptions();
         var farm = new Farm
         {
             Id = Guid.NewGuid(),
@@ -50,7 +50,7 @@ public class AppDbContextTest
         // Retrieve in new context to ensure data persisted in the in-memory DB
         using (var ctx = new AppDbContext(options))
         {
-            var dbFarm = await ctx.Farms.FirstOrDefaultAsync(f => f.Id == farm.Id);
+            Farm? dbFarm = await ctx.Farms.FirstOrDefaultAsync(f => f.Id == farm.Id);
             Assert.IsNotNull(dbFarm);
             Assert.AreEqual(farm.Name, dbFarm!.Name);
             Assert.AreEqual(farm.CVR, dbFarm.CVR);

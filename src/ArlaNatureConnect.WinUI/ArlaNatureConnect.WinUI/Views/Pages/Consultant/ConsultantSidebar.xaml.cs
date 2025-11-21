@@ -1,31 +1,29 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
-namespace ArlaNatureConnect.WinUI.View.Pages.Farmer;
+namespace ArlaNatureConnect.WinUI.View.Pages.Consultant;
 
 /// <summary>
-/// UserControl for the Farmer sidebar navigation menu.
+/// UserControl for the Consultant sidebar navigation menu.
 /// Handles user selection dropdown and navigation buttons.
 /// </summary>
-public sealed partial class FarmerSidebarUC : UserControl
+public sealed partial class ConsultantSidebar : UserControl
 {
-    private ViewModels.Pages.FarmerPageViewModel? _previousViewModel;
+    private ViewModels.Pages.ConsultantPageViewModel? _previousViewModel;
 
-    public FarmerSidebarUC()
+    public ConsultantSidebar()
     {
         InitializeComponent();
-        // Subscribe to Loaded event to initialize button styles
-        Loaded += FarmerSidebar_Loaded;
-        // Subscribe to DataContextChanged event to handle ViewModel changes
-        DataContextChanged += FarmerSidebar_DataContextChanged;
+        Loaded += ConsultantSidebar_Loaded;
+        DataContextChanged += ConsultantSidebar_DataContextChanged;
     }
 
-    private void FarmerSidebar_Loaded(object sender, RoutedEventArgs e)
+    private void ConsultantSidebar_Loaded(object sender, RoutedEventArgs e)
     {
         UpdateButtonStyles();
     }
 
-    private void FarmerSidebar_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
+    private void ConsultantSidebar_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
     {
         // Unsubscribe from previous ViewModel if it exists
         if (_previousViewModel != null)
@@ -34,7 +32,7 @@ public sealed partial class FarmerSidebarUC : UserControl
         }
 
         // Subscribe to CurrentNavigationTag property changes to update button styles
-        if (args.NewValue is ViewModels.Pages.FarmerPageViewModel viewModel)
+        if (args.NewValue is ViewModels.Pages.ConsultantPageViewModel viewModel)
         {
             viewModel.PropertyChanged += ViewModel_PropertyChanged;
             _previousViewModel = viewModel;
@@ -48,7 +46,7 @@ public sealed partial class FarmerSidebarUC : UserControl
 
     private void ViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(ViewModels.Pages.FarmerPageViewModel.CurrentNavigationTag))
+        if (e.PropertyName == nameof(ViewModels.Pages.ConsultantPageViewModel.CurrentNavigationTag))
         {
             UpdateButtonStyles();
         }
@@ -59,7 +57,7 @@ public sealed partial class FarmerSidebarUC : UserControl
     /// </summary>
     private void UpdateButtonStyles()
     {
-        if (DataContext is not ViewModels.Pages.FarmerPageViewModel viewModel)
+        if (DataContext is not ViewModels.Pages.ConsultantPageViewModel viewModel)
         {
             return;
         }

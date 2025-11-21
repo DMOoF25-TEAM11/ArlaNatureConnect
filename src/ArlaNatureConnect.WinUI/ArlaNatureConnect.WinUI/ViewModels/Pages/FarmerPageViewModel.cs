@@ -28,9 +28,9 @@ public class FarmerPageViewModel : NavigationViewModelBase
 {
     #region Fields
 
-    private readonly NavigationHandler _navigationHandler;
-    private readonly IPersonRepository _personRepository;
-    private readonly IRoleRepository _roleRepository;
+    private readonly NavigationHandler? _navigationHandler;
+    private readonly IPersonRepository? _personRepository;
+    private readonly IRoleRepository? _roleRepository;
     private Person? _selectedPerson;
     private Role? _currentRole;
     private List<Person> _availablePersons = new();
@@ -39,13 +39,18 @@ public class FarmerPageViewModel : NavigationViewModelBase
 
     #endregion
 
+    public FarmerPageViewModel()
+    {
+            
+    }
+
     #region Commands
 
     /// <summary>
     /// Command to choose a user from the dropdown.
     /// Receives Person object as parameter and loads the dashboard for the selected farmer.
     /// </summary>
-    public RelayCommand<Person> ChooseUserCommand { get; }
+    public RelayCommand<Person>? ChooseUserCommand { get; }
 
     #endregion
 
@@ -74,7 +79,7 @@ public class FarmerPageViewModel : NavigationViewModelBase
         {
             _selectedPerson = value;
             OnPropertyChanged();
-            ChooseUserCommand.RaiseCanExecuteChanged();
+            ChooseUserCommand?.RaiseCanExecuteChanged();
             OnPropertyChanged(nameof(IsUserSelected));
         }
     }
@@ -178,8 +183,8 @@ public class FarmerPageViewModel : NavigationViewModelBase
         try
         {
             // Get all roles to find Farmer role
-            var allRoles = await _roleRepository.GetAllAsync(CancellationToken.None);
-            var farmerRole = allRoles.FirstOrDefault(r => 
+            IEnumerable<Role> allRoles = await _roleRepository.GetAllAsync(CancellationToken.None);
+            Role? farmerRole = allRoles.FirstOrDefault(r => 
                 r.Name.Equals("Farmer", StringComparison.OrdinalIgnoreCase) ||
                 r.Name.Equals("Landmand", StringComparison.OrdinalIgnoreCase));
 
@@ -190,7 +195,7 @@ public class FarmerPageViewModel : NavigationViewModelBase
             }
 
             // Get all persons
-            var allPersons = await _personRepository.GetAllAsync(CancellationToken.None);
+            IEnumerable<Person> allPersons = await _personRepository.GetAllAsync(CancellationToken.None);
             
             // Filter by role and active status
             AvailablePersons = allPersons

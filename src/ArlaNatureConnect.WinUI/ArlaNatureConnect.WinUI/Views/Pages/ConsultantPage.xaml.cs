@@ -21,11 +21,11 @@ public sealed partial class ConsultantPage : Microsoft.UI.Xaml.Controls.Page
     public ConsultantPage()
     {
         InitializeComponent();
-        
+
         // Get dependencies from App's service provider
-        var navigationHandler = App.HostInstance.Services.GetRequiredService<NavigationHandler>();
-        var personRepository = App.HostInstance.Services.GetRequiredService<IPersonRepository>();
-        var roleRepository = App.HostInstance.Services.GetRequiredService<IRoleRepository>();
+        NavigationHandler navigationHandler = App.HostInstance.Services.GetRequiredService<NavigationHandler>();
+        IPersonRepository personRepository = App.HostInstance.Services.GetRequiredService<IPersonRepository>();
+        IRoleRepository roleRepository = App.HostInstance.Services.GetRequiredService<IRoleRepository>();
         
         ViewModel = new ConsultantPageViewModel(navigationHandler, personRepository, roleRepository);
         DataContext = ViewModel;

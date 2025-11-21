@@ -1,0 +1,24 @@
+<Page
+    x:Class="ArlaNatureConnect.WinUI.View.Pages.FarmerPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ArlaNatureConnect.WinUI.View.Pages"
+    xmlns:farmer="using:ArlaNatureConnect.WinUI.Views.Controls.SideMenu"
+    xmlns:domain="using:ArlaNatureConnect.Domain.Entities" 
+    xmlns:pages="using:ArlaNatureConnect.WinUI.ViewModels.Pages" 
+    xmlns:viewmodels="using:ArlaNatureConnect.WinUI.ViewModels.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    Background="{StaticResource AppBackgroundBrush}"
+    Loaded="FarmerPage_Loaded">
+
+    <Page.DataContext>
+        <viewmodels:FarmerPageViewModel />
+    </Page.DataContext>
+
+    <Grid>
+        <StackPanel Orientation="Vertical">
+            <ContentPresenter x:Name="ContentPresenter"
+                              DataContext="{Binding}"/>
+        </StackPanel>
+    </Grid>
+</Page>

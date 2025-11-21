@@ -1,4 +1,3 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ArlaNatureConnect.WinUI.ViewModels;
 
 namespace ArlaNatureConnect.WinUI.Tests;

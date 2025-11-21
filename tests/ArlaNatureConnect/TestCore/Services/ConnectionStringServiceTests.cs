@@ -186,14 +186,14 @@ public sealed class ConnectionStringServiceTests
         //    return;
         //}
 
-        var type = typeof(ConnectionStringService);
+        Type type = typeof(ConnectionStringService);
 
         // Try to find explicitly named non-Windows helper methods; fall back to the generic EncryptAsync/DecryptAsync if not present.
-        var encryptMethod = type.GetMethod("EncryptNonWindowsOsAsync", BindingFlags.NonPublic | BindingFlags.Static)
+        MethodInfo? encryptMethod = type.GetMethod("EncryptNonWindowsOsAsync", BindingFlags.NonPublic | BindingFlags.Static)
                            ?? type.GetMethod("EncryptAsync", BindingFlags.NonPublic | BindingFlags.Static);
         Assert.IsNotNull(encryptMethod, "No suitable encryption method found");
 
-        var decryptMethod = type.GetMethod("DecryptNonWinodwsOsAsync", BindingFlags.NonPublic | BindingFlags.Static)
+        MethodInfo? decryptMethod = type.GetMethod("DecryptNonWinodwsOsAsync", BindingFlags.NonPublic | BindingFlags.Static)
                            ?? type.GetMethod("DecryptAsync", BindingFlags.NonPublic | BindingFlags.Static);
         Assert.IsNotNull(decryptMethod, "No suitable decryption method found");
 
@@ -223,9 +223,9 @@ public sealed class ConnectionStringServiceTests
     [TestMethod]
     public async Task DecryptNonWinodwsOsAsync_ReturnsNull_WhenDecryptionThrows()
     {
-        var type = typeof(ConnectionStringService);
+        Type type = typeof(ConnectionStringService);
 
-        var decryptMethod = type.GetMethod("DecryptNonWinodwsOsAsync", BindingFlags.NonPublic | BindingFlags.Static);
+        MethodInfo? decryptMethod = type.GetMethod("DecryptNonWinodwsOsAsync", BindingFlags.NonPublic | BindingFlags.Static);
         Assert.IsNotNull(decryptMethod, "DecryptNonWinodwsOsAsync method should exist");
 
         // Build an input that has an IV sized block (AES block size / 8) plus a small corrupted cipher
@@ -274,7 +274,7 @@ public sealed class ConnectionStringServiceTests
         try
         {
             FieldInfo? fileNameField = typeof(ConnectionStringService).GetField("_fileName", BindingFlags.Instance | BindingFlags.NonPublic);
-            var filePathField = typeof(ConnectionStringService).GetField("_filePath", BindingFlags.Instance | BindingFlags.NonPublic);
+            FieldInfo? filePathField = typeof(ConnectionStringService).GetField("_filePath", BindingFlags.Instance | BindingFlags.NonPublic);
 
             Directory.CreateDirectory(_dir);
             string file = _file.Split('.')[0] + (_instanceCounter++) + ".dat"; // unique per instance

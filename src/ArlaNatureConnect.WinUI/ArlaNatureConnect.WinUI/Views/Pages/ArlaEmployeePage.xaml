@@ -3,7 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:ArlaNatureConnect.WinUI.View.Pages"
-    xmlns:arlaEmployee="using:ArlaNatureConnect.WinUI.View.Pages.ArlaEmployee"
+    xmlns:arlaEmployee="using:ArlaNatureConnect.WinUI.Views.Controls.SideMenu"
     xmlns:domain="using:ArlaNatureConnect.Domain.Entities"
     Background="{StaticResource AppBackgroundBrush}"
     Loaded="ArlaEmployeePage_Loaded">
@@ -15,7 +15,7 @@
         </Grid.ColumnDefinitions>
 
         <!-- Sidebar Navigation -->
-        <arlaEmployee:ArlaEmployeeSidebar x:Name="Sidebar"
+        <arlaEmployee:ArlaEmployeeSideMenuUC x:Name="Sidebar"
                                             Grid.Column="0"
                                             DataContext="{Binding}"/>
 

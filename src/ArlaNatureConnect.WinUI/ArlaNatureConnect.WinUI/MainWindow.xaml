@@ -4,15 +4,16 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:ArlaNatureConnect.WinUI"
-    xmlns:controls="using:ArlaNatureConnect.WinUI.Controls"    
+    xmlns:controls="using:ArlaNatureConnect.WinUI.Views.Controls"
+    xmlns:sideMenu="using:ArlaNatureConnect.WinUI.Views.Controls.SideMenu"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Title="Arla Nature Connect">
 
-    <Window.SystemBackdrop>
+    <!--<Window.SystemBackdrop>
         <MicaBackdrop />
-    </Window.SystemBackdrop>
+    </Window.SystemBackdrop>-->
 
     <Grid>
         <Grid.RowDefinitions>
@@ -20,11 +21,27 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-
         <controls:MenuBarUC Grid.Row="0"/>
-
-        <Frame Grid.Row="1" x:Name="ContentFrame"/>
-
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="280" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <!-- SideMenu Navigation -->
+            <StackPanel x:Name="SideMenu" 
+                        DataContext="{Binding}" 
+                        Grid.Column="0" 
+                        Background="{StaticResource ArlaSidebarLightBrush}"/>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Frame x:Name="ContentFrame" 
+                       Grid.Row="0"/>
+                <controls:MessageErrorSuccesUC Grid.Row="1"/>
+            </Grid>
+        </Grid>
         <controls:StatusBarUC Grid.Row="2"/>
     </Grid>
 </Window>

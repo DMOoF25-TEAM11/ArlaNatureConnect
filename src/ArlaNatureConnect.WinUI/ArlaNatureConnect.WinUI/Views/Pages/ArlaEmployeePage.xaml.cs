@@ -10,7 +10,7 @@ namespace ArlaNatureConnect.WinUI.View.Pages;
 
 /// <summary>
 /// Page for Arla Employee role users to view their dashboard directly.
-/// This page orchestrates the ArlaEmployeeSidebar and switches between different content views
+/// This page orchestrates the ArlaEmployeeSideMenuUC and switches between different content views
 /// (Dashboards, Farms, Users) based on navigation selection.
 /// </summary>
 public sealed partial class ArlaEmployeePage : Page
@@ -20,9 +20,9 @@ public sealed partial class ArlaEmployeePage : Page
     public ArlaEmployeePage()
     {
         InitializeComponent();
-        
+
         // Get NavigationHandler from App's service provider
-        var navigationHandler = App.HostInstance.Services.GetRequiredService<NavigationHandler>();
+        NavigationHandler navigationHandler = App.HostInstance.Services.GetRequiredService<NavigationHandler>();
         ViewModel = new ArlaEmployeePageViewModel(navigationHandler);
         DataContext = ViewModel;
     }

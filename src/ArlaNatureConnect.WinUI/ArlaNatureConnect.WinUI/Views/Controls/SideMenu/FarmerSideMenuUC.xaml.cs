@@ -1,29 +1,31 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
-namespace ArlaNatureConnect.WinUI.View.Pages.ArlaEmployee;
+namespace ArlaNatureConnect.WinUI.Views.Controls.SideMenu;
 
 /// <summary>
-/// UserControl for the Arla Employee sidebar navigation menu.
-/// Handles navigation buttons.
+/// UserControl for the Farmer sidebar navigation menu.
+/// Handles user selection dropdown and navigation buttons.
 /// </summary>
-public sealed partial class ArlaEmployeeSidebar : UserControl
+public sealed partial class FarmerSideMenuUC : UserControl
 {
-    private ViewModels.Pages.ArlaEmployeePageViewModel? _previousViewModel;
+    private ViewModels.Pages.FarmerPageViewModel? _previousViewModel;
 
-    public ArlaEmployeeSidebar()
+    public FarmerSideMenuUC()
     {
         InitializeComponent();
-        Loaded += ArlaEmployeeSidebar_Loaded;
-        DataContextChanged += ArlaEmployeeSidebar_DataContextChanged;
+        // Subscribe to Loaded event to initialize button styles
+        Loaded += FarmerSidebar_Loaded;
+        // Subscribe to DataContextChanged event to handle ViewModel changes
+        DataContextChanged += FarmerSidebar_DataContextChanged;
     }
 
-    private void ArlaEmployeeSidebar_Loaded(object sender, RoutedEventArgs e)
+    private void FarmerSidebar_Loaded(object sender, RoutedEventArgs e)
     {
         UpdateButtonStyles();
     }
 
-    private void ArlaEmployeeSidebar_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
+    private void FarmerSidebar_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
     {
         // Unsubscribe from previous ViewModel if it exists
         if (_previousViewModel != null)
@@ -32,7 +34,7 @@ public sealed partial class ArlaEmployeeSidebar : UserControl
         }
 
         // Subscribe to CurrentNavigationTag property changes to update button styles
-        if (args.NewValue is ViewModels.Pages.ArlaEmployeePageViewModel viewModel)
+        if (args.NewValue is ViewModels.Pages.FarmerPageViewModel viewModel)
         {
             viewModel.PropertyChanged += ViewModel_PropertyChanged;
             _previousViewModel = viewModel;
@@ -46,7 +48,7 @@ public sealed partial class ArlaEmployeeSidebar : UserControl
 
     private void ViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(ViewModels.Pages.ArlaEmployeePageViewModel.CurrentNavigationTag))
+        if (e.PropertyName == nameof(ViewModels.Pages.FarmerPageViewModel.CurrentNavigationTag))
         {
             UpdateButtonStyles();
         }
@@ -57,7 +59,7 @@ public sealed partial class ArlaEmployeeSidebar : UserControl
     /// </summary>
     private void UpdateButtonStyles()
     {
-        if (DataContext is not ViewModels.Pages.ArlaEmployeePageViewModel viewModel)
+        if (DataContext is not ViewModels.Pages.FarmerPageViewModel viewModel)
         {
             return;
         }
@@ -71,7 +73,7 @@ public sealed partial class ArlaEmployeeSidebar : UserControl
             // Reset all buttons to normal navigation style
             DashboardsButton.Style = navStyleTyped;
             FarmsButton.Style = navStyleTyped;
-            UsersButton.Style = navStyleTyped;
+            TasksButton.Style = navStyleTyped;
 
             // Set active button based on CurrentNavigationTag
             switch (viewModel.CurrentNavigationTag)
@@ -82,8 +84,8 @@ public sealed partial class ArlaEmployeeSidebar : UserControl
                 case "Farms":
                     FarmsButton.Style = activeStyleTyped;
                     break;
-                case "Users":
-                    UsersButton.Style = activeStyleTyped;
+                case "Tasks":
+                    TasksButton.Style = activeStyleTyped;
                     break;
             }
         }

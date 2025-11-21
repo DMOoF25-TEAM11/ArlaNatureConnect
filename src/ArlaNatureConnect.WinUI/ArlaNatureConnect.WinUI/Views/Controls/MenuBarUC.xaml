@@ -1,25 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <UserControl
-    x:Class="ArlaNatureConnect.WinUI.Controls.MenuBarUC"
+    x:Class="ArlaNatureConnect.WinUI.Views.Controls.MenuBarUC"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:ArlaNatureConnect.WinUI.Controls"
+    xmlns:local="using:ArlaNatureConnect.WinUI.Views.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:viewmodels="using:ArlaNatureConnect.WinUI.ViewModels"
-    d:DataContext="{d:DesignInstance Type=viewmodels:MenuBarViewModel}"
+    xmlns:viewmodels="using:ArlaNatureConnect.WinUI.ViewModels.Controls"
+    d:DataContext="{d:DesignInstance Type=viewmodels:MenuBarUCViewModel}"
     mc:Ignorable="d">
+
+    <UserControl.DataContext>
+        <viewmodels:MenuBarUCViewModel/>
+    </UserControl.DataContext>
 
     <Grid>
         <MenuBar>
             <MenuBarItem Title="Filer">
                 <MenuBarItem.Items>
-                    <MenuFlyoutItem Text="Afslut" Click="Exit_Click"/>
+                    <MenuFlyoutItem Text="Afslut" Command="{Binding ExitCommand}"/>
                 </MenuBarItem.Items>
             </MenuBarItem>
             <MenuBarItem Title="Hjælp">
                 <MenuBarItem.Items>
-                    <MenuFlyoutItem Text="Om..." Click="About_Click"/>
+                    <MenuFlyoutItem Text="Om..." Command="{Binding OpenAboutDialogCommand}"/>
                 </MenuBarItem.Items>
             </MenuBarItem>
         </MenuBar>

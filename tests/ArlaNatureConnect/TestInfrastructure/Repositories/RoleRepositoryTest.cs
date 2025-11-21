@@ -19,7 +19,7 @@ public class RoleRepositoryTest
     [TestMethod]
     public async Task Add_And_Get_Role_Async()
     {
-        var options = CreateOptions();
+        DbContextOptions<AppDbContext> options = CreateOptions();
 
         // Arrange - add in one context
         var role = new Role { Id = Guid.NewGuid(), Name = "Tester" };
@@ -34,7 +34,7 @@ public class RoleRepositoryTest
         using (var ctx = new AppDbContext(options))
         {
             var repo = new RoleRepository(ctx);
-            var fetched = await repo.GetByIdAsync(role.Id);
+            Role? fetched = await repo.GetByIdAsync(role.Id);
 
             // Assert
             Assert.IsNotNull(fetched);
@@ -45,9 +45,9 @@ public class RoleRepositoryTest
     [TestMethod]
     public async Task GetAll_Returns_All_Roles()
     {
-        var options = CreateOptions();
+        DbContextOptions<AppDbContext> options = CreateOptions();
 
-        var roles = new[]
+        Role[] roles = new[]
         {
             new Role { Id = Guid.NewGuid(), Name = "R1" },
             new Role { Id = Guid.NewGuid(), Name = "R2" }
@@ -73,7 +73,7 @@ public class RoleRepositoryTest
     [TestMethod]
     public async Task Update_Role_Persists_Changes()
     {
-        var options = CreateOptions();
+        DbContextOptions<AppDbContext> options = CreateOptions();
 
         var role = new Role { Id = Guid.NewGuid(), Name = "Before" };
         using (var ctx = new AppDbContext(options))
@@ -95,7 +95,7 @@ public class RoleRepositoryTest
         using (var ctx = new AppDbContext(options))
         {
             var repo = new RoleRepository(ctx);
-            var fetched = await repo.GetByIdAsync(role.Id);
+            Role? fetched = await repo.GetByIdAsync(role.Id);
             Assert.IsNotNull(fetched);
             Assert.AreEqual("After", fetched!.Name);
         }
@@ -104,7 +104,7 @@ public class RoleRepositoryTest
     [TestMethod]
     public async Task Delete_Role_Removes_Entity()
     {
-        var options = CreateOptions();
+        DbContextOptions<AppDbContext> options = CreateOptions();
 
         var role = new Role { Id = Guid.NewGuid(), Name = "ToDelete" };
         using (var ctx = new AppDbContext(options))
@@ -124,7 +124,7 @@ public class RoleRepositoryTest
         using (var ctx = new AppDbContext(options))
         {
             var repo = new RoleRepository(ctx);
-            var fetched = await repo.GetByIdAsync(role.Id);
+            Role? fetched = await repo.GetByIdAsync(role.Id);
             Assert.IsNull(fetched);
         }
     }
