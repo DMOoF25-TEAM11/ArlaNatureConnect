@@ -14,6 +14,7 @@
 - [Behavior notes](#behavior-notes)
 - [Encryption details](#encryption-details)
 - [Tests](#tests)
+- [Class diagram](#class-diagram)
 
 ## Short summary
 
@@ -102,3 +103,40 @@ Unit tests for `ConnectionStringService` are under `tests/ArlaNatureConnect/Test
 - Reflection-access tests for the private encryption helpers
 - AES fallback round-trip tests
 - Behavior when decryption fails
+
+## Class diagram
+
+```mermaid
+classDiagram
+    class ConnectionStringService {
+        +Task SaveAsync(string connectionString)
+        +Task<string?> ReadAsync()
+        +Task<bool> ExistsAsync()
+        +string GetFilePath()
+        -Task<byte[]> ProtectAsync(byte[] data)
+        -Task<byte[]?> UnprotectAsync(byte[] data)
+        -string _fileName
+        -string _folderPath
+        -TimeSpan _readTimeout
+    }
+
+    interface IConnectionStringService
+    class AesFallback {
+        +byte[] Encrypt(byte[] data, byte[] key, byte[] iv)
+        +byte[] Decrypt(byte[] cipher, byte[] key, byte[] iv)
+    }
+
+    class ProtectedDataAdapter {
+        +byte[] Protect(byte[] data)
+        +byte[] Unprotect(byte[] data)
+    }
+
+    class FileSystem {
+        +ReadFile(path)
+        +WriteFile(path, data)
+    }
+
+    ConnectionStringService ..|> IConnectionStringService
+    ConnectionStringService --> ProtectedDataAdapter : uses_on_Windows
+    ConnectionStringService --> AesFallback : uses_on_nonWindows
+    ConnectionStringService --> FileSystem : reads_writes

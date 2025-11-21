@@ -13,6 +13,7 @@
   - [4) XAML: Bind commands and entity fields](#4-xaml-bind-commands-and-entity-fields)
   - [5) Usage: navigating / calling commands](#5-usage-navigating--calling-commands)
 - [Notes and best practices](#notes-and-best-practices)
+- [Class diagram](#class-diagram)
 
 ## Short summary
 
@@ -198,3 +199,42 @@ Notes about the example implementation:
 - Surface validation errors to `IAppMessageService` so the base class `CanSubmitCore` can incorporate `HasErrorMessages`.
 - Prefer simple form models (use `Entity` as the form backing) or create separate DTOs if editing must be transactional and cancelable.
 - Unit test derived view-models by mocking `TRepos`, `IStatusInfoServices` and `IAppMessageService` and exercising commands and `LoadAsync`.
+
+## Class diagram
+
+```mermaid
+classDiagram
+    class CRUDViewModelBase~TRepos, TEntity~ {
+        <<abstract>>
+        +ICommand AddCommand
+        +ICommand SaveCommand
+        +ICommand DeleteCommand
+        +ICommand CancelCommand
+        +ICommand RefreshCommand
+        +bool IsSaving
+        +bool IsEditMode
+        +bool IsAddMode
+        +event EventHandler~TEntity?~? EntitySaved
+        +Task LoadAsync(Guid id)
+        #protected abstract Task OnResetFormAsync()
+        #protected abstract Task~TEntity~ OnAddFormAsync()
+        #protected abstract Task OnSaveFormAsync()
+        #protected abstract Task OnLoadFormAsync(TEntity entity)
+    }
+
+    class ListViewModelBase~TRepos, TEntity~ {
+        +TRepos Repository
+        +TEntity? Entity
+        +Task LoadAsync(Guid id)
+    }
+
+    interface ICommand
+    interface IStatusInfoServices
+    interface IAppMessageService
+    interface IRepository~TEntity~
+
+    CRUDViewModelBase~TRepos, TEntity~ ..|> ListViewModelBase~TRepos, TEntity~
+    CRUDViewModelBase~TRepos, TEntity~ --> ICommand : exposes
+    CRUDViewModelBase~TRepos, TEntity~ --> IStatusInfoServices : uses
+    CRUDViewModelBase~TRepos, TEntity~ --> IAppMessageService : uses
+    CRUDViewModelBase~TRepos, TEntity~ --> IRepository~TEntity~ : depends on

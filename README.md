@@ -68,31 +68,28 @@ Arla Nature Connect/
 ### 🐞 Debugging
 When running the application in debug mode, the application will send debug meassages starting wih *** Namespace.Method : Message
 
+## Wiki Documentation
+In-depth documentation for various components of the Arla Nature Connect project can be found in the [docs/wiki](docs/wiki) directory.
+
 ### 📘 Boilerplate
-Common base classes and patterns used throughout the application.
+Common base classes and patterns used throughout the application.  
 Click the links below for detailed documentation.
 
-#### [ViewModelBase]
-Base class for all ViewModels in the application.
-
-#### [ListViewModelBase]
-Base class for ViewModels that represent a list of items.
-
-#### [CRUDViewModelBase]
-Base class for ViewModels that implement CRUD operations.
+| Abstract Classes | Description |
+|------------------|-------------|
+| [ViewModelBase]  | Base class for all ViewModels in the application. |
+| [ListViewModelBase] | Base class for ViewModels that represent a list of items. |
+| [CRUDViewModelBase] | Base class for ViewModels that implement CRUD operations. |
 
 ### ⚙️ Services Used
-How to use common services in the application.
+How to use common services in the application.  
 Click the links below for detailed documentation.
 
-#### [AppMessageService]
-Service for displaying application messages to the user.
-
-#### [ConnectionStringService]
-Service for managing database connection strings.
-
-#### [StatusInfoService]
-Service for displaying status information in the application.
+| Services               | Description                                      |
+|------------------------|--------------------------------------------------|
+| [AppMessageService]    | Service for displaying application messages to the user. |
+| [ConnectionStringService] | Service for managing database connection strings. |
+| [StatusInfoService]    | Service for displaying status information in the application. |
 
 <!-- MARKDOWN LINKS & IMAGES -->
 [Logo]: images/logo/logo32x32.png "Arla Nature Connect Logo"

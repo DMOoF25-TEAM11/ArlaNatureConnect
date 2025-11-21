@@ -12,6 +12,7 @@
   - [2) Subscribe from a page and update local UI](#2-subscribe-from-a-page-and-update-local-ui)
 - [Notes and best practices](#notes-and-best-practices)
 - [Tests](#tests)
+- [Class diagram](#class-diagram)
 
 ## Short summary
 
@@ -89,3 +90,35 @@ public sealed partial class EditEntityPage : Page
 ## Tests
 
 There are unit tests for `AppMessageService` under `tests/ArlaNatureConnect/TestCore` that validate default state, adding/clearing messages, auto-clear behavior, and that subscriber exceptions are swallowed.
+
+## Class diagram
+
+```mermaid
+classDiagram
+    class AppMessageService {
+        +void AddInfoMessage(string message)
+        +void AddErrorMessage(string message)
+        +void ClearErrorMessages()
+        +IEnumerable<string> StatusMessages
+        +IEnumerable<string> ErrorMessages
+        +string? EntityName
+        +event EventHandler? AppMessageChanged
+        -TimeSpan _infoLifetime
+        -System.Threading.Timer? _clearTimer
+        -List<string> _statusMessages
+        -List<string> _errorMessages
+    }
+
+    interface IAppMessageService
+
+    class TimerTask {
+        <<utility>>
+    }
+
+    class Subscriber {
+        <<actor>>
+    }
+
+    AppMessageService ..|> IAppMessageService
+    AppMessageService --> TimerTask : auto_clear
+    AppMessageService --> Subscriber : notifies

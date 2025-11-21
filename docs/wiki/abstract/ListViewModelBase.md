@@ -10,6 +10,7 @@
   - [1) Simple derived list view-model](#1-simple-derived-list-view-model)
   - [2) Load an entity by id](#2-load-an-entity-by-id)
 - [Notes and best practices](#notes-and-best-practices)
+- [Class diagram](#class-diagram)
 
 ## Short summary
 
@@ -72,3 +73,29 @@ await farmerViewModel.LoadAsync(farmerId);
 - `LoadAsync` swallows exceptions and reports them via `IAppMessageService.AddErrorMessage` — this keeps UI flows predictable; handle specific error cases in derived view-models if needed.
 - Prefer constructor injection for repositories and services to keep view-models testable.
 - Use `OnPropertyChanged()` in derived properties to keep bindings up to date.
+
+## Class diagram
+
+```mermaid
+classDiagram
+    class ListViewModelBase~TRepos, TEntity~ {
+        <<abstract>>
+        +TRepos Repository
+        +TEntity? Entity
+        +Task LoadAsync(Guid id)
+    }
+    class ViewModelBase {
+        +event PropertyChangedEventHandler? PropertyChanged
+        +void OnPropertyChanged(string? name = null)
+    }
+    interface IStatusInfoServices
+    interface IAppMessageService
+    interface IRepository~TEntity~
+
+    ListViewModelBase~TRepos, TEntity~ ..|> ViewModelBase
+    ListViewModelBase~TRepos, TEntity~ --> IStatusInfoServices : uses
+    ListViewModelBase~TRepos, TEntity~ --> IAppMessageService : uses
+    ListViewModelBase~TRepos, TEntity~ --> IRepository~TEntity~ : depends on
+```
+
+- Keep view-models unit-testable: favor constructor injection for services and repositories.

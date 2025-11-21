@@ -12,6 +12,7 @@
   - [2) Use `BeginLoading()` in a ViewModel while loading data](#2-use-beginloading-in-a-viewmodel-while-loading-data)
 - [Notes and best practices](#notes-and-best-practices)
 - [Tests](#tests)
+- [Class diagram](#class-diagram)
 
 ## Short summary
 
@@ -105,9 +106,32 @@ public class ProjectsViewModel : ViewModelBase
 
 - Prefer `BeginLoading()` tokens (via `using`) instead of toggling `IsLoading` directly; the token approach handles concurrent loaders correctly.
 - Bind UI elements (ProgressRing, status text) to `IsLoading`/`HasDbConnection` and refresh `x:Bind` with `Bindings.Update()` when `StatusInfoChanged` fires.
-- The service periodically checks DB connectivity when an `IConnectionStringService` is provided; `HasDbConnection` reflects the latest check.
 - The service swallows exceptions thrown by subscribers to avoid breaking publishers.
 
 ## Tests
 
 Unit tests for `StatusInfoService` are located under `tests/ArlaNatureConnect/TestCore/Services/StatusInfoServiceTests.cs` and cover token behavior, event raising, and idempotent disposal.
+
+## Class diagram
+
+```mermaid
+classDiagram
+    class StatusInfoService {
+        +bool IsLoading
+        +bool HasDbConnection
+        +IDisposable BeginLoading()
+        +event EventHandler? StatusInfoChanged
+        -int _loadingCount
+    }
+
+    interface IStatusInfoServices
+    class LoadingToken {
+        -StatusInfoService _owner
+        +void Dispose()
+    }
+
+    interface IConnectionStringService
+
+    StatusInfoService ..|> IStatusInfoServices
+    StatusInfoService --> LoadingToken : returns
+    LoadingToken --> StatusInfoService : releases on Dispose
