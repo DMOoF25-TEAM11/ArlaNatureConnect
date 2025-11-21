@@ -9,6 +9,8 @@ public class StatusBarUCViewModel : ViewModelBase
     private readonly IStatusInfoServices? _statusInfoServices;
     private bool _hasDbConnection;
     private bool _isBusy;
+
+    private readonly Lock _statusInfoLock = new();
     #endregion
 
     #region Fields Commands
@@ -32,10 +34,6 @@ public class StatusBarUCViewModel : ViewModelBase
         // initialize observable properties from the service
         _hasDbConnection = _statusInfoServices.HasDbConnection;
         _isBusy = _statusInfoServices.IsLoading;
-
-        // Start async initialization without blocking the constructor.
-        // The actual loading scope is inside InitializeAsync so BeginLoading will cover the async work.
-        _ = InitializeAsync();
     }
 
     #region Properties
@@ -101,28 +99,38 @@ public class StatusBarUCViewModel : ViewModelBase
     #region Helpers
     public async Task InitializeAsync()
     {
-        if (_statusInfoServices is null)
-            throw new InvalidOperationException("_statusInfoServices is not initialized.");
-
-        using (_statusInfoServices.BeginLoading())
+        // take a snapshot of service values and update properties under a lock to avoid races
+        lock (_statusInfoLock)
         {
-            // perform async initialization here
-            await Task.Delay(200).ConfigureAwait(false);
+            if (_statusInfoServices is null)
+                throw new InvalidOperationException("_statusInfoServices is not initialized.");
 
-            // ensure UI is updated with current status values after initialization
-            StatusInfoServices_StatusInfoChanged(this, EventArgs.Empty);
+            using (_statusInfoServices.BeginLoading())
+            {
+                // perform async initialization here
+                Task.Delay(200).ConfigureAwait(false);
+
+                // ensure UI is updated with current status values after initialization
+                StatusInfoServices_StatusInfoChanged(this, EventArgs.Empty);
+            }
         }
     }
 
     private void StatusInfoServices_StatusInfoChanged(object? sender, EventArgs e)
     {
-        // update cached observable properties from the service
-        IsBusy = _statusInfoServices?.IsLoading ?? false;
-        HasDbConnection = _statusInfoServices?.HasDbConnection ?? false;
+        // take a snapshot of service values and update properties under a lock to avoid races
+        lock (_statusInfoLock)
+        {
+            bool isLoading = _statusInfoServices?.IsLoading ?? false;
+            bool hasDb = _statusInfoServices?.HasDbConnection ?? false;
 
-        // raise property changed for dependent properties
-        OnPropertyChanged(nameof(BusySymbol));
-        OnPropertyChanged(nameof(DbConnectionSymbol));
+            IsBusy = isLoading;
+            HasDbConnection = hasDb;
+
+            // raise property changed for dependent properties
+            OnPropertyChanged(nameof(BusySymbol));
+            OnPropertyChanged(nameof(DbConnectionSymbol));
+        }
     }
     #endregion
 }
