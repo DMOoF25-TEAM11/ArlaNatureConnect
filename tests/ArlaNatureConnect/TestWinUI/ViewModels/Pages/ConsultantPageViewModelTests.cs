@@ -2,7 +2,10 @@ using ArlaNatureConnect.Core.Abstract;
 using ArlaNatureConnect.Domain.Entities;
 using ArlaNatureConnect.WinUI.Services;
 using ArlaNatureConnect.WinUI.ViewModels.Pages;
+
 using Moq;
+
+using System.Runtime.Versioning;
 
 namespace TestWinUI.ViewModels.Pages;
 
@@ -18,6 +21,7 @@ namespace TestWinUI.ViewModels.Pages;
 /// - Navigation between content views works correctly
 /// </summary>
 [TestClass]
+[SupportedOSPlatform("windows10.0.22621.0")]
 public sealed class ConsultantPageViewModelTests
 {
     private Mock<NavigationHandler> _mockNavigationHandler = null!;
@@ -219,6 +223,7 @@ public sealed class ConsultantPageViewModelTests
         Assert.IsTrue(_viewModel.IsLoading);
 
         // Complete the task
+        roles = roles.AsEnumerable().ToList();
         tcs.SetResult(roles.AsEnumerable());
         await initTask;
 

@@ -24,7 +24,8 @@ public static class DependencyInjection
         }
 
         // call the async method synchronously without an extra Task.Run wrapper
-        string? connectionString = cs.ReadAsync().GetAwaiter().GetResult();
+        // Use ConfigureAwait(false) to avoid capturing the synchronization context and potential deadlocks
+        string? connectionString = cs.ReadAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
         if (string.IsNullOrWhiteSpace(connectionString))
             throw new InvalidOperationException("No connection string found. Ensure the StartWindow connection dialog was completed before building the host.");
