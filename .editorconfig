@@ -9,6 +9,9 @@ root = true
 # File Extension Settings
 ##########################################
 
+[*]
+charset = utf-8
+
 [*.sln]
 indent_style = tab
 indent_size = 2
@@ -136,3 +139,17 @@ dotnet_style_readonly_field = true
 
 # Parameter preferences
 dotnet_code_quality_unused_parameters = all
+
+#### Naming rule: private fields should start with underscore and be camelCase ####
+
+# Symbol group: private fields
+dotnet_naming_symbols.private_fields.applicable_kinds = field
+dotnet_naming_symbols.private_fields.applicable_accessibilities = private
+# no required modifiers
+
+dotnet_naming_style.private_field_underscore.required_prefix = _
+dotnet_naming_style.private_field_underscore.capitalization = camel_case
+
+dotnet_naming_rule.private_fields_should_start_with_underscore.symbols = private_fields
+dotnet_naming_rule.private_fields_should_start_with_underscore.style = private_field_underscore
+dotnet_naming_rule.private_fields_should_start_with_underscore.severity = warning
