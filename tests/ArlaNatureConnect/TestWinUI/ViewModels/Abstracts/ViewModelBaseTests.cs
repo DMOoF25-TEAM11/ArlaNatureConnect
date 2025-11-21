@@ -1,0 +1,98 @@
+using System.Collections.Generic;
+using System.Runtime.Versioning;
+using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
+
+namespace TestWinUI.ViewModels.Abstracts;
+
+[TestClass]
+public sealed class ViewModelBaseTests
+{
+    private sealed class TestViewModel : ViewModelBase
+    {
+        public string? NameProp { get; set; }
+
+        public void SetNameProp(string? value)
+        {
+            NameProp = value;
+            // CallerMemberName should supply "SetNameProp" when called from here if no arg is provided
+            OnPropertyChanged();
+        }
+
+        public void RaiseWithoutName()
+        {
+            // CallerMemberName will provide "RaiseWithoutName"
+            OnPropertyChanged();
+        }
+
+        public void RaiseWithExplicit(string? name) => OnPropertyChanged(name);
+    }
+
+    [TestMethod]
+    public void OnPropertyChanged_WithExplicitName_RaisesEventWithThatName()
+    {
+        var vm = new TestViewModel();
+        var received = new List<string?>();
+        vm.PropertyChanged += (s, e) => received.Add(e.PropertyName);
+
+        vm.RaiseWithExplicit("ExplicitName");
+
+        Assert.AreEqual(1, received.Count);
+        Assert.AreEqual("ExplicitName", received[0]);
+    }
+
+    [TestMethod]
+    public void OnPropertyChanged_CalledFromMethod_RaisesEventWithCallerName()
+    {
+        var vm = new TestViewModel();
+        var received = new List<string?>();
+        vm.PropertyChanged += (s, e) => received.Add(e.PropertyName);
+
+        vm.RaiseWithoutName();
+
+        Assert.AreEqual(1, received.Count);
+        Assert.AreEqual("RaiseWithoutName", received[0]);
+    }
+
+    [TestMethod]
+    public void OnPropertyChanged_CalledFromSetter_RaisesEventWithPropertyName()
+    {
+        var vm = new TestViewModel();
+        var received = new List<string?>();
+        vm.PropertyChanged += (s, e) => received.Add(e.PropertyName);
+
+        vm.SetNameProp("value");
+
+        Assert.AreEqual(1, received.Count);
+        // When called from SetNameProp the CallerMemberName will be "SetNameProp"
+        Assert.AreEqual("SetNameProp", received[0]);
+    }
+
+    [TestMethod]
+    public void OnPropertyChanged_MultipleHandlers_AllHandlersInvoked()
+    {
+        var vm = new TestViewModel();
+        int calls = 0;
+        void Handler1(object? s, System.ComponentModel.PropertyChangedEventArgs e) => calls++;
+        void Handler2(object? s, System.ComponentModel.PropertyChangedEventArgs e) => calls++;
+
+        vm.PropertyChanged += Handler1;
+        vm.PropertyChanged += Handler2;
+
+        vm.RaiseWithExplicit("X");
+
+        Assert.AreEqual(2, calls);
+
+        vm.PropertyChanged -= Handler1;
+        vm.PropertyChanged -= Handler2;
+    }
+
+    [TestMethod]
+    public void OnPropertyChanged_NoHandlers_DoesNotThrow()
+    {
+        var vm = new TestViewModel();
+
+        // Should not throw even if there are no subscribers
+        vm.RaiseWithExplicit("NoOneListening");
+        vm.RaiseWithoutName();
+    }
+}
