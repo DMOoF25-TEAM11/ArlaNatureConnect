@@ -24,7 +24,7 @@ public sealed partial class MainWindow : Window
         _navigationHandler = navigationHandler ?? throw new ArgumentNullException(nameof(navigationHandler));
         
         // Set window size after window is activated
-        this.Activated += MainWindow_Activated;
+        Activated += MainWindow_Activated;
         
         // Initialize navigation handler with the content frame
         _navigationHandler.Initialize(ContentFrame);
@@ -65,6 +65,6 @@ public sealed partial class MainWindow : Window
         }
         
         // Unsubscribe after first activation
-        this.Activated -= MainWindow_Activated;
+        Activated -= MainWindow_Activated;
     }
 }

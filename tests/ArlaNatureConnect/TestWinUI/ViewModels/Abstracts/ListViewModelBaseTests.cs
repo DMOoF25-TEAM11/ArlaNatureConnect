@@ -1,16 +1,19 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using ArlaNatureConnect.Core.Abstract;
 using ArlaNatureConnect.Core.Services;
 using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Runtime.Versioning;
+using System.Threading;
+using System.Threading.Tasks;
+
 namespace TestWinUI.ViewModels.Abstracts;
 
 [TestClass]
+[SupportedOSPlatform("windows10.0.22621.0")]
 public sealed class ListViewModelBaseTests
 {
     private sealed class TestEntity

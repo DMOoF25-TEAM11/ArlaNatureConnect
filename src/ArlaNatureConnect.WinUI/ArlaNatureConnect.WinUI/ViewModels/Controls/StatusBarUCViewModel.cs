@@ -6,7 +6,9 @@ namespace ArlaNatureConnect.WinUI.ViewModels.Controls;
 public class StatusBarUCViewModel : ViewModelBase
 {
     #region Fields
-    private readonly IStatusInfoServices _statusInfoServices;
+    private readonly IStatusInfoServices? _statusInfoServices;
+    private bool _hasDbConnection;
+    private bool _isBusy;
     #endregion
 
     #region Fields Commands
@@ -27,6 +29,10 @@ public class StatusBarUCViewModel : ViewModelBase
         // subscribe to status changes so the viewmodel can notify the view
         _statusInfoServices.StatusInfoChanged += StatusInfoServices_StatusInfoChanged;
 
+        // initialize observable properties from the service
+        _hasDbConnection = _statusInfoServices.HasDbConnection;
+        _isBusy = _statusInfoServices.IsLoading;
+
         // Start async initialization without blocking the constructor.
         // The actual loading scope is inside InitializeAsync so BeginLoading will cover the async work.
         _ = InitializeAsync();
@@ -34,21 +40,27 @@ public class StatusBarUCViewModel : ViewModelBase
 
     #region Properties
 
-    // Expose current busy state (maps to service.IsLoading)
+    // Expose current busy state (observable)
     public bool IsBusy
     {
-        get
+        get => _isBusy;
+        private set
         {
-            return _statusInfoServices?.IsLoading ?? false;
+            if (_isBusy == value) return;
+            _isBusy = value;
+            OnPropertyChanged();
         }
     }
 
-    // Expose database connection state
+    // Expose database connection state (observable)
     public bool HasDbConnection
     {
-        get
+        get => _hasDbConnection;
+        private set
         {
-            return _statusInfoServices?.HasDbConnection ?? false;
+            if (_hasDbConnection == value) return;
+            _hasDbConnection = value;
+            OnPropertyChanged();
         }
     }
 
@@ -89,6 +101,9 @@ public class StatusBarUCViewModel : ViewModelBase
     #region Helpers
     public async Task InitializeAsync()
     {
+        if (_statusInfoServices is null)
+            throw new InvalidOperationException("_statusInfoServices is not initialized.");
+
         using (_statusInfoServices.BeginLoading())
         {
             // perform async initialization here
@@ -101,9 +116,11 @@ public class StatusBarUCViewModel : ViewModelBase
 
     private void StatusInfoServices_StatusInfoChanged(object? sender, EventArgs e)
     {
+        // update cached observable properties from the service
+        IsBusy = _statusInfoServices?.IsLoading ?? false;
+        HasDbConnection = _statusInfoServices?.HasDbConnection ?? false;
+
         // raise property changed for dependent properties
-        OnPropertyChanged(nameof(IsBusy));
-        OnPropertyChanged(nameof(HasDbConnection));
         OnPropertyChanged(nameof(BusySymbol));
         OnPropertyChanged(nameof(DbConnectionSymbol));
     }

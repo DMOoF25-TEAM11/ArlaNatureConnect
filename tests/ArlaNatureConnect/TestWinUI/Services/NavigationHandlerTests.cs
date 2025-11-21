@@ -1,5 +1,7 @@
 using ArlaNatureConnect.WinUI.Services;
 
+using System.Runtime.Versioning;
+
 namespace TestWinUI.Services;
 
 /// <summary>
@@ -16,6 +18,7 @@ namespace TestWinUI.Services;
 /// These tests focus on NavigationHandler's own logic and validation.
 /// </summary>
 [TestClass]
+[SupportedOSPlatform("windows10.0.22621.0")]
 public sealed class NavigationHandlerTests
 {
     private NavigationHandler _navigationHandler = null!;

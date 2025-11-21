@@ -20,7 +20,7 @@ public class FarmRepositoryTest
     {
         DbContextOptions<AppDbContext> options = CreateOptions();
 
-        var farm = new Farm
+        Farm farm = new Farm
         {
             Id = Guid.NewGuid(),
             Name = "TestFarm",
@@ -29,16 +29,16 @@ public class FarmRepositoryTest
             AddressId = Guid.Empty
         };
 
-        using (var ctx = new AppDbContext(options))
+        using (AppDbContext ctx = new AppDbContext(options))
         {
-            var repo = new FarmRepository(ctx);
+            FarmRepository repo = new(ctx);
             await repo.AddAsync(farm);
             await ctx.SaveChangesAsync();
         }
 
-        using (var ctx = new AppDbContext(options))
+        using (AppDbContext ctx = new AppDbContext(options))
         {
-            var repo = new FarmRepository(ctx);
+            FarmRepository repo = new(ctx);
             Farm? fetched = await repo.GetByIdAsync(farm.Id);
 
             Assert.IsNotNull(fetched);
@@ -58,19 +58,19 @@ public class FarmRepositoryTest
             new Farm { Id = Guid.NewGuid(), Name = "F2", CVR = "222", PersonId = Guid.Empty, AddressId = Guid.Empty }
         };
 
-        using (var ctx = new AppDbContext(options))
+        using (AppDbContext ctx = new(options))
         {
-            var repo = new FarmRepository(ctx);
+            FarmRepository repo = new(ctx);
             await repo.AddRangeAsync(farms);
             await ctx.SaveChangesAsync();
         }
 
-        using (var ctx = new AppDbContext(options))
+        using (AppDbContext ctx = new(options))
         {
-            var repo = new FarmRepository(ctx);
-            var all = (await repo.GetAllAsync()).ToList();
+            FarmRepository repo = new(ctx);
+            List<Farm> all = (await repo.GetAllAsync()).ToList();
 
-            Assert.AreEqual(2, all.Count);
+            Assert.HasCount(2, all);
             CollectionAssert.AreEquivalent(farms.Select(f => f.Name).ToList(), all.Select(f => f.Name).ToList());
         }
     }
@@ -80,25 +80,25 @@ public class FarmRepositoryTest
     {
         DbContextOptions<AppDbContext> options = CreateOptions();
 
-        var farm = new Farm { Id = Guid.NewGuid(), Name = "Before", CVR = "000", PersonId = Guid.Empty, AddressId = Guid.Empty };
-        using (var ctx = new AppDbContext(options))
+        Farm farm = new Farm { Id = Guid.NewGuid(), Name = "Before", CVR = "000", PersonId = Guid.Empty, AddressId = Guid.Empty };
+        using (AppDbContext ctx = new AppDbContext(options))
         {
-            var repo = new FarmRepository(ctx);
+            FarmRepository repo = new FarmRepository(ctx);
             await repo.AddAsync(farm);
             await ctx.SaveChangesAsync();
         }
 
-        using (var ctx = new AppDbContext(options))
+        using (AppDbContext ctx = new AppDbContext(options))
         {
-            var repo = new FarmRepository(ctx);
+            FarmRepository repo = new FarmRepository(ctx);
             farm.Name = "After";
             await repo.UpdateAsync(farm);
             await ctx.SaveChangesAsync();
         }
 
-        using (var ctx = new AppDbContext(options))
+        using (AppDbContext ctx = new AppDbContext(options))
         {
-            var repo = new FarmRepository(ctx);
+            FarmRepository repo = new FarmRepository(ctx);
             Farm? fetched = await repo.GetByIdAsync(farm.Id);
             Assert.IsNotNull(fetched);
             Assert.AreEqual("After", fetched!.Name);
@@ -110,24 +110,24 @@ public class FarmRepositoryTest
     {
         DbContextOptions<AppDbContext> options = CreateOptions();
 
-        var farm = new Farm { Id = Guid.NewGuid(), Name = "ToDelete", CVR = "X", PersonId = Guid.Empty, AddressId = Guid.Empty };
-        using (var ctx = new AppDbContext(options))
+        Farm farm = new() { Id = Guid.NewGuid(), Name = "ToDelete", CVR = "X", PersonId = Guid.Empty, AddressId = Guid.Empty };
+        using (AppDbContext ctx = new(options))
         {
-            var repo = new FarmRepository(ctx);
+            FarmRepository repo = new(ctx);
             await repo.AddAsync(farm);
             await ctx.SaveChangesAsync();
         }
 
-        using (var ctx = new AppDbContext(options))
+        using (AppDbContext ctx = new(options))
         {
-            var repo = new FarmRepository(ctx);
+            FarmRepository repo = new(ctx);
             await repo.DeleteAsync(farm.Id);
             await ctx.SaveChangesAsync();
         }
 
-        using (var ctx = new AppDbContext(options))
+        using (AppDbContext ctx = new(options))
         {
-            var repo = new FarmRepository(ctx);
+            FarmRepository repo = new(ctx);
             Farm? fetched = await repo.GetByIdAsync(farm.Id);
             Assert.IsNull(fetched);
         }
