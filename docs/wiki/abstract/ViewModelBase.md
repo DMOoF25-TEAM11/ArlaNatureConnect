@@ -11,6 +11,7 @@
   - [2) Bind in XAML and set DataContext](#2-bind-in-xaml-and-set-datacontext)
 - [Related base classes](#related-base-classes)
 - [Notes and best practices](#notes-and-best-practices)
+- [Class diagram](#class-diagram)
 
 ## Short summary
 
@@ -104,3 +105,17 @@ See their implementations under `src/.../ViewModels/Abstracts/`.
 - Keep UI logic in the view (page/control) and presentation/state logic in view-models.
 - Use `RelayCommand` (or equivalent) for commands and raise `CanExecuteChanged` when related properties change.
 - Keep view-models unit-testable: favor constructor injection for services and repositories.
+
+
+## Class diagram
+
+```mermaid
+classDiagram
+    class ViewModelBase {
+        <<abstract>>
+        +event PropertyChangedEventHandler? PropertyChanged
+        +void OnPropertyChanged(string? name = null)
+    }
+    interface INotifyPropertyChanged
+    ViewModelBase ..|> INotifyPropertyChanged
+```
