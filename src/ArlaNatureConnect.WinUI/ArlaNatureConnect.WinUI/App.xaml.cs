@@ -20,6 +20,32 @@ public partial class App : Application
     public static IHost HostInstance { get; private set; } = null!;
 
     /// <summary>
+    /// Helper to expose the main window's XamlRoot so non-UI code can attach dialogs to the visual tree.
+    /// Returns null if the main window isn't available yet.
+    /// </summary>
+    public static XamlRoot? MainWindowXamlRoot
+    {
+        get
+        {
+            try
+            {
+                // If HostInstance is built and MainWindow is registered as a singleton, resolve it and return its Content.XamlRoot
+                MainWindow? mainWindow = HostInstance?.Services.GetService<MainWindow>();
+                if (mainWindow?.Content is FrameworkElement fe)
+                {
+                    return fe.XamlRoot;
+                }
+            }
+            catch
+            {
+                // ignore resolution failures
+            }
+
+            return null;
+        }
+    }
+
+    /// <summary>
     /// Initializes the singleton application object.  This is the first line of authored code
     /// executed, and as such is the logical equivalent of main() or WinMain().
     /// </summary>

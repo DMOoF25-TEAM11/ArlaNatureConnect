@@ -1,5 +1,6 @@
 using ArlaNatureConnect.WinUI.Services;
 using ArlaNatureConnect.WinUI.ViewModels.Pages;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml.Controls;
 
@@ -15,9 +16,9 @@ public sealed partial class LoginPage : Page
     public LoginPage()
     {
         InitializeComponent();
-        
+
         // Get NavigationHandler from App's service provider
-        var navigationHandler = App.HostInstance.Services.GetRequiredService<ArlaNatureConnect.WinUI.Services.NavigationHandler>();
+        NavigationHandler navigationHandler = App.HostInstance.Services.GetRequiredService<ArlaNatureConnect.WinUI.Services.NavigationHandler>();
         ViewModel = new LoginPageViewModel(navigationHandler);
         DataContext = ViewModel;
     }

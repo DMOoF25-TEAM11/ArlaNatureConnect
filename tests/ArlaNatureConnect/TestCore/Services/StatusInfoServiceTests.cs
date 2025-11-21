@@ -82,7 +82,7 @@ public sealed class StatusInfoServiceTests
         int events = 0;
         svc.StatusInfoChanged += (_, _) => events++;
 
-        var token = svc.BeginLoading();
+        IDisposable token = svc.BeginLoading();
         Assert.IsTrue(svc.IsLoading);
         Assert.AreEqual(1, events);
 

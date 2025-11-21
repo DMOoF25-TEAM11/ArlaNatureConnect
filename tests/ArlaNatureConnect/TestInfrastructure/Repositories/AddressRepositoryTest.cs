@@ -1,4 +1,3 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.EntityFrameworkCore;
 using ArlaNatureConnect.Infrastructure.Persistence;
 using ArlaNatureConnect.Infrastructure.Repositories;
@@ -19,7 +18,7 @@ public class AddressRepositoryTest
     [TestMethod]
     public async Task Add_And_Get_Address_Async()
     {
-        var options = CreateOptions();
+        DbContextOptions<AppDbContext> options = CreateOptions();
 
         var addr = new Address
         {
@@ -40,7 +39,7 @@ public class AddressRepositoryTest
         using (var ctx = new AppDbContext(options))
         {
             var repo = new AddressRepository(ctx);
-            var fetched = await repo.GetByIdAsync(addr.Id);
+            Address? fetched = await repo.GetByIdAsync(addr.Id);
 
             Assert.IsNotNull(fetched);
             Assert.AreEqual(addr.Street, fetched!.Street);
@@ -53,9 +52,9 @@ public class AddressRepositoryTest
     [TestMethod]
     public async Task GetAll_Returns_All_Addresses()
     {
-        var options = CreateOptions();
+        DbContextOptions<AppDbContext> options = CreateOptions();
 
-        var addresses = new[]
+        Address[] addresses = new[]
         {
             new Address { Id = Guid.NewGuid(), Street = "S1", City = "C1", PostalCode = "P1", Country = "DK" },
             new Address { Id = Guid.NewGuid(), Street = "S2", City = "C2", PostalCode = "P2", Country = "DK" }
@@ -81,7 +80,7 @@ public class AddressRepositoryTest
     [TestMethod]
     public async Task Update_Address_Persists_Changes()
     {
-        var options = CreateOptions();
+        DbContextOptions<AppDbContext> options = CreateOptions();
 
         var addr = new Address { Id = Guid.NewGuid(), Street = "Before", City = "City", PostalCode = "000", Country = "DK" };
         using (var ctx = new AppDbContext(options))
@@ -102,7 +101,7 @@ public class AddressRepositoryTest
         using (var ctx = new AppDbContext(options))
         {
             var repo = new AddressRepository(ctx);
-            var fetched = await repo.GetByIdAsync(addr.Id);
+            Address? fetched = await repo.GetByIdAsync(addr.Id);
             Assert.IsNotNull(fetched);
             Assert.AreEqual("After", fetched!.Street);
         }
@@ -111,7 +110,7 @@ public class AddressRepositoryTest
     [TestMethod]
     public async Task Delete_Address_Removes_Entity()
     {
-        var options = CreateOptions();
+        DbContextOptions<AppDbContext> options = CreateOptions();
 
         var addr = new Address { Id = Guid.NewGuid(), Street = "ToDelete", City = "City", PostalCode = "X", Country = "DK" };
         using (var ctx = new AppDbContext(options))
@@ -131,7 +130,7 @@ public class AddressRepositoryTest
         using (var ctx = new AppDbContext(options))
         {
             var repo = new AddressRepository(ctx);
-            var fetched = await repo.GetByIdAsync(addr.Id);
+            Address? fetched = await repo.GetByIdAsync(addr.Id);
             Assert.IsNull(fetched);
         }
     }

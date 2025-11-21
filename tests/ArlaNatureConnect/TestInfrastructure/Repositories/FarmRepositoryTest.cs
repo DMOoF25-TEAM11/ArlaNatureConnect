@@ -1,4 +1,3 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.EntityFrameworkCore;
 using ArlaNatureConnect.Infrastructure.Persistence;
 using ArlaNatureConnect.Infrastructure.Repositories;
@@ -19,7 +18,7 @@ public class FarmRepositoryTest
     [TestMethod]
     public async Task Add_And_Get_Farm_Async()
     {
-        var options = CreateOptions();
+        DbContextOptions<AppDbContext> options = CreateOptions();
 
         var farm = new Farm
         {
@@ -40,7 +39,7 @@ public class FarmRepositoryTest
         using (var ctx = new AppDbContext(options))
         {
             var repo = new FarmRepository(ctx);
-            var fetched = await repo.GetByIdAsync(farm.Id);
+            Farm? fetched = await repo.GetByIdAsync(farm.Id);
 
             Assert.IsNotNull(fetched);
             Assert.AreEqual(farm.Name, fetched!.Name);
@@ -51,9 +50,9 @@ public class FarmRepositoryTest
     [TestMethod]
     public async Task GetAll_Returns_All_Farms()
     {
-        var options = CreateOptions();
+        DbContextOptions<AppDbContext> options = CreateOptions();
 
-        var farms = new[]
+        Farm[] farms = new[]
         {
             new Farm { Id = Guid.NewGuid(), Name = "F1", CVR = "111", PersonId = Guid.Empty, AddressId = Guid.Empty },
             new Farm { Id = Guid.NewGuid(), Name = "F2", CVR = "222", PersonId = Guid.Empty, AddressId = Guid.Empty }
@@ -79,7 +78,7 @@ public class FarmRepositoryTest
     [TestMethod]
     public async Task Update_Farm_Persists_Changes()
     {
-        var options = CreateOptions();
+        DbContextOptions<AppDbContext> options = CreateOptions();
 
         var farm = new Farm { Id = Guid.NewGuid(), Name = "Before", CVR = "000", PersonId = Guid.Empty, AddressId = Guid.Empty };
         using (var ctx = new AppDbContext(options))
@@ -100,7 +99,7 @@ public class FarmRepositoryTest
         using (var ctx = new AppDbContext(options))
         {
             var repo = new FarmRepository(ctx);
-            var fetched = await repo.GetByIdAsync(farm.Id);
+            Farm? fetched = await repo.GetByIdAsync(farm.Id);
             Assert.IsNotNull(fetched);
             Assert.AreEqual("After", fetched!.Name);
         }
@@ -109,7 +108,7 @@ public class FarmRepositoryTest
     [TestMethod]
     public async Task Delete_Farm_Removes_Entity()
     {
-        var options = CreateOptions();
+        DbContextOptions<AppDbContext> options = CreateOptions();
 
         var farm = new Farm { Id = Guid.NewGuid(), Name = "ToDelete", CVR = "X", PersonId = Guid.Empty, AddressId = Guid.Empty };
         using (var ctx = new AppDbContext(options))
@@ -129,7 +128,7 @@ public class FarmRepositoryTest
         using (var ctx = new AppDbContext(options))
         {
             var repo = new FarmRepository(ctx);
-            var fetched = await repo.GetByIdAsync(farm.Id);
+            Farm? fetched = await repo.GetByIdAsync(farm.Id);
             Assert.IsNull(fetched);
         }
     }

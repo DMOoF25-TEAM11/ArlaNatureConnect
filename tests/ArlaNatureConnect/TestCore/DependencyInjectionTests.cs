@@ -19,14 +19,14 @@ public class DependencyInjectionTests
         using ServiceProvider provider = services.BuildServiceProvider();
 
         // IStatusInfoServices is registered as Singleton
-        var statusA = provider.GetRequiredService<IStatusInfoServices>();
-        var statusB = provider.GetRequiredService<IStatusInfoServices>();
+        IStatusInfoServices statusA = provider.GetRequiredService<IStatusInfoServices>();
+        IStatusInfoServices statusB = provider.GetRequiredService<IStatusInfoServices>();
         Assert.IsNotNull(statusA);
         Assert.AreSame(statusA, statusB, "IStatusInfoServices should be registered as singleton.");
 
         // IAppMessageService is registered as Transient
-        var msgA = provider.GetRequiredService<IAppMessageService>();
-        var msgB = provider.GetRequiredService<IAppMessageService>();
+        IAppMessageService msgA = provider.GetRequiredService<IAppMessageService>();
+        IAppMessageService msgB = provider.GetRequiredService<IAppMessageService>();
         Assert.IsNotNull(msgA);
         Assert.AreSame(msgA, msgB, "IAppMessageService should be registered as singleton.");
     }

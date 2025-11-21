@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 using ArlaNatureConnect.WinUI.Commands;
 
 namespace ArlaNatureConnect.WinUI.ViewModels.Abstracts;

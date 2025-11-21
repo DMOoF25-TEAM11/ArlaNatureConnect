@@ -29,7 +29,7 @@ public abstract class Repository<TEntity> : IRepository<TEntity>
 
     public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var entity = await GetByIdAsync(id, cancellationToken);
+        TEntity? entity = await GetByIdAsync(id, cancellationToken);
         if (entity != null)
         {
             _dbSet.Remove(entity);

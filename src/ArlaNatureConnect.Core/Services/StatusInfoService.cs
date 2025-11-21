@@ -1,4 +1,3 @@
-using System.Threading; // Add this at the top
 using Microsoft.Data.SqlClient;
 
 namespace ArlaNatureConnect.Core.Services;

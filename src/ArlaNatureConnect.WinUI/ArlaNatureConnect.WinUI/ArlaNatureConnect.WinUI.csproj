@@ -18,7 +18,8 @@
       <Compile Remove="ViewModels\template.cs" />
     </ItemGroup>
     <ItemGroup>
-      <None Remove="View\Controls\MessageErrorSuccesUC.xaml" />
+      <None Remove="Views\Controls\MessageErrorSuccesUC.xaml" />
+      <None Remove="Views\Dialogs\AboutDialog.xaml" />
     </ItemGroup>
 
     <ItemGroup>
@@ -38,6 +39,12 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\ArlaNatureConnect.Infrastructure\ArlaNatureConnect.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Page Update="Views\Dialogs\AboutDialog.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </Page>
     </ItemGroup>
 
     <ItemGroup>

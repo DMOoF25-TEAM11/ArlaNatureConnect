@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentDialog
+    x:Class="ArlaNatureConnect.WinUI.Views.Dialogs.AboutDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ArlaNatureConnect.WinUI.Views.Dialogs"
+    xmlns:vm="using:ArlaNatureConnect.WinUI.ViewModels.Dialogs"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:dialogs="using:ArlaNatureConnect.WinUI.ViewModels.Dialogs" 
+    d:DataContext="{d:DesignInstance Type=dialogs:AboutViewModel}"
+    Title="Om Arla Nature Connect"
+    CloseButtonText="Luk"
+    mc:Ignorable="d">
+
+    <ContentDialog.DataContext>
+        <vm:AboutViewModel/>
+    </ContentDialog.DataContext>
+    
+    <Grid>
+        <StackPanel Spacing="8">
+            <TextBlock Text="Arla Nature Connect er et værktøj designet til at hjælpe landmænd med at administrere og rapportere deres miljø tiltag effektivt." TextWrapping="WrapWholeWords"/>
+            <TextBlock Text="Udviklet i samarbejde mellem Arla Foods, Martin Hersom Lindecronn, Mikkel Simon Ølting Jensen og Jens Tirsvad Nielsen " TextWrapping="WrapWholeWords"/>
+            <TextBlock Text="For support eller yderligere information, besøg venligst vores hjemmeside eller kontakt supportteamet." TextWrapping="WrapWholeWords"/>
+        </StackPanel>
+    </Grid>
+</ContentDialog>

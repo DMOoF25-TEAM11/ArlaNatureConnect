@@ -1,6 +1,5 @@
 using ArlaNatureConnect.Core.Services;
 using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
-using System;
 
 namespace ArlaNatureConnect.WinUI.ViewModels.Controls;
 

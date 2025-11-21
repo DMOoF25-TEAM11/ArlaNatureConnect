@@ -19,8 +19,8 @@ public class AppMessageService : IAppMessageService
     protected const string _confirmDeleteTitle = "Bekræft sletning af " + _entityNamePlaceholder;
     protected string _confirmDelete = "Er du sikker på, at du vil slette " + _entityNamePlaceholder + "?";
 
-    private IEnumerable<string> _statusMessages = Enumerable.Empty<string>();
-    private IEnumerable<string> _errorMessages = Enumerable.Empty<string>();
+    private IEnumerable<string> _statusMessages = [];
+    private IEnumerable<string> _errorMessages = [];
     #endregion
     #region Properties
     public string? EntityName { get; set; }
@@ -98,7 +98,7 @@ public class AppMessageService : IAppMessageService
         if (HasStatusMessages)
         {
             await Task.Delay(_infoMessageDuration);
-            var toRemove = msgs ?? Enumerable.Empty<string>();
+            IEnumerable<string> toRemove = msgs ?? Enumerable.Empty<string>();
             StatusMessages = StatusMessages.Where(m => !toRemove.Contains(m)).ToList();
         }
     }

@@ -1,24 +1,30 @@
 using ArlaNatureConnect.Core.Services;
 using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 
-namespace ArlaNatureConnect.WinUI.ViewModels;
+namespace ArlaNatureConnect.WinUI.ViewModels.Controls;
 
 public partial class MessageErrorSuccesUCViewModel : ViewModelBase
 {
     #region Fields
     private string _statusMessage = string.Empty;
     private string _errorMessage = string.Empty;
-    private readonly IAppMessageService _appMessageService;
+    private readonly IAppMessageService? _appMessageService;
     #endregion
     #region Fields Commands
     #endregion
     #region Event handlers
     #endregion
 
+    // Parameterless constructor required by XAML
+    public MessageErrorSuccesUCViewModel()
+    {
+        // Intentionally left empty so XAML can instantiate this ViewModel.
+    }
+
+    // Constructor for DI or runtime composition
     public MessageErrorSuccesUCViewModel(IAppMessageService appMessageService)
     {
-        _appMessageService = appMessageService ?? throw new ArgumentNullException(nameof(appMessageService));
-        _appMessageService.AddErrorMessage("loading");
+        _appMessageService = appMessageService;
         //_appMessageService.StatusMessageChanged += OnStatusMessageChanged;
         //_appMessageService.ErrorMessageChanged += OnErrorMessageChanged;
     }
