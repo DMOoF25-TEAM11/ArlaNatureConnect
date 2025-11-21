@@ -2,6 +2,7 @@ using System.Windows.Input;
 
 using ArlaNatureConnect.WinUI.Commands;
 using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
+using ArlaNatureConnect.WinUI.Views.Dialogs;
 
 using Microsoft.UI.Xaml;
 
@@ -46,7 +47,7 @@ public class MenuBarUCViewModel : ViewModelBase
     private async void OnAbout()
     {
         // Show about dialog
-        var dlg = new Views.Dialogs.AboutDialog();
+        AboutDialog dlg = new();
 
         // Safely get a XamlRoot for the dialog. Use helper on App which resolves the main window's content XamlRoot.
         XamlRoot? xr = App.MainWindowXamlRoot;

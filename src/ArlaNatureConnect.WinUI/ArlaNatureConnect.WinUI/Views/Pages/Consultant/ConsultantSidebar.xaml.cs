@@ -62,11 +62,11 @@ public sealed partial class ConsultantSidebar : UserControl
             return;
         }
 
-        if (Application.Current.Resources.TryGetValue("ArlaNavButton", out var navStyle) &&
-            Application.Current.Resources.TryGetValue("ArlaNavButtonActive", out var activeStyle))
+        if (Application.Current.Resources.TryGetValue("ArlaNavButton", out object navStyle) &&
+            Application.Current.Resources.TryGetValue("ArlaNavButtonActive", out object activeStyle))
         {
-            var navStyleTyped = navStyle as Microsoft.UI.Xaml.Style;
-            var activeStyleTyped = activeStyle as Microsoft.UI.Xaml.Style;
+            Microsoft.UI.Xaml.Style? navStyleTyped = navStyle as Microsoft.UI.Xaml.Style;
+            Microsoft.UI.Xaml.Style? activeStyleTyped = activeStyle as Microsoft.UI.Xaml.Style;
 
             // Reset all buttons to normal navigation style
             DashboardsButton.Style = navStyleTyped;

@@ -183,7 +183,8 @@ public class FarmerPageViewModel : NavigationViewModelBase
         try
         {
             // Get all roles to find Farmer role
-            IEnumerable<Role> allRoles = await _roleRepository.GetAllAsync(CancellationToken.None);
+            IEnumerable<Role> allRoles = await (_roleRepository?.GetAllAsync(CancellationToken.None) 
+                ?? Task.FromResult(Enumerable.Empty<Role>()));
             Role? farmerRole = allRoles.FirstOrDefault(r => 
                 r.Name.Equals("Farmer", StringComparison.OrdinalIgnoreCase) ||
                 r.Name.Equals("Landmand", StringComparison.OrdinalIgnoreCase));
@@ -195,7 +196,8 @@ public class FarmerPageViewModel : NavigationViewModelBase
             }
 
             // Get all persons
-            IEnumerable<Person> allPersons = await _personRepository.GetAllAsync(CancellationToken.None);
+            IEnumerable<Person> allPersons = await (_personRepository?.GetAllAsync(CancellationToken.None) 
+                ?? Task.FromResult(Enumerable.Empty<Person>()));
             
             // Filter by role and active status
             AvailablePersons = allPersons

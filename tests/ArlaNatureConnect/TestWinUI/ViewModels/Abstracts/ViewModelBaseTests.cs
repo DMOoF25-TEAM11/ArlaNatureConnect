@@ -5,6 +5,7 @@ using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 namespace TestWinUI.ViewModels.Abstracts;
 
 [TestClass]
+[SupportedOSPlatform("windows10.0.22621.0")]
 public sealed class ViewModelBaseTests
 {
     private sealed class TestViewModel : ViewModelBase
@@ -30,8 +31,8 @@ public sealed class ViewModelBaseTests
     [TestMethod]
     public void OnPropertyChanged_WithExplicitName_RaisesEventWithThatName()
     {
-        var vm = new TestViewModel();
-        var received = new List<string?>();
+        TestViewModel vm = new TestViewModel();
+        List<string?> received = new List<string?>();
         vm.PropertyChanged += (s, e) => received.Add(e.PropertyName);
 
         vm.RaiseWithExplicit("ExplicitName");
@@ -43,8 +44,8 @@ public sealed class ViewModelBaseTests
     [TestMethod]
     public void OnPropertyChanged_CalledFromMethod_RaisesEventWithCallerName()
     {
-        var vm = new TestViewModel();
-        var received = new List<string?>();
+        TestViewModel vm = new TestViewModel();
+        List<string?> received = new List<string?>();
         vm.PropertyChanged += (s, e) => received.Add(e.PropertyName);
 
         vm.RaiseWithoutName();
@@ -56,8 +57,8 @@ public sealed class ViewModelBaseTests
     [TestMethod]
     public void OnPropertyChanged_CalledFromSetter_RaisesEventWithPropertyName()
     {
-        var vm = new TestViewModel();
-        var received = new List<string?>();
+        TestViewModel vm = new TestViewModel();
+        List<string?> received = new List<string?>();
         vm.PropertyChanged += (s, e) => received.Add(e.PropertyName);
 
         vm.SetNameProp("value");
@@ -70,7 +71,7 @@ public sealed class ViewModelBaseTests
     [TestMethod]
     public void OnPropertyChanged_MultipleHandlers_AllHandlersInvoked()
     {
-        var vm = new TestViewModel();
+        TestViewModel vm = new TestViewModel();
         int calls = 0;
         void Handler1(object? s, System.ComponentModel.PropertyChangedEventArgs e) => calls++;
         void Handler2(object? s, System.ComponentModel.PropertyChangedEventArgs e) => calls++;
@@ -89,7 +90,7 @@ public sealed class ViewModelBaseTests
     [TestMethod]
     public void OnPropertyChanged_NoHandlers_DoesNotThrow()
     {
-        var vm = new TestViewModel();
+        TestViewModel vm = new TestViewModel();
 
         // Should not throw even if there are no subscribers
         vm.RaiseWithExplicit("NoOneListening");

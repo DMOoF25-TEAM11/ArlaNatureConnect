@@ -20,14 +20,14 @@ public sealed partial class ConsultantNatureCheck : UserControl
         // UI polish: Soft shadow (DropShadow) behind main card and search field
         if (TableCard != null)
         {
-            var shadow = new Microsoft.UI.Xaml.Media.ThemeShadow();
+            Microsoft.UI.Xaml.Media.ThemeShadow shadow = new Microsoft.UI.Xaml.Media.ThemeShadow();
             TableCard.Shadow = shadow;
         }
         
         // UI polish: Subtle shadow on search field
         if (SearchBorder != null)
         {
-            var searchShadow = new Microsoft.UI.Xaml.Media.ThemeShadow();
+            Microsoft.UI.Xaml.Media.ThemeShadow searchShadow = new Microsoft.UI.Xaml.Media.ThemeShadow();
             SearchBorder.Shadow = searchShadow;
         }
     }

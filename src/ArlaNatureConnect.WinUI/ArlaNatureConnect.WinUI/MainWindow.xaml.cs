@@ -47,7 +47,7 @@ public sealed partial class MainWindow : Window
             try
             {
                 // Center the window in the display work area
-                var displayArea = DisplayArea.GetFromWindowId(windowId, DisplayAreaFallback.Primary);
+                DisplayArea displayArea = DisplayArea.GetFromWindowId(windowId, DisplayAreaFallback.Primary);
                 if (displayArea != null)
                 {
                     RectInt32 work = displayArea.WorkArea;
