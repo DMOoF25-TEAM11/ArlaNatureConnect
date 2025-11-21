@@ -32,7 +32,7 @@ namespace ArlaNatureConnect.WinUI.Converters
         {
             if (value is Visibility v)
             {
-                var result = v == Visibility.Visible;
+                bool result = v == Visibility.Visible;
                 if (parameter != null)
                 {
                     result = !result;

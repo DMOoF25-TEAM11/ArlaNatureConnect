@@ -15,6 +15,11 @@ public class StatusBarUCViewModel : ViewModelBase
     #region Event handlers
     #endregion
 
+    public StatusBarUCViewModel()
+    {
+        
+    }
+
     public StatusBarUCViewModel(IStatusInfoServices statusInfoServices)
     {
         _statusInfoServices = statusInfoServices;

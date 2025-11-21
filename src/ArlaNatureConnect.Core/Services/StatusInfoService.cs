@@ -91,7 +91,7 @@ public partial class StatusInfoService : IStatusInfoServices, IDisposable
     /// </summary>
     public IDisposable BeginLoading()
     {
-        var newVal = Interlocked.Increment(ref _loadingCount);
+        int newVal = Interlocked.Increment(ref _loadingCount);
         if (newVal == 1)
         {
             OnStatusInfoChanged();
@@ -163,12 +163,12 @@ public partial class StatusInfoService : IStatusInfoServices, IDisposable
             }
 
             // ensure a short connect timeout so UI isn't blocked waiting for long network timeouts
-            var builder = new SqlConnectionStringBuilder(cs)
+            SqlConnectionStringBuilder builder = new(cs)
             {
                 ConnectTimeout = 2
             };
 
-            using var conn = new SqlConnection(builder.ConnectionString);
+            using SqlConnection conn = new(builder.ConnectionString);
             try
             {
                 // attempt to open connection

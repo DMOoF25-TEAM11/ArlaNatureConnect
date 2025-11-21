@@ -49,7 +49,7 @@ public sealed partial class ArlaEmployeePage : Page
     {
         // Load default content view when page is fully loaded
         // This ensures ContentPresenter is ready to receive content
-        var tag = ViewModel.CurrentNavigationTag;
+        string tag = ViewModel.CurrentNavigationTag;
         if (string.IsNullOrEmpty(tag))
         {
             tag = "Dashboards"; // Default fallback

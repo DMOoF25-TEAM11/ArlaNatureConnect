@@ -38,7 +38,7 @@ public sealed partial class StartWindow : Window
         try
         {
             // Try packaged-app URI first (works only if app is packaged)
-            var uri = new Uri("ms-appx:///Assets/startUpImage.jpg");
+            Uri uri = new Uri("ms-appx:///Assets/startUpImage.jpg");
             try
             {
                 StorageFile f = await StorageFile.GetFileFromApplicationUriAsync(uri);
@@ -50,7 +50,7 @@ public sealed partial class StartWindow : Window
             }
 
             // Fallback for unpackaged / desktop scenarios: check output folder
-            var filePath = System.IO.Path.Combine(AppContext.BaseDirectory ?? string.Empty, "Assets", "startUpImage.jpg");
+            string filePath = System.IO.Path.Combine(AppContext.BaseDirectory ?? string.Empty, "Assets", "startUpImage.jpg");
             if (System.IO.File.Exists(filePath))
             {
                 System.Diagnostics.Debug.WriteLine($"Found (fs): {filePath}");
@@ -98,7 +98,7 @@ public sealed partial class StartWindow : Window
 
     private async Task ShowConnectionDialogAndSaveAsync()
     {
-        var dialog = new ConnectionDialog();
+        ConnectionDialog dialog = new ConnectionDialog();
         // ensure the dialog is hosted correctly
         dialog.XamlRoot = (this.Content as FrameworkElement)?.XamlRoot;
 
@@ -107,7 +107,7 @@ public sealed partial class StartWindow : Window
         ContentDialogResult result = await dialog.ShowAsync();
         if (result == ContentDialogResult.Primary)
         {
-            var cs = vm.ConnectionString?.Trim();
+            string? cs = vm.ConnectionString?.Trim();
             if (!string.IsNullOrEmpty(cs))
             {
                 await _connService.SaveAsync(cs);

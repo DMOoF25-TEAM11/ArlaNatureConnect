@@ -1,3 +1,5 @@
+using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 using ArlaNatureConnect.Core.Abstract;
@@ -85,13 +87,13 @@ public abstract class CRUDViewModelBase<TRepos, TEntity> : ListViewModelBase<TRe
     public new async Task LoadAsync(Guid id)
     {
         // report loading status (BeginLoading should return an IDisposable that clears the loading flag)
-        using var loading = _statusInfoServices.BeginLoading();
+        using IDisposable loading = _statusInfoServices.BeginLoading();
 
         try
         {
             // Call repository inside try so synchronous exceptions are caught here
-            var loadTask = Repository.GetByIdAsync(id);
-            var entity = await loadTask;
+            Task<TEntity?> loadTask = Repository.GetByIdAsync(id);
+            TEntity? entity = await loadTask;
 
             // Set the backing Entity and invoke load hook if found
             base.Entity = entity;

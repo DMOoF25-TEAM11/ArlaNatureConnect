@@ -1,4 +1,7 @@
 using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ArlaNatureConnect.WinUI.ViewModels;
 
@@ -237,7 +240,7 @@ public sealed partial class ConnectionDialogViewModel : ViewModelBase
         try
         {
             _suppressUpdate = true;
-            var parts = new List<string>();
+            List<string> parts = new List<string>();
             if (!string.IsNullOrWhiteSpace(ServerName))
             {
                 parts.Add($"Server={ServerName}");
@@ -283,7 +286,7 @@ public sealed partial class ConnectionDialogViewModel : ViewModelBase
 
             if (string.IsNullOrWhiteSpace(connectionString)) return;
 
-            var entries = connectionString
+            Dictionary<string, string> entries = connectionString
                 .Split(';', StringSplitOptions.RemoveEmptyEntries)
                 .Select(p =>
                 {
@@ -300,12 +303,12 @@ public sealed partial class ConnectionDialogViewModel : ViewModelBase
                 ServerName = server;
             }
 
-            if (entries.TryGetValue("Database", out var database) || entries.TryGetValue("Initial Catalog", out database))
+            if (entries.TryGetValue("Database", out string? database) || entries.TryGetValue("Initial Catalog", out database))
             {
                 DatabaseName = database;
             }
 
-            if (entries.TryGetValue("Integrated Security", out var integ) || entries.TryGetValue("Trusted_Connection", out integ))
+            if (entries.TryGetValue("Integrated Security", out string? integ) || entries.TryGetValue("Trusted_Connection", out integ))
             {
                 IntegratedSecurity = string.Equals(integ, "True", StringComparison.OrdinalIgnoreCase) || string.Equals(integ, "SSPI", StringComparison.OrdinalIgnoreCase);
             }
@@ -314,22 +317,22 @@ public sealed partial class ConnectionDialogViewModel : ViewModelBase
                 IntegratedSecurity = false;
             }
 
-            if (entries.TryGetValue("User ID", out var user))
+            if (entries.TryGetValue("User ID", out string? user))
             {
                 UserName = user;
             }
 
-            if (entries.TryGetValue("Password", out var pwd))
+            if (entries.TryGetValue("Password", out string? pwd))
             {
                 Password = pwd;
             }
 
-            if (entries.TryGetValue("Encrypt", out var enc))
+            if (entries.TryGetValue("Encrypt", out string? enc))
             {
                 Encrypt = string.Equals(enc, "True", StringComparison.OrdinalIgnoreCase);
             }
 
-            if (entries.TryGetValue("TrustServerCertificate", out var tsc))
+            if (entries.TryGetValue("TrustServerCertificate", out string? tsc))
             {
                 TrustServerCertificate = string.Equals(tsc, "True", StringComparison.OrdinalIgnoreCase);
             }
