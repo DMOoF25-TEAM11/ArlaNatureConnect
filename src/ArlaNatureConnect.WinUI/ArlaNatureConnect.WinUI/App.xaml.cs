@@ -73,13 +73,15 @@ public partial class App : Application
             .ConfigureServices((context, services) =>
             {
                 services
-                    .AddCoreServices()
+                    //.AddCoreServices()
                     .AddInfrastructure()
                     .AddSingleton<NavigationHandler>()
                     .AddSingleton<MainWindow>()
+                    .AddSingleton<ArlaNatureConnect.WinUI.ViewModels.Controls.StatusBarUCViewModel>()
+                    ;
 
-                    // register viewmodels used by controls so controls can resolve a runtime DataContext
-                    .AddSingleton<ArlaNatureConnect.WinUI.ViewModels.Controls.StatusBarUCViewModel>();
+                // register viewmodels used by controls so controls can resolve a runtime DataContext
+                //.AddSingleton<ArlaNatureConnect.WinUI.ViewModels.Controls.StatusBarUCViewModel>();
             })
             .Build();
 

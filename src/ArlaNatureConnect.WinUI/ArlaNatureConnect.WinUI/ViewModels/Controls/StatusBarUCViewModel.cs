@@ -17,19 +17,19 @@ public class StatusBarUCViewModel : ViewModelBase
 
     public StatusBarUCViewModel()
     {
-        
+        // Parameterless ctor left for design-time only; avoid accessing service members here.
     }
 
     public StatusBarUCViewModel(IStatusInfoServices statusInfoServices)
     {
-        _statusInfoServices = statusInfoServices;
-        using (_statusInfoServices.BeginLoading())
-        {
-            // perform any async initialization here
-            InitializeAsync().ConfigureAwait(false);
-            // subscribe to status changes so the viewmodel can notify the view
-            _statusInfoServices.StatusInfoChanged += StatusInfoServices_StatusInfoChanged;
-        }
+        _statusInfoServices = statusInfoServices ?? throw new ArgumentNullException(nameof(statusInfoServices));
+
+        // subscribe to status changes so the viewmodel can notify the view
+        _statusInfoServices.StatusInfoChanged += StatusInfoServices_StatusInfoChanged;
+
+        // Start async initialization without blocking the constructor.
+        // The actual loading scope is inside InitializeAsync so BeginLoading will cover the async work.
+        _ = InitializeAsync();
     }
 
     #region Properties
@@ -39,7 +39,7 @@ public class StatusBarUCViewModel : ViewModelBase
     {
         get
         {
-            return _statusInfoServices.IsLoading;
+            return _statusInfoServices?.IsLoading ?? false;
         }
     }
 
@@ -48,7 +48,7 @@ public class StatusBarUCViewModel : ViewModelBase
     {
         get
         {
-            return _statusInfoServices.HasDbConnection;
+            return _statusInfoServices?.HasDbConnection ?? false;
         }
     }
 
@@ -92,7 +92,10 @@ public class StatusBarUCViewModel : ViewModelBase
         using (_statusInfoServices.BeginLoading())
         {
             // perform async initialization here
-            await Task.Delay(200); // example
+            await Task.Delay(200).ConfigureAwait(false);
+
+            // ensure UI is updated with current status values after initialization
+            StatusInfoServices_StatusInfoChanged(this, EventArgs.Empty);
         }
     }
 

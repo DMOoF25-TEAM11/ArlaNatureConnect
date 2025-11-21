@@ -74,7 +74,7 @@ dotnet_diagnostic.IDE0008.severity = warning
 # Keep other sensible defaults
 dotnet_sort_system_directives_first = true
 csharp_style_namespace_declarations = file_scoped:suggestion
-csharp_prefer_braces = true:suggestion
+csharp_prefer_braces = multiple:suggestion
 
 # Type members
 dotnet_hide_advanced_members = false

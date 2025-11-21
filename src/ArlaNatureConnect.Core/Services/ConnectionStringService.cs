@@ -1,6 +1,7 @@
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
+using System.Diagnostics;
 
 namespace ArlaNatureConnect.Core.Services;
 
@@ -24,47 +25,59 @@ public class ConnectionStringService : IConnectionStringService
     {
         if (!File.Exists(_filePath)) return null;
 
-        // Wait for the file to be unlocked, but only up to a short timeout.
-        // Start a task that polls until the file can be opened for exclusive access.
-        Task waitForUnlockTask = WaitUntilFileUnlockedAsync(_filePath);
-        Task timeoutTask = Task.Delay(3000);
+        // Try to open and read the file directly with sharing allowed.
+        // If the file is temporarily locked, retry until timeout.
+        TimeSpan timeout = TimeSpan.FromSeconds(5);
+        using CancellationTokenSource cts = new CancellationTokenSource(timeout);
+        CancellationToken ct = cts.Token;
+        TimeSpan delay = TimeSpan.FromMilliseconds(100);
 
-        Task finished = await Task.WhenAny(waitForUnlockTask, timeoutTask);
-        if (finished == timeoutTask)
+        while (true)
         {
-            throw new IOException("Timed out waiting for connection file to be unlocked.");
-        }
-
-        // Try reading with a FileStream using FileShare.ReadWrite to avoid hangs if another process briefly has the file open.
-        try
-        {
-            byte[] encrypted;
-            using (FileStream fs = new(_filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 4096, useAsync: true))
+            ct.ThrowIfCancellationRequested();
+            try
             {
+                // Allow others to read/write while we read to avoid blocking writers.
+                using FileStream fs = new(_filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 4096, useAsync: true);
                 if (fs.Length == 0) return null;
-                encrypted = new byte[fs.Length];
+                byte[] encrypted = new byte[fs.Length];
                 int offset = 0;
                 while (offset < encrypted.Length)
                 {
-                    int read = await fs.ReadAsync(encrypted, offset, encrypted.Length - offset);
+                    int read = await fs.ReadAsync(encrypted.AsMemory(offset, encrypted.Length - offset)).ConfigureAwait(false);
                     if (read == 0) break;
                     offset += read;
                 }
+                return await DecryptAsync(encrypted).ConfigureAwait(false);
             }
-
-            return await DecryptAsync(encrypted);
-        }
-        catch
-        {
-            throw new InvalidOperationException("Failed to read or decrypt the connection string.");
+            catch (OperationCanceledException)
+            {
+                throw new IOException("Timed out waiting to read the connection file.");
+            }
+            catch (IOException)
+            {
+                // File currently locked by a writer -> wait and retry
+                try
+                {
+                    await Task.Delay(delay, ct).ConfigureAwait(false);
+                }
+                catch (OperationCanceledException)
+                {
+                    throw new IOException("Timed out waiting to read the connection file.");
+                }
+            }
+            catch
+            {
+                throw new InvalidOperationException("Failed to read or decrypt the connection string.");
+            }
         }
     }
 
 
     public async Task SaveAsync(string connectionString)
     {
-        byte[] encrypted = await EncryptAsync(connectionString);
-        await File.WriteAllBytesAsync(_filePath, encrypted);
+        byte[] encrypted = await EncryptAsync(connectionString).ConfigureAwait(false);
+        await File.WriteAllBytesAsync(_filePath, encrypted).ConfigureAwait(false);
     }
 
 
@@ -138,15 +151,16 @@ public class ConnectionStringService : IConnectionStringService
         }
         else
         {
-            return DecryptNonWinodwsOsAsync(encryptedData);
+            return DecryptNonWindowsOsAsync(encryptedData);
         }
 
     }
 
-    private static Task<string?> DecryptNonWinodwsOsAsync(byte[] encryptedData)
+    private static Task<string?> DecryptNonWindowsOsAsync(byte[] encryptedData)
     {
         try
         {
+            Debug.WriteLine("Using AES decryption for connection string on non-Windows OS.");
             byte[] key = DeriveKey();
             using Aes aes = Aes.Create();
             aes.Key = key;
@@ -190,31 +204,5 @@ public class ConnectionStringService : IConnectionStringService
 
         // Use SHA256 to produce a32-byte key. This is deterministic but tied to user+machine+app path.
         return SHA256.HashData(Encoding.UTF8.GetBytes(sb.ToString()));
-    }
-
-    // Poll until the file can be opened for exclusive access. Returns when unlocked.
-    private static async Task WaitUntilFileUnlockedAsync(string path)
-    {
-        if (!File.Exists(path)) return;
-
-        while (true)
-        {
-            try
-            {
-                // Try to open with no sharing. If another process has an exclusive lock this will throw.
-                using FileStream fs = new(path, FileMode.Open, FileAccess.Read, FileShare.None);
-                return; // succeeded -> file is not locked
-            }
-            catch (IOException)
-            {
-                // file is locked by another process
-                await Task.Delay(100);
-            }
-            catch
-            {
-                // Other errors (e.g., access denied) - treat as locked for polling purposes
-                await Task.Delay(100);
-            }
-        }
     }
 }

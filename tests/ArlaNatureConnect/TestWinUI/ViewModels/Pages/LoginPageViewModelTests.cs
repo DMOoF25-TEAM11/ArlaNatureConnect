@@ -1,7 +1,10 @@
 using ArlaNatureConnect.Domain.Entities;
 using ArlaNatureConnect.WinUI.Services;
 using ArlaNatureConnect.WinUI.ViewModels.Pages;
+
 using Moq;
+
+using System.Runtime.Versioning;
 
 namespace TestWinUI.ViewModels.Pages;
 
@@ -15,6 +18,7 @@ namespace TestWinUI.ViewModels.Pages;
 /// - Invalid or empty role names are handled gracefully
 /// </summary>
 [TestClass]
+[SupportedOSPlatform("windows10.0.22621.0")]
 public sealed class LoginPageViewModelTests
 {
     private Mock<NavigationHandler> _mockNavigationHandler = null!;
