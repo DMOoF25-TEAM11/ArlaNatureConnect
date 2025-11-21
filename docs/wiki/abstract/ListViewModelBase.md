@@ -13,7 +13,8 @@
 
 ## Short summary
 
-`ListViewModelBase<TRepos, TEntity>` is an abstract base class for view-models that present or edit a single entity retrieved from a repository. It centralizes common list/view logic such as holding the current `Entity`, exposing the underlying `Repository`, and providing an asynchronous `LoadAsync(Guid)` pattern that reports loading status and surfaces errors through application services.
+`ListViewModelBase<TRepos, TEntity>` is an abstract base class for view-models that present or edit a single entity retrieved from a repository.
+It centralizes common list/view logic such as holding the current `Entity`, exposing the underlying `Repository`, and providing an asynchronous `LoadAsync(Guid)` pattern that reports loading status and surfaces errors through application services.
 
 ## Source
 
@@ -45,14 +46,14 @@
 ### 1) Simple derived list view-model
 
 ```csharp
-public class AnimalViewModel : ListViewModelBase<IAnimalRepository, Animal>
+public class FarmerViewModel : ListViewModelBase<IFarmerRepository, Farmer>
 {
-    public AnimalViewModel(IStatusInfoServices statusInfoServices, IAppMessageService appMessageService, IAnimalRepository repository)
+    public FarmerViewModel(IStatusInfoServices statusInfoServices, IAppMessageService appMessageService, IFarmerRepository repository)
         : base(statusInfoServices, appMessageService, repository)
     {
     }
 
-    // Additional properties and commands specific to Animal view
+    // Additional properties and commands specific to Farmer view
 }
 ```
 
@@ -60,9 +61,9 @@ public class AnimalViewModel : ListViewModelBase<IAnimalRepository, Animal>
 
 ```csharp
 // In a page or when navigating to the view:
-await animalViewModel.LoadAsync(animalId);
+await farmerViewModel.LoadAsync(farmerId);
 
-// After the call, animalViewModel.Entity will be populated (or null if not found).
+// After the call, farmerViewModel.Entity will be populated (or null if not found).
 // Any errors are reported via the configured IAppMessageService; loading UI is handled by IStatusInfoServices.
 ```
 

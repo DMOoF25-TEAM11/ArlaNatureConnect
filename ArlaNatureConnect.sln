@@ -41,6 +41,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "services", "services", "{47
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "abstract", "abstract", "{1B329CD9-CD2D-4C29-BD30-81355E41C46B}"
 	ProjectSection(SolutionItems) = preProject
+		docs\wiki\abstract\CRUDViewModelBase.md = docs\wiki\abstract\CRUDViewModelBase.md
 		docs\wiki\abstract\ListViewModelBase.md = docs\wiki\abstract\ListViewModelBase.md
 		docs\wiki\abstract\ViewModelBase.md = docs\wiki\abstract\ViewModelBase.md
 	EndProjectSection

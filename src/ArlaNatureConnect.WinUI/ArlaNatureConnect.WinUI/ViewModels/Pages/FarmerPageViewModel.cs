@@ -39,7 +39,7 @@ public class FarmerPageViewModel : NavigationViewModelBase
 
     #endregion
 
-    public FarmerPageViewModel()
+    public FarmerPageViewModel() : base()
     {
             
     }
