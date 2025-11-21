@@ -14,8 +14,6 @@ public partial class StatusInfoService : IStatusInfoServices, IDisposable
     #region Fields
     private int _loadingCount;
     private bool _hasDbConnection;
-    private readonly IConnectionStringService? _connectionStringService;
-    private readonly Timer? _timer;
     private bool _disposed;
     #endregion
 
@@ -23,17 +21,10 @@ public partial class StatusInfoService : IStatusInfoServices, IDisposable
     public event EventHandler? StatusInfoChanged;
     #endregion
 
-    public StatusInfoService(IConnectionStringService? connectionStringService = null)
+    public StatusInfoService()
     {
-        _connectionStringService = connectionStringService;
-
-        // Start a periodic timer to check DB connectivity every 10 seconds if a connection-string service is available
-        if (_connectionStringService != null)
-        {
-            // due to TimerCallback signature we use an async void lambda
-            _timer = new Timer(async _ => await CheckDbConnectionAsync().ConfigureAwait(false), null, TimeSpan.Zero, TimeSpan.FromSeconds(10));
-        }
     }
+
 
     #region Properties
 
@@ -120,6 +111,15 @@ public partial class StatusInfoService : IStatusInfoServices, IDisposable
 
 
     /// <summary>
+    /// Disposes the StatusInfoService, releasing any resources.
+    /// </summary>
+    public void Dispose()
+    {
+        if (_disposed) return;
+        _disposed = true;
+    }
+
+    /// <summary>
     /// Provides a disposable object that executes a specified action when disposed.
     /// </summary>
     /// <remarks>Use this class to ensure that a particular action is performed when the object is disposed,
@@ -149,57 +149,6 @@ public partial class StatusInfoService : IStatusInfoServices, IDisposable
                 }
             }
         }
-    }
-
-    private async Task CheckDbConnectionAsync()
-    {
-        try
-        {
-            string? cs = await _connectionStringService!.ReadAsync();
-            if (string.IsNullOrWhiteSpace(cs))
-            {
-                HasDbConnection = false;
-                return;
-            }
-
-            // ensure a short connect timeout so UI isn't blocked waiting for long network timeouts
-            SqlConnectionStringBuilder builder = new(cs)
-            {
-                ConnectTimeout = 2
-            };
-
-            using SqlConnection conn = new(builder.ConnectionString);
-            try
-            {
-                // attempt to open connection
-                await conn.OpenAsync();
-                HasDbConnection = true;
-            }
-            catch
-            {
-                HasDbConnection = false;
-            }
-            finally
-            {
-                try { await conn.CloseAsync(); } catch { }
-            }
-        }
-        catch
-        {
-            // if anything fails treat as no connection but don't throw
-            HasDbConnection = false;
-        }
-    }
-
-    public void Dispose()
-    {
-        if (_disposed) return;
-        _disposed = true;
-        try
-        {
-            _timer?.Dispose();
-        }
-        catch { }
     }
 
     #endregion

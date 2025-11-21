@@ -1,21 +1,24 @@
 using ArlaNatureConnect.WinUI.ViewModels;
 
+using System.Runtime.Versioning;
+
 namespace ArlaNatureConnect.WinUI.Tests;
 
 [TestClass]
+[SupportedOSPlatform("windows10.0.22621.0")]
 public class ConnectionDialogViewModelTests
 {
     [TestMethod]
     public void DefaultConstructor_SetsDefaultConnectionString()
     {
-        var vm = new ConnectionDialogViewModel();
+        ConnectionDialogViewModel vm = new ConnectionDialogViewModel();
         Assert.AreEqual("Integrated Security=True;Encrypt=False;TrustServerCertificate=False;", vm.ConnectionString);
     }
 
     [TestMethod]
     public void Properties_ComposeConnectionString_WhenIntegratedSecurityFalse()
     {
-        var vm = new ConnectionDialogViewModel();
+        ConnectionDialogViewModel vm = new ConnectionDialogViewModel();
         vm.ServerName = "localhost";
         vm.DatabaseName = "db";
         vm.IntegratedSecurity = false;
@@ -32,7 +35,7 @@ public class ConnectionDialogViewModelTests
     [TestMethod]
     public void SettingConnectionString_ParsesFieldsCorrectly()
     {
-        var vm = new ConnectionDialogViewModel();
+        ConnectionDialogViewModel vm = new ConnectionDialogViewModel();
         vm.ConnectionString = "Data Source=server;Initial Catalog=mydb;User ID=joe;Password=secret;Encrypt=True;TrustServerCertificate=False;";
 
         Assert.AreEqual("server", vm.ServerName);
@@ -47,7 +50,7 @@ public class ConnectionDialogViewModelTests
     [TestMethod]
     public void ResetFields_ClearsFieldsAndSetsDefaults()
     {
-        var vm = new ConnectionDialogViewModel();
+        ConnectionDialogViewModel vm = new ConnectionDialogViewModel();
         vm.ServerName = "x";
         vm.DatabaseName = "y";
         vm.IntegratedSecurity = false;

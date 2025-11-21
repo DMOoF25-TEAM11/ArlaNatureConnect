@@ -13,20 +13,8 @@ namespace ArlaNatureConnect.WinUI.Views.Controls;
 /// </summary>
 public sealed partial class StatusBarUC : UserControl
 {
-    private readonly IStatusInfoServices _statusInfoServices;
-
     public StatusBarUC()
     {
-        this.InitializeComponent();
-        if (App.HostInstance != null)
-        {
-            this.DataContext = App.HostInstance.Services.GetService<StatusBarUCViewModel>();
-            _statusInfoServices = App.HostInstance.Services.GetRequiredService<IStatusInfoServices>();
-        }
-        else
-        {
-            // Handle the case where HostInstance is null, e.g., throw or assign a default/mock
-            throw new InvalidOperationException("App.HostInstance is not initialized.");
-        }
+        InitializeComponent();
     }
 }
