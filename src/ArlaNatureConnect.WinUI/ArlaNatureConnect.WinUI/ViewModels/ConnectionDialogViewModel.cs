@@ -241,14 +241,15 @@ public sealed partial class ConnectionDialogViewModel : ViewModelBase
         {
             _suppressUpdate = true;
             List<string> parts = new List<string>();
+            //string authType = _integratedSecurity ? "\"WindowsAuth\": " : "SQL Server Authentication";
             if (!string.IsNullOrWhiteSpace(ServerName))
             {
-                parts.Add($"Server={ServerName}");
+                parts.Add($"Data Source={ServerName}");
             }
 
             if (!string.IsNullOrWhiteSpace(DatabaseName))
             {
-                parts.Add($"Database={DatabaseName}");
+                parts.Add($"Initial Catalog={DatabaseName}");
             }
 
             if (IntegratedSecurity)
