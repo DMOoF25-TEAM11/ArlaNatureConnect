@@ -8,8 +8,10 @@ namespace ArlaNatureConnect.Infrastructure.Repositories;
 public abstract class Repository<TEntity> : IRepository<TEntity>
     where TEntity : class
 {
+    #region fields
     protected readonly AppDbContext _context;
     protected readonly DbSet<TEntity> _dbSet;
+    #endregion
 
     public Repository(AppDbContext context)
     {
@@ -17,6 +19,7 @@ public abstract class Repository<TEntity> : IRepository<TEntity>
         _dbSet = context.Set<TEntity>();
     }
 
+    #region CRUD Operations
     public async Task AddAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
         await _dbSet.AddAsync(entity, cancellationToken);
@@ -51,4 +54,5 @@ public abstract class Repository<TEntity> : IRepository<TEntity>
         _dbSet.Update(entity);
         await Task.CompletedTask;
     }
+    #endregion
 }
