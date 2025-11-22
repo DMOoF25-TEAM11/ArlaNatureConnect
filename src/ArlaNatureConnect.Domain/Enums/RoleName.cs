@@ -8,6 +8,6 @@ public class RoleName
 {
     public const string Farmer = "Farmer";
     public const string Consultant = "Consultant";
-    public const string SuperAdmin = "Employee";
+    public const string Employee = "Employee";
     public const string Admin = "Admin";
 }
