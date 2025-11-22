@@ -2,6 +2,7 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Diagnostics;
+using Microsoft.Data.SqlClient;
 
 namespace ArlaNatureConnect.Core.Services;
 
@@ -19,7 +20,6 @@ public class ConnectionStringService : IConnectionStringService
     }
 
     public Task<bool> ExistsAsync() => Task.FromResult(File.Exists(_filePath));
-
 
     public async Task<string?> ReadAsync()
     {
@@ -76,6 +76,9 @@ public class ConnectionStringService : IConnectionStringService
 
     public async Task SaveAsync(string connectionString)
     {
+        if (!await CanConnectionStringConnect(connectionString).ConfigureAwait(false))
+            throw new InvalidOperationException("Cannot connect to the database with the provided connection string.");
+
         byte[] encrypted = await EncryptAsync(connectionString).ConfigureAwait(false);
         await File.WriteAllBytesAsync(_filePath, encrypted).ConfigureAwait(false);
     }
@@ -187,7 +190,7 @@ public class ConnectionStringService : IConnectionStringService
         catch
         {
             return Task.FromResult<string?>(null);
-        }
+        }     
     }
     #endregion
 
@@ -204,5 +207,42 @@ public class ConnectionStringService : IConnectionStringService
 
         // Use SHA256 to produce a32-byte key. This is deterministic but tied to user+machine+app path.
         return SHA256.HashData(Encoding.UTF8.GetBytes(sb.ToString()));
+    }
+
+    public async Task<bool> CanConnectionStringConnect(string connectionString)
+    {
+        if (string.IsNullOrWhiteSpace(connectionString))
+        { 
+            Debug.WriteLine("Connection string is null or empty.");
+            return false;
+        }
+
+        // Quick validation: ensure a data source is present and that we can open a connection
+        SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(connectionString);
+        if (string.IsNullOrWhiteSpace(builder.DataSource))
+        {
+            Debug.WriteLine("Connection string is missing a server/data source. Please configure a valid SQL Server instance.");
+            return false;
+        }
+
+        // Ensure a short timeout for the validation attempt
+        int originalTimeout = builder.ConnectTimeout;
+        if (originalTimeout <= 0 || originalTimeout > 10)
+        {
+            builder.ConnectTimeout = 5;
+        }
+
+        try
+        {
+            using SqlConnection conn = new SqlConnection(builder.ConnectionString);
+            await conn.OpenAsync().ConfigureAwait(false);
+            await conn.CloseAsync().ConfigureAwait(false);
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Connection string validation failed: {ex}");
+            return false;
+        }
+        return true;
     }
 }

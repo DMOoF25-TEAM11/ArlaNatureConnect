@@ -45,33 +45,65 @@ public sealed class ConnectionStringServiceTests
     }
 
     [TestMethod]
-    public async Task SaveAsync_Then_ReadAsync_Returns_Same_String()
+    public async Task SaveAsync_Throws_When_CannotConnect()
     {
+        // SaveAsync calls CanConnectionStringConnect; ensure it throws when connection cannot be validated.
         ConnectionStringService svc = new();
         TryOverrideServiceFile(svc);
 
-        await svc.SaveAsync(_connectionString);
+        try
+        {
+            await svc.SaveAsync("");
+            Assert.Fail("SaveAsync should throw InvalidOperationException for empty connection string.");
+        }
+        catch (InvalidOperationException)
+        {
+            // expected
+        }
 
+        try
+        {
+            await svc.SaveAsync("Server=;DataSource=;");
+            Assert.Fail("SaveAsync should throw InvalidOperationException for invalid connection string.");
+        }
+        catch (InvalidOperationException)
+        {
+            // expected
+        }
+    }
+
+    [TestMethod]
+    public async Task WriteEncryptedFile_Then_ReadAsync_Returns_Same_String()
+    {
+        // Instead of calling SaveAsync (which validates by attempting a DB connection),
+        // use the internal EncryptAsync method to produce encrypted bytes and write them
+        // to the target file so ReadAsync can decrypt them. This avoids dependency on a DB during tests.
+        ConnectionStringService svc = new();
+        TryOverrideServiceFile(svc);
+
+        // Use reflection to call the static internal EncryptAsync
+        Type type = typeof(ConnectionStringService);
+        MethodInfo? encryptMethod = type.GetMethod("EncryptAsync", BindingFlags.NonPublic | BindingFlags.Static)
+                             ?? type.GetMethod("EncryptNonWindowsOsAsync", BindingFlags.NonPublic | BindingFlags.Static);
+        Assert.IsNotNull(encryptMethod, "Encrypt method should exist");
+
+        object encryptTaskObj = encryptMethod!.Invoke(null, new object[] { _connectionString })!;
+        byte[] encrypted = await (Task<byte[]>)encryptTaskObj;
+
+        // Write the encrypted bytes directly to the service file path
         FieldInfo? field = typeof(ConnectionStringService).GetField("_filePath", BindingFlags.Instance | BindingFlags.NonPublic);
         Assert.IsNotNull(field, "_filePath field should exist on ConnectionStringService.");
         string? path = field!.GetValue(svc) as string;
         Assert.IsFalse(string.IsNullOrEmpty(path), "Internal file path must not be null or empty.");
 
-        Assert.IsTrue(File.Exists(path), $"Connection file should exist after SaveAsync. Path: {path}");
-        byte[] fileBytes = File.ReadAllBytes(path);
-        Assert.IsNotEmpty(fileBytes, $"File was created but is empty (length={fileBytes.Length}).");
+        Directory.CreateDirectory(Path.GetDirectoryName(path) ?? _dir);
+        await File.WriteAllBytesAsync(path, encrypted).ConfigureAwait(false);
 
         bool exists = await svc.ExistsAsync();
-        Assert.IsTrue(exists, "Connection file should exist after SaveAsync.");
+        Assert.IsTrue(exists, "Connection file should exist after writing encrypted bytes.");
 
         string? read = await svc.ReadAsync();
-
-        if (read is null)
-        {
-            string firstBytes = BitConverter.ToString(fileBytes.Take(Math.Min(16, fileBytes.Length)).ToArray());
-            Assert.Fail($"ReadAsync returned null after SaveAsync. File length={fileBytes.Length}. First bytes: {firstBytes}");
-        }
-
+        Assert.IsNotNull(read, "ReadAsync should return the decrypted connection string.");
         Assert.AreEqual(_connectionString, read);
     }
 
@@ -149,6 +181,21 @@ public sealed class ConnectionStringServiceTests
         string? result = await (Task<string?>)taskObj;
 
         Assert.IsNull(result, "DecryptNonWindowsOsAsync should return null when decryption fails.");
+    }
+
+    [TestMethod]
+    public async Task CanConnectionStringConnect_ReturnsFalse_ForInvalidInputs()
+    {
+        ConnectionStringService svc = new();
+
+        bool result1 = await svc.CanConnectionStringConnect(null!);
+        Assert.IsFalse(result1);
+
+        bool result2 = await svc.CanConnectionStringConnect("");
+        Assert.IsFalse(result2);
+
+        bool result3 = await svc.CanConnectionStringConnect("Server=;Database=;");
+        Assert.IsFalse(result3);
     }
 
     #region Helpers for backing up/restoring/deleting connection file

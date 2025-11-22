@@ -28,7 +28,7 @@ public class ConnectionDialogViewModelTests
         vm.TrustServerCertificate = true;
 
         Assert.AreEqual(
-            "Server=localhost;Database=db;User ID=sa;Password=p;Encrypt=True;TrustServerCertificate=True;",
+            "Data Source=localhost;Initial Catalog=db;User ID=sa;Password=p;Encrypt=True;TrustServerCertificate=True;",
             vm.ConnectionString);
     }
 
