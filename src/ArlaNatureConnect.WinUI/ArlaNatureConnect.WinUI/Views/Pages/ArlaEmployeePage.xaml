@@ -6,8 +6,7 @@
   xmlns:arlaEmployee="using:ArlaNatureConnect.WinUI.Views.Controls.SideMenu"
   xmlns:domain="using:ArlaNatureConnect.Domain.Entities" 
   xmlns:viewmodel="using:ArlaNatureConnect.WinUI.ViewModels.Pages" 
-  xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-  Loaded="ArlaEmployeePage_Loaded">
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008">
 
   <Page.DataContext>
     <viewmodel:ArlaEmployeePageViewModel />

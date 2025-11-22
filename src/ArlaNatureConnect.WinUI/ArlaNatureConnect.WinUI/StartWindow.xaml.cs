@@ -44,72 +44,11 @@ public sealed partial class StartWindow : Window
     {
         try
         {
-            // Try packaged-app URI first (works only if app is packaged)
-            Uri uri = new Uri("ms-appx:///Assets/startUpImage.jpg");
-            try
-            {
-                StorageFile f = await StorageFile.GetFileFromApplicationUriAsync(uri);
-                //System.Diagnostics.Debug.WriteLine($"Found (packaged): {f.Path}");
-            }
-            catch
-            {
-                // ignore and try file system fallback
-            }
-
-            // Fallback for unpackaged / desktop scenarios: check output folder
-            string filePath = System.IO.Path.Combine(AppContext.BaseDirectory ?? string.Empty, "Assets", "startUpImage.jpg");
-            if (System.IO.File.Exists(filePath))
-            {
-                System.Diagnostics.Debug.WriteLine($"Found (fs): {filePath}");
-            }
-            else
-            {
-                System.Diagnostics.Debug.WriteLine($"Image not found at either ms-appx or output folder: {filePath}");
-                throw new FileNotFoundException("Startup image not found");
-            }
-
-            // Check for existing connection string
-            bool exists = await _viewModel.ConnectionExistsAsync();
-            string? conn = null;
-            if (!exists)
-            {
-                await ShowConnectionDialogAndSaveAsync();
-            }
-            else
-            {
-                conn = await _viewModel.ReadConnectionStringAsync();
-                if (string.IsNullOrEmpty(conn))
-                {
-                    await ShowConnectionDialogAndSaveAsync();
-                }
-            }
-
-
-
-            // If there is a connection string, validate it asynchronously and let user retry on failure
-            if (!string.IsNullOrWhiteSpace(conn))
-            {
-                var (isValid, _) = await _viewModel.ValidateConnectionStringWithRetryAsync(conn);
-                if (!isValid)
-                {
-                    // Let user re-enter connection string
-                    await ShowConnectionDialogAndSaveAsync();
-                    conn = await _viewModel.ReadConnectionStringAsync();
-                    if (!string.IsNullOrWhiteSpace(conn))
-                    {
-                        await _viewModel.ValidateConnectionStringWithRetryAsync(conn);
-                    }
-                }
-            }
-
-            // Login dialog should be done here
-
-
+            await _viewModel.InitializeAsync(ShowConnectionDialogAndSaveAsync, ShowConnectionErrorAsync);
         }
-
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"Error loading startup image: {ex}");
+            Debug.WriteLine($"Error during initialization: {ex}");
         }
         finally
         {

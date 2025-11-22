@@ -103,7 +103,7 @@ public sealed class ConsultantPageViewModelTests
         await _viewModel.InitializeAsync(role);
 
         // Assert
-        Assert.AreEqual(2, _viewModel.AvailablePersons.Count);
+        Assert.HasCount(2, _viewModel.AvailablePersons);
         // Should be sorted alphabetically: Alice, then Bob
         Assert.AreEqual("Alice", _viewModel.AvailablePersons[0].FirstName);
         Assert.AreEqual("Bob", _viewModel.AvailablePersons[1].FirstName);
@@ -143,7 +143,7 @@ public sealed class ConsultantPageViewModelTests
         await _viewModel.InitializeAsync(role);
 
         // Assert
-        Assert.AreEqual(1, _viewModel.AvailablePersons.Count);
+        Assert.HasCount(1, _viewModel.AvailablePersons);
         Assert.AreEqual(consultant.Id, _viewModel.AvailablePersons[0].Id);
     }
 
@@ -169,7 +169,7 @@ public sealed class ConsultantPageViewModelTests
         await _viewModel.InitializeAsync(role);
 
         // Assert
-        Assert.AreEqual(0, _viewModel.AvailablePersons.Count);
+        Assert.HasCount(0, _viewModel.AvailablePersons);
     }
 
     /// <summary>
@@ -194,7 +194,7 @@ public sealed class ConsultantPageViewModelTests
         await _viewModel.InitializeAsync(role);
 
         // Assert
-        Assert.AreEqual(0, _viewModel.AvailablePersons.Count);
+        Assert.IsEmpty(_viewModel.AvailablePersons);
     }
 
     /// <summary>
@@ -322,7 +322,7 @@ public sealed class ConsultantPageViewModelTests
         await _viewModel.InitializeAsync(role);
 
         // Assert
-        Assert.AreEqual(3, _viewModel.AvailablePersons.Count);
+        Assert.HasCount(3, _viewModel.AvailablePersons);
         // Should be sorted: Alice Alpha, Alice Beta, Zebra Alpha
         Assert.AreEqual("Alice", _viewModel.AvailablePersons[0].FirstName);
         Assert.AreEqual("Alpha", _viewModel.AvailablePersons[0].LastName);

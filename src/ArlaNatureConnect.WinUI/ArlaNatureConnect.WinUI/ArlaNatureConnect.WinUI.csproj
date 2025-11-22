@@ -16,18 +16,11 @@
     </PropertyGroup>
     <ItemGroup>
       <Compile Remove="ViewModels\template.cs" />
-    </ItemGroup>
-    <ItemGroup>
-      <None Remove="Views\Controls\MessageErrorSuccesUC.xaml" />
-      <None Remove="Views\Dialogs\AboutDialog.xaml" />
-    </ItemGroup>
+			<None Include="ViewModels\template.cs" />
+		</ItemGroup>
 
     <ItemGroup>
         <Manifest Include="$(ApplicationManifest)" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Include="ViewModels\template.cs" />
     </ItemGroup>
 
     <ItemGroup>
@@ -42,20 +35,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Page Update="Views\Dialogs\AboutDialog.xaml">
-        <Generator>MSBuild:Compile</Generator>
-      </Page>
-    </ItemGroup>
-
-    <ItemGroup>
       <Page Update="View\Controls\StatusBarUC.xaml">
         <SubType>Designer</SubType>
-      </Page>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Page Update="View\Controls\MessageErrorSuccesUC.xaml">
-        <Generator>MSBuild:Compile</Generator>
       </Page>
     </ItemGroup>
 

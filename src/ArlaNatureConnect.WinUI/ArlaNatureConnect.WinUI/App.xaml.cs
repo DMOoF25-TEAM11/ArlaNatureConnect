@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 namespace ArlaNatureConnect.WinUI;
 
 using ArlaNatureConnect.Core;
+using ArlaNatureConnect.Core.Services;
 using ArlaNatureConnect.WinUI.Services;
 
 using Microsoft.UI.Xaml;
@@ -60,8 +61,11 @@ public partial class App : Application
     /// <param name="args">Details about the launch request and process.</param>
     protected override async void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
     {
+        // Create a single ConnectionStringService instance that will be used by StartWindow and by DI
+        ConnectionStringService connService = new ConnectionStringService();
+
         // show start window first
-        StartWindow start = new StartWindow();
+        StartWindow start = new StartWindow(connService);
         start.Activate();
 
         Task delayTask = Task.Delay(800); // simulate initialization (0.8 seconds)
@@ -74,7 +78,7 @@ public partial class App : Application
             {
                 services
                     //.AddCoreServices()
-                    .AddInfrastructure()
+                    .AddInfrastructure(connService)
                     .AddSingleton<NavigationHandler>()
                     .AddSingleton<MainWindow>()
                     .AddSingleton<ArlaNatureConnect.WinUI.ViewModels.Controls.StatusBarUCViewModel>()
@@ -84,6 +88,8 @@ public partial class App : Application
                 //.AddSingleton<ArlaNatureConnect.WinUI.ViewModels.Controls.StatusBarUCViewModel>();
             })
             .Build();
+
+
 
         // resolve and show main window from DI so its dependencies are injected
         _window = HostInstance.Services.GetRequiredService<MainWindow>();

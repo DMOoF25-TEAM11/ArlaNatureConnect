@@ -1,7 +1,9 @@
+using ArlaNatureConnect.Core.Abstract;
 using ArlaNatureConnect.Domain.Entities;
 using ArlaNatureConnect.WinUI.Services;
-using ArlaNatureConnect.WinUI.ViewModels.Pages;
 using ArlaNatureConnect.WinUI.View.Pages.ArlaEmployee;
+using ArlaNatureConnect.WinUI.ViewModels.Pages;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -17,96 +19,49 @@ public sealed partial class ArlaEmployeePage : Page
 {
     public ArlaEmployeePageViewModel ViewModel { get; }
 
-    public ArlaEmployeePage()
+    public ArlaEmployeePage() : base()
     {
         InitializeComponent();
 
-        // Get NavigationHandler from App's service provider
+        // Get dependencies from App's service provider
         NavigationHandler navigationHandler = App.HostInstance.Services.GetRequiredService<NavigationHandler>();
-        ViewModel = new ArlaEmployeePageViewModel(navigationHandler);
+        IPersonRepository personRepository = App.HostInstance.Services.GetRequiredService<IPersonRepository>();
+        IRoleRepository roleRepository = App.HostInstance.Services.GetRequiredService<IRoleRepository>();
+
+        // Initialize ViewModel with required dependencies
+        ViewModel = new ArlaEmployeePageViewModel(navigationHandler, personRepository, roleRepository);
+
+        // Set DataContext so bindings work
         DataContext = ViewModel;
+
+        // Let the ViewModel hook into the view's lifecycle events so it can attach/restore the SideMenu
+        ViewModel.AttachToView(this);
+
     }
 
-    protected override void OnNavigatedTo(Microsoft.UI.Xaml.Navigation.NavigationEventArgs e)
+
+    protected override async void OnNavigatedTo(Microsoft.UI.Xaml.Navigation.NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
-        
+
         if (e.Parameter is Role role)
         {
-            ViewModel.Initialize(role);
+            await ViewModel.InitializeAsync(role);
         }
-        
-        // Subscribe to CurrentNavigationTag property changes to update content view
-        ViewModel.PropertyChanged += ViewModel_PropertyChanged;
-        
+
         // Set default view to Dashboards in ViewModel
-        // Note: We don't call SwitchContentView here because ContentPresenter might not be ready yet
-        // Instead, we'll load it in the Loaded event
         ViewModel.NavigationCommand?.Execute("Dashboards");
+
+        // Attach SideMenu via ViewModel
+        ViewModel.AttachSideMenuToMainWindow();
     }
 
-    private void ArlaEmployeePage_Loaded(object sender, RoutedEventArgs e)
+    protected override void OnNavigatedFrom(Microsoft.UI.Xaml.Navigation.NavigationEventArgs e)
     {
-        // Load default content view when page is fully loaded
-        // This ensures ContentPresenter is ready to receive content
-        string tag = ViewModel.CurrentNavigationTag;
-        if (string.IsNullOrEmpty(tag))
-        {
-            tag = "Dashboards"; // Default fallback
-            ViewModel.NavigationCommand?.Execute(tag);
-        }
-        
-        // Always load the content view in Loaded event to ensure it's displayed
-        SwitchContentView(tag);
-    }
+        base.OnNavigatedFrom(e);
 
-    private void ViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName == nameof(ArlaEmployeePageViewModel.CurrentNavigationTag))
-        {
-            // Switch the content view when navigation tag changes
-            SwitchContentView(ViewModel.CurrentNavigationTag);
-        }
-    }
-
-    /// <summary>
-    /// Switches the content view based on the navigation tag.
-    /// </summary>
-    /// <param name="navigationTag">The tag of the selected navigation item (Dashboards, Farms, Users).</param>
-    private void SwitchContentView(string navigationTag)
-    {
-        UserControl? newContent = null;
-
-        switch (navigationTag)
-        {
-            case "Dashboards":
-                newContent = new ArlaEmployeeDashboards();
-                break;
-            case "Farms":
-                newContent = new ArlaEmployeeFarms();
-                break;
-            case "Users":
-                newContent = new ArlaEmployeeUsers();
-                break;
-            default:
-                // Default to Dashboards if unknown tag
-                newContent = new ArlaEmployeeDashboards();
-                break;
-        }
-
-        if (newContent != null)
-        {
-            newContent.DataContext = ViewModel;
-            ContentPresenter.Content = newContent;
-        }
-    }
-
-    private void AttachSideMenuToMainWindow()
-    { 
-    }
-
-    private void RestoreMainWindowSideMenu()
-    { 
+        // Restore previous SideMenu children when navigating away via ViewModel
+        ViewModel.RestoreMainWindowSideMenu();
     }
 }
 

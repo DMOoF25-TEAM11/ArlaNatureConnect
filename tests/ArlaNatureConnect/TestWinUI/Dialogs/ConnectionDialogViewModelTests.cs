@@ -1,4 +1,5 @@
 using ArlaNatureConnect.WinUI.ViewModels;
+using Microsoft.Data.SqlClient;
 
 using System.Runtime.Versioning;
 
@@ -27,9 +28,17 @@ public class ConnectionDialogViewModelTests
         vm.Encrypt = true;
         vm.TrustServerCertificate = true;
 
-        Assert.AreEqual(
-            "Data Source=localhost;Initial Catalog=db;User ID=sa;Password=p;Encrypt=True;TrustServerCertificate=True;",
-            vm.ConnectionString);
+        // Parse the produced connection string and verify individual properties to avoid brittle key-name/order comparisons
+        var cs = vm.ConnectionString;
+        var builder = new SqlConnectionStringBuilder(cs);
+
+        Assert.AreEqual("localhost", builder.DataSource);
+        Assert.AreEqual("db", builder.InitialCatalog);
+        Assert.IsFalse(builder.IntegratedSecurity);
+        Assert.AreEqual("sa", builder.UserID);
+        Assert.AreEqual("p", builder.Password);
+        Assert.IsTrue(builder.Encrypt);
+        Assert.IsTrue(builder.TrustServerCertificate);
     }
 
     [TestMethod]

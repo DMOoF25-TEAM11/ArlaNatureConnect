@@ -1,9 +1,15 @@
-﻿<UserControl
-    x:Class="ArlaNatureConnect.WinUI.Views.Controls.SideMenu.FarmerSideMenuUC"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:ArlaNatureConnect.WinUI.Views.Controls.SideMenu"
-    Background="{StaticResource ArlaSidebarLightBrush}">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abstracts:UCSideMenu
+  x:Class="ArlaNatureConnect.WinUI.Views.Controls.SideMenu.FarmerSideMenuUC"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:local="using:ArlaNatureConnect.WinUI.Views.Controls.SideMenu" 
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+  xmlns:sidemenu="using:ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu" 
+  xmlns:abstracts="using:ArlaNatureConnect.WinUI.Views.Controls.Abstracts"
+  mc:Ignorable="d"
+  Background="{StaticResource ArlaSidebarLightBrush}">
 
   <Border Background="{StaticResource ArlaSidebarLightBrush}">
     <Grid>
@@ -20,11 +26,6 @@
               BorderBrush="{StaticResource ArlaPrimaryDarkBrush}"
               BorderThickness="0,0,0,2">
         <StackPanel Spacing="20">
-          <TextBlock  Text="Arla Nature Connect" 
-                      Foreground="{StaticResource ArlaPrimaryDarkBrush}"
-                      FontSize="22"
-                      FontWeight="Bold"
-                      TextWrapping="Wrap"/>
 
           <!-- User Dropdown -->
           <StackPanel Spacing="12">
@@ -90,5 +91,5 @@
       </Border>
     </Grid>
   </Border>
-</UserControl>
+</abstracts:UCSideMenu>
 
