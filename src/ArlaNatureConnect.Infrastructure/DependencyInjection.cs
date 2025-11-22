@@ -16,23 +16,36 @@ public static class DependencyInjection
     {
         services.AddCoreServices();
 
-        // resolve the registered IConnectionStringService from the service collection only if not provided
-        if (cs is null)
+        // resolve the registered IConnectionStringService from the service collection only if provided
+        if (cs is not null)
         {
-            using ServiceProvider tempProvider = services.BuildServiceProvider();
-            cs = tempProvider.GetService<IConnectionStringService>() ?? throw new InvalidOperationException("IConnectionStringService is not registered in the service collection.");
+            // call the async method synchronously without an extra Task.Run wrapper
+            // Use ConfigureAwait(false) to avoid capturing the synchronization context and potential deadlocks
+            string? connectionString = cs.ReadAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+
+            if (string.IsNullOrWhiteSpace(connectionString))
+                throw new InvalidOperationException("No connection string found. Ensure the StartWindow connection dialog was completed before building the host.");
+
+            // Basic validation: ensure Data Source / Server is present — prevent saving an incomplete connection string
+            try
+            {
+                var builder = new SqlConnectionStringBuilder(connectionString);
+                if (string.IsNullOrWhiteSpace(builder.DataSource))
+                {
+                    throw new InvalidOperationException("Connection string is missing a server/data source. Please configure a valid SQL Server instance in the connection dialog.");
+                }
+
+                // Do not attempt to open a test connection here during DI/host build. Connection validation is performed asynchronously in StartWindow
+                // to allow user interaction and retries without failing host construction.
+            }
+            catch (ArgumentException)
+            {
+                throw new InvalidOperationException("Provided connection string is invalid. Please check and enter a valid SQL Server connection string.");
+            }
+
+            // Register the EF Core DbContext factory after validation
+            services.AddDbContextFactory<AppDbContext>(options => options.UseSqlServer(connectionString));
         }
-
-        // call the async method synchronously without an extra Task.Run wrapper
-        // Use ConfigureAwait(false) to avoid capturing the synchronization context and potential deadlocks
-        string? connectionString = cs.ReadAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-
-        if (string.IsNullOrWhiteSpace(connectionString))
-            throw new InvalidOperationException("No connection string found. Ensure the StartWindow connection dialog was completed before building the host.");
-
-        SqlConnectionStringBuilder csb = new(connectionString) { MultipleActiveResultSets = true };
-        //services.AddDbContext<AppDbContext>(options => options.UseSqlServer(csb.ConnectionString));
-        services.AddDbContextFactory<AppDbContext>(options => options.UseSqlServer(csb.ConnectionString));
 
         //services.AddSingleton<IConnectionStringService, ConnectionStringService>();
         services.AddScoped<IAddressRepository, AddressRepository>();
