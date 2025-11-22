@@ -16,9 +16,16 @@
   <!-- Set DataContext in code-behind or use x:DataType for strong typing -->
   <Grid>
     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="8">
-      <TextBlock Text="Busy:" VerticalAlignment="Center" Margin="0,0,4,0"/>
+      <ProgressBar  IsIndeterminate="True" 
+                    Visibility="{Binding IsBusy, Converter={StaticResource BoolToVis}}"
+                    Width="100"
+                    Height="12"
+                    VerticalAlignment="Center"
+                    Margin="0,0,12,0"
+                    Background="Transparent"
+                    Foreground="{StaticResource ArlaAccentBrush}"/>
       <!-- Bind to symbol (string) instead of bool so UI shows emoji/text -->
-      <TextBlock Text="{Binding BusySymbol}" VerticalAlignment="Center" FontSize="16" Margin="0,0,12,0" MinWidth="20"/>
+      <!--<TextBlock Text="{Binding BusySymbol}" VerticalAlignment="Center" FontSize="16" Margin="0,0,12,0" MinWidth="20"/>-->
 
       <TextBlock Text="DB:" VerticalAlignment="Center" Margin="0,0,4,0"/>
       <!-- Bind to symbol (string) instead of bool so UI shows emoji/text -->

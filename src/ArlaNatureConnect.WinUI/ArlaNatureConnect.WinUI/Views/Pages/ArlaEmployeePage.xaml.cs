@@ -100,5 +100,13 @@ public sealed partial class ArlaEmployeePage : Page
             ContentPresenter.Content = newContent;
         }
     }
+
+    private void AttachSideMenuToMainWindow()
+    { 
+    }
+
+    private void RestoreMainWindowSideMenu()
+    { 
+    }
 }
 

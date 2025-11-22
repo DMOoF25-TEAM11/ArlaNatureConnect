@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Window
     x:Class="ArlaNatureConnect.WinUI.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -11,37 +11,40 @@
     mc:Ignorable="d"
     Title="Arla Nature Connect">
 
-    <!--<Window.SystemBackdrop>
+  <!--<Window.SystemBackdrop>
         <MicaBackdrop />
     </Window.SystemBackdrop>-->
 
-    <Grid>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+    <controls:MenuBarUC Grid.Row="0"/>
+    <Grid Grid.Row="1">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="280" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+      <!-- SideMenu Navigation -->
+      <StackPanel x:Name="SideMenu" 
+                  DataContext="{Binding}" 
+                  Grid.Column="0" 
+                  Background="{StaticResource ArlaSidebarLightBrush}"
+            BorderBrush="{StaticResource ArlaPrimaryDarkBrush}"
+            BorderThickness="0,0,2,0"/>
+      <Grid Grid.Column="1">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
+          <RowDefinition Height="*" />
+          <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <controls:MenuBarUC Grid.Row="0"/>
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="280" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <!-- SideMenu Navigation -->
-            <StackPanel x:Name="SideMenu" 
-                        DataContext="{Binding}" 
-                        Grid.Column="0" 
-                        Background="{StaticResource ArlaSidebarLightBrush}"/>
-            <Grid Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Frame x:Name="ContentFrame" 
-                       Grid.Row="0"/>
-                <controls:MessageErrorSuccesUC Grid.Row="1"/>
-            </Grid>
-        </Grid>
-        <controls:StatusBarUC Grid.Row="2"/>
+        <Frame  x:Name="ContentFrame" 
+                Grid.Row="0"
+                Background="{StaticResource AppBackgroundBrush}"/>
+        <controls:MessageErrorSuccesUC Grid.Row="1"/>
+      </Grid>
     </Grid>
+    <controls:StatusBarUC Grid.Row="2"/>
+  </Grid>
 </Window>

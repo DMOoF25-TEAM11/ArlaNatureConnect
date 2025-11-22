@@ -4,7 +4,11 @@ using ArlaNatureConnect.WinUI.Commands;
 using ArlaNatureConnect.WinUI.Services;
 using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 using Microsoft.UI.Xaml.Controls;
-using ArlaNatureConnect.WinUI.View.Pages.Farmer;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.Extensions.DependencyInjection;
+using ArlaNatureConnect.WinUI.Views.Controls.SideMenu;
+using ArlaNatureConnect.WinUI.View.Pages.Farmer; // add content controls namespace
 
 namespace ArlaNatureConnect.WinUI.ViewModels.Pages;
 
@@ -24,7 +28,7 @@ namespace ArlaNatureConnect.WinUI.ViewModels.Pages;
 /// and when a farmer is selected, their dashboard is displayed. The ViewModel also handles loading state
 /// to show progress indicator while data is loading.
 /// </summary>
-public class FarmerPageViewModel : NavigationViewModelBase
+public partial class FarmerPageViewModel : NavigationViewModelBase
 {
     #region Fields
 
@@ -37,12 +41,11 @@ public class FarmerPageViewModel : NavigationViewModelBase
     private bool _isLoading;
     private UserControl? _currentContent;
 
-    #endregion
+    // Side menu handling fields moved from view
+    private UIElement[]? _previousSideMenuChildren;
+    private FarmerSideMenuUC? _addedSideMenuControl;
 
-    public FarmerPageViewModel() : base()
-    {
-            
-    }
+    #endregion
 
     #region Commands
 
@@ -119,22 +122,175 @@ public class FarmerPageViewModel : NavigationViewModelBase
 
     #endregion
 
-    #region Constructor
+    public FarmerPageViewModel() : base()
+    {
 
-    public FarmerPageViewModel(
-        NavigationHandler navigationHandler,
-        IPersonRepository personRepository,
-        IRoleRepository roleRepository)
+    }
+
+    public FarmerPageViewModel(NavigationHandler navigationHandler, IPersonRepository personRepository, IRoleRepository roleRepository) : base()
     {
         _navigationHandler = navigationHandler ?? throw new ArgumentNullException(nameof(navigationHandler));
         _personRepository = personRepository ?? throw new ArgumentNullException(nameof(personRepository));
         _roleRepository = roleRepository ?? throw new ArgumentNullException(nameof(roleRepository));
-        
-        ChooseUserCommand = new RelayCommand<Person>(ChooseUser, p => p != null);
-        InitializeNavigation("Dashboards"); // Default to "Dashboards"
 
-        // Initialize the content for the default tag
+        ChooseUserCommand = new RelayCommand<Person>(ChooseUser, p => p != null);
+        InitializeNavigation("Dashboards");
+
+        // ensure initial content is created and bound to this VM
         SwitchContentView(CurrentNavigationTag);
+    }
+
+    #region SideMenu Handling
+
+    /// <summary>
+    /// Attaches the view model to the Page instance so it can subscribe to Loaded/Unloaded lifecycle events.
+    /// This keeps the view code-behind minimal while allowing the view model to manage application-level UI
+    /// like the SideMenu region.
+    /// </summary>
+    /// <param name="page">The FarmerPage instance.</param>
+    public void AttachToView(Page? page)
+    {
+        if (page == null) return;
+
+        // Subscribe to lifecycle events
+        page.Loaded += Page_Loaded;
+        page.Unloaded += Page_Unloaded;
+    }
+
+    private void Page_Loaded(object? sender, RoutedEventArgs e)
+    {
+        // Ensure SideMenu is attached when view is loaded
+        AttachSideMenuToMainWindow();
+    }
+
+    private void Page_Unloaded(object? sender, RoutedEventArgs e)
+    {
+        // Restore SideMenu when view unloads
+        RestoreMainWindowSideMenu();
+
+        if (sender is Page page)
+        {
+            // detach handlers to avoid leaks
+            page.Loaded -= Page_Loaded;
+            page.Unloaded -= Page_Unloaded;
+        }
+    }
+
+    /// <summary>
+    /// Finds the MainWindow's SideMenu panel and replaces its children with the FarmerSideMenuUC.
+    /// Stores previous children so they can be restored later.
+    /// Safe no-op when MainWindow or SideMenu cannot be found (e.g. during unit tests).
+    /// </summary>
+    public void AttachSideMenuToMainWindow()
+    {
+        try
+        {
+            MainWindow? mainWindow = App.HostInstance?.Services.GetService<MainWindow>();
+            if (mainWindow == null)
+                return;
+
+            if (mainWindow.Content is not FrameworkElement root)
+                return;
+
+            Panel? SideMenu = FindSideMenuPanel(root);
+            if (SideMenu == null)
+                return;
+
+            // If we've already added our SideMenu control, ensure DataContext is synced and return
+            if (_addedSideMenuControl is not null && SideMenu.Children.Contains(_addedSideMenuControl))
+            {
+                _addedSideMenuControl.DataContext = this;
+                return;
+            }
+
+            // Store previous children so they can be restored
+            _previousSideMenuChildren = SideMenu.Children.Cast<UIElement>().ToArray();
+
+            SideMenu.Children.Clear();
+
+            _addedSideMenuControl = new FarmerSideMenuUC();
+            _addedSideMenuControl.DataContext = this;
+
+            SideMenu.Children.Add(_addedSideMenuControl);
+        }
+        catch
+        {
+            // Ignore errors during UI attach (useful for test environments)
+        }
+    }
+
+    /// <summary>
+    /// Restores the MainWindow's SideMenu to its previous children if available.
+    /// </summary>
+    public void RestoreMainWindowSideMenu()
+    {
+        try
+        {
+            MainWindow? mainWindow = App.HostInstance?.Services.GetService<MainWindow>();
+            if (mainWindow == null)
+                return;
+
+            if (mainWindow.Content is not FrameworkElement root)
+                return;
+
+            Panel? SideMenu = FindSideMenuPanel(root);
+            if (SideMenu == null)
+                return;
+
+            // Only restore if we previously replaced children
+            if (_previousSideMenuChildren == null)
+                return;
+
+            SideMenu.Children.Clear();
+            foreach (UIElement child in _previousSideMenuChildren)
+            {
+                SideMenu.Children.Add(child);
+            }
+
+            _previousSideMenuChildren = null;
+            _addedSideMenuControl = null;
+        }
+        catch
+        {
+            // ignore
+        }
+    }
+
+    /// <summary>
+    /// Finds the SideMenu panel starting from the provided root. Tries FindName first then visual tree traversal.
+    /// </summary>
+    private Panel? FindSideMenuPanel(FrameworkElement root)
+    {
+        if (root == null) return null;
+
+        // Try straightforward FindName first
+        if (root.FindName("SideMenu") is Panel p)
+            return p;
+
+        // Fallback: traverse visual tree
+        try
+        {
+            int count = VisualTreeHelper.GetChildrenCount(root);
+            for (int i = 0; i < count; i++)
+            {
+                DependencyObject child = VisualTreeHelper.GetChild(root, i);
+                if (child is Panel panel && (panel.Name == "SideMenu"))
+                    return panel;
+
+                if (child is FrameworkElement fe)
+                {
+                    Panel? found = FindSideMenuPanel(fe);
+                    if (found != null)
+                        return found;
+                }
+            }
+        }
+        catch
+        {
+            // ignore traversal errors
+        }
+
+        return null;
     }
 
     #endregion

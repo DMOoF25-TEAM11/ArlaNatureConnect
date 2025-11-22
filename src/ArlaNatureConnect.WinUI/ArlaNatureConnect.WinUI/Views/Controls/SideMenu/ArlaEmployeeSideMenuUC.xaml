@@ -1,13 +1,11 @@
-<UserControl
+﻿<UserControl
     x:Class="ArlaNatureConnect.WinUI.Views.Controls.SideMenu.ArlaEmployeeSideMenuUC"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:ArlaNatureConnect.WinUI.Views.Controls.SideMenu"
     Background="{StaticResource ArlaSidebarLightBrush}">
 
-    <Border Background="{StaticResource ArlaSidebarLightBrush}"
-            BorderBrush="{StaticResource ArlaPrimaryDarkBrush}"
-            BorderThickness="0,0,2,0">
+    <Border Background="{StaticResource ArlaSidebarLightBrush}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />

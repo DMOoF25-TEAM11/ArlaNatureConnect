@@ -31,7 +31,8 @@ public static class DependencyInjection
             throw new InvalidOperationException("No connection string found. Ensure the StartWindow connection dialog was completed before building the host.");
 
         SqlConnectionStringBuilder csb = new(connectionString) { MultipleActiveResultSets = true };
-        services.AddDbContext<AppDbContext>(options => options.UseSqlServer(csb.ConnectionString));
+        //services.AddDbContext<AppDbContext>(options => options.UseSqlServer(csb.ConnectionString));
+        services.AddDbContextFactory<AppDbContext>(options => options.UseSqlServer(csb.ConnectionString));
 
         //services.AddSingleton<IConnectionStringService, ConnectionStringService>();
         services.AddScoped<IAddressRepository, AddressRepository>();

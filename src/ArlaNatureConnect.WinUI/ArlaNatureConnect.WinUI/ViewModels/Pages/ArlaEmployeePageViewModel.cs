@@ -23,7 +23,7 @@ public class ArlaEmployeePageViewModel : NavigationViewModelBase
 {
     #region Fields
 
-    private readonly NavigationHandler _navigationHandler;
+    private readonly NavigationHandler? _navigationHandler;
     private Role? _currentRole;
 
     #endregion
@@ -34,7 +34,12 @@ public class ArlaEmployeePageViewModel : NavigationViewModelBase
 
     #region Constructor
 
-    public ArlaEmployeePageViewModel(NavigationHandler navigationHandler)
+    public ArlaEmployeePageViewModel() : base()
+    {
+        
+    }
+
+    public ArlaEmployeePageViewModel(NavigationHandler navigationHandler) : base()
     {
         _navigationHandler = navigationHandler ?? throw new ArgumentNullException(nameof(navigationHandler));
         InitializeNavigation("Dashboards"); // Default to "Dashboards"

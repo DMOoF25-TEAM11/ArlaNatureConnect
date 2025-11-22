@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Linq;
 
 namespace ArlaNatureConnect.Core.Services;
 
@@ -19,8 +20,8 @@ public class AppMessageService : IAppMessageService
     protected const string _confirmDeleteTitle = "Bekræft sletning af " + _entityNamePlaceholder;
     protected string _confirmDelete = "Er du sikker på, at du vil slette " + _entityNamePlaceholder + "?";
 
-    private IEnumerable<string> _statusMessages = [];
-    private IEnumerable<string> _errorMessages = [];
+    private IEnumerable<string> _statusMessages = Enumerable.Empty<string>();
+    private IEnumerable<string> _errorMessages = Enumerable.Empty<string>();
     #endregion
     #region Properties
     public string? EntityName { get; set; }
@@ -33,6 +34,8 @@ public class AppMessageService : IAppMessageService
             {
                 _statusMessages = value;
                 _ = AutoClearInfoMessageAsync(value);
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(StatusMessages)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasStatusMessages)));
             }
         }
     }
@@ -42,6 +45,8 @@ public class AppMessageService : IAppMessageService
         private set
         {
             _errorMessages = value ?? Enumerable.Empty<string>();
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ErrorMessages)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasErrorMessages)));
         }
     }
     public bool HasStatusMessages { get => StatusMessages.Any(); }
@@ -97,7 +102,7 @@ public class AppMessageService : IAppMessageService
     {
         if (HasStatusMessages)
         {
-            await Task.Delay(_infoMessageDuration);
+            await Task.Delay(_infoMessageDuration).ConfigureAwait(false);
             IEnumerable<string> toRemove = msgs ?? Enumerable.Empty<string>();
             StatusMessages = StatusMessages.Where(m => !toRemove.Contains(m)).ToList();
         }

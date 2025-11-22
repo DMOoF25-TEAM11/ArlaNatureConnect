@@ -1,27 +1,16 @@
-<Page
-    x:Class="ArlaNatureConnect.WinUI.View.Pages.ConsultantPage"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:ArlaNatureConnect.WinUI.View.Pages"
-    xmlns:consultant="using:ArlaNatureConnect.WinUI.View.Pages.Consultant"
-    xmlns:domain="using:ArlaNatureConnect.Domain.Entities"
-    Background="{StaticResource AppBackgroundBrush}"
-    Loaded="ConsultantPage_Loaded">
+﻿<Page
+  x:Class="ArlaNatureConnect.WinUI.View.Pages.ConsultantPage"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:local="using:ArlaNatureConnect.WinUI.View.Pages"
+  xmlns:consultant="using:ArlaNatureConnect.WinUI.View.Pages.Consultant"
+  xmlns:domain="using:ArlaNatureConnect.Domain.Entities"
+  xmlns:viewmodel="using:ArlaNatureConnect.WinUI.ViewModels.Pages"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+  Loaded="ConsultantPage_Loaded">
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="280" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-
-        <!-- Sidebar Navigation -->
-        <consultant:ConsultantSidebar x:Name="Sidebar"
-                                      Grid.Column="0"
-                                      DataContext="{Binding}"/>
-
-        <!-- Main Content Area - ContentPresenter for switching views -->
-        <ContentPresenter x:Name="ContentPresenter"
-                          Grid.Column="1"
-                          DataContext="{Binding}"/>
-    </Grid>
+  <StackPanel Orientation="Vertical">
+    <ContentPresenter x:Name="ContentPresenter"
+                      DataContext="{Binding CurrentContent}"/>
+  </StackPanel>
 </Page>
