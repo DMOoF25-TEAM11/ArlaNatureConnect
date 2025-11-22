@@ -34,19 +34,29 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "wiki", "wiki", "{80918B60-7
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "services", "services", "{47FFAC2E-AC9F-4D43-B453-7A9902CCFDD2}"
 	ProjectSection(SolutionItems) = preProject
-		docs\wiki\Services\AppMessageService.md = docs\wiki\Services\AppMessageService.md
-		docs\wiki\Services\ConnectionStringService.md = docs\wiki\Services\ConnectionStringService.md
-		docs\wiki\Services\StatusInfoService.md = docs\wiki\Services\StatusInfoService.md
+		docs\wiki\Core\Services\AppMessageService.md = docs\wiki\Core\Services\AppMessageService.md
+		docs\wiki\Core\Services\ConnectionStringService.md = docs\wiki\Core\Services\ConnectionStringService.md
+		docs\wiki\Core\Services\StatusInfoService.md = docs\wiki\Core\Services\StatusInfoService.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "abstract", "abstract", "{1B329CD9-CD2D-4C29-BD30-81355E41C46B}"
 	ProjectSection(SolutionItems) = preProject
-		docs\wiki\abstract\CRUDViewModelBase.md = docs\wiki\abstract\CRUDViewModelBase.md
-		docs\wiki\abstract\ListViewModelBase.md = docs\wiki\abstract\ListViewModelBase.md
-		docs\wiki\abstract\ViewModelBase.md = docs\wiki\abstract\ViewModelBase.md
+		docs\wiki\Winui\ViewModels\Abstract\CRUDViewModelBase.md = docs\wiki\Winui\ViewModels\Abstract\CRUDViewModelBase.md
+		docs\wiki\Winui\ViewModels\Abstract\ListViewModelBase.md = docs\wiki\Winui\ViewModels\Abstract\ListViewModelBase.md
+		docs\wiki\Winui\ViewModels\Abstract\ViewModelBase.md = docs\wiki\Winui\ViewModels\Abstract\ViewModelBase.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestWinUI", "tests\ArlaNatureConnect\TestWinUI\TestWinUI.csproj", "{37C1F8FE-DE22-97E6-6CF3-BA5B3E6C49CF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core", "core", "{74CDC9D1-7EBB-48B7-85C4-E68CEC56BF36}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "winui", "winui", "{BB7D5AD7-DFCB-4B00-B0A6-55B33E03155F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "infrastructure", "infrastructure", "{83A35DE6-EAA7-41CE-A9AA-1ABDCF39E692}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "domain", "domain", "{3C897853-94FB-48E5-9F4A-29003454B282}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "viewmodels", "viewmodels", "{F3DB8AE3-929A-480B-B00E-529C37627F47}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -169,9 +179,14 @@ Global
 		{2C66F8CD-5134-A558-5A05-D3D4825A5918} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{A270A9B9-B4F2-4E49-8DA8-FECE5345A276} = {11064DD0-6EF3-4589-BFD4-DC537E9DABED}
 		{80918B60-71E9-4DCF-BCCC-D5F0A9BA51F9} = {11064DD0-6EF3-4589-BFD4-DC537E9DABED}
-		{47FFAC2E-AC9F-4D43-B453-7A9902CCFDD2} = {80918B60-71E9-4DCF-BCCC-D5F0A9BA51F9}
-		{1B329CD9-CD2D-4C29-BD30-81355E41C46B} = {80918B60-71E9-4DCF-BCCC-D5F0A9BA51F9}
+		{47FFAC2E-AC9F-4D43-B453-7A9902CCFDD2} = {74CDC9D1-7EBB-48B7-85C4-E68CEC56BF36}
+		{1B329CD9-CD2D-4C29-BD30-81355E41C46B} = {F3DB8AE3-929A-480B-B00E-529C37627F47}
 		{37C1F8FE-DE22-97E6-6CF3-BA5B3E6C49CF} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{74CDC9D1-7EBB-48B7-85C4-E68CEC56BF36} = {80918B60-71E9-4DCF-BCCC-D5F0A9BA51F9}
+		{BB7D5AD7-DFCB-4B00-B0A6-55B33E03155F} = {80918B60-71E9-4DCF-BCCC-D5F0A9BA51F9}
+		{83A35DE6-EAA7-41CE-A9AA-1ABDCF39E692} = {80918B60-71E9-4DCF-BCCC-D5F0A9BA51F9}
+		{3C897853-94FB-48E5-9F4A-29003454B282} = {80918B60-71E9-4DCF-BCCC-D5F0A9BA51F9}
+		{F3DB8AE3-929A-480B-B00E-529C37627F47} = {BB7D5AD7-DFCB-4B00-B0A6-55B33E03155F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F95CF33A-83CB-4D7C-9A56-85E9E545E990}

@@ -135,3 +135,4 @@ classDiagram
     StatusInfoService ..|> IStatusInfoServices
     StatusInfoService --> LoadingToken : returns
     LoadingToken --> StatusInfoService : releases on Dispose
+```

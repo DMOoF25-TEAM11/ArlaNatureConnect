@@ -140,3 +140,4 @@ classDiagram
     ConnectionStringService --> ProtectedDataAdapter : uses_on_Windows
     ConnectionStringService --> AesFallback : uses_on_nonWindows
     ConnectionStringService --> FileSystem : reads_writes
+```

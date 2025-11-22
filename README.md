@@ -94,10 +94,10 @@ Click the links below for detailed documentation.
 <!-- MARKDOWN LINKS & IMAGES -->
 [Logo]: images/logo/logo32x32.png "Arla Nature Connect Logo"
 
-[AppMessageService]: docs/wiki/services/AppMessageService.md "AppMessageService Documentation"
-[ConnectionStringService]: docs/wiki/services/ConnectionStringService.md "ConnectionStringService Documentation"
-[StatusInfoService]: docs/wiki/services/StatusInfoService.md "StatusInfoService Documentation"
+[AppMessageService]: docs/wiki/Core/Services/AppMessageService.md "AppMessageService Documentation"
+[ConnectionStringService]: docs/wiki/Core/Services/ConnectionStringService.md "ConnectionStringService Documentation"
+[StatusInfoService]: docs/wiki/Core/Services/StatusInfoService.md "StatusInfoService Documentation"
 
-[ViewModelBase]: docs/wiki/abstract/ViewModelBase.md "ViewModelBase Documentation"
-[ListViewModelBase]: docs/wiki/abstract/ListViewModelBase.md "ListViewModelBase Documentation"
-[CRUDViewModelBase]: docs/wiki/abstract/CRUDViewModelBase.md "CRUDViewModelBase Documentation"
+[ViewModelBase]: docs/wiki/Winui/ViewModels/Abstract/ViewModelBase.md "ViewModelBase Documentation"
+[ListViewModelBase]: docs/wiki/Winui/ViewModels/Abstract/ListViewModelBase.md "ListViewModelBase Documentation"
+[CRUDViewModelBase]: docs/wiki/Winui/ViewModels/Abstract/CRUDViewModelBase.md "CRUDViewModelBase Documentation"

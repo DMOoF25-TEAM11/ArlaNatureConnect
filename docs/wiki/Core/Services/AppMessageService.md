@@ -122,3 +122,4 @@ classDiagram
     AppMessageService ..|> IAppMessageService
     AppMessageService --> TimerTask : auto_clear
     AppMessageService --> Subscriber : notifies
+```

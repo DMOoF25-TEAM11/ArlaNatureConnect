@@ -238,3 +238,4 @@ classDiagram
     CRUDViewModelBase~TRepos, TEntity~ --> IStatusInfoServices : uses
     CRUDViewModelBase~TRepos, TEntity~ --> IAppMessageService : uses
     CRUDViewModelBase~TRepos, TEntity~ --> IRepository~TEntity~ : depends on
+```
