@@ -139,18 +139,18 @@ public sealed class ListViewModelBaseTests
     [TestMethod]
     public void Entity_Set_RaisesPropertyChanged()
     {
-        var status = new FakeStatusInfoServices();
-        var msg = new FakeAppMessageService();
-        var repo = new FakeRepo();
-        var vm = new TestListViewModel(status, msg, repo);
+        FakeStatusInfoServices status = new FakeStatusInfoServices();
+        FakeAppMessageService msg = new FakeAppMessageService();
+        FakeRepo repo = new FakeRepo();
+        TestListViewModel vm = new TestListViewModel(status, msg, repo);
 
-        var received = new List<string?>();
+        List<string?> received = new List<string?>();
         vm.PropertyChanged += (s, e) => received.Add(e.PropertyName);
 
-        var ent = new TestEntity { Id = Guid.NewGuid(), Name = "X" };
+        TestEntity ent = new TestEntity { Id = Guid.NewGuid(), Name = "X" };
         vm.Entity = ent;
 
-        Assert.AreEqual(1, received.Count);
+        Assert.HasCount(1, received);
         Assert.AreEqual("Entity", received[0]);
         Assert.AreSame(ent, vm.Entity);
     }
@@ -158,10 +158,10 @@ public sealed class ListViewModelBaseTests
     [TestMethod]
     public void Repository_Returns_Injected_Instance()
     {
-        var status = new FakeStatusInfoServices();
-        var msg = new FakeAppMessageService();
-        var repo = new FakeRepo();
-        var vm = new TestListViewModel(status, msg, repo);
+        FakeStatusInfoServices status = new FakeStatusInfoServices();
+        FakeAppMessageService msg = new FakeAppMessageService();
+        FakeRepo repo = new FakeRepo();
+        TestListViewModel vm = new TestListViewModel(status, msg, repo);
 
         Assert.AreSame(repo, vm.Repository);
     }
@@ -169,14 +169,14 @@ public sealed class ListViewModelBaseTests
     [TestMethod]
     public async Task LoadAsync_WhenEntityFound_SetsEntity_And_UsesStatus()
     {
-        var status = new FakeStatusInfoServices();
-        var msg = new FakeAppMessageService();
-        var repo = new FakeRepo();
+        FakeStatusInfoServices status = new FakeStatusInfoServices();
+        FakeAppMessageService msg = new FakeAppMessageService();
+        FakeRepo repo = new FakeRepo();
 
-        var found = new TestEntity { Id = Guid.NewGuid(), Name = "Found" };
+        TestEntity found = new TestEntity { Id = Guid.NewGuid(), Name = "Found" };
         repo.GetByIdAsyncImpl = id => Task.FromResult<TestEntity?>(found);
 
-        var vm = new TestListViewModel(status, msg, repo);
+        TestListViewModel vm = new TestListViewModel(status, msg, repo);
 
         await vm.LoadAsync(found.Id);
 
@@ -189,20 +189,20 @@ public sealed class ListViewModelBaseTests
     [TestMethod]
     public async Task LoadAsync_WhenEntityNotFound_AddsErrorMessage()
     {
-        var status = new FakeStatusInfoServices();
-        var msg = new FakeAppMessageService();
-        var repo = new FakeRepo();
+        FakeStatusInfoServices status = new FakeStatusInfoServices();
+        FakeAppMessageService msg = new FakeAppMessageService();
+        FakeRepo repo = new FakeRepo();
 
         repo.GetByIdAsyncImpl = id => Task.FromResult<TestEntity?>(null);
 
-        var vm = new TestListViewModel(status, msg, repo);
+        TestListViewModel vm = new TestListViewModel(status, msg, repo);
 
         await vm.LoadAsync(Guid.NewGuid());
 
         Assert.IsNull(vm.Entity);
         Assert.IsTrue(msg.HasErrorMessages);
-        var errors = msg.ErrorMessages.ToList();
-        Assert.AreEqual(1, errors.Count);
+        List<string> errors = msg.ErrorMessages.ToList();
+        Assert.HasCount(1, errors);
         StringAssert.StartsWith(errors[0], "Failed to load entity:");
         StringAssert.Contains(errors[0], "Entity Entity not found");
         Assert.IsFalse(status.IsLoading);
@@ -211,20 +211,20 @@ public sealed class ListViewModelBaseTests
     [TestMethod]
     public async Task LoadAsync_WhenRepositoryThrows_AddsErrorMessage()
     {
-        var status = new FakeStatusInfoServices();
-        var msg = new FakeAppMessageService();
-        var repo = new FakeRepo();
+        FakeStatusInfoServices status = new FakeStatusInfoServices();
+        FakeAppMessageService msg = new FakeAppMessageService();
+        FakeRepo repo = new FakeRepo();
 
         repo.GetByIdAsyncImpl = id => throw new InvalidOperationException("boom");
 
-        var vm = new TestListViewModel(status, msg, repo);
+        TestListViewModel vm = new TestListViewModel(status, msg, repo);
 
         await vm.LoadAsync(Guid.NewGuid());
 
         Assert.IsNull(vm.Entity);
         Assert.IsTrue(msg.HasErrorMessages);
-        var errors = msg.ErrorMessages.ToList();
-        Assert.AreEqual(1, errors.Count);
+        List<string> errors = msg.ErrorMessages.ToList();
+        Assert.HasCount(1, errors);
         StringAssert.StartsWith(errors[0], "Failed to load entity:");
         StringAssert.Contains(errors[0], "boom");
         Assert.IsFalse(status.IsLoading);

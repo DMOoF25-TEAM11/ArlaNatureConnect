@@ -146,10 +146,10 @@ public sealed class CRUDViewModelBaseTests
     [TestMethod]
     public void Constructor_InitializesCommands_And_DefaultModes()
     {
-        var status = new FakeStatusInfoServices();
-        var msg = new FakeAppMessageService();
-        var repo = new FakeRepo();
-        var vm = new TestCrudViewModel(status, msg, repo);
+        FakeStatusInfoServices status = new FakeStatusInfoServices();
+        FakeAppMessageService msg = new FakeAppMessageService();
+        FakeRepo repo = new FakeRepo();
+        TestCrudViewModel vm = new TestCrudViewModel(status, msg, repo);
 
         Assert.IsNotNull(vm.AddCommand);
         Assert.IsNotNull(vm.SaveCommand);
@@ -171,10 +171,10 @@ public sealed class CRUDViewModelBaseTests
     [TestMethod]
     public void CanSubmitCore_ReflectsIsSaving_And_ErrorMessages()
     {
-        var status = new FakeStatusInfoServices();
-        var msg = new FakeAppMessageService();
-        var repo = new FakeRepo();
-        var vm = new TestCrudViewModel(status, msg, repo);
+        FakeStatusInfoServices status = new FakeStatusInfoServices();
+        FakeAppMessageService msg = new FakeAppMessageService();
+        FakeRepo repo = new FakeRepo();
+        TestCrudViewModel vm = new TestCrudViewModel(status, msg, repo);
 
         // default: not saving, no errors
         Assert.IsTrue(vm.AddCommand.CanExecute(null));
@@ -193,40 +193,40 @@ public sealed class CRUDViewModelBaseTests
     [TestMethod]
     public async Task LoadAsync_RaisesEntityPropertyChanged()
     {
-        var status = new FakeStatusInfoServices();
-        var msg = new FakeAppMessageService();
-        var repo = new FakeRepo();
+        FakeStatusInfoServices status = new FakeStatusInfoServices();
+        FakeAppMessageService msg = new FakeAppMessageService();
+        FakeRepo repo = new FakeRepo();
 
-        var found = new TestEntity { Id = Guid.NewGuid(), Name = "Found" };
+        TestEntity found = new TestEntity { Id = Guid.NewGuid(), Name = "Found" };
         repo.GetByIdAsyncImpl = id => Task.FromResult<TestEntity?>(found);
 
-        var vm = new TestCrudViewModel(status, msg, repo);
+        TestCrudViewModel vm = new TestCrudViewModel(status, msg, repo);
 
-        var received = new List<string?>();
+        List<string?> received = new List<string?>();
         vm.PropertyChanged += (_, e) => received.Add(e.PropertyName);
 
         await vm.CallLoadAsync(found.Id);
 
         // The implementation calls OnPropertyChanged(nameof(Entity)) in finally.
-        Assert.IsTrue(received.Contains("Entity"));
+        Assert.Contains("Entity", received);
     }
 
     [TestMethod]
     public async Task LoadAsync_WhenRepositoryThrows_DoesNotCrash_And_RaisesPropertyChanged()
     {
-        var status = new FakeStatusInfoServices();
-        var msg = new FakeAppMessageService();
-        var repo = new FakeRepo();
+        FakeStatusInfoServices status = new FakeStatusInfoServices();
+        FakeAppMessageService msg = new FakeAppMessageService();
+        FakeRepo repo = new FakeRepo();
 
         repo.GetByIdAsyncImpl = id => throw new InvalidOperationException("boom");
 
-        var vm = new TestCrudViewModel(status, msg, repo);
-        var received = new List<string?>();
+        TestCrudViewModel vm = new TestCrudViewModel(status, msg, repo);
+        List<string?> received = new List<string?>();
         vm.PropertyChanged += (_, e) => received.Add(e.PropertyName);
 
         await vm.CallLoadAsync(Guid.NewGuid());
 
-        Assert.IsTrue(received.Contains("Entity"));
+        Assert.Contains("Entity", received);
         // error message append in implementation uses LINQ Append and will not modify service state
         Assert.IsFalse(msg.HasErrorMessages);
     }
@@ -234,10 +234,10 @@ public sealed class CRUDViewModelBaseTests
     [TestMethod]
     public async Task OnAddAsync_OnlyRuns_WhenCanAdd()
     {
-        var status = new FakeStatusInfoServices();
-        var msg = new FakeAppMessageService();
-        var repo = new FakeRepo();
-        var vm = new TestCrudViewModel(status, msg, repo);
+        FakeStatusInfoServices status = new FakeStatusInfoServices();
+        FakeAppMessageService msg = new FakeAppMessageService();
+        FakeRepo repo = new FakeRepo();
+        TestCrudViewModel vm = new TestCrudViewModel(status, msg, repo);
 
         // ensure add mode
         vm.SetIsEditMode(false);
@@ -256,10 +256,10 @@ public sealed class CRUDViewModelBaseTests
     [TestMethod]
     public async Task OnCancelAsync_Resets_State_And_ClearsErrors()
     {
-        var status = new FakeStatusInfoServices();
-        var msg = new FakeAppMessageService();
-        var repo = new FakeRepo();
-        var vm = new TestCrudViewModel(status, msg, repo);
+        FakeStatusInfoServices status = new FakeStatusInfoServices();
+        FakeAppMessageService msg = new FakeAppMessageService();
+        FakeRepo repo = new FakeRepo();
+        TestCrudViewModel vm = new TestCrudViewModel(status, msg, repo);
 
         // set up state
         vm.Entity = new TestEntity { Id = Guid.NewGuid(), Name = "x" };
@@ -277,10 +277,10 @@ public sealed class CRUDViewModelBaseTests
     [TestMethod]
     public void RefreshCommand_Invokes_CanExecuteChanged_On_All_Commands()
     {
-        var status = new FakeStatusInfoServices();
-        var msg = new FakeAppMessageService();
-        var repo = new FakeRepo();
-        var vm = new TestCrudViewModel(status, msg, repo);
+        FakeStatusInfoServices status = new FakeStatusInfoServices();
+        FakeAppMessageService msg = new FakeAppMessageService();
+        FakeRepo repo = new FakeRepo();
+        TestCrudViewModel vm = new TestCrudViewModel(status, msg, repo);
 
         int calls = 0;
         void Handler(object? s, EventArgs e) => calls++;
@@ -307,14 +307,14 @@ public sealed class CRUDViewModelBaseTests
     [TestMethod]
     public async Task LoadAsync_Calls_OnLoadFormAsync_And_Sets_IsEditMode()
     {
-        var status = new FakeStatusInfoServices();
-        var msg = new FakeAppMessageService();
-        var repo = new FakeRepo();
+        FakeStatusInfoServices status = new FakeStatusInfoServices();
+        FakeAppMessageService msg = new FakeAppMessageService();
+        FakeRepo repo = new FakeRepo();
 
-        var found = new TestEntity { Id = Guid.NewGuid(), Name = "Found" };
+        TestEntity found = new TestEntity { Id = Guid.NewGuid(), Name = "Found" };
         repo.GetByIdAsyncImpl = id => Task.FromResult<TestEntity?>(found);
 
-        var vm = new TestCrudViewModel(status, msg, repo);
+        TestCrudViewModel vm = new TestCrudViewModel(status, msg, repo);
 
         await vm.CallLoadAsync(found.Id);
 
@@ -326,10 +326,10 @@ public sealed class CRUDViewModelBaseTests
     [TestMethod]
     public void Save_And_Delete_CanExecute_Based_On_EditMode_And_IsSaving()
     {
-        var status = new FakeStatusInfoServices();
-        var msg = new FakeAppMessageService();
-        var repo = new FakeRepo();
-        var vm = new TestCrudViewModel(status, msg, repo);
+        FakeStatusInfoServices status = new FakeStatusInfoServices();
+        FakeAppMessageService msg = new FakeAppMessageService();
+        FakeRepo repo = new FakeRepo();
+        TestCrudViewModel vm = new TestCrudViewModel(status, msg, repo);
 
         // initially not edit mode -> save/delete disabled
         Assert.IsFalse(vm.SaveCommand.CanExecute(null));
@@ -349,12 +349,12 @@ public sealed class CRUDViewModelBaseTests
     [TestMethod]
     public void OnAddAsync_Raises_PropertyChanged_For_IsSaving()
     {
-        var status = new FakeStatusInfoServices();
-        var msg = new FakeAppMessageService();
-        var repo = new FakeRepo();
-        var vm = new TestCrudViewModel(status, msg, repo);
+        FakeStatusInfoServices status = new FakeStatusInfoServices();
+        FakeAppMessageService msg = new FakeAppMessageService();
+        FakeRepo repo = new FakeRepo();
+        TestCrudViewModel vm = new TestCrudViewModel(status, msg, repo);
 
-        var received = new List<string?>();
+        List<string?> received = new List<string?>();
         vm.PropertyChanged += (_, e) => received.Add(e.PropertyName);
 
         // Ensure add mode
@@ -362,16 +362,16 @@ public sealed class CRUDViewModelBaseTests
         // call add
         vm.CallOnAddAsync().GetAwaiter().GetResult();
 
-        Assert.IsTrue(received.Contains("IsSaving"));
+        Assert.Contains("IsSaving", received);
     }
 
     [TestMethod]
     public void SaveCommand_Execute_DoesNotThrow_WhenEnabled()
     {
-        var status = new FakeStatusInfoServices();
-        var msg = new FakeAppMessageService();
-        var repo = new FakeRepo();
-        var vm = new TestCrudViewModel(status, msg, repo);
+        FakeStatusInfoServices status = new FakeStatusInfoServices();
+        FakeAppMessageService msg = new FakeAppMessageService();
+        FakeRepo repo = new FakeRepo();
+        TestCrudViewModel vm = new TestCrudViewModel(status, msg, repo);
 
         vm.SetIsEditMode(true);
 

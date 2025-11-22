@@ -37,7 +37,7 @@ public sealed class ViewModelBaseTests
 
         vm.RaiseWithExplicit("ExplicitName");
 
-        Assert.AreEqual(1, received.Count);
+        Assert.HasCount(1, received);
         Assert.AreEqual("ExplicitName", received[0]);
     }
 
@@ -50,7 +50,7 @@ public sealed class ViewModelBaseTests
 
         vm.RaiseWithoutName();
 
-        Assert.AreEqual(1, received.Count);
+        Assert.HasCount(1, received);
         Assert.AreEqual("RaiseWithoutName", received[0]);
     }
 
@@ -63,7 +63,7 @@ public sealed class ViewModelBaseTests
 
         vm.SetNameProp("value");
 
-        Assert.AreEqual(1, received.Count);
+        Assert.HasCount(1, received);
         // When called from SetNameProp the CallerMemberName will be "SetNameProp"
         Assert.AreEqual("SetNameProp", received[0]);
     }
