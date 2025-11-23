@@ -2,13 +2,11 @@ using ArlaNatureConnect.Core.Services;
 using ArlaNatureConnect.WinUI.Dialogs;
 using ArlaNatureConnect.WinUI.ViewModels;
 
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
 using System.Diagnostics;
-
-using Windows.Storage;
-using Microsoft.Data.SqlClient;
 
 namespace ArlaNatureConnect.WinUI;
 
@@ -17,14 +15,22 @@ public sealed partial class StartWindow : Window
     private readonly StartWindowViewModel _viewModel;
     private readonly TaskCompletionSource<bool> _initializationTcs = new(TaskCreationOptions.RunContinuationsAsynchronously);
 
+    // Danish translations as private consts
+    private const string _connectionFailedTitle = "Databaseforbindelse mislykkedes";
+    private const string _connectionFailedContentSuffix = "\n\nKontroller venligst servernavn, netværksforbindelse og legitimationsoplysninger.";
+    private const string _retryButtonText = "Prøv igen";
+    private const string _cancelButtonText = "Annuller";
+
     // Public task the host can await to know when startup (including connection dialog) is done
     public Task Initialization => _initializationTcs.Task;
 
     // Accept an optional IConnectionStringService so the caller (App) can pass the same instance
-    public StartWindow(IConnectionStringService? connService = null)
+    public StartWindow()
     {
-        var cs = connService ?? new ConnectionStringService();
-        _viewModel = new StartWindowViewModel(cs);
+        IConnectionStringService connSvc = App.HostInstance.Services.GetRequiredService<IConnectionStringService>();
+        IStatusInfoServices statusSvc = App.HostInstance.Services.GetRequiredService<IStatusInfoServices>();
+
+        _viewModel = new StartWindowViewModel(connSvc, statusSvc);
 
         InitializeComponent();
 
@@ -62,10 +68,10 @@ public sealed partial class StartWindow : Window
         // Show a simple content dialog to inform the user and allow retry
         ContentDialog dialog = new ContentDialog()
         {
-            Title = "Database connection failed",
-            Content = message + "\n\nPlease check the server name, network connectivity, and credentials.",
-            PrimaryButtonText = "Retry",
-            CloseButtonText = "Cancel",
+            Title = _connectionFailedTitle,
+            Content = message + _connectionFailedContentSuffix,
+            PrimaryButtonText = _retryButtonText,
+            CloseButtonText = _cancelButtonText,
             XamlRoot = (Content as FrameworkElement)?.XamlRoot
         };
 
@@ -75,7 +81,6 @@ public sealed partial class StartWindow : Window
             // No-op here; caller will re-open the connection dialog if needed
         }
     }
-
 
     private async Task ShowConnectionDialogAndSaveAsync()
     {
@@ -91,8 +96,6 @@ public sealed partial class StartWindow : Window
             string? cs = vm.ConnectionString?.Trim();
             if (!string.IsNullOrEmpty(cs))
             {
-                Debug.WriteLine($"Saving connection string: {cs}");
-                Debug.WriteLine($"Connection string length: {cs.Length}");
                 await _viewModel.SaveConnectionStringAsync(cs);
             }
         }

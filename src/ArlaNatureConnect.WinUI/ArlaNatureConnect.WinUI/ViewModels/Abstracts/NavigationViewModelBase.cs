@@ -100,7 +100,7 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
     public bool IsLoading
     {
         get => _isLoading;
-        private set
+        protected set
         {
             _isLoading = value;
             OnPropertyChanged();
@@ -249,7 +249,7 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
         IsLoading = true;
         try
         {
-            var persons = await _personRepository!.GetPersonsByRoleAsync(roleName);
+            List<Person> persons = await _personRepository!.GetPersonsByRoleAsync(roleName);
             AvailablePersons = persons ?? new List<Person>();
             Debug.WriteLine($"Loaded {AvailablePersons.Count} persons with role {roleName}");
         }
@@ -310,29 +310,37 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
     }
     public virtual void RestoreMainWindowSideMenu()
     {
-        MainWindow? mainWindow = App.HostInstance?.Services.GetService<MainWindow>();
-        if (mainWindow == null)
+        // If the main window's XamlRoot isn't available, the window is closed or not ready.
+        if (App.MainWindowXamlRoot == null)
             return;
 
-        if (mainWindow.Content is not FrameworkElement root)
-            return;
-
-        Panel? SideMenu = FindSideMenuPanel(root);
-        if (SideMenu == null)
-            return;
-
-        // Only restore if we previously replaced children
-        if (_previousSideMenuChildren == null)
-            return;
-
-        SideMenu.Children.Clear();
-        foreach (UIElement child in _previousSideMenuChildren)
+        try
         {
-            SideMenu.Children.Add(child);
-        }
+            MainWindow? mainWindow = App.HostInstance?.Services.GetService<MainWindow>();
+            if (mainWindow == null)
+                return;
 
-        _previousSideMenuChildren = null;
-        _addedSideMenuControl = null;
+            if (mainWindow.Content is not FrameworkElement root)
+                return;
+
+            Panel? SideMenu = FindSideMenuPanel(root);
+            if (SideMenu == null)
+                return;
+
+            if (_previousSideMenuChildren == null)
+                return;
+
+            SideMenu.Children.Clear();
+            foreach (UIElement child in _previousSideMenuChildren)
+                SideMenu.Children.Add(child);
+
+            _previousSideMenuChildren = null;
+            _addedSideMenuControl = null;
+        }
+        catch (System.Runtime.InteropServices.COMException)
+        {
+            // Window already closed — ignore restore
+        }
     }
 
     private void Page_Loaded(object? sender, RoutedEventArgs e)

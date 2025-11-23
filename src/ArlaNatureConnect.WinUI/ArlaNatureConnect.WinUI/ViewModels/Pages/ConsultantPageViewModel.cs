@@ -1,8 +1,13 @@
 using ArlaNatureConnect.Core.Abstract;
 using ArlaNatureConnect.Domain.Entities;
+using ArlaNatureConnect.Domain.Enums;
 using ArlaNatureConnect.WinUI.Commands;
 using ArlaNatureConnect.WinUI.Services;
+using ArlaNatureConnect.WinUI.View.Pages.Consultant;
+using ArlaNatureConnect.WinUI.View.Pages.Farmer;
 using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
+
+using Microsoft.UI.Xaml.Controls;
 
 namespace ArlaNatureConnect.WinUI.ViewModels.Pages;
 
@@ -31,7 +36,6 @@ public class ConsultantPageViewModel : NavigationViewModelBase
     private readonly IPersonRepository _personRepository;
     private readonly IRoleRepository _roleRepository;
     private Person? _selectedPerson;
-    private Role? _currentRole;
     private List<Person> _availablePersons = new();
     private bool _isLoading;
     private object? _selectedNavigationItem;
@@ -39,61 +43,9 @@ public class ConsultantPageViewModel : NavigationViewModelBase
     #endregion
 
     #region Commands
-
-    /// <summary>
-    /// Command to choose a user from the dropdown.
-    /// Receives Person object as parameter and loads the dashboard for the selected consultant.
-    /// </summary>
-    public RelayCommand<Person> ChooseUserCommand { get; }
-
     #endregion
 
     #region Properties
-
-    /// <summary>
-    /// List of available persons with the Consultant role.
-    /// </summary>
-    public List<Person> AvailablePersons
-    {
-        get => _availablePersons;
-        private set
-        {
-            _availablePersons = value;
-            OnPropertyChanged();
-        }
-    }
-
-    /// <summary>
-    /// The currently selected person.
-    /// </summary>
-    public Person? SelectedPerson
-    {
-        get => _selectedPerson;
-        set
-        {
-            _selectedPerson = value;
-            OnPropertyChanged();
-            ChooseUserCommand.RaiseCanExecuteChanged();
-        }
-    }
-
-    /// <summary>
-    /// Indicates whether data is being loaded.
-    /// </summary>
-    public bool IsLoading
-    {
-        get => _isLoading;
-        private set
-        {
-            _isLoading = value;
-            OnPropertyChanged();
-        }
-    }
-
-    /// <summary>
-    /// Indicates whether a user has been selected and dashboard should be shown.
-    /// </summary>
-    public bool IsUserSelected => SelectedPerson != null;
 
     /// <summary>
     /// The currently selected navigation item.
@@ -112,17 +64,13 @@ public class ConsultantPageViewModel : NavigationViewModelBase
 
     #region Constructor
 
-    public ConsultantPageViewModel(
-        NavigationHandler navigationHandler,
-        IPersonRepository personRepository,
-        IRoleRepository roleRepository)
+    public ConsultantPageViewModel(NavigationHandler navigationHandler, IPersonRepository personRepository, IRoleRepository roleRepository)
+        : base(navigationHandler, personRepository, roleRepository)
     {
-        _navigationHandler = navigationHandler ?? throw new ArgumentNullException(nameof(navigationHandler));
-        _personRepository = personRepository ?? throw new ArgumentNullException(nameof(personRepository));
-        _roleRepository = roleRepository ?? throw new ArgumentNullException(nameof(roleRepository));
-        
-        ChooseUserCommand = new RelayCommand<Person>(ChooseUser, p => p != null);
-        InitializeNavigation("Farms"); // Default to "Farms and Nature Check"
+        InitializeNavigation("Dashboards");
+
+        // ensure initial content is created and bound to this VM
+        SwitchContentView(CurrentNavigationTag);
     }
 
     #endregion
@@ -136,29 +84,12 @@ public class ConsultantPageViewModel : NavigationViewModelBase
     public async Task InitializeAsync(Role? role)
     {
         _currentRole = role;
-        await LoadAvailableUsersAsync();
+        await LoadAvailableUsersAsync(RoleName.Consultant.ToString());
     }
 
     #endregion
 
     #region OnChooseUser Command
-
-    /// <summary>
-    /// Chooses a user and loads their dashboard.
-    /// </summary>
-    /// <param name="person">The person to select.</param>
-    private void ChooseUser(Person? person)
-    {
-        if (person == null)
-        {
-            return;
-        }
-
-        SelectedPerson = person;
-        OnPropertyChanged(nameof(IsUserSelected));
-        LoadDashboard();
-    }
-
     #endregion
 
     #region Navigation Handler
@@ -175,50 +106,30 @@ public class ConsultantPageViewModel : NavigationViewModelBase
     #endregion
 
     #region Helpers
-
-    /// <summary>
-    /// Loads all available persons with the Consultant role.
-    /// </summary>
-    private async Task LoadAvailableUsersAsync()
+    private void SwitchContentView(string? navigationTag)
     {
-        IsLoading = true;
         try
         {
-            // Get all roles to find Consultant role
-            IEnumerable<Role> allRoles = await _roleRepository.GetAllAsync(CancellationToken.None);
-            Role? consultantRole = allRoles.FirstOrDefault(r => 
-                r.Name.Equals("Consultant", StringComparison.OrdinalIgnoreCase) ||
-                r.Name.Equals("Konsulent", StringComparison.OrdinalIgnoreCase));
-
-            if (consultantRole == null)
+            UserControl? newContent = navigationTag switch
             {
-                AvailablePersons = new List<Person>();
-                return;
+                "Dashboards" => new ConsultantDashboards(),
+                "Farms" => new ConsultantNatureCheck(),
+                "Tasks" => new ConsultantTasks(),
+                _ => new ConsultantDashboards(),
+            };
+
+            if (newContent != null)
+            {
+                newContent.DataContext = this;
+                CurrentContent = newContent;
             }
-
-            // Get all persons
-            IEnumerable<Person> allPersons = await _personRepository.GetAllAsync(CancellationToken.None);
-            
-            // Filter by role and active status
-            AvailablePersons = allPersons
-                .Where(p => p.RoleId == consultantRole.Id && p.IsActive)
-                .OrderBy(p => p.FirstName)
-                .ThenBy(p => p.LastName)
-                .ToList();
         }
-        finally
+        catch
         {
-            IsLoading = false;
+            // In unit tests or when XAML context is not available, 
+            // we gracefully fail and leave CurrentContent as null
+            // This allows tests to run without requiring UI initialization
         }
-    }
-
-    /// <summary>
-    /// Loads the dashboard for the selected user.
-    /// </summary>
-    private void LoadDashboard()
-    {
-        // Dashboard loading logic will be implemented here
-        // For now, this is a placeholder
     }
 
     #endregion

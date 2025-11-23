@@ -47,6 +47,8 @@ public class StatusBarUCViewModel : ViewModelBase
             if (_isBusy == value) return;
             _isBusy = value;
             OnPropertyChanged();
+            // notify dependent computed property
+            OnPropertyChanged(nameof(BusySymbol));
         }
     }
 
@@ -59,6 +61,8 @@ public class StatusBarUCViewModel : ViewModelBase
             if (_hasDbConnection == value) return;
             _hasDbConnection = value;
             OnPropertyChanged();
+            // notify dependent computed property
+            OnPropertyChanged(nameof(DbConnectionSymbol));
         }
     }
 
@@ -99,20 +103,19 @@ public class StatusBarUCViewModel : ViewModelBase
     #region Helpers
     public async Task InitializeAsync()
     {
-        // take a snapshot of service values and update properties under a lock to avoid races
+        // capture service reference and validate
+        IStatusInfoServices svc = _statusInfoServices ?? throw new InvalidOperationException("_statusInfo_services is not initialized.");
+
+        // begin loading and perform async initialization without holding a lock across awaits
+        using (svc.BeginLoading())
+        {
+            await Task.Delay(200).ConfigureAwait(false);
+        }
+
+        // ensure UI is updated with current status values after initialization
         lock (_statusInfoLock)
         {
-            if (_statusInfoServices is null)
-                throw new InvalidOperationException("_statusInfoServices is not initialized.");
-
-            using (_statusInfoServices.BeginLoading())
-            {
-                // perform async initialization here
-                Task.Delay(200).ConfigureAwait(false);
-
-                // ensure UI is updated with current status values after initialization
-                StatusInfoServices_StatusInfoChanged(this, EventArgs.Empty);
-            }
+            StatusInfoServices_StatusInfoChanged(this, EventArgs.Empty);
         }
     }
 
@@ -121,8 +124,8 @@ public class StatusBarUCViewModel : ViewModelBase
         // take a snapshot of service values and update properties under a lock to avoid races
         lock (_statusInfoLock)
         {
-            bool isLoading = _statusInfoServices?.IsLoading ?? false;
-            bool hasDb = _statusInfoServices?.HasDbConnection ?? false;
+            bool isLoading = _statusInfoServices.IsLoading;
+            bool hasDb = _statusInfoServices.HasDbConnection;
 
             IsBusy = isLoading;
             HasDbConnection = hasDb;

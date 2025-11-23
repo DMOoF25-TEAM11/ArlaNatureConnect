@@ -1,28 +1,87 @@
-using System;
-using System.Threading.Tasks;
-using Microsoft.Data.SqlClient;
 using ArlaNatureConnect.Core.Services;
-using System.IO;
+
+using Microsoft.Data.SqlClient;
+
 using System.Diagnostics;
-using Windows.Storage;
 
 namespace ArlaNatureConnect.WinUI.ViewModels;
 
 public class StartWindowViewModel
 {
-    private readonly IConnectionStringService _connService;
+    #region Fields
+    private readonly IConnectionStringService? _connService;
+    private readonly IStatusInfoServices? _statusInfoServices;
+    #endregion
 
-    public StartWindowViewModel(IConnectionStringService connService)
+    public StartWindowViewModel()
     {
-        _connService = connService ?? throw new ArgumentNullException(nameof(connService));
+        // Parameterless ctor left for design-time only; avoid accessing service members here.
     }
 
-    public Task<bool> ConnectionExistsAsync() => _connService.ExistsAsync();
+    public StartWindowViewModel(IConnectionStringService connService, IStatusInfoServices statusInfoServices)
+    {
+        //_connService = connService ?? App.HostInstance.Services.GetService<IConnectionStringService>();
+        //_statusInfoServices = statusInfoServices ?? App.HostInstance.Services.GetService<IStatusInfoServices>();
+        _connService = connService ?? throw new ArgumentNullException(nameof(connService));
+        _statusInfoServices = statusInfoServices ?? throw new ArgumentNullException(nameof(statusInfoServices));
+    }
 
-    public Task<string?> ReadConnectionStringAsync() => _connService.ReadAsync();
+    /// <summary>
+    /// Perform startup checks previously performed in StartWindow.Loaded.
+    /// UI interactions (showing dialogs) are delegated to the caller via provided callbacks.
+    /// </summary>
+    /// <param name="showConnectionDialogAndSaveAsync">Delegate used to show the connection dialog and save the connection string when needed.</param>
+    /// <param name="showConnectionErrorAsync">Delegate used to show connection error messages to the user.</param>
+    public async Task InitializeAsync(Func<Task> showConnectionDialogAndSaveAsync, Func<string, Task> showConnectionErrorAsync)
+    {
+        try
+        {
+            // Check for existing connection string
+            bool exists = await ConnectionExistsAsync();
+            string? conn = null;
+            if (!exists)
+            {
+                if (showConnectionDialogAndSaveAsync != null) await showConnectionDialogAndSaveAsync();
+            }
+            else
+            {
+                conn = await ReadConnectionStringAsync();
+                if (string.IsNullOrWhiteSpace(conn))
+                {
+                    if (showConnectionDialogAndSaveAsync != null) await showConnectionDialogAndSaveAsync();
+                }
+            }
 
-    public Task SaveConnectionStringAsync(string connectionString) => _connService.SaveAsync(connectionString);
+            // If there is a connection string, validate it asynchronously and let user retry on failure
+            if (!string.IsNullOrWhiteSpace(conn))
+            {
+                (bool IsValid, string? ErrorMessage) validationResult = await ValidateConnectionStringWithRetryAsync(conn);
+                bool isValid = validationResult.IsValid;
+                // string _ = validationResult.ErrorMessage; // If you need the error message, use validationResult.ErrorMessage
 
+                if (!isValid)
+                {
+                    // Let user re-enter connection string
+                    if (showConnectionDialogAndSaveAsync != null) await showConnectionDialogAndSaveAsync();
+                    conn = await ReadConnectionStringAsync();
+                    if (!string.IsNullOrWhiteSpace(conn))
+                    {
+                        await ValidateConnectionStringWithRetryAsync(conn);
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error loading startup image: {ex}");
+            if (showConnectionErrorAsync != null)
+            {
+                await showConnectionErrorAsync(ex.Message);
+            }
+        }
+    }
+
+    #region Helpers
     /// <summary>
     /// Validates the provided connection string by checking the DataSource and attempting to open a connection.
     /// Returns a tuple indicating success and an optional error message suitable for display.
@@ -53,10 +112,12 @@ public class StartWindowViewModel
                 using SqlConnection conn = new SqlConnection(builder.ConnectionString);
                 await conn.OpenAsync();
                 await conn.CloseAsync();
+                _statusInfoServices.HasDbConnection = true;
                 return (true, null);
             }
             catch (SqlException ex)
             {
+                _statusInfoServices.HasDbConnection = false;
                 if (attempt == maxAttempts)
                 {
                     return (false, $"Unable to connect to SQL Server '{builder.DataSource}': {ex.Message}");
@@ -80,79 +141,17 @@ public class StartWindowViewModel
         return (false, "Unknown error validating connection string.");
     }
 
-    /// <summary>
-    /// Perform startup checks previously performed in StartWindow.Loaded.
-    /// UI interactions (showing dialogs) are delegated to the caller via provided callbacks.
-    /// </summary>
-    /// <param name="showConnectionDialogAndSaveAsync">Delegate used to show the connection dialog and save the connection string when needed.</param>
-    /// <param name="showConnectionErrorAsync">Delegate used to show connection error messages to the user.</param>
-    public async Task InitializeAsync(Func<Task> showConnectionDialogAndSaveAsync, Func<string, Task> showConnectionErrorAsync)
+    public async Task<bool> ConnectionExistsAsync()
     {
-        try
-        {
-            // Try packaged-app URI first (works only if app is packaged)
-            Uri uri = new Uri("ms-appx:///Assets/startUpImage.jpg");
-            try
-            {
-                StorageFile f = await StorageFile.GetFileFromApplicationUriAsync(uri);
-                // Found in package
-            }
-            catch
-            {
-                // ignore and try file system fallback
-            }
-
-            // Fallback for unpackaged / desktop scenarios: check output folder
-            string filePath = Path.Combine(AppContext.BaseDirectory ?? string.Empty, "Assets", "startUpImage.jpg");
-            if (File.Exists(filePath))
-            {
-                Debug.WriteLine($"Found (fs): {filePath}");
-            }
-            else
-            {
-                Debug.WriteLine($"Image not found at either ms-appx or output folder: {filePath}");
-                throw new FileNotFoundException("Startup image not found");
-            }
-
-            // Check for existing connection string
-            bool exists = await ConnectionExistsAsync();
-            string? conn = null;
-            if (!exists)
-            {
-                if (showConnectionDialogAndSaveAsync != null) await showConnectionDialogAndSaveAsync();
-            }
-            else
-            {
-                conn = await ReadConnectionStringAsync();
-                if (string.IsNullOrEmpty(conn))
-                {
-                    if (showConnectionDialogAndSaveAsync != null) await showConnectionDialogAndSaveAsync();
-                }
-            }
-
-            // If there is a connection string, validate it asynchronously and let user retry on failure
-            if (!string.IsNullOrWhiteSpace(conn))
-            {
-                var (isValid, _) = await ValidateConnectionStringWithRetryAsync(conn);
-                if (!isValid)
-                {
-                    // Let user re-enter connection string
-                    if (showConnectionDialogAndSaveAsync != null) await showConnectionDialogAndSaveAsync();
-                    conn = await ReadConnectionStringAsync();
-                    if (!string.IsNullOrWhiteSpace(conn))
-                    {
-                        await ValidateConnectionStringWithRetryAsync(conn);
-                    }
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine($"Error loading startup image: {ex}");
-            if (showConnectionErrorAsync != null)
-            {
-                await showConnectionErrorAsync(ex.Message);
-            }
-        }
+        bool exists = await _connService!.ExistsAsync();
+        _statusInfoServices!.HasDbConnection = exists;
+        return exists;
     }
+
+
+    public Task<string?> ReadConnectionStringAsync() => _connService!.ReadAsync();
+
+    public Task SaveConnectionStringAsync(string connectionString) => _connService!.SaveAsync(connectionString);
+
+    #endregion
 }

@@ -1,10 +1,10 @@
-<Window
+﻿<Window
  x:Class="ArlaNatureConnect.WinUI.StartWindow"
  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
  xmlns:local="using:ArlaNatureConnect.WinUI"
  xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
- Title="Starting...">
+ Title="Starter...">
     <Grid>
         <Grid.Background>
             <ImageBrush ImageSource="ms-appx:///Assets/startUpImage.jpg" Stretch="UniformToFill" />

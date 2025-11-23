@@ -169,7 +169,7 @@ public abstract partial class UCSideMenu : UserControl
     /// </summary>
     protected virtual Button? GetButtonForTag(string tag)
     {
-        var wrapper = GetButtonWrapperForTag(tag);
+        IButtonWrapper? wrapper = GetButtonWrapperForTag(tag);
         return wrapper is ButtonWrapper bw ? bw.UnderlyingButton : null;
     }
 

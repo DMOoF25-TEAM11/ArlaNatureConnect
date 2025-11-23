@@ -5,7 +5,6 @@ using Microsoft.Extensions.Hosting;
 
 namespace ArlaNatureConnect.WinUI;
 
-using ArlaNatureConnect.Core;
 using ArlaNatureConnect.Core.Services;
 using ArlaNatureConnect.WinUI.Services;
 
@@ -20,6 +19,54 @@ public partial class App : Application
     private Window? _window;
     public static IHost HostInstance { get; private set; } = null!;
 
+    /// <summary>
+    /// Initializes the singleton application object.  This is the first line of authored code
+    /// executed, and as such is the logical equivalent of main() or WinMain().
+    /// </summary>
+    public App()
+    {
+        InitializeComponent();
+    }
+
+    /// <summary>
+    /// Invoked when the application is launched.
+    /// </summary>
+    /// <param name="args">Details about the launch request and process.</param>
+    protected override async void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
+    {
+        // show start window first
+        HostInstance = Host.CreateDefaultBuilder()
+            .ConfigureServices((context, services) =>
+            {
+                services
+                    .AddInfrastructure()
+                    .AddSingleton<NavigationHandler>()
+                    .AddSingleton<MainWindow>()
+                    .AddSingleton<ArlaNatureConnect.WinUI.ViewModels.Controls.StatusBarUCViewModel>()
+                    ;
+            })
+            .Build();
+
+        // Resolve IConnectionStringService from DI
+        IConnectionStringService connService = HostInstance.Services.GetRequiredService<IConnectionStringService>();
+
+        StartWindow start = new();
+        start.Activate();
+
+        Task delayTask = Task.Delay(400); // simulate initialization (0.4 seconds)
+        Task initTask = start.Initialization; // task that completes when start window initialization (including any dialog) is done
+
+        await Task.WhenAll(initTask, delayTask);
+
+        // resolve and show main window from DI so its dependencies are injected
+        _window = HostInstance.Services.GetRequiredService<MainWindow>();
+        _window.Activate();
+
+        // close start window
+        start.Close();
+    }
+
+    #region Helpers
     /// <summary>
     /// Helper to expose the main window's XamlRoot so non-UI code can attach dialogs to the visual tree.
     /// Returns null if the main window isn't available yet.
@@ -45,57 +92,5 @@ public partial class App : Application
             return null;
         }
     }
-
-    /// <summary>
-    /// Initializes the singleton application object.  This is the first line of authored code
-    /// executed, and as such is the logical equivalent of main() or WinMain().
-    /// </summary>
-    public App()
-    {
-        InitializeComponent();
-    }
-
-    /// <summary>
-    /// Invoked when the application is launched.
-    /// </summary>
-    /// <param name="args">Details about the launch request and process.</param>
-    protected override async void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
-    {
-        // Create a single ConnectionStringService instance that will be used by StartWindow and by DI
-        ConnectionStringService connService = new ConnectionStringService();
-
-        // show start window first
-        StartWindow start = new StartWindow(connService);
-        start.Activate();
-
-        Task delayTask = Task.Delay(800); // simulate initialization (0.8 seconds)
-        Task initTask = start.Initialization; // task that completes when start window initialization (including any dialog) is done
-
-        await Task.WhenAll(initTask, delayTask);
-
-        HostInstance = Host.CreateDefaultBuilder()
-            .ConfigureServices((context, services) =>
-            {
-                services
-                    //.AddCoreServices()
-                    .AddInfrastructure(connService)
-                    .AddSingleton<NavigationHandler>()
-                    .AddSingleton<MainWindow>()
-                    .AddSingleton<ArlaNatureConnect.WinUI.ViewModels.Controls.StatusBarUCViewModel>()
-                    ;
-
-                // register viewmodels used by controls so controls can resolve a runtime DataContext
-                //.AddSingleton<ArlaNatureConnect.WinUI.ViewModels.Controls.StatusBarUCViewModel>();
-            })
-            .Build();
-
-
-
-        // resolve and show main window from DI so its dependencies are injected
-        _window = HostInstance.Services.GetRequiredService<MainWindow>();
-        _window.Activate();
-
-        // close start window
-        start.Close();
-    }
+    #endregion
 }
