@@ -294,7 +294,7 @@ public sealed class ArlaEmployeePageViewModelTests
     public async Task InitializeAsync_LoadsAvailableUsersAndSetsIsLoading()
     {
         // Arrange
-        var persons = new List<Person>
+        List<Person> persons = new List<Person>
         {
             new Person { Id = Guid.NewGuid(), FirstName = "Emp1", LastName = "One", IsActive = true },
             new Person { Id = Guid.NewGuid(), FirstName = "Emp2", LastName = "Two", IsActive = true }
@@ -303,7 +303,7 @@ public sealed class ArlaEmployeePageViewModelTests
         _mockPersonRepository.Setup(r => r.GetPersonsByRoleAsync(It.Is<string>(s => s == RoleName.Employee.ToString()), It.IsAny<CancellationToken>()))
             .ReturnsAsync(persons);
 
-        var role = new Role { Id = Guid.NewGuid(), Name = RoleName.Employee.ToString() };
+        Role role = new Role { Id = Guid.NewGuid(), Name = RoleName.Employee.ToString() };
 
         // Act
         await _viewModel.InitializeAsync(role);
@@ -311,7 +311,7 @@ public sealed class ArlaEmployeePageViewModelTests
         // Assert
         Assert.IsFalse(_viewModel.IsLoading);
         Assert.IsNotNull(_viewModel.AvailablePersons);
-        Assert.AreEqual(2, _viewModel.AvailablePersons.Count);
+        Assert.HasCount(2, _viewModel.AvailablePersons);
     }
 
     /// <summary>
@@ -325,7 +325,7 @@ public sealed class ArlaEmployeePageViewModelTests
         _mockPersonRepository.Setup(r => r.GetPersonsByRoleAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
             .ThrowsAsync(new InvalidOperationException("DB failure"));
 
-        var role = new Role { Id = Guid.NewGuid(), Name = RoleName.Employee.ToString() };
+        Role role = new Role { Id = Guid.NewGuid(), Name = RoleName.Employee.ToString() };
 
         try
         {

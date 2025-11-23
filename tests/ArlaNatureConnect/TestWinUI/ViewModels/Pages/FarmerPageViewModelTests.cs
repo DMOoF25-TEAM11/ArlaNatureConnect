@@ -34,9 +34,9 @@ public sealed class FarmerPageViewModelTests
     public async Task InitializeAsync_CallsRepositoryWithFarmerRoleAndSetsAvailablePersons()
     {
         // Arrange
-        var farmer1 = new Person { Id = Guid.NewGuid(), FirstName = "Alice", LastName = "A", IsActive = true };
-        var farmer2 = new Person { Id = Guid.NewGuid(), FirstName = "Bob", LastName = "B", IsActive = true };
-        var persons = new List<Person> { farmer1, farmer2 };
+        Person farmer1 = new Person { Id = Guid.NewGuid(), FirstName = "Alice", LastName = "A", IsActive = true };
+        Person farmer2 = new Person { Id = Guid.NewGuid(), FirstName = "Bob", LastName = "B", IsActive = true };
+        List<Person> persons = new List<Person> { farmer1, farmer2 };
 
         _mockPersonRepository.Setup(r => r.GetPersonsByRoleAsync(It.Is<string>(s => s == "Farmer"), It.IsAny<CancellationToken>()))
             .ReturnsAsync(persons);
@@ -46,7 +46,7 @@ public sealed class FarmerPageViewModelTests
 
         // Assert
         Assert.IsNotNull(_viewModel.AvailablePersons);
-        Assert.AreEqual(2, _viewModel.AvailablePersons.Count);
+        Assert.HasCount(2, _viewModel.AvailablePersons);
         CollectionAssert.AreEquivalent(persons, _viewModel.AvailablePersons);
     }
 
@@ -62,7 +62,7 @@ public sealed class FarmerPageViewModelTests
 
         // Assert
         Assert.IsNotNull(_viewModel.AvailablePersons);
-        Assert.AreEqual(0, _viewModel.AvailablePersons.Count);
+        Assert.IsEmpty(_viewModel.AvailablePersons);
     }
 
     [TestMethod]
@@ -175,12 +175,12 @@ public sealed class FarmerPageViewModelTests
     public async Task InitializeAsync_SetsIsLoadingDuringLoad()
     {
         // Arrange
-        var tcs = new TaskCompletionSource<List<Person>>();
+        TaskCompletionSource<List<Person>> tcs = new TaskCompletionSource<List<Person>>();
         _mockPersonRepository.Setup(r => r.GetPersonsByRoleAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
             .Returns(tcs.Task);
 
         // Act
-        var initTask = _viewModel.InitializeAsync(new Role { Name = "Farmer" });
+        Task initTask = _viewModel.InitializeAsync(new Role { Name = "Farmer" });
 
         // Assert - should be loading
         Assert.IsTrue(_viewModel.IsLoading);
