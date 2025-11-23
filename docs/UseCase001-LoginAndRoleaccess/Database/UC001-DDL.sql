@@ -1,7 +1,7 @@
 /*
  File: UC001-DDL.sql
  Purpose: Database DDL for Use Case UC001 - Login & Role Access
- Safety: Depends on UC002-DDL.sql (which defines Roles, Users, Address, Farms)
+ Safety: Depends on UC002-DDL.sql (which defines Roles, Persons, Address, Farms)
  
  Use Case: UC001 - Login & Role Access
  Description:
@@ -33,9 +33,9 @@ BEGIN
     RETURN;
 END
 
-IF OBJECT_ID(N'[dbo].[Users]', N'U') IS NULL
+IF OBJECT_ID(N'[dbo].[Persons]', N'U') IS NULL
 BEGIN
-    RAISERROR('Missing table [Users]. UC001 requires UC002-DDL.sql to be executed first.', 16, 1);
+    RAISERROR('Missing table [Persons]. UC001 requires UC002-DDL.sql to be executed first.', 16, 1);
     RETURN;
 END
 
@@ -44,7 +44,8 @@ GO
 
 /***************************************************************************************************
  Table: LoginSession
- Purpose: Tracks login and logout timestamps for each User.
+ Purpose: Tracks login and logout timestamps for each Person.
+ Note: Column name [UserId] is kept for backward compatibility, but references [Persons] table.
 ***************************************************************************************************/
 IF OBJECT_ID(N'[dbo].[LoginSession]', N'U') IS NULL
 BEGIN
@@ -55,8 +56,8 @@ BEGIN
         [UserId] UNIQUEIDENTIFIER NOT NULL,
         [LoginTimestamp] DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
         [LogoutTimestamp] DATETIME2 NULL,
-        CONSTRAINT [FK_LoginSession_Users] FOREIGN KEY ([UserId])
-            REFERENCES [dbo].[Users]([Id])
+        CONSTRAINT [FK_LoginSession_Persons] FOREIGN KEY ([UserId])
+            REFERENCES [dbo].[Persons]([Id])
             ON DELETE CASCADE
             ON UPDATE CASCADE
     );
@@ -89,7 +90,7 @@ BEGIN
             r.Name AS RoleName,
             s.LoginTimestamp,
             s.LogoutTimestamp
-        FROM [dbo].[Users] u
+        FROM [dbo].[Persons] u
         INNER JOIN [dbo].[Roles] r ON u.RoleId = r.Id
         LEFT JOIN [dbo].[LoginSession] s ON u.Id = s.UserId;
     ');

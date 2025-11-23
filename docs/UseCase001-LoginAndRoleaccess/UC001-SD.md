@@ -1,3 +1,4 @@
+```mermaid
 sequenceDiagram
     title UC01 – Login & Role Access
 
@@ -11,6 +12,8 @@ sequenceDiagram
     participant ConsultantPageViewModel
     participant ArlaEmployeePage as "ArlaEmployeePage.xaml (View)"
     participant ArlaEmployeePageViewModel
+    participant IRoleRepository
+    participant IPersonRepository
 
     %% Step 1: Launch
     User ->> LoginPage: LaunchApplication()
@@ -30,12 +33,22 @@ sequenceDiagram
     alt Role = Farmer
         NavigationHandler ->> FarmerPage: LoadPage()
         activate FarmerPage
-        FarmerPage ->> FarmerPageViewModel: Initialize(role)
+        FarmerPage ->> FarmerPageViewModel: InitializeAsync(role)
         activate FarmerPageViewModel
+        FarmerPageViewModel ->> IRoleRepository: GetAllAsync()
+        activate IRoleRepository
+        IRoleRepository -->> FarmerPageViewModel: roles
+        deactivate IRoleRepository
+        FarmerPageViewModel ->> IPersonRepository: GetAllAsync()
+        activate IPersonRepository
+        IPersonRepository -->> FarmerPageViewModel: persons
+        deactivate IPersonRepository
+        FarmerPageViewModel ->> FarmerPageViewModel: LoadAvailableUsersAsync()
+        FarmerPageViewModel -->> FarmerPage: UpdateAvailablePersons()
         FarmerPage -->> User: DisplayPersonDropdown()
         User ->> FarmerPage: SelectPerson(person)
-        FarmerPage ->> FarmerPageViewModel: Execute ChoosePersonCommand(person)
-        FarmerPageViewModel ->> FarmerPageViewModel: ChoosePerson(person)
+        FarmerPage ->> FarmerPageViewModel: Execute ChooseUserCommand(person)
+        FarmerPageViewModel ->> FarmerPageViewModel: ChooseUser(person)
         FarmerPageViewModel ->> FarmerPage: UpdateDashboard(person)
         FarmerPage -->> User: DisplayPersonSpecificDashboard()
         deactivate FarmerPageViewModel
@@ -43,12 +56,22 @@ sequenceDiagram
     else Role = Consultant
         NavigationHandler ->> ConsultantPage: LoadPage()
         activate ConsultantPage
-        ConsultantPage ->> ConsultantPageViewModel: Initialize(role)
+        ConsultantPage ->> ConsultantPageViewModel: InitializeAsync(role)
         activate ConsultantPageViewModel
+        ConsultantPageViewModel ->> IRoleRepository: GetAllAsync()
+        activate IRoleRepository
+        IRoleRepository -->> ConsultantPageViewModel: roles
+        deactivate IRoleRepository
+        ConsultantPageViewModel ->> IPersonRepository: GetAllAsync()
+        activate IPersonRepository
+        IPersonRepository -->> ConsultantPageViewModel: persons
+        deactivate IPersonRepository
+        ConsultantPageViewModel ->> ConsultantPageViewModel: LoadAvailableUsersAsync()
+        ConsultantPageViewModel -->> ConsultantPage: UpdateAvailablePersons()
         ConsultantPage -->> User: DisplayPersonDropdown()
         User ->> ConsultantPage: SelectPerson(person)
-        ConsultantPage ->> ConsultantPageViewModel: Execute ChoosePersonCommand(person)
-        ConsultantPageViewModel ->> ConsultantPageViewModel: ChoosePerson(person)
+        ConsultantPage ->> ConsultantPageViewModel: Execute ChooseUserCommand(person)
+        ConsultantPageViewModel ->> ConsultantPageViewModel: ChooseUser(person)
         ConsultantPageViewModel ->> ConsultantPage: UpdateDashboard(person)
         ConsultantPage -->> User: DisplayPersonSpecificDashboard()
         deactivate ConsultantPageViewModel
@@ -66,3 +89,4 @@ sequenceDiagram
     deactivate NavigationHandler
     deactivate LoginPageViewModel
     deactivate LoginPage
+```

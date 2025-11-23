@@ -15,7 +15,7 @@ USE [ArlaNatureConnect_Dev];
 GO
 
 -- Safety check
-IF OBJECT_ID(N'[dbo].[Users]', N'U') IS NULL
+IF OBJECT_ID(N'[dbo].[Persons]', N'U') IS NULL
 BEGIN
     RAISERROR('UC001 requires UC002-DDL.sql and UC002-DML.sql to have been executed first.',16,1);
     RETURN;
@@ -32,13 +32,13 @@ PRINT 'Inserting login sessions for all users from UC002...';
 -- Farmers (create active sessions)
 INSERT INTO [dbo].[LoginSession] (UserId, LoginTimestamp)
 SELECT [Id], DATEADD(MINUTE, -ABS(CHECKSUM(NEWID()) % 60), SYSUTCDATETIME())
-FROM [dbo].[Users]
+FROM [dbo].[Persons]
 WHERE [RoleId] IN (SELECT [Id] FROM [dbo].[Roles] WHERE [Name] = N'Farmer');
 
 -- Consultants (simulate recent logins)
 INSERT INTO [dbo].[LoginSession] (UserId, LoginTimestamp)
 SELECT [Id], DATEADD(MINUTE, -ABS(CHECKSUM(NEWID()) % 120), SYSUTCDATETIME())
-FROM [dbo].[Users]
+FROM [dbo].[Persons]
 WHERE [RoleId] IN (SELECT [Id] FROM [dbo].[Roles] WHERE [Name] = N'Consultant');
 
 -- Employees (simulate older sessions that include logout time)
@@ -46,15 +46,15 @@ INSERT INTO [dbo].[LoginSession] (UserId, LoginTimestamp, LogoutTimestamp)
 SELECT [Id],
        DATEADD(HOUR, -ABS(CHECKSUM(NEWID()) % 24), SYSUTCDATETIME()),
        DATEADD(MINUTE, -ABS(CHECKSUM(NEWID()) % 60), SYSUTCDATETIME())
-FROM [dbo].[Users]
-WHERE [RoleId] IN (SELECT [Id] FROM [dbo].[Roles] WHERE [Name] = N'Employee');
+FROM [dbo].[Persons]
+WHERE [RoleId] IN (SELECT [Id] FROM [dbo].[Roles] WHERE [Name] IN (N'Employee'));
 
 PRINT 'Login sessions successfully generated for Farmers, Consultants, and Employees.';
 
 -- Optional: verify counts
 SELECT r.Name AS RoleName, COUNT(s.Id) AS SessionCount
 FROM [dbo].[LoginSession] s
-JOIN [dbo].[Users] u ON s.UserId = u.Id
+JOIN [dbo].[Persons] u ON s.UserId = u.Id
 JOIN [dbo].[Roles] r ON u.RoleId = r.Id
 GROUP BY r.Name;
 GO

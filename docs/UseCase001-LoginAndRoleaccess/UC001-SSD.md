@@ -1,3 +1,5 @@
+```mermaid
+
 sequenceDiagram
     title: UC01 SSD - Login & Role Access
 
@@ -10,3 +12,4 @@ sequenceDiagram
     System -->> User: Display person-specific data
 
     Note over User,System: Person selection only applies for Farmer and Consultant roles.
+```
