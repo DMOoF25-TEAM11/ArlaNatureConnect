@@ -27,15 +27,6 @@ namespace ArlaNatureConnect.WinUI.ViewModels.Pages;
 /// </summary>
 public partial class FarmerPageViewModel : NavigationViewModelBase
 {
-    #region Fields
-    #endregion
-
-    #region Commands
-    #endregion
-
-    #region Properties
-    #endregion
-
     public FarmerPageViewModel() : base()
     {
 
@@ -50,15 +41,12 @@ public partial class FarmerPageViewModel : NavigationViewModelBase
         SwitchContentView(CurrentNavigationTag);
     }
 
-    #region SideMenu Handling
-    #endregion
-
     #region Load Handler
     /// <summary>
     /// Initializes the page with the selected role and loads available users.
     /// </summary>
     /// <param name="role">The role that was selected (should be Farmer).</param>
-    public async Task InitializeAsync(Role? role)
+    public override async Task InitializeAsync(Role? role)
     {
         _currentRole = role;
         await LoadAvailableUsersAsync(RoleName.Farmer.ToString());
@@ -66,14 +54,6 @@ public partial class FarmerPageViewModel : NavigationViewModelBase
     #endregion
 
     #region Helpers
-    /// <summary>
-    /// Loads the dashboard for the selected user.
-    /// </summary>
-    private void LoadDashboard()
-    {
-        // Dashboard logic will be implemented here        
-    }
-
     /// <summary>
     /// Overrides navigation to also switch the content view when the tag changes.
     /// </summary>

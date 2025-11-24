@@ -1,6 +1,5 @@
 using ArlaNatureConnect.Core.Abstract;
 using ArlaNatureConnect.Domain.Entities;
-using ArlaNatureConnect.Domain.Enums;
 using ArlaNatureConnect.WinUI.Commands;
 using ArlaNatureConnect.WinUI.Services;
 using ArlaNatureConnect.WinUI.Views.Controls.SideMenu;
@@ -15,14 +14,24 @@ using System.Windows.Input;
 
 namespace ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 
-public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewModel
+/// <summary>
+/// Base view-model that centralizes navigation and side-menu integration logic used by role-based pages.
+///
+/// Why this class exists:
+/// - Encapsulates common navigation command handling and content switching so derived view-models (e.g. farmer/consultant)
+///   can focus on role-specific data loading and business logic.
+/// - Provides side-menu attach/restore helpers that move UI wiring out of views and into a testable view-model layer.
+/// - Exposes observable properties (current tag, selected person, available persons, current content and loading flag)
+///   that pages bind to for a consistent navigation/user-selection experience across the app.
+/// </summary>
+public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewModelBase
 {
     #region Fields
     private string _currentNavigationTag = string.Empty;
 
     private readonly NavigationHandler? _navigationHandler;
-    private readonly IPersonRepository? _personRepository;
-    private readonly IRoleRepository? _roleRepository;
+    private readonly IPersonRepository? _person_repository;
+    private readonly IRoleRepository? _role_repository;
     private Person? _selectedPerson;
     protected Role? _currentRole;
     private List<Person> _availablePersons = new();
@@ -34,20 +43,32 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
     private UIElement? _addedSideMenuControl;
     #endregion
     #region Fields Commands
+
+    /// <summary>
+    /// Command used to choose a person from a list. Derived classes wire this command to selection behaviour.
+    /// </summary>
     public RelayCommand<Person>? ChooseUserCommand { get; }
     #endregion
-    #region Event handlers
-    #endregion
 
-    public NavigationViewModelBase() : base ()
-    { 
+    /// <summary>
+    /// Parameterless constructor used for design-time and tests. Derived classes that need repositories should use
+    /// the constructor that accepts dependencies.
+    /// </summary>
+    public NavigationViewModelBase() : base()
+    {
     }
 
-    protected NavigationViewModelBase(NavigationHandler navigationHandler, IPersonRepository? personRepository, IRoleRepository? roleRepository) :base()
+    /// <summary>
+    /// Construct a navigation view-model with required services.
+    /// </summary>
+    /// <param name="navigationHandler">Navigation handler used for frame navigation.</param>
+    /// <param name="personRepository">Repository used to load persons for the active role.</param>
+    /// <param name="roleRepository">Repository used to resolve roles if needed.</param>
+    protected NavigationViewModelBase(NavigationHandler navigationHandler, IPersonRepository? personRepository, IRoleRepository? roleRepository) : base()
     {
         _navigationHandler = navigationHandler ?? throw new ArgumentNullException(nameof(navigationHandler));
-        _personRepository = personRepository ?? throw new ArgumentNullException(nameof(personRepository));
-        _roleRepository = roleRepository ?? throw new ArgumentNullException(nameof(roleRepository));
+        _person_repository = personRepository ?? throw new ArgumentNullException(nameof(personRepository));
+        _role_repository = roleRepository ?? throw new ArgumentNullException(nameof(roleRepository));
         ChooseUserCommand = new RelayCommand<Person>(ChooseUser, p => p != null);
     }
 
@@ -55,15 +76,12 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
     /// <summary>
     /// Command to navigate between different content views.
     /// Accepts either a string tag or a delegate (Func<string>/Action) as parameter.
-    /// Initialized via InitializeNavigation() method.
+    /// Initialized via <see cref="InitializeNavigation"/>.
     /// </summary>
     public RelayCommand<object>? NavigationCommand { get; protected set; }
 
-    #endregion
-    #region Observables Properties
     /// <summary>
-    /// The currently selected navigation tag.
-    /// Used to determine which content view to display and which navigation button is active.
+    /// The currently selected navigation tag used by the view to determine which content is active.
     /// </summary>
     public string CurrentNavigationTag
     {
@@ -77,6 +95,10 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
             }
         }
     }
+
+    /// <summary>
+    /// Persons available for selection for the current role (bind to UI control).
+    /// </summary>
     public List<Person> AvailablePersons
     {
         get => _availablePersons;
@@ -86,6 +108,10 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
             OnPropertyChanged();
         }
     }
+
+    /// <summary>
+    /// Currently selected person. Setting this updates dependent state and command availability.
+    /// </summary>
     public Person? SelectedPerson
     {
         get => _selectedPerson;
@@ -97,6 +123,11 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
             OnPropertyChanged(nameof(IsUserSelected));
         }
     }
+
+    /// <summary>
+    /// Indicates whether the view-model is performing an asynchronous load operation.
+    /// The view can bind to this property to show a progress indicator.
+    /// </summary>
     public bool IsLoading
     {
         get => _isLoading;
@@ -106,7 +137,15 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
             OnPropertyChanged();
         }
     }
+
+    /// <summary>
+    /// Convenience property indicating whether a person has been selected.
+    /// </summary>
     public bool IsUserSelected => SelectedPerson != null;
+
+    /// <summary>
+    /// The current content UserControl for the page. Derived view-models may create and assign user controls here.
+    /// </summary>
     public UserControl? CurrentContent
     {
         get => _currentContent;
@@ -118,140 +157,176 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
         }
     }
     #endregion
-    #region Load handler
-
-
-    #endregion
     #region Commands
-    ICommand? INavigationViewModel.NavigationCommand => NavigationCommand;
-    #endregion
-    #region CanXXX Command
-    #endregion
-    #region OnXXX Command
+    ICommand? INavigationViewModelBase.NavigationCommand => NavigationCommand;
     #endregion
     #region Helpers
     /// <summary>
-    /// Initializes the navigation command. Should be called in the constructor of derived classes.
+    /// Initializes the navigation command and sets an initial tag. Call from derived class constructors.
     /// </summary>
-    /// <param name="defaultTag">The default navigation tag to use when initializing.</param>
+    /// <param name="defaultTag">Default navigation tag (for example "Dashboards").</param>
     protected void InitializeNavigation(string defaultTag = "")
     {
         _currentNavigationTag = defaultTag;
         NavigationCommand = new RelayCommand<object>(NavigateToView, CanNavigate);
     }
 
+    /// <summary>
+    /// Default asynchronous initializer. Derived view-models should override this to perform role-specific initialization
+    /// (for example call <see cref="LoadAvailableUsersAsync"/>). The base implementation is a no-op completed task to
+    /// simplify callers that treat initialization as optional.
+    /// </summary>
+    /// <param name="role">Role used to scope initialization; may be <c>null</c>.</param>
+    /// <returns>A completed task in the base implementation; derived classes return actual initialization tasks.</returns>
+    public virtual Task InitializeAsync(Role? role)
+    {
+        return Task.CompletedTask;
+    }
+
+    /// <summary>
+    /// Determines whether the navigation command can execute for the supplied parameter.
+    /// Returns false for <c>null</c> or whitespace strings; delegates are permitted.
+    /// </summary>
+    /// <param name="parameter">Navigation parameter (string or delegate).</param>
+    /// <returns><c>true</c> when navigation can proceed.</returns>
     private bool CanNavigate(object? parameter)
     {
         if (parameter == null) return false;
         if (parameter is string s) return !string.IsNullOrWhiteSpace(s);
-        // allow delegates
+        // allow any delegate
         if (parameter is Delegate) return true;
         return true;
     }
 
     /// <summary>
-    /// Navigates to the specified content view based on the navigation tag or delegate passed as parameter.
-    /// Supports string tags, Func<string> to compute tag, or Action delegates to perform custom behavior.
+    /// Handles navigation requests. Supports a variety of parameter shapes:
+    /// - string: sets <see cref="CurrentNavigationTag"/>
+    /// - Func&lt;string&gt;: invokes and uses returned tag
+    /// - Func&lt;Task&lt;string&gt;&gt;: invokes asynchronously and sets tag when completed
+    /// - Action: invokes the delegate for arbitrary page-level actions
+    /// - Func&lt;NavigationViewModelBase, string&gt;: invokes with this view-model
+    /// - fallback: parameter.ToString()
+    ///
+    /// The method logs exceptions via <see cref="Debug.WriteLine"/> but does not throw to avoid breaking the UI.
+    /// Derived classes may override to react to tag changes (for example switch content controls).
     /// </summary>
-    /// <param name="parameter">The navigation parameter (string or delegate).</param>
+    /// <param name="parameter">The navigation parameter.</param>
     protected virtual void NavigateToView(object? parameter)
     {
         if (parameter == null)
             return;
 
-        // If a string is passed, use it as tag
-        if (parameter is string tag)
-        {
-            if (string.IsNullOrWhiteSpace(tag)) return;
-            CurrentNavigationTag = tag;
-            return;
-        }
-
-        // If a delegate that returns a string is passed, invoke to get tag
-        if (parameter is Func<string> tagFunc)
-        {
-            try
-            {
-                string result = tagFunc();
-                if (!string.IsNullOrWhiteSpace(result))
-                    CurrentNavigationTag = result;
-            }
-            catch
-            {
-                // swallow delegate exceptions
-            }
-
-            return;
-        }
-
-        // If an async-style Func<Task<string>> is passed, try to handle synchronously by getting Result (best-effort)
-        if (parameter is System.Func<System.Threading.Tasks.Task<string>> taskFunc)
-        {
-            try
-            {
-                Task<string> task = taskFunc();
-                task.Wait();
-                string result = task.Result;
-                if (!string.IsNullOrWhiteSpace(result))
-                    CurrentNavigationTag = result;
-            }
-            catch
-            {
-            }
-
-            return;
-        }
-
-        // If an Action is passed, invoke it (used for page-level actions)
-        if (parameter is Action action)
-        {
-            try
-            {
-                action();
-            }
-            catch
-            {
-                // ignore
-            }
-
-            return;
-        }
-
-        // If a delegate taking this ViewModel and returning string
-        if (parameter is Func<NavigationViewModelBase, string> vmTagFunc)
-        {
-            try
-            {
-                string result = vmTagFunc(this);
-                if (!string.IsNullOrWhiteSpace(result))
-                    CurrentNavigationTag = result;
-            }
-            catch
-            {
-            }
-
-            return;
-        }
-
-        // otherwise try to convert to string
         try
         {
-            string? s = parameter?.ToString();
-            if (!string.IsNullOrWhiteSpace(s))
-                CurrentNavigationTag = s;
+            switch (parameter)
+            {
+                case string tag when !string.IsNullOrWhiteSpace(tag):
+                    CurrentNavigationTag = tag;
+                    return;
+
+                case Func<string> tagFunc:
+                    try
+                    {
+                        string result = tagFunc();
+                        if (!string.IsNullOrWhiteSpace(result))
+                            CurrentNavigationTag = result;
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine($"NavigateToView: func threw: {ex}");
+                    }
+                    return;
+
+                case Func<Task<string>> taskFunc:
+                    try
+                    {
+                        Task<string> task = taskFunc();
+                        if (task == null) return;
+
+                        task.ContinueWith(t =>
+                        {
+                            if (t.Status == TaskStatus.RanToCompletion && !string.IsNullOrWhiteSpace(t.Result))
+                            {
+                                CurrentNavigationTag = t.Result;
+                            }
+                            else if (t.Exception != null)
+                            {
+                                Debug.WriteLine($"NavigateToView: taskFunc faulted: {t.Exception}");
+                            }
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine($"NavigateToView: taskFunc invocation failed: {ex}");
+                    }
+                    return;
+
+                case Action action:
+                    try
+                    {
+                        action();
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine($"NavigateToView: action threw: {ex}");
+                    }
+                    return;
+
+                case Func<NavigationViewModelBase, string> vmTagFunc:
+                    try
+                    {
+                        string result = vmTagFunc(this);
+                        if (!string.IsNullOrWhiteSpace(result))
+                            CurrentNavigationTag = result;
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine($"NavigateToView: vmTagFunc threw: {ex}");
+                    }
+                    return;
+
+                default:
+                    try
+                    {
+                        string? s = parameter?.ToString();
+                        if (!string.IsNullOrWhiteSpace(s))
+                            CurrentNavigationTag = s;
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine($"NavigateToView: fallback conversion failed: {ex}");
+                    }
+                    return;
+            }
         }
-        catch
+        catch (Exception ex)
         {
+            Debug.WriteLine($"NavigateToView: unexpected error: {ex}");
         }
     }
+
+    /// <summary>
+    /// Load persons for the specified role using the injected repository. Updates <see cref="AvailablePersons"/> and the
+    /// <see cref="IsLoading"/> flag. Swallows exceptions and logs them to avoid leaving the UI in a loading state.
+    /// </summary>
+    /// <param name="roleName">The name of the role to load persons for.</param>
+    /// <returns>A task that completes when loading finishes.</returns>
     protected async Task LoadAvailableUsersAsync(string roleName)
     {
+        if (_person_repository == null)
+            return;
+
         IsLoading = true;
         try
         {
-            List<Person> persons = await _personRepository!.GetPersonsByRoleAsync(roleName);
+            List<Person> persons = await _person_repository.GetPersonsByRoleAsync(roleName);
             AvailablePersons = persons ?? new List<Person>();
             Debug.WriteLine($"Loaded {AvailablePersons.Count} persons with role {roleName}");
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"LoadAvailableUsersAsync failed: {ex}");
+            AvailablePersons = new List<Person>();
         }
         finally
         {
@@ -260,7 +335,11 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
     }
 
     #endregion
-        #region SideMenu Handling
+    #region SideMenu Handling
+    /// <summary>
+    /// Attach the view-model to the page so it can subscribe to page lifecycle events (Loaded/Unloaded).
+    /// </summary>
+    /// <param name="page">The page to attach to. If null the call is ignored.</param>
     public void AttachToView(Microsoft.UI.Xaml.Controls.Page? page)
     {
         if (page == null) return;
@@ -269,6 +348,11 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
         page.Loaded += Page_Loaded;
         page.Unloaded += Page_Unloaded;
     }
+
+    /// <summary>
+    /// Attach the view-model's side-menu control to the application's main window side-menu panel.
+    /// Stores previous children so they can be restored later.
+    /// </summary>
     public void AttachSideMenuToMainWindow()
     {
         try
@@ -302,12 +386,17 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
 
             SideMenu.Children.Add(control);
         }
-        catch
+        catch (Exception ex)
         {
-            // Ignore errors during UI attach (useful for test environments)
+            Debug.WriteLine($"AttachSideMenuToMainWindow failed: {ex}");
         }
 
     }
+
+    /// <summary>
+    /// Restore the previously stored main window side menu children. Intended to be invoked when navigating away
+    /// from a page that temporarily replaced the side menu.
+    /// </summary>
     public virtual void RestoreMainWindowSideMenu()
     {
         // If the main window's XamlRoot isn't available, the window is closed or not ready.
@@ -341,6 +430,10 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
         {
             // Window already closed — ignore restore
         }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"RestoreMainWindowSideMenu failed: {ex}");
+        }
     }
 
     private void Page_Loaded(object? sender, RoutedEventArgs e)
@@ -362,7 +455,13 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
         }
     }
 
-    private Panel? FindSideMenuPanel(FrameworkElement root)
+    /// <summary>
+    /// Finds the main window's side-menu panel by name or by traversing the visual tree.
+    /// Returns null if no panel named "SideMenu" is found.
+    /// </summary>
+    /// <param name="root">Root element to start the search from.</param>
+    /// <returns>The side-menu <see cref="Panel"/> or <c>null</c> if not found.</returns>
+    private static Panel? FindSideMenuPanel(FrameworkElement root)
     {
         if (root == null) return null;
 
@@ -388,21 +487,20 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
                 }
             }
         }
-        catch
+        catch (Exception ex)
         {
-            // ignore traversal errors
+            Debug.WriteLine($"FindSideMenuPanel traversal failed: {ex}");
         }
 
         return null;
     }
 
     #endregion
-
     #region OnChooseUser Command
     /// <summary>
-    /// Chooses a user and loads their dashboard.
+    /// Selects the provided person and updates related state. Derived classes may react to selection by showing a dashboard.
     /// </summary>
-    /// <param name="person">The person to select.</param>
+    /// <param name="person">The person to select; if null the call is ignored.</param>
     protected void ChooseUser(Person? person)
     {
         if (person == null)
@@ -411,8 +509,8 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
         }
 
         SelectedPerson = person;
-        //LoadDashboard();
+        // LoadDashboard(); // Derived classes can implement dashboard loading when selection changes
     }
 
-#endregion
+    #endregion
 }
