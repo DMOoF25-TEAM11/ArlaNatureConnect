@@ -16,6 +16,7 @@
     </PropertyGroup>
     <ItemGroup>
       <Compile Remove="ViewModels\template.cs" />
+      <None Remove="Views\Pages\AdministratorPage.xaml" />
 			<None Include="ViewModels\template.cs" />
 		</ItemGroup>
 
@@ -42,6 +43,12 @@
 
     <ItemGroup>
       <Folder Include="Views\Controls\PageContents\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Page Update="Views\Pages\AdministratorPage.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </Page>
     </ItemGroup>
 
     <!-- Publish Properties -->

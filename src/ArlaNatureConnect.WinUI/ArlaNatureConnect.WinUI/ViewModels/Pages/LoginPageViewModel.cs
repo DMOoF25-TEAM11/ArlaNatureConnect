@@ -114,6 +114,12 @@ public class LoginPageViewModel : NavigationViewModelBase
                 _navigationHandler.Navigate(typeof(ArlaEmployeePage), SelectedRole);
                 break;
 
+            case "administrator":
+                // Create a role object for the selected role
+                SelectedRole = new Role { Name = roleName };
+                _navigationHandler.Navigate(typeof(AdministratorPage), SelectedRole);
+                break;
+
             default:
                 // Unknown role, do nothing - don't set SelectedRole
                 break;
