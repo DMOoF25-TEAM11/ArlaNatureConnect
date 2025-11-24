@@ -1,6 +1,6 @@
 using Microsoft.UI.Xaml.Controls;
 
-namespace ArlaNatureConnect.WinUI.View.Pages.Consultant;
+namespace ArlaNatureConnect.WinUI.Views.Controls.PageContents.Consultant;
 
 /// <summary>
 /// UserControl for the Consultant Tasks view.

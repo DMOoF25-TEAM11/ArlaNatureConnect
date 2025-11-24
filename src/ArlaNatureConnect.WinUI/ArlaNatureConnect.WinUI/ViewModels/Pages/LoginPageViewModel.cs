@@ -25,7 +25,7 @@ public class LoginPageViewModel : NavigationViewModelBase
 {
     #region Fields
 
-    private readonly NavigationHandler _navigationHandler;
+    private readonly NavigationHandler? _navigationHandler;
     private Role? _selectedRole;
 
     #endregion
@@ -36,7 +36,7 @@ public class LoginPageViewModel : NavigationViewModelBase
     /// Command to select a role and navigate to the appropriate page.
     /// Receives role name as string parameter (e.g., "Farmer", "Consultant", "ArlaEmployee").
     /// </summary>
-    public RelayCommand<string> SelectRoleCommand { get; }
+    public RelayCommand<string>? SelectRoleCommand { get; }
 
     #endregion
 
@@ -59,6 +59,11 @@ public class LoginPageViewModel : NavigationViewModelBase
 
     #region Constructor
 
+    public LoginPageViewModel()
+    {
+
+    }
+
     public LoginPageViewModel(Services.NavigationHandler navigationHandler)
     {
         _navigationHandler = navigationHandler ?? throw new ArgumentNullException(nameof(navigationHandler));
@@ -78,6 +83,11 @@ public class LoginPageViewModel : NavigationViewModelBase
         if (string.IsNullOrWhiteSpace(roleName))
         {
             return;
+        }
+
+        if (_navigationHandler == null)
+        {
+            throw new InvalidOperationException("NavigationHandler is not initialized.");
         }
 
         // Navigate based on role
@@ -103,12 +113,6 @@ public class LoginPageViewModel : NavigationViewModelBase
                 // Create a role object for the selected role
                 SelectedRole = new Role { Name = roleName };
                 _navigationHandler.Navigate(typeof(ArlaEmployeePage), SelectedRole);
-                break;
-
-            case "administrator":
-                // Create a role object for the selected role
-                SelectedRole = new Role { Name = roleName };
-                _navigationHandler.Navigate(typeof(AdministratorPage), SelectedRole);
                 break;
 
             default:

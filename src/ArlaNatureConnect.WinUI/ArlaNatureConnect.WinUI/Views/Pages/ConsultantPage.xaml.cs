@@ -1,8 +1,8 @@
 using ArlaNatureConnect.Core.Abstract;
 using ArlaNatureConnect.Domain.Entities;
 using ArlaNatureConnect.WinUI.Services;
-using ArlaNatureConnect.WinUI.View.Pages.Consultant;
 using ArlaNatureConnect.WinUI.ViewModels.Pages;
+using ArlaNatureConnect.WinUI.Views.Controls.PageContents.Consultant;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;

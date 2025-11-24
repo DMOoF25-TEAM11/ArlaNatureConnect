@@ -1,6 +1,6 @@
 using Microsoft.UI.Xaml.Controls;
 
-namespace ArlaNatureConnect.WinUI.View.Pages.Farmer;
+namespace ArlaNatureConnect.WinUI.Views.Controls.PageContents.Farmer;
 
 /// <summary>
 /// UserControl for the Farmer Tasks content area.
