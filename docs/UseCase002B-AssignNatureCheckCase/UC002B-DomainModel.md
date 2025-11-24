@@ -2,28 +2,42 @@
 ```mermaid
 classDiagram
     class Farm {
-        +farmId : int
-        +name : string
-        +cvr : string
-        +address : string
-        +farmerId : int
+        +Guid Id
+        +string Name
+        +string CVR
+        +Guid PersonId
+        +Guid AddressId
     }
 
-    class User {
-        +userId : int
-        +name : string
-        +email : string
-        +role : string
+    class Person {
+        +Guid Id
+        +Guid RoleId
+        +Guid AddressId
+        +string FirstName
+        +string LastName
+        +string Email
+        +bool IsActive
+    }
+
+    class Role {
+        +Guid Id
+        +string Name
     }
 
     class NatureCheckCase {
-        +caseId : int
-        +farmId : int
-        +consultantId : int
-        +status : string
-        +notes : string
-        +createdDate : datetime
+        +Guid Id
+        +Guid FarmId
+        +Guid ConsultantId
+        +Guid AssignedByPersonId
+        +NatureCheckCaseStatus Status
+        +string? Notes
+        +string? Priority
+        +DateTimeOffset CreatedAt
+        +DateTimeOffset? AssignedAt
     }
 
-    User "1" --> "0..*" NatureCheckCase : assignedTo
+    Person "1" --> "0..*" NatureCheckCase : assignedTo
     Farm "1" --> "0..*" NatureCheckCase : has
+    Person "1" --> "1" Role : has
+    Person "1" --> "1" Address : has
+    Farm "1" --> "1" Address : has

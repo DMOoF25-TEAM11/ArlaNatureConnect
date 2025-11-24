@@ -1,4 +1,3 @@
-
 # **SSD – System Sequence Diagram**
 
 
@@ -11,18 +10,17 @@ sequenceDiagram
     participant System as System
 
     ArlaEmployee ->> UI: Open "Nature Check Cases"
-    UI ->> System: requestFarmList()
-    System -->> UI: listOfFarms
+    UI ->> System: LoadFarmsAndConsultantsAsync()
+    System -->> UI: (IReadOnlyList~Farm~, IReadOnlyList~Person~)
 
     ArlaEmployee ->> UI: Select farm (or create via UC02)
-    UI ->> System: getFarmDetails(farmId)
-    System -->> UI: farmDetails
+    Note over UI,System: Farm details already loaded
 
     ArlaEmployee ->> UI: Click "Create Nature Check Case"
     UI ->> ArlaEmployee: Display assignment form
 
-    ArlaEmployee ->> UI: Select consultant + notes
-    UI ->> System: createNatureCheckCase(farmId, consultantId, notes)
-    System -->> UI: confirmation
+    ArlaEmployee ->> UI: Select consultant + enter notes
+    UI ->> System: AssignCaseAsync(farmId, consultantId, assignedByPersonId, notes)
+    System -->> UI: NatureCheckCase (confirmation)
 
-    System ->> Consultant: sendNotification(caseAssigned)
+    System ->> Consultant: NotifyConsultantAsync(consultantId, caseId)

@@ -3,29 +3,42 @@ sequenceDiagram
     title UC02b – Sequence Diagram: Assign Nature Check Case
 
     actor ArlaEmployee
-    participant UI
-    participant FarmRepo as FarmRepository
-    participant UserRepo as UserRepository
-    participant CaseRepo as CaseRepository
-    participant Notif as NotificationService
+    participant ViewModel as ArlaEmployeePageViewModel
+    participant Service as NatureCheckCaseService
+    participant FarmRepo as IFarmRepository
+    participant PersonRepo as IPersonRepository
+    participant CaseRepo as INatureCheckCaseRepository
+    participant Notif as INotificationService
+    participant MsgService as IAppMessageService
 
-    ArlaEmployee ->> UI: Open case module
-    UI ->> FarmRepo: getAllFarms()
-    FarmRepo -->> UI: farmList
+    ArlaEmployee ->> ViewModel: Open "Nature Check Cases" module
+    ViewModel ->> Service: LoadFarmsAndConsultantsAsync()
+    Service ->> FarmRepo: GetAllAsync()
+    FarmRepo -->> Service: IEnumerable~Farm~
+    Service ->> PersonRepo: GetPersonsByRoleAsync("Consultant")
+    PersonRepo -->> Service: List~Person~
+    Service -->> ViewModel: (IReadOnlyList~Farm~, IReadOnlyList~Person~)
+    ViewModel -->> ArlaEmployee: Display farms and consultants
 
-    ArlaEmployee ->> UI: Select farm
-    UI ->> FarmRepo: getFarm(farmId)
-    FarmRepo -->> UI: farmDetails
+    ArlaEmployee ->> ViewModel: Select farm and consultant
+    ArlaEmployee ->> ViewModel: Enter notes and submit
 
-    ArlaEmployee ->> UI: Create Nature Check Case
-    UI ->> UserRepo: getConsultants()
-    UserRepo -->> UI: consultantList
-
-    ArlaEmployee ->> UI: Submit assignment form
-    UI ->> CaseRepo: createCase(farmId, consultantId, notes)
-    CaseRepo -->> UI: caseCreated
-
-    UI ->> Notif: sendCaseAssigned(consultantId)
-    Notif -->> UI: delivered
-
-    UI -->> ArlaEmployee: Case assignment confirmed
+    ViewModel ->> Service: AssignCaseAsync(farmId, consultantId, assignedByPersonId, notes)
+    Service ->> FarmRepo: GetByIdAsync(farmId)
+    FarmRepo -->> Service: Farm
+    Service ->> PersonRepo: GetByIdAsync(consultantId)
+    PersonRepo -->> Service: Person (Consultant)
+    
+    alt Consultant has Consultant role
+        Service ->> CaseRepo: AddAsync(natureCheckCase)
+        CaseRepo -->> Service: Task completed
+        Service ->> Notif: NotifyConsultantAsync(consultantId, caseId)
+        Notif -->> Service: Task completed
+        Service -->> ViewModel: NatureCheckCase
+        ViewModel ->> MsgService: AddSuccessMessage("Case assigned successfully")
+        ViewModel -->> ArlaEmployee: Case assignment confirmed
+    else Consultant does not have Consultant role
+        Service -->> ViewModel: Validation error
+        ViewModel ->> MsgService: AddErrorMessage("Selected user is not a consultant")
+        ViewModel -->> ArlaEmployee: Error message displayed
+    end

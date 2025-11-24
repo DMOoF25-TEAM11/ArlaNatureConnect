@@ -3,7 +3,7 @@
 **Use Case ID:** UC02B  
 **Use Case navn:** Assign Nature Check Case to Consultant  
 **Scope:** System prototype (Arla Nature Connect)  
-**Level:** Arla Emploeee goal
+**Level:** Arla Employee goal
 
 **Primary Actors:**
 - Arla Employee (Admin / Sustainability Staff)

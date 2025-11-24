@@ -1,33 +1,33 @@
-# **Operation Contract – UC02b: LoadFarms()**
+# **Operation Contract – UC02b: LoadFarmsAndConsultantsAsync()**
 
 | Item | Description |
 |------|-------------|
-| **Operation** | `LoadFarms()` |
+| **Operation** | `LoadFarmsAndConsultantsAsync(CancellationToken cancellationToken = default)` |
 | **Cross References** | UC02b – Assign Nature Check Case to Consultant |
-| **Preconditions** | The Arla employee is authenticated and has opened the Nature Check Cases module. |
-| **Input** | None |
-| **Output** | The system displays a list of farms currently registered in the system. |
-| **Postconditions** | A list of available farms is populated from the database and shown in the UI. |
+| **Preconditions** | • The Arla employee is authenticated (UC01).<br>• The employee has opened the Nature Check Cases module. |
+| **Input** | `CancellationToken cancellationToken` (optional) |
+| **Output** | `Task<(IReadOnlyList<Farm>, IReadOnlyList<Person>)>` - A tuple containing a list of all farms and a list of all consultants (persons with Consultant role). |
+| **Postconditions** | • All farms are loaded from the database via `IFarmRepository.GetAllAsync()`.<br>• All consultants are loaded from the database via `IPersonRepository.GetPersonsByRoleAsync("Consultant")`.<br>• The lists are returned to the ViewModel for display in the UI. |
 
 
-# **Operation Contract – UC02b: CreateNatureCheckCase(farmId, consultantId, notes)**
+# **Operation Contract – UC02b: AssignCaseAsync(farmId, consultantId, assignedByPersonId, notes, allowDuplicate)**
 
 | Item | Description |
 |------|-------------|
-| **Operation** | `CreateNatureCheckCase(farmId, consultantId, notes)` |
+| **Operation** | `AssignCaseAsync(Guid farmId, Guid consultantId, Guid assignedByPersonId, string? notes, bool allowDuplicate = false, CancellationToken cancellationToken = default)` |
 | **Cross References** | UC02b – Assign Nature Check Case to Consultant |
-| **Preconditions** | • The selected farm exists in the system.<br>• The selected user has the *Consultant* role.<br>• No active NatureCheckCase exists for this farm (soft rule). |
-| **Input** | `farmId`, `consultantId`, `notes` |
-| **Output** | A new NatureCheckCase is created with status **Assigned**. |
-| **Postconditions** | • A NatureCheckCase object is stored in the database.<br>• The case is associated with the selected farm and consultant.<br>• Timestamp and notes are saved. |
+| **Preconditions** | • The selected farm exists in the system (validated via `IFarmRepository.GetByIdAsync(farmId)`).<br>• The selected person exists and has the *Consultant* role (validated via `IPersonRepository.GetByIdAsync(consultantId)` and role check).<br>• The `assignedByPersonId` refers to the authenticated Arla employee.<br>• No active NatureCheckCase exists for this farm (unless `allowDuplicate` is true). |
+| **Input** | `farmId` (Guid), `consultantId` (Guid), `assignedByPersonId` (Guid), `notes` (string?, optional), `allowDuplicate` (bool, default false), `cancellationToken` (CancellationToken, optional) |
+| **Output** | `Task<NatureCheckCase>` - The newly created and assigned NatureCheckCase with status **Assigned**. |
+| **Postconditions** | • A new `NatureCheckCase` object is created with:<br>  - `FarmId` = farmId<br>  - `ConsultantId` = consultantId<br>  - `AssignedByPersonId` = assignedByPersonId<br>  - `Status` = NatureCheckCaseStatus.Assigned<br>  - `Notes` = notes<br>  - `CreatedAt` = DateTimeOffset.UtcNow<br>  - `AssignedAt` = DateTimeOffset.UtcNow<br>• The case is stored in the database via `INatureCheckCaseRepository.AddAsync()`.<br>• A notification is sent to the consultant via `INotificationService.NotifyConsultantAsync()`.<br>• Success message is displayed via `IAppMessageService.AddSuccessMessage()`. |
 
-# **Operation Contract – UC02b: NotifyConsultant(consultantId, caseId)**
+# **Operation Contract – UC02b: NotifyConsultantAsync(consultantId, caseId)**
 
 | Item | Description |
 |------|-------------|
-| **Operation** | `NotifyConsultant(consultantId, caseId)` |
+| **Operation** | `NotifyConsultantAsync(Guid consultantId, Guid caseId, CancellationToken cancellationToken = default)` |
 | **Cross References** | UC02b – Assign Nature Check Case to Consultant |
-| **Preconditions** | A NatureCheckCase has just been created and assigned to the consultant. |
-| **Input** | `consultantId`, `caseId` |
-| **Output** | A notification is delivered to the consultant (internal message or alert). |
-| **Postconditions** | The consultant is informed about the new assignment and can proceed with UC03 – Create Nature Check. |
+| **Preconditions** | • A NatureCheckCase has just been created and assigned to the consultant.<br>• The consultant exists in the system. |
+| **Input** | `consultantId` (Guid), `caseId` (Guid), `cancellationToken` (CancellationToken, optional) |
+| **Output** | `Task` - Completes when the notification has been sent. |
+| **Postconditions** | • The consultant receives a notification (internal message or alert) about the new assignment.<br>• The consultant can now proceed with UC03 – Create Nature Check. |
