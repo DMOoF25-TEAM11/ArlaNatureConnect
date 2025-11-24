@@ -1,5 +1,3 @@
-using Microsoft.Data.SqlClient;
-
 namespace ArlaNatureConnect.Core.Services;
 
 /// <summary>
