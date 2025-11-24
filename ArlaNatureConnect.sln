@@ -58,6 +58,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "domain", "domain", "{3C8978
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "viewmodels", "viewmodels", "{F3DB8AE3-929A-480B-B00E-529C37627F47}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Views", "Views", "{A9D8A719-E4E0-4921-BF47-134E9490701C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Pages", "Pages", "{35461FFC-251D-442C-A019-591C50C46FF7}"
+	ProjectSection(SolutionItems) = preProject
+		docs\wiki\Winui\Views\Pages\Abstract\NavPage.md = docs\wiki\Winui\Views\Pages\Abstract\NavPage.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM64 = Debug|ARM64
@@ -187,6 +194,8 @@ Global
 		{83A35DE6-EAA7-41CE-A9AA-1ABDCF39E692} = {80918B60-71E9-4DCF-BCCC-D5F0A9BA51F9}
 		{3C897853-94FB-48E5-9F4A-29003454B282} = {80918B60-71E9-4DCF-BCCC-D5F0A9BA51F9}
 		{F3DB8AE3-929A-480B-B00E-529C37627F47} = {BB7D5AD7-DFCB-4B00-B0A6-55B33E03155F}
+		{A9D8A719-E4E0-4921-BF47-134E9490701C} = {BB7D5AD7-DFCB-4B00-B0A6-55B33E03155F}
+		{35461FFC-251D-442C-A019-591C50C46FF7} = {A9D8A719-E4E0-4921-BF47-134E9490701C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F95CF33A-83CB-4D7C-9A56-85E9E545E990}

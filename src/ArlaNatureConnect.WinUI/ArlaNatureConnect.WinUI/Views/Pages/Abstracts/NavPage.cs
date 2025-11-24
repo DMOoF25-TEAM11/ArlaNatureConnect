@@ -1,14 +1,14 @@
 using ArlaNatureConnect.Domain.Entities;
-using ArlaNatureConnect.WinUI.ViewModels.Pages;
+using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 
 using Microsoft.UI.Xaml.Controls;
 
-namespace ArlaNatureConnect.WinUI.Views.Controls.Abstracts;
+namespace ArlaNatureConnect.WinUI.Views.Pages.Abstracts;
 
 public abstract partial class NavPage : Page
 {
 
-    public FarmerPageViewModel? ViewModel { get; set; }
+    public INavigationViewModel? ViewModel { get; set; }
     public string DefaultNavigationViewItemTag { get; set; } = "Dashboards";
 
     protected override async void OnNavigatedTo(Microsoft.UI.Xaml.Navigation.NavigationEventArgs e)
