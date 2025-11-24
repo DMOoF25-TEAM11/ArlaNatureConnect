@@ -2,8 +2,8 @@ using ArlaNatureConnect.Core.Abstract;
 using ArlaNatureConnect.Domain.Entities;
 using ArlaNatureConnect.Domain.Enums;
 using ArlaNatureConnect.WinUI.Services;
-using ArlaNatureConnect.WinUI.View.Pages.Farmer;
 using ArlaNatureConnect.WinUI.ViewModels.Pages;
+using ArlaNatureConnect.WinUI.Views.Controls.PageContents.Farmer;
 
 using Moq;
 

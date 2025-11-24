@@ -124,8 +124,8 @@ public class StatusBarUCViewModel : ViewModelBase
         // take a snapshot of service values and update properties under a lock to avoid races
         lock (_statusInfoLock)
         {
-            bool isLoading = _statusInfoServices.IsLoading;
-            bool hasDb = _statusInfoServices.HasDbConnection;
+            bool isLoading = _statusInfoServices?.IsLoading ?? false;
+            bool hasDb = _statusInfoServices?.HasDbConnection ?? false;
 
             IsBusy = isLoading;
             HasDbConnection = hasDb;

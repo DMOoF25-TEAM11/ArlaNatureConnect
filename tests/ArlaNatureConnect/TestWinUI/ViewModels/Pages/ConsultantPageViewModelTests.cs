@@ -2,14 +2,12 @@ using ArlaNatureConnect.Core.Abstract;
 using ArlaNatureConnect.Domain.Entities;
 using ArlaNatureConnect.Domain.Enums;
 using ArlaNatureConnect.WinUI.Services;
-using ArlaNatureConnect.WinUI.View.Pages.Consultant;
 using ArlaNatureConnect.WinUI.ViewModels.Pages;
+using ArlaNatureConnect.WinUI.Views.Controls.PageContents.Consultant;
 
 using Moq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using System.Runtime.Versioning;
-using System.Threading;
 
 namespace TestWinUI.ViewModels.Pages;
 
@@ -38,7 +36,7 @@ public sealed class ConsultantPageViewModelTests
     public async Task InitializeAsync_CallsRepositoryWithConsultantRoleAndSetsAvailablePersons()
     {
         // Arrange
-        var persons = new List<Person>
+        List<Person> persons = new List<Person>
         {
             new Person { Id = Guid.NewGuid(), FirstName = "Alice", LastName = "A", IsActive = true },
             new Person { Id = Guid.NewGuid(), FirstName = "Bob", LastName = "B", IsActive = true }
@@ -77,7 +75,7 @@ public sealed class ConsultantPageViewModelTests
     public async Task InitializeAsync_SetsIsLoadingDuringLoad()
     {
         // Arrange
-        var tcs = new TaskCompletionSource<List<Person>>();
+        TaskCompletionSource<List<Person>> tcs = new TaskCompletionSource<List<Person>>();
         _mockPersonRepository
             .Setup(r => r.GetPersonsByRoleAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
             .Returns(tcs.Task);
@@ -121,7 +119,7 @@ public sealed class ConsultantPageViewModelTests
     public void ChooseUserCommand_WithValidPerson_SetsSelectedPerson()
     {
         // Arrange
-        var person = new Person { Id = Guid.NewGuid(), FirstName = "Test", LastName = "Consultant", IsActive = true };
+        Person person = new Person { Id = Guid.NewGuid(), FirstName = "Test", LastName = "Consultant", IsActive = true };
 
         // Act
         _viewModel.ChooseUserCommand!.Execute(person);
@@ -136,7 +134,7 @@ public sealed class ConsultantPageViewModelTests
     public void ChooseUserCommand_WithNullPerson_DoesNotChangeSelectedPerson()
     {
         // Arrange
-        var initial = new Person { Id = Guid.NewGuid(), FirstName = "Initial", LastName = "Person" };
+        Person initial = new Person { Id = Guid.NewGuid(), FirstName = "Initial", LastName = "Person" };
         _viewModel.SelectedPerson = initial;
 
         // Act

@@ -112,12 +112,12 @@ public class StartWindowViewModel
                 using SqlConnection conn = new SqlConnection(builder.ConnectionString);
                 await conn.OpenAsync();
                 await conn.CloseAsync();
-                _statusInfoServices.HasDbConnection = true;
+                _statusInfoServices?.HasDbConnection = true;
                 return (true, null);
             }
             catch (SqlException ex)
             {
-                _statusInfoServices.HasDbConnection = false;
+                _statusInfoServices?.HasDbConnection = false;
                 if (attempt == maxAttempts)
                 {
                     return (false, $"Unable to connect to SQL Server '{builder.DataSource}': {ex.Message}");
