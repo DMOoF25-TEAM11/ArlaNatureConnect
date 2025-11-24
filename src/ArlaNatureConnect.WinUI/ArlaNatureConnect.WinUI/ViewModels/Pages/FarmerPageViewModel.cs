@@ -1,15 +1,11 @@
 using ArlaNatureConnect.Core.Abstract;
 using ArlaNatureConnect.Domain.Entities;
-using ArlaNatureConnect.WinUI.Commands;
+using ArlaNatureConnect.Domain.Enums; // add content controls namespace
 using ArlaNatureConnect.WinUI.Services;
 using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
+using ArlaNatureConnect.WinUI.Views.Controls.PageContents.Farmer;
+
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.Extensions.DependencyInjection;
-using ArlaNatureConnect.WinUI.Views.Controls.SideMenu;
-using ArlaNatureConnect.WinUI.View.Pages.Farmer;
-using ArlaNatureConnect.Domain.Enums; // add content controls namespace
 
 namespace ArlaNatureConnect.WinUI.ViewModels.Pages;
 
@@ -45,7 +41,7 @@ public partial class FarmerPageViewModel : NavigationViewModelBase
 
     }
 
-    public FarmerPageViewModel(NavigationHandler navigationHandler, IPersonRepository personRepository, IRoleRepository roleRepository) 
+    public FarmerPageViewModel(NavigationHandler navigationHandler, IPersonRepository personRepository, IRoleRepository roleRepository)
         : base(navigationHandler, personRepository, roleRepository)
     {
         InitializeNavigation("Dashboards");

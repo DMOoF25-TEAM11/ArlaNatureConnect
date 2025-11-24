@@ -1,7 +1,7 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
-namespace ArlaNatureConnect.WinUI.View.Pages.Consultant;
+namespace ArlaNatureConnect.WinUI.Views.Controls.PageContents.Consultant;
 
 /// <summary>
 /// UserControl for the Consultant Nature Check view.
@@ -23,7 +23,7 @@ public sealed partial class ConsultantNatureCheck : UserControl
             Microsoft.UI.Xaml.Media.ThemeShadow shadow = new Microsoft.UI.Xaml.Media.ThemeShadow();
             TableCard.Shadow = shadow;
         }
-        
+
         // UI polish: Subtle shadow on search field
         if (SearchBorder != null)
         {

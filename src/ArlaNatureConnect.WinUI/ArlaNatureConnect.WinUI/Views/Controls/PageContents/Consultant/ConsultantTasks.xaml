@@ -1,8 +1,8 @@
-<UserControl
-    x:Class="ArlaNatureConnect.WinUI.View.Pages.Consultant.ConsultantDashboards"
+﻿<UserControl
+    x:Class="ArlaNatureConnect.WinUI.Views.Controls.PageContents.Consultant.ConsultantTasks"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:ArlaNatureConnect.WinUI.View.Pages.Consultant"
+    xmlns:local="using:ArlaNatureConnect.WinUI.Views.Controls.PageContents.Consultant"
     Background="{StaticResource AppBackgroundBrush}">
 
     <Grid>
@@ -13,15 +13,15 @@
         <!-- Placeholder content - to be implemented -->
         <StackPanel HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Spacing="16">            
-            <TextBlock Text="Dashboards" 
+                    Spacing="16">           
+            <TextBlock Text="Mine opgaver" 
                        Style="{StaticResource ArlaHeaderText}"
                        FontSize="32"
                        FontWeight="Bold"
                        Foreground="{StaticResource ArlaPrimaryDarkBrush}"
                        HorizontalAlignment="Center"
                        Opacity="0.7"/>
-            <TextBlock Text="Dashboards - Coming soon.." 
+            <TextBlock Text="Tasks - Coming soon.." 
                        Style="{StaticResource ArlaBodyText}"
                        HorizontalAlignment="Center"
                        Foreground="{StaticResource ArlaNeutralDarkBrush}"

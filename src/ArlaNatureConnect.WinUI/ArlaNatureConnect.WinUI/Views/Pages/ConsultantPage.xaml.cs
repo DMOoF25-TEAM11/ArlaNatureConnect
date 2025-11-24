@@ -2,12 +2,13 @@ using ArlaNatureConnect.Core.Abstract;
 using ArlaNatureConnect.Domain.Entities;
 using ArlaNatureConnect.WinUI.Services;
 using ArlaNatureConnect.WinUI.ViewModels.Pages;
-using ArlaNatureConnect.WinUI.View.Pages.Consultant;
+using ArlaNatureConnect.WinUI.Views.Controls.PageContents.Consultant;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
-namespace ArlaNatureConnect.WinUI.View.Pages;
+namespace ArlaNatureConnect.WinUI.Views.Pages;
 
 /// <summary>
 /// Page for Consultant role users to select a specific consultant and view their dashboard.
@@ -26,7 +27,7 @@ public sealed partial class ConsultantPage : Microsoft.UI.Xaml.Controls.Page
         NavigationHandler navigationHandler = App.HostInstance.Services.GetRequiredService<NavigationHandler>();
         IPersonRepository personRepository = App.HostInstance.Services.GetRequiredService<IPersonRepository>();
         IRoleRepository roleRepository = App.HostInstance.Services.GetRequiredService<IRoleRepository>();
-        
+
         ViewModel = new ConsultantPageViewModel(navigationHandler, personRepository, roleRepository);
         DataContext = ViewModel;
     }
@@ -34,15 +35,15 @@ public sealed partial class ConsultantPage : Microsoft.UI.Xaml.Controls.Page
     protected override async void OnNavigatedTo(Microsoft.UI.Xaml.Navigation.NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
-        
+
         if (e.Parameter is Role role)
         {
             await ViewModel.InitializeAsync(role);
         }
-        
+
         // Subscribe to CurrentNavigationTag property changes to update content view
         ViewModel.PropertyChanged += ViewModel_PropertyChanged;
-        
+
         // Set default view to Nature Check in ViewModel
         // Note: We don't call SwitchContentView here because ContentPresenter might not be ready yet
         // Instead, we'll load it in the Loaded event
@@ -59,7 +60,7 @@ public sealed partial class ConsultantPage : Microsoft.UI.Xaml.Controls.Page
             tag = "Farms"; // Default fallback
             ViewModel.NavigationCommand?.Execute(tag);
         }
-        
+
         // Always load the content view in Loaded event to ensure it's displayed
         SwitchContentView(tag);
     }

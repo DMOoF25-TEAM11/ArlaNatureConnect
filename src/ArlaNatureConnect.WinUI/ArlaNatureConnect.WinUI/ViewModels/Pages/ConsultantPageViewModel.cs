@@ -1,11 +1,9 @@
 using ArlaNatureConnect.Core.Abstract;
 using ArlaNatureConnect.Domain.Entities;
 using ArlaNatureConnect.Domain.Enums;
-using ArlaNatureConnect.WinUI.Commands;
 using ArlaNatureConnect.WinUI.Services;
-using ArlaNatureConnect.WinUI.View.Pages.Consultant;
-using ArlaNatureConnect.WinUI.View.Pages.Farmer;
 using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
+using ArlaNatureConnect.WinUI.Views.Controls.PageContents.Consultant;
 
 using Microsoft.UI.Xaml.Controls;
 
@@ -32,12 +30,12 @@ public class ConsultantPageViewModel : NavigationViewModelBase
 {
     #region Fields
 
-    private readonly NavigationHandler _navigationHandler;
-    private readonly IPersonRepository _personRepository;
-    private readonly IRoleRepository _roleRepository;
+    private readonly NavigationHandler? _navigationHandler;
+    private readonly IPersonRepository? _personRepository;
+    private readonly IRoleRepository? _roleRepository;
     private Person? _selectedPerson;
     private List<Person> _availablePersons = new();
-    private bool _isLoading;
+    private bool _isLoading = false;
     private object? _selectedNavigationItem;
 
     #endregion
@@ -63,6 +61,10 @@ public class ConsultantPageViewModel : NavigationViewModelBase
     #endregion
 
     #region Constructor
+    public ConsultantPageViewModel()
+    {
+
+    }
 
     public ConsultantPageViewModel(NavigationHandler navigationHandler, IPersonRepository personRepository, IRoleRepository roleRepository)
         : base(navigationHandler, personRepository, roleRepository)

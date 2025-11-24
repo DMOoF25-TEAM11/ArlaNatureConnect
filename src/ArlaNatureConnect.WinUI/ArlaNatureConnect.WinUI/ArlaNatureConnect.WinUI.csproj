@@ -40,6 +40,10 @@
       </Page>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Views\Controls\PageContents\" />
+    </ItemGroup>
+
     <!-- Publish Properties -->
     <PropertyGroup>
         <PublishReadyToRun Condition="'$(Configuration)' == 'Debug'">False</PublishReadyToRun>
