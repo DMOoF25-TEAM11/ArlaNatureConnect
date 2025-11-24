@@ -16,6 +16,7 @@
     </PropertyGroup>
     <ItemGroup>
       <Compile Remove="ViewModels\template.cs" />
+      <None Remove="Views\Controls\SideMenu\AdministratorPageSideMenuUC.xaml" />
 			<None Include="ViewModels\template.cs" />
 		</ItemGroup>
 
@@ -32,6 +33,12 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\ArlaNatureConnect.Infrastructure\ArlaNatureConnect.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Page Update="Views\Controls\SideMenu\AdministratorPageSideMenuUC.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </Page>
     </ItemGroup>
 
     <ItemGroup>
