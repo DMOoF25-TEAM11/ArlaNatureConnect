@@ -6,14 +6,7 @@
   xmlns:farmer="using:ArlaNatureConnect.WinUI.Views.Controls.SideMenu"
   xmlns:domain="using:ArlaNatureConnect.Domain.Entities" 
   xmlns:viewmodel="using:ArlaNatureConnect.WinUI.ViewModels.Pages"
-  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-  d:DataContext="{d:DesignInstance Type=viewmodel:FarmerPageViewModel}"
-  mc:Ignorable="d">
-
-  <Page.DataContext>
-    <viewmodel:FarmerPageViewModel />
-  </Page.DataContext>
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008">
 
   <StackPanel Orientation="Vertical">
     <ContentPresenter x:Name="ContentPresenter"

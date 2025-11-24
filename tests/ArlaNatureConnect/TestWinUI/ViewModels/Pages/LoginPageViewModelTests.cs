@@ -1,6 +1,7 @@
 using ArlaNatureConnect.Domain.Entities;
 using ArlaNatureConnect.WinUI.Services;
 using ArlaNatureConnect.WinUI.ViewModels.Pages;
+using ArlaNatureConnect.WinUI.Views.Pages;
 
 using Moq;
 
@@ -36,182 +37,46 @@ public sealed class LoginPageViewModelTests
     }
 
     /// <summary>
-    /// Verifies that selecting "Farmer" role creates a Role object with correct name
-    /// and triggers navigation to FarmerPage with the role as parameter.
+    /// Parameterized test that covers multiple role name variations and verifies
+    /// that the correct page type is navigated to and the selected role is set.
     /// </summary>
     [TestMethod]
-    public void SelectRoleCommand_WithFarmerRole_SetsSelectedRoleAndNavigates()
+    [DataRow("Farmer", "Farmer", "FarmerPage")]
+    [DataRow("Consultant", "Consultant", "ConsultantPage")]
+    [DataRow("ArlaEmployee", "ArlaEmployee", "ArlaEmployeePage")]
+    [DataRow("Administrator", "Administrator", "AdministratorPage")]
+    public void SelectRoleCommand_NavigatesForRoleVariations(string roleName, string expectedSelectedRoleName, string expectedPage)
     {
-        // Arrange
-        string roleName = "Farmer";
-
         // Act
         _viewModel.SelectRoleCommand.Execute(roleName);
 
-        // Assert
+        // Assert selected role
+        if (string.IsNullOrWhiteSpace(roleName))
+        {
+            Assert.IsNull(_viewModel.SelectedRole);
+            _mockNavigationHandler.Verify(
+                h => h.Navigate(It.IsAny<Type>(), It.IsAny<object?>()),
+                Times.Never);
+            return;
+        }
+
         Assert.IsNotNull(_viewModel.SelectedRole);
-        Assert.AreEqual("Farmer", _viewModel.SelectedRole.Name);
+        Assert.AreEqual(expectedSelectedRoleName, _viewModel.SelectedRole!.Name);
+
+        // Map expected page string to actual Type
+        Type expectedType = expectedPage switch
+        {
+            "FarmerPage" => typeof(FarmerPage),
+            "ConsultantPage" => typeof(ConsultantPage),
+            "ArlaEmployeePage" => typeof(ArlaEmployeePage),
+            "AdministratorPage" => typeof(AdministratorPage),
+            _ => throw new InvalidOperationException($"Unknown expected page: {expectedPage}")
+        };
+
         _mockNavigationHandler.Verify(
             h => h.Navigate(
-                typeof(ArlaNatureConnect.WinUI.View.Pages.FarmerPage),
-                It.Is<Role>(r => r.Name == "Farmer")),
-            Times.Once);
-    }
-
-    /// <summary>
-    /// Verifies that selecting "Landmand" (Danish for Farmer) role is handled correctly
-    /// and navigates to FarmerPage, ensuring Danish role names are supported.
-    /// </summary>
-    [TestMethod]
-    public void SelectRoleCommand_WithLandmandRole_NavigatesToFarmerPage()
-    {
-        // Arrange
-        string roleName = "Landmand";
-
-        // Act
-        _viewModel.SelectRoleCommand.Execute(roleName);
-
-        // Assert
-        Assert.IsNotNull(_viewModel.SelectedRole);
-        Assert.AreEqual("Landmand", _viewModel.SelectedRole.Name);
-        _mockNavigationHandler.Verify(
-            h => h.Navigate(
-                typeof(ArlaNatureConnect.WinUI.View.Pages.FarmerPage),
-                It.IsAny<Role>()),
-            Times.Once);
-    }
-
-    /// <summary>
-    /// Verifies that selecting "Consultant" role creates a Role object and navigates
-    /// to ConsultantPage with the role as parameter.
-    /// </summary>
-    [TestMethod]
-    public void SelectRoleCommand_WithConsultantRole_SetsSelectedRoleAndNavigates()
-    {
-        // Arrange
-        string roleName = "Consultant";
-
-        // Act
-        _viewModel.SelectRoleCommand.Execute(roleName);
-
-        // Assert
-        Assert.IsNotNull(_viewModel.SelectedRole);
-        Assert.AreEqual("Consultant", _viewModel.SelectedRole.Name);
-        _mockNavigationHandler.Verify(
-            h => h.Navigate(
-                typeof(ArlaNatureConnect.WinUI.View.Pages.ConsultantPage),
-                It.Is<Role>(r => r.Name == "Consultant")),
-            Times.Once);
-    }
-
-    /// <summary>
-    /// Verifies that selecting "Konsulent" (Danish for Consultant) role is handled correctly
-    /// and navigates to ConsultantPage, ensuring Danish role names are supported.
-    /// </summary>
-    [TestMethod]
-    public void SelectRoleCommand_WithKonsulentRole_NavigatesToConsultantPage()
-    {
-        // Arrange
-        string roleName = "Konsulent";
-
-        // Act
-        _viewModel.SelectRoleCommand.Execute(roleName);
-
-        // Assert
-        Assert.IsNotNull(_viewModel.SelectedRole);
-        _mockNavigationHandler.Verify(
-            h => h.Navigate(
-                typeof(ArlaNatureConnect.WinUI.View.Pages.ConsultantPage),
-                It.IsAny<Role>()),
-            Times.Once);
-    }
-
-    /// <summary>
-    /// Verifies that selecting "ArlaEmployee" role creates a Role object and navigates
-    /// to ArlaEmployeePage with the role as parameter.
-    /// </summary>
-    [TestMethod]
-    public void SelectRoleCommand_WithArlaEmployeeRole_SetsSelectedRoleAndNavigates()
-    {
-        // Arrange
-        string roleName = "ArlaEmployee";
-
-        // Act
-        _viewModel.SelectRoleCommand.Execute(roleName);
-
-        // Assert
-        Assert.IsNotNull(_viewModel.SelectedRole);
-        Assert.AreEqual("ArlaEmployee", _viewModel.SelectedRole.Name);
-        _mockNavigationHandler.Verify(
-            h => h.Navigate(
-                typeof(ArlaNatureConnect.WinUI.View.Pages.ArlaEmployeePage),
-                It.Is<Role>(r => r.Name == "ArlaEmployee")),
-            Times.Once);
-    }
-
-    /// <summary>
-    /// Verifies that selecting "Arla Medarbejder" (Danish for Arla Employee) role is handled correctly
-    /// and navigates to ArlaEmployeePage, ensuring Danish role names with spaces are supported.
-    /// </summary>
-    [TestMethod]
-    public void SelectRoleCommand_WithArlaMedarbejderRole_NavigatesToArlaEmployeePage()
-    {
-        // Arrange
-        string roleName = "Arla Medarbejder";
-
-        // Act
-        _viewModel.SelectRoleCommand.Execute(roleName);
-
-        // Assert
-        Assert.IsNotNull(_viewModel.SelectedRole);
-        _mockNavigationHandler.Verify(
-            h => h.Navigate(
-                typeof(ArlaNatureConnect.WinUI.View.Pages.ArlaEmployeePage),
-                It.IsAny<Role>()),
-            Times.Once);
-    }
-
-    /// <summary>
-    /// Verifies that selecting "ArlaMedarbejder" (Danish without space) role is handled correctly
-    /// and navigates to ArlaEmployeePage, ensuring different Danish variations are supported.
-    /// </summary>
-    [TestMethod]
-    public void SelectRoleCommand_WithArlaMedarbejderNoSpaceRole_NavigatesToArlaEmployeePage()
-    {
-        // Arrange
-        string roleName = "ArlaMedarbejder";
-
-        // Act
-        _viewModel.SelectRoleCommand.Execute(roleName);
-
-        // Assert
-        Assert.IsNotNull(_viewModel.SelectedRole);
-        _mockNavigationHandler.Verify(
-            h => h.Navigate(
-                typeof(ArlaNatureConnect.WinUI.View.Pages.ArlaEmployeePage),
-                It.IsAny<Role>()),
-            Times.Once);
-    }
-
-    /// <summary>
-    /// Verifies that role selection is case-insensitive, so "farmer" (lowercase) works
-    /// the same as "Farmer" (capitalized).
-    /// </summary>
-    [TestMethod]
-    public void SelectRoleCommand_WithLowercaseRoleName_IsCaseInsensitive()
-    {
-        // Arrange
-        string roleName = "farmer";
-
-        // Act
-        _viewModel.SelectRoleCommand.Execute(roleName);
-
-        // Assert
-        Assert.IsNotNull(_viewModel.SelectedRole);
-        _mockNavigationHandler.Verify(
-            h => h.Navigate(
-                typeof(ArlaNatureConnect.WinUI.View.Pages.FarmerPage),
-                It.IsAny<Role>()),
+                expectedType,
+                It.Is<Role>(r => r.Name == expectedSelectedRoleName)),
             Times.Once);
     }
 

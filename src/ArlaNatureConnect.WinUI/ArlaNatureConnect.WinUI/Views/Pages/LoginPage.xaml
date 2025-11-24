@@ -1,76 +1,74 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Page
+﻿<Page
     x:Class="ArlaNatureConnect.WinUI.Views.Pages.LoginPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:ArlaNatureConnect.WinUI.Views.Pages"
-    xmlns:viewmodels="using:ArlaNatureConnect.WinUI.ViewModels.Pages" 
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    d:DataContext="{d:DesignInstance Type=viewmodels:LoginPageViewModel}"
-    mc:Ignorable="d">
-
-  <Page.DataContext>
-    <viewmodels:LoginPageViewModel />
-  </Page.DataContext>
+    xmlns:viewmodels="using:ArlaNatureConnect.WinUI.ViewModels.Pages"
+    Background="{StaticResource AppBackgroundBrush}">
 
   <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
 
-        <!-- Logo Section -->
-        <Grid Grid.Row="0" Margin="0,40,0,0">
-            <StackPanel HorizontalAlignment="Center" 
+    <!-- Logo Section -->
+    <Grid Grid.Row="0" Margin="0,40,0,0">
+      <StackPanel HorizontalAlignment="Center" 
                         VerticalAlignment="Center"
                         Spacing="0">
-                <!-- Arla Logo -->
-                <Image Source="/Assets/arla-logo.svg" 
+        <!-- Arla Logo -->
+        <Image Source="/Assets/arla-logo.svg" 
                        HorizontalAlignment="Center" 
                        VerticalAlignment="Center"
                        MaxHeight="240"
                        Stretch="Uniform"/>
-                <!-- Nature Connect - Using TextBlock instead of SVG since WinUI 3 doesn't support SVG text -->
-                <TextBlock Text="Nature Connect"
+        <!-- Nature Connect - Using TextBlock instead of SVG since WinUI 3 doesn't support SVG text -->
+        <TextBlock Text="Nature Connect"
                            HorizontalAlignment="Center"
                            FontSize="48"
                            FontWeight="Bold"
                            Foreground="#006C34"
                            Margin="0,5,0,0"/>
-            </StackPanel>
-        </Grid>
+      </StackPanel>
+    </Grid>
 
-        <!-- Main Content -->
-        <StackPanel Grid.Row="1" 
+    <!-- Main Content -->
+    <StackPanel Grid.Row="1" 
                     VerticalAlignment="Top" 
                     HorizontalAlignment="Center"
                     Margin="40,20,40,40">
-            
-            <TextBlock Text="Vælg din rolle for at fortsætte" 
+
+      <TextBlock Text="Vælg din rolle for at fortsætte" 
                        Style="{StaticResource ArlaBodyText}"
                        HorizontalAlignment="Center"
                        Margin="0,0,0,20"
                        FontSize="18"/>
 
-            <!-- Role Selection Buttons -->
-            <StackPanel Spacing="20" HorizontalAlignment="Center">
-                <Button Content="Landmand" 
+      <!-- Role Selection Buttons -->
+      <StackPanel Spacing="20" HorizontalAlignment="Center">
+        <StackPanel.Resources>
+          <Style TargetType="Button" BasedOn="{StaticResource ArlaPrimaryButton}">
+          </Style>
+        </StackPanel.Resources>
+        <Button Content="Landmand" 
                         Command="{Binding SelectRoleCommand}"
-                        CommandParameter="Farmer"
-                        Style="{StaticResource ArlaPrimaryButton}"/>
+                        CommandParameter="Farmer"/>
 
-                <Button Content="Konsulent" 
+        <Button Content="Konsulent" 
                         Command="{Binding SelectRoleCommand}"
-                        CommandParameter="Consultant"
-                        Style="{StaticResource ArlaPrimaryButton}"/>
+                        CommandParameter="Consultant"/>
 
-                <Button Content="Arla Medarbejder" 
+        <Button Content="Arla Medarbejder" 
                         Command="{Binding SelectRoleCommand}"
-                        CommandParameter="ArlaEmployee"
-                        Style="{StaticResource ArlaPrimaryButton}"/>
-            </StackPanel>
-        </StackPanel>
-    </Grid>
+                        CommandParameter="ArlaEmployee"/>
+
+        <Button Content="Administrator" 
+                        Command="{Binding SelectRoleCommand}"
+                        CommandParameter="Administrator"/>
+
+      </StackPanel>
+    </StackPanel>
+  </Grid>
 </Page>
 

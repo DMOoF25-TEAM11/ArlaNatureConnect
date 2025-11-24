@@ -16,7 +16,6 @@
     </PropertyGroup>
     <ItemGroup>
       <Compile Remove="ViewModels\template.cs" />
-      <None Remove="Views\Pages\AdministratorPage.xaml" />
 			<None Include="ViewModels\template.cs" />
 		</ItemGroup>
 
@@ -38,16 +37,6 @@
     <ItemGroup>
       <Page Update="View\Controls\StatusBarUC.xaml">
         <SubType>Designer</SubType>
-      </Page>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Views\Controls\PageContents\" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Page Update="Views\Pages\AdministratorPage.xaml">
-        <Generator>MSBuild:Compile</Generator>
       </Page>
     </ItemGroup>
 
