@@ -1,4 +1,5 @@
 using ArlaNatureConnect.WinUI.Services;
+using ArlaNatureConnect.WinUI.Views.Pages;
 
 using System.Runtime.Versioning;
 
@@ -43,7 +44,7 @@ public sealed class NavigationHandlerTests
         // Act & Assert
         try
         {
-            _navigationHandler.Navigate(typeof(ArlaNatureConnect.WinUI.View.Pages.LoginPage));
+            _navigationHandler.Navigate(typeof(LoginPage));
             Assert.Fail("Expected InvalidOperationException was not thrown");
         }
         catch (InvalidOperationException ex)

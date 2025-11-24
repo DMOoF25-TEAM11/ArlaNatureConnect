@@ -1,10 +1,13 @@
-using ArlaNatureConnect.WinUI.View.Pages;
-using ArlaNatureConnect.WinUI.Services; 
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Windowing;
-using Windows.Graphics;
-using WinRT.Interop;
+using ArlaNatureConnect.WinUI.Services;
+using ArlaNatureConnect.WinUI.Views.Pages;
+
 using Microsoft.UI;
+using Microsoft.UI.Windowing;
+using Microsoft.UI.Xaml;
+
+using Windows.Graphics;
+
+using WinRT.Interop;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -22,13 +25,13 @@ public sealed partial class MainWindow : Window
     {
         InitializeComponent();
         _navigationHandler = navigationHandler ?? throw new ArgumentNullException(nameof(navigationHandler));
-        
+
         // Set window size after window is activated
         Activated += MainWindow_Activated;
-        
+
         // Initialize navigation handler with the content frame
         _navigationHandler.Initialize(ContentFrame);
-        
+
         // Navigate to login page on startup
         _navigationHandler.Navigate(typeof(LoginPage));
     }
@@ -63,7 +66,7 @@ public sealed partial class MainWindow : Window
                 // If centering fails for any reason, ignore and keep resized position
             }
         }
-        
+
         // Unsubscribe after first activation
         Activated -= MainWindow_Activated;
     }

@@ -2,13 +2,11 @@ using ArlaNatureConnect.Core.Abstract;
 using ArlaNatureConnect.Domain.Entities;
 using ArlaNatureConnect.WinUI.Services;
 using ArlaNatureConnect.WinUI.ViewModels.Pages;
-using ArlaNatureConnect.WinUI.Views.Controls.SideMenu;
 
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
-namespace ArlaNatureConnect.WinUI.View.Pages;
+namespace ArlaNatureConnect.WinUI.Views.Pages;
 
 /// <summary>
 /// Page for Farmer role users to select a specific farmer and view their dashboard.

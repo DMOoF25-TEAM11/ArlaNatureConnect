@@ -1,10 +1,8 @@
 using ArlaNatureConnect.Core.Abstract;
 using ArlaNatureConnect.Domain.Entities;
 using ArlaNatureConnect.Domain.Enums;
-using ArlaNatureConnect.WinUI.Commands;
 using ArlaNatureConnect.WinUI.Services;
 using ArlaNatureConnect.WinUI.View.Pages.Consultant;
-using ArlaNatureConnect.WinUI.View.Pages.Farmer;
 using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 
 using Microsoft.UI.Xaml.Controls;
@@ -31,38 +29,20 @@ namespace ArlaNatureConnect.WinUI.ViewModels.Pages;
 public class ConsultantPageViewModel : NavigationViewModelBase
 {
     #region Fields
-
-    private readonly NavigationHandler _navigationHandler;
-    private readonly IPersonRepository _personRepository;
-    private readonly IRoleRepository _roleRepository;
-    private Person? _selectedPerson;
-    private List<Person> _availablePersons = new();
-    private bool _isLoading;
-    private object? _selectedNavigationItem;
-
     #endregion
 
     #region Commands
     #endregion
 
     #region Properties
-
-    /// <summary>
-    /// The currently selected navigation item.
-    /// </summary>
-    public object? SelectedNavigationItem
-    {
-        get => _selectedNavigationItem;
-        set
-        {
-            _selectedNavigationItem = value;
-            OnPropertyChanged();
-        }
-    }
-
     #endregion
 
     #region Constructor
+
+    public ConsultantPageViewModel()
+    {
+
+    }
 
     public ConsultantPageViewModel(NavigationHandler navigationHandler, IPersonRepository personRepository, IRoleRepository roleRepository)
         : base(navigationHandler, personRepository, roleRepository)
@@ -89,23 +69,18 @@ public class ConsultantPageViewModel : NavigationViewModelBase
 
     #endregion
 
-    #region OnChooseUser Command
-    #endregion
-
-    #region Navigation Handler
-
-    /// <summary>
-    /// Handles navigation item selection.
-    /// </summary>
-    /// <param name="tag">The tag of the selected navigation item.</param>
-    public void OnNavigationItemSelected(string tag)
-    {
-        NavigateToView(tag);
-    }
-
-    #endregion
 
     #region Helpers
+    /// <summary>
+    /// Overrides navigation to also switch the content view when the tag changes.
+    /// </summary>
+    protected override void NavigateToView(object? parameter)
+    {
+        base.NavigateToView(parameter);
+        // When CurrentNavigationTag is updated, switch the view content
+        SwitchContentView(CurrentNavigationTag);
+    }
+
     private void SwitchContentView(string? navigationTag)
     {
         try

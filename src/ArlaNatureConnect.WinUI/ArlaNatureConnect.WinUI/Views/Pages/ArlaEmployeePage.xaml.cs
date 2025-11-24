@@ -1,14 +1,12 @@
 using ArlaNatureConnect.Core.Abstract;
 using ArlaNatureConnect.Domain.Entities;
 using ArlaNatureConnect.WinUI.Services;
-using ArlaNatureConnect.WinUI.View.Pages.ArlaEmployee;
 using ArlaNatureConnect.WinUI.ViewModels.Pages;
 
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
-namespace ArlaNatureConnect.WinUI.View.Pages;
+namespace ArlaNatureConnect.WinUI.Views.Pages;
 
 /// <summary>
 /// Page for Arla Employee role users to view their dashboard directly.

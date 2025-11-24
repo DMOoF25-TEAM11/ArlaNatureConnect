@@ -1,29 +1,29 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
-namespace ArlaNatureConnect.WinUI.View.Pages.Consultant;
+namespace ArlaNatureConnect.WinUI.View.Controls.SideMenu.Consultant;
 
 /// <summary>
 /// UserControl for the Consultant sidebar navigation menu.
 /// Handles user selection dropdown and navigation buttons.
 /// </summary>
-public sealed partial class ConsultantSidebar : UserControl
+public sealed partial class ConsultantSideMenuUC : UserControl
 {
     private ViewModels.Pages.ConsultantPageViewModel? _previousViewModel;
 
-    public ConsultantSidebar()
+    public ConsultantSideMenuUC()
     {
         InitializeComponent();
-        Loaded += ConsultantSidebar_Loaded;
-        DataContextChanged += ConsultantSidebar_DataContextChanged;
+        Loaded += ConsultantSideMenuUC_Loaded;
+        DataContextChanged += ConsultantSideMenuUC_DataContextChanged;
     }
 
-    private void ConsultantSidebar_Loaded(object sender, RoutedEventArgs e)
+    private void ConsultantSideMenuUC_Loaded(object sender, RoutedEventArgs e)
     {
         UpdateButtonStyles();
     }
 
-    private void ConsultantSidebar_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
+    private void ConsultantSideMenuUC_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
     {
         // Unsubscribe from previous ViewModel if it exists
         if (_previousViewModel != null)

@@ -4,7 +4,7 @@ using ArlaNatureConnect.WinUI.ViewModels.Pages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml.Controls;
 
-namespace ArlaNatureConnect.WinUI.View.Pages;
+namespace ArlaNatureConnect.WinUI.Views.Pages;
 
 /// <summary>
 /// Login page for role selection.

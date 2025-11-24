@@ -1,7 +1,9 @@
 using ArlaNatureConnect.Domain.Entities;
 using ArlaNatureConnect.WinUI.Commands;
 using ArlaNatureConnect.WinUI.Services;
+using ArlaNatureConnect.WinUI.View.Pages;
 using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
+using ArlaNatureConnect.WinUI.Views.Pages;
 
 namespace ArlaNatureConnect.WinUI.ViewModels.Pages;
 
@@ -85,14 +87,14 @@ public class LoginPageViewModel : NavigationViewModelBase
             case "landmand":
                 // Create a role object for the selected role
                 SelectedRole = new Role { Name = roleName };
-                _navigationHandler.Navigate(typeof(ArlaNatureConnect.WinUI.View.Pages.FarmerPage), SelectedRole);
+                _navigationHandler.Navigate(typeof(FarmerPage), SelectedRole);
                 break;
 
             case "consultant":
             case "konsulent":
                 // Create a role object for the selected role
                 SelectedRole = new Role { Name = roleName };
-                _navigationHandler.Navigate(typeof(ArlaNatureConnect.WinUI.View.Pages.ConsultantPage), SelectedRole);
+                _navigationHandler.Navigate(typeof(ConsultantPage), SelectedRole);
                 break;
 
             case "arlaemployee":
@@ -100,7 +102,13 @@ public class LoginPageViewModel : NavigationViewModelBase
             case "arlamedarbejder":
                 // Create a role object for the selected role
                 SelectedRole = new Role { Name = roleName };
-                _navigationHandler.Navigate(typeof(ArlaNatureConnect.WinUI.View.Pages.ArlaEmployeePage), SelectedRole);
+                _navigationHandler.Navigate(typeof(ArlaEmployeePage), SelectedRole);
+                break;
+
+            case "administrator":
+                // Create a role object for the selected role
+                SelectedRole = new Role { Name = roleName };
+                _navigationHandler.Navigate(typeof(AdministratorPage), SelectedRole);
                 break;
 
             default:
