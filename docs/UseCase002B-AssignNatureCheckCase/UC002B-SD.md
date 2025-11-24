@@ -20,8 +20,23 @@ sequenceDiagram
     Service -->> ViewModel: (IReadOnlyList~Farm~, IReadOnlyList~Person~)
     ViewModel -->> ArlaEmployee: Display farms and consultants
 
-    ArlaEmployee ->> ViewModel: Select farm and consultant
-    ArlaEmployee ->> ViewModel: Enter notes and submit
+    alt Farm exists in list
+        ArlaEmployee ->> ViewModel: Select existing farm
+        ViewModel -->> ArlaEmployee: Display farm details
+    else Farm does not exist
+        Note over ArlaEmployee,ViewModel: Navigate to UC02 - Create Farm
+        ArlaEmployee ->> ViewModel: Click "Create New Farm" (UC02)
+        Note over ViewModel: UC02 handles farm creation
+        ViewModel -->> ArlaEmployee: Return to farm list with new farm
+        ArlaEmployee ->> ViewModel: Select newly created farm
+        ViewModel -->> ArlaEmployee: Display farm details
+    end
+
+    ArlaEmployee ->> ViewModel: Click "Create Nature Check Case"
+    ViewModel -->> ArlaEmployee: Display assignment form
+
+    ArlaEmployee ->> ViewModel: Select consultant and enter notes
+    ArlaEmployee ->> ViewModel: Submit assignment form
 
     ViewModel ->> Service: AssignCaseAsync(farmId, consultantId, assignedByPersonId, notes)
     Service ->> FarmRepo: GetByIdAsync(farmId)
@@ -35,8 +50,8 @@ sequenceDiagram
         Service ->> Notif: NotifyConsultantAsync(consultantId, caseId)
         Notif -->> Service: Task completed
         Service -->> ViewModel: NatureCheckCase
-        ViewModel ->> MsgService: AddSuccessMessage("Case assigned successfully")
-        ViewModel -->> ArlaEmployee: Case assignment confirmed
+        ViewModel ->> MsgService: AddInfoMessage("Case assigned successfully")
+        ViewModel -->> ArlaEmployee: Display confirmation message
     else Consultant does not have Consultant role
         Service -->> ViewModel: Validation error
         ViewModel ->> MsgService: AddErrorMessage("Selected user is not a consultant")

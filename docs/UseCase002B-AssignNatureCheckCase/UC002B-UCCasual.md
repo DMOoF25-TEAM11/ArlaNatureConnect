@@ -60,7 +60,7 @@
       - `AssignedAt` = DateTimeOffset.UtcNow
     - Saves the case via `INatureCheckCaseRepository.AddAsync()`
     - Sends a notification via `INotificationService.NotifyConsultantAsync()`
-    - Displays success message via `IAppMessageService.AddSuccessMessage()`
+    - Displays success message via `IAppMessageService.AddInfoMessage()`
 11. The system displays a confirmation message.  
 12. The consultant receives a notification about the new assignment.  
 13. The consultant can now proceed to **UC03 – Create Nature Check** and arrange the visit date with the farmer.

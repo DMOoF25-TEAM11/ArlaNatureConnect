@@ -11,7 +11,7 @@
 **Secondary Actors:**
 - Consultant (receives the case)  
 
-**Kort beskrivelse:**  
+**Decription:**  
 The Arla staff member selects an existing farm or creates a new one (UC02), 
 and marks it as ready for a Nature Check by creating a 
 NatureCheckCase and assigning it to a consultant. This enables the consultant to 

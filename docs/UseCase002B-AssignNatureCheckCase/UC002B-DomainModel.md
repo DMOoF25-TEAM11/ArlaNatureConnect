@@ -1,39 +1,45 @@
 # UC002B Domain Model
 ```mermaid
+---
+title: Use Case 002B - Domain Model
+---
 classDiagram
     class Farm {
-        +Guid Id
-        +string Name
-        +string CVR
-        +Guid PersonId
-        +Guid AddressId
+        name
+        cvr
+        personId
+        addressId
     }
 
     class Person {
-        +Guid Id
-        +Guid RoleId
-        +Guid AddressId
-        +string FirstName
-        +string LastName
-        +string Email
-        +bool IsActive
+        firstName
+        lastName
+        email
+        roleId
+        addressId
+        isActive
     }
 
     class Role {
-        +Guid Id
-        +string Name
+        roleName
+    }
+
+    class Address {
+        street
+        city
+        postalCode
+        country
     }
 
     class NatureCheckCase {
-        +Guid Id
-        +Guid FarmId
-        +Guid ConsultantId
-        +Guid AssignedByPersonId
-        +NatureCheckCaseStatus Status
-        +string? Notes
-        +string? Priority
-        +DateTimeOffset CreatedAt
-        +DateTimeOffset? AssignedAt
+        farmId
+        consultantId
+        assignedByPersonId
+        status
+        notes
+        priority
+        createdAt
+        assignedAt
     }
 
     Person "1" --> "0..*" NatureCheckCase : assignedTo

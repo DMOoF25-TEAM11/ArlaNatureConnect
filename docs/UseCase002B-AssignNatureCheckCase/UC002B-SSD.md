@@ -6,21 +6,27 @@ sequenceDiagram
     title UC02b – SSD: Assign Nature Check Case to Consultant
 
     actor ArlaEmployee as Arla Employee
-    participant UI as UI
     participant System as System
 
-    ArlaEmployee ->> UI: Open "Nature Check Cases"
-    UI ->> System: LoadFarmsAndConsultantsAsync()
-    System -->> UI: (IReadOnlyList~Farm~, IReadOnlyList~Person~)
+    ArlaEmployee ->> System: Open "Nature Check Cases" module
+    System -->> ArlaEmployee: Display list of farms
 
-    ArlaEmployee ->> UI: Select farm (or create via UC02)
-    Note over UI,System: Farm details already loaded
+    alt Farm exists in list
+        ArlaEmployee ->> System: Select existing farm
+        System -->> ArlaEmployee: Display farm details
+    else Farm does not exist
+        ArlaEmployee ->> System: Click "Create New Farm" (UC02)
+        System -->> ArlaEmployee: Display farm creation form
+        ArlaEmployee ->> System: Enter farm details and save
+        System -->> ArlaEmployee: Display confirmation and return to farm list
+        ArlaEmployee ->> System: Select newly created farm
+        System -->> ArlaEmployee: Display farm details
+    end
 
-    ArlaEmployee ->> UI: Click "Create Nature Check Case"
-    UI ->> ArlaEmployee: Display assignment form
+    ArlaEmployee ->> System: Click "Create Nature Check Case"
+    System -->> ArlaEmployee: Display assignment form
 
-    ArlaEmployee ->> UI: Select consultant + enter notes
-    UI ->> System: AssignCaseAsync(farmId, consultantId, assignedByPersonId, notes)
-    System -->> UI: NatureCheckCase (confirmation)
+    ArlaEmployee ->> System: Select consultant and enter notes, then submit
+    System -->> ArlaEmployee: Display confirmation message
 
-    System ->> Consultant: NotifyConsultantAsync(consultantId, caseId)
+    Note over System: System sends notification to consultant
