@@ -1,6 +1,6 @@
 using ArlaNatureConnect.Core.Abstract;
 using ArlaNatureConnect.WinUI.Services;
-using ArlaNatureConnect.WinUI.Views.Controls.Abstracts;
+using ArlaNatureConnect.WinUI.Views.Pages.Abstracts;
 
 using Microsoft.Extensions.DependencyInjection;
 
