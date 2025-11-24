@@ -1,3 +1,4 @@
+```mermaid
 ---
 title: Use Case 001 - Domain Model
 ---
@@ -5,5 +6,8 @@ classDiagram
     class Person {
         firstName
         lastName
+        email
         role
+        isActive
     }
+```
