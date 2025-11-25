@@ -121,6 +121,25 @@ BEGIN
 END
 
 /***************************************************************************************************
+    Table: UserFarms
+    Purpose: Mapping table to represent many-to-many relationship between Persons and Farms.
+    Note: Allows a Person to be associated with multiple Farms and vice versa.
+***************************************************************************************************/
+IF OBJECT_ID(N'[dbo].[UserFarms]') IS NULL
+BEGIN
+    CREATE TABLE [dbo].[UserFarms] (
+        [PersonId] UNIQUEIDENTIFIER NOT NULL,
+        [FarmId] UNIQUEIDENTIFIER NOT NULL,
+        CONSTRAINT [PK_UserFarms] PRIMARY KEY ([PersonId], [FarmId]),
+        CONSTRAINT [FK_UserFarms_Persons] FOREIGN KEY ([PersonId]) REFERENCES [dbo].[Persons]([Id]) ON DELETE CASCADE,
+        CONSTRAINT [FK_UserFarms_Farms] FOREIGN KEY ([FarmId]) REFERENCES [dbo].[Farms]([Id]) ON DELETE CASCADE
+    );
+    CREATE INDEX [IX_UserFarms_PersonId] ON [dbo].[UserFarms]([PersonId]);
+    CREATE INDEX [IX_UserFarms_FarmId] ON [dbo].[UserFarms]([FarmId]);
+END
+GO
+
+/***************************************************************************************************
     Table: AuditLog
     Purpose: Stores audit log entries.
 ***************************************************************************************************/

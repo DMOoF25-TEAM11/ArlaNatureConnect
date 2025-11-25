@@ -35,59 +35,36 @@
 
 ### **Main Success Scenario**
 1. The Arla employee opens the *Nature Check Cases* module.  
-2. The system calls `NatureCheckCaseService.LoadFarmsAndConsultantsAsync()` which:
-   - Loads all farms via `IFarmRepository.GetAllAsync()`
-   - Loads all consultants via `IPersonRepository.GetPersonsByRoleAsync("Consultant")`
-3. The system displays a list of all farms and consultants registered in the system.  
-4. The employee selects a farm.  
-5. If the farm does not exist, the employee first creates it via UC02.  
-6. The system shows the farm's details (name, CVR, address, farmer).  
-7. The employee clicks **"Create Nature Check Case"**.  
-8. The system opens a form asking the employee to select:  
-   - a consultant to assign (from the list of consultants)  
-   - optional internal notes (batch, priority, comments)  
-9. The employee saves the case.  
-10. The system calls `NatureCheckCaseService.AssignCaseAsync()` which:
-    - Validates that the farm exists via `IFarmRepository.GetByIdAsync(farmId)`
-    - Validates that the selected person exists and has the *Consultant* role via `IPersonRepository.GetByIdAsync(consultantId)`
-    - Creates a new **NatureCheckCase** entity with:
-      - `FarmId` = selected farm
-      - `ConsultantId` = selected consultant
-      - `AssignedByPersonId` = current authenticated Arla employee
-      - `Status` = NatureCheckCaseStatus.Assigned
-      - `Notes` = optional notes
-      - `CreatedAt` = DateTimeOffset.UtcNow
-      - `AssignedAt` = DateTimeOffset.UtcNow
-    - Saves the case via `INatureCheckCaseRepository.AddAsync()`
-    - Sends a notification via `INotificationService.NotifyConsultantAsync()`
-    - Displays success message via `IAppMessageService.AddInfoMessage()`
-11. The system displays a confirmation message.  
-12. The consultant receives a notification about the new assignment.  
-13. The consultant can now proceed to **UC03 – Create Nature Check** and arrange the visit date with the farmer.
+2. The system loads available farms and consultants and displays them.  
+3. The employee selects an existing farm (or creates one via UC02 if missing).  
+4. The system presents the selected farm’s summary information.  
+5. The employee chooses to **Create Nature Check Case**.  
+6. The system shows a form where the employee selects a consultant and optional notes.  
+7. The employee confirms the assignment.  
+8. The system validates the farm, consultant role, and any business rules.  
+9. A new Nature Check Case is created with status **Assigned** and linked to the chosen consultant and farm.  
+10. The system notifies the consultant and shows the employee a success confirmation.  
+11. The consultant can continue in **UC03 – Create Nature Check** to plan the visit.
 
 ---
 
 ### **Extensions (Alternatives)**
 - **3a. Farm not found:**  
-  The employee selects “Create Farm” → redirects to UC02 → returns to UC02b afterward.
+  The employee selects “Create Farm” → UC02 handles the creation → the employee returns to UC02b.
 
 - **8a. No consultant selected:**  
-  The system displays an error message via `IAppMessageService.AddErrorMessage()` and prevents saving.
+  The system prompts the employee to choose a consultant before continuing.
 
 - **8b. Selected user is not a consultant:**  
-  The system validates the role via `IPersonRepository.GetByIdAsync()` and role check.  
-  If validation fails, the system rejects the selection via `IAppMessageService.AddErrorMessage()` and asks for a valid consultant.
+  The system rejects the selection and asks for a valid consultant.
 
 - **10a. Farm does not exist:**  
-  The system validates via `IFarmRepository.GetByIdAsync(farmId)`.  
-  If the farm is not found, the system displays an error message and redirects to UC02 to create the farm.
+  The system cannot complete the assignment and directs the employee to register the farm first (UC02).
 
 - **10b. Consultant does not exist or is inactive:**  
-  The system validates via `IPersonRepository.GetByIdAsync(consultantId)` and checks `IsActive` status.  
-  If validation fails, the system displays an error message and prevents saving.
+  The system prevents assignment and requests another consultant.
 
 - **10c. Farm already has an active case (and allowDuplicate is false):**  
-  The system checks for existing active cases via `INatureCheckCaseRepository`.  
   The system prompts: "This farm already has an active Nature Check Case. Create another?"  
   - If *yes* → continue with `allowDuplicate = true`.  
   - If *no* → cancel the operation.

@@ -48,18 +48,6 @@ IF NOT EXISTS (SELECT 1 FROM [dbo].[Roles] WHERE [Name] = N'Consultant')
 IF NOT EXISTS (SELECT 1 FROM [dbo].[Roles] WHERE [Name] = N'Employee')
     INSERT INTO [dbo].[Roles] ([Id], [Name]) VALUES (@Role_Employee, N'Employee');
 
--- Create UserFarms mapping table if it doesn't exist (to represent many-to-many user<->farm)
-IF OBJECT_ID(N'[dbo].[UserFarms]', N'U') IS NULL
-BEGIN
-    CREATE TABLE [dbo].[UserFarms](
-        [PersonId] UNIQUEIDENTIFIER NOT NULL,
-        [FarmId] UNIQUEIDENTIFIER NOT NULL,
-        CONSTRAINT [PK_UserFarms] PRIMARY KEY ([PersonId],[FarmId]),
-        CONSTRAINT [FK_UserFarms_Persons] FOREIGN KEY ([PersonId]) REFERENCES [dbo].[Persons]([Id]) ON DELETE CASCADE,
-        CONSTRAINT [FK_UserFarms_Farms] FOREIGN KEY ([FarmId]) REFERENCES [dbo].[Farms]([Id]) ON DELETE CASCADE
-    );
-END
-
 -- Insert farm addresses & farms (all near Varde, Jutland, Denmark)
 DECLARE
     @F1 UNIQUEIDENTIFIER = NEWID(),  @FA1 UNIQUEIDENTIFIER = NEWID(),

@@ -1,4 +1,4 @@
-# **SSD – System Sequence Diagram**
+# **UC02B-SSD – Assign Nature Check Case to Consultant**
 
 
 ```mermaid

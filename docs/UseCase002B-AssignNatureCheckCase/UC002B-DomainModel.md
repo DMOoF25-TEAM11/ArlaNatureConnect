@@ -7,22 +7,19 @@ classDiagram
     class Farm {
         name
         cvr
-        personId
-        addressId
     }
 
     class Person {
         firstName
         lastName
         email
-        roleId
-        addressId
-        isActive
     }
 
-    class Role {
-        roleName
-    }
+    class ArlaEmployee
+    class Consultant
+
+    Person <|-- ArlaEmployee
+    Person <|-- Consultant
 
     class Address {
         street
@@ -32,18 +29,14 @@ classDiagram
     }
 
     class NatureCheckCase {
-        farmId
-        consultantId
-        assignedByPersonId
         status
         notes
         priority
-        createdAt
-        assignedAt
     }
 
-    Person "1" --> "0..*" NatureCheckCase : assignedTo
+    ArlaEmployee "1" --> "0..*" NatureCheckCase : creates
+    Consultant "1" --> "0..*" NatureCheckCase : performs
     Farm "1" --> "0..*" NatureCheckCase : has
-    Person "1" --> "1" Role : has
+
     Person "1" --> "1" Address : has
     Farm "1" --> "1" Address : has

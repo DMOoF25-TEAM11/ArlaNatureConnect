@@ -128,9 +128,9 @@ classDiagram
     IPersonRepository --> Person : manages
 ```
 
-**Noter**
-- `ArlaEmployeePageViewModel` arver fra `NavigationViewModelBase` og står for UI-flowet: vise gårde/konsulenter og udløse `AssignCaseAsync`.
-- `INatureCheckCaseService` og `NatureCheckCaseService` orkestrerer brugssagen og kalder repositories og notifikationsservice.
-- Repositories er holdt abstrakte i `ArlaNatureConnect.Core.Abstract` for at matche nuværende arkitektur (EF Core implementationen tilføjes i Infrastructure).
-- `IAppMessageService` og `IStatusInfoServices` er eksisterende Core services for feedback og status.
-- `INotificationService` repræsenterer en planlagt infrastrukturtjeneste for notifikationer.
+**Notes**
+- `ArlaEmployeePageViewModel` inherits from `NavigationViewModelBase` and handles the UI flow: showing farms/consultants and triggering `AssignCaseAsync`.
+- `INatureCheckCaseService` and `NatureCheckCaseService` orchestrate the use case and call repositories plus the notification service.
+- Repositories stay abstract in `ArlaNatureConnect.Core.Abstract` to align with the current architecture (the EF Core implementation lives in Infrastructure).
+- `IAppMessageService` and `IStatusInfoServices` are existing Core services used for user feedback and status.
+- `INotificationService` represents a planned infrastructure service for consultant notifications.
