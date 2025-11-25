@@ -34,9 +34,9 @@ classDiagram
         priority
     }
 
-    ArlaEmployee "1" --> "0..*" NatureCheckCase : creates
-    Consultant "1" --> "0..*" NatureCheckCase : performs
-    Farm "1" --> "0..*" NatureCheckCase : has
+    ArlaEmployee "1" -- "0..*" NatureCheckCase : assignments
+    Consultant "1" -- "0..*" NatureCheckCase : responsibilities
+    Farm "1" -- "0..*" NatureCheckCase : inspections
 
-    Person "1" --> "1" Address : has
-    Farm "1" --> "1" Address : has
+    Person "1" -- "1" Address : residence
+    Farm "1" -- "1" Address : location
