@@ -27,15 +27,12 @@ public partial class FarmerPageViewModel : NavigationViewModelBase
     public FarmerPageViewModel(NavigationHandler navigationHandler)
         : base(navigationHandler)
     {
-        RegisterContent("Dashboards", () => new FarmerDashboards());
-        RegisterContent("Farms", () => new FarmerNatureCheck());
-        RegisterContent("Tasks", () => new FarmerTasks());
-
         SideMenuControlType = typeof(FarmerPageSideMenuUC);
         SideMenuViewModelType = typeof(FarmerPageSideMenuUCViewModel);
 
-        InitializeNavigation("Dashboards");
-        SwitchContentView(CurrentNavigationTag);
+        NavigateToView(() => new FarmerDashboards());
+        //InitializeNavigation("Dashboards");
+        //SwitchContentView(CurrentNavigationTag);
     }
 
 }

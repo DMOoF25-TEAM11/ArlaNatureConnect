@@ -1,7 +1,6 @@
 using ArlaNatureConnect.Domain.Entities;
 using ArlaNatureConnect.WinUI.Commands;
 using ArlaNatureConnect.WinUI.Services;
-using ArlaNatureConnect.WinUI.View.Pages;
 using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 using ArlaNatureConnect.WinUI.Views.Pages;
 
@@ -60,6 +59,7 @@ public class LoginPageViewModel : NavigationViewModelBase
     #region Constructor
 
     public LoginPageViewModel(Services.NavigationHandler navigationHandler)
+        : base(navigationHandler)
     {
         _navigationHandler = navigationHandler ?? throw new ArgumentNullException(nameof(navigationHandler));
         SelectRoleCommand = new RelayCommand<string>(SelectRole);

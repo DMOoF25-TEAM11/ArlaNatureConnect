@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <abstracts:SideMenuBaseUC
   x:Class="ArlaNatureConnect.WinUI.Views.Controls.SideMenu.FarmerPageSideMenuUC"
+  x:Name="Root"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -61,27 +62,21 @@
     </Border>
 
     <!-- Navigation Menu -->
-    <StackPanel Grid.Row="2" 
-                Spacing="12"
-                Padding="20,24">
-      <Button x:Name="DashboardsButton"
-                Command="{Binding NavigationCommand}"
-                CommandParameter="{Binding DashboardsButtonCommandParameter, Mode=OneTime}"
-                Content="Dashboards"
-                Style="{StaticResource ArlaNavButton}"/>
-
-      <Button x:Name="FarmsButton"
-                Command="{Binding NavigationCommand}"
-                CommandParameter="{Binding FarmsButtonCommandParameter, Mode=OneTime}"
-                Content="Natur Check"
-                Style="{StaticResource ArlaNavButton}"/>
-
-      <Button x:Name="TasksButton"
-                Command="{Binding NavigationCommand}"
-                CommandParameter="{Binding TasksButtonCommandParameter, Mode=OneTime}"
-                Content="Mine opgaver"
-                Style="{StaticResource ArlaNavButton}"/>
-    </StackPanel>
+    <ItemsControl Grid.Row="2" ItemsSource="{Binding NavItems}">
+      <ItemsControl.ItemsPanel>
+        <ItemsPanelTemplate>
+          <StackPanel Orientation="Vertical" Spacing="12" Padding="20,24" />
+        </ItemsPanelTemplate>
+      </ItemsControl.ItemsPanel>
+      <ItemsControl.ItemTemplate>
+        <DataTemplate>
+          <Button
+            Command="{Binding Command}"
+            Content="{Binding Label}"
+            Style="{StaticResource ArlaNavButton}" />
+        </DataTemplate>
+      </ItemsControl.ItemTemplate>
+    </ItemsControl>
 
     <!-- Bottom Section -->
     <Border Grid.Row="3" 

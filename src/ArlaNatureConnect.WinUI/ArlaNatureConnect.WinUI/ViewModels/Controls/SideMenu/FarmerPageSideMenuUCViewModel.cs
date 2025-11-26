@@ -1,7 +1,14 @@
 using ArlaNatureConnect.Core.Abstract;
 using ArlaNatureConnect.Core.Services;
 using ArlaNatureConnect.Domain.Enums;
+using ArlaNatureConnect.WinUI.Commands;
 using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
+using ArlaNatureConnect.WinUI.Views.Controls.PageContents.Farmer;
+
+using Microsoft.UI.Xaml.Controls;
+
+using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu;
 
@@ -27,15 +34,75 @@ namespace ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu;
 /// </remarks>
 public sealed partial class FarmerPageSideMenuUCViewModel : SideMenuViewModelBase
 {
+    #region Types
+    // simple model for dynamic navigation buttons
+    public sealed record NavItem(string Label, System.Windows.Input.ICommand? Command = null);
+    #endregion
+
+    #region Properties
+    // Collection exposed to the view to generate navigation buttons dynamically
+    public ObservableCollection<NavItem> NavItems { get; } = new();
+
+    // Per-item RelayCommands
+    public ICommand DashboardsCommand { get; }
+    public ICommand NaturCheckCommand { get; }
+    public ICommand TasksCommand { get; }
+    #endregion
+
+
     public FarmerPageSideMenuUCViewModel(
         IStatusInfoServices statusInfoServices,
         IAppMessageService appMessageService,
         IPersonRepository personRepository)
         : base(statusInfoServices, appMessageService, personRepository)
     {
+        // Initialize per-item commands
+        DashboardsCommand = new RelayCommand(OnDashboardsExecuted, CanDashboardsExecute);
+        NaturCheckCommand = new RelayCommand(OnNaturCheckExecuted, CanNaturCheckExecute);
+        TasksCommand = new RelayCommand(OnTasksExecuted, CanTasksExecute);
+
+        // register navigation factories used by the base to create page contents, include per-item command so buttons can bind directly
+        NavItems.Add(new NavItem("Dashboards", DashboardsCommand));
+        NavItems.Add(new NavItem("Natur Check", NaturCheckCommand));
+        NavItems.Add(new NavItem("Mine opgaver", TasksCommand));
+
+        // Ensure command raises CanExecuteChanged when IsLoading changes
+        this.PropertyChanged += (s, e) =>
+        {
+            if (e.PropertyName == nameof(IsLoading))
+            {
+                (DashboardsCommand as RelayCommand)?.RaiseCanExecuteChanged();
+                (NaturCheckCommand as RelayCommand)?.RaiseCanExecuteChanged();
+                (TasksCommand as RelayCommand)?.RaiseCanExecuteChanged();
+            }
+        };
+
         // Fire-and-forget initialization; exceptions handled inside InitializeAsync
         _ = InitializeAsync();
     }
+
+
+    #region Command Handlers
+    // Per-item execute/can methods
+    private void OnDashboardsExecuted()
+    {
+        NavigationCommand?.Execute(new Func<UserControl?>(() => new FarmerDashboards()));
+    }
+    private bool CanDashboardsExecute() => !IsLoading;
+
+    private void OnNaturCheckExecuted()
+    {
+        NavigationCommand?.Execute(new Func<UserControl?>(() => new FarmerNatureCheck()));
+    }
+    private bool CanNaturCheckExecute() => !IsLoading;
+
+    private void OnTasksExecuted()
+    {
+        NavigationCommand?.Execute(new Func<UserControl?>(() => new FarmerTasks()));
+    }
+    private bool CanTasksExecute() => !IsLoading;
+
+    #endregion
 
     /// <summary>
     /// Performs asynchronous initialization for the view-model.

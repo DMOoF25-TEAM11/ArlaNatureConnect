@@ -3,7 +3,11 @@ using ArlaNatureConnect.Core.Services;
 using ArlaNatureConnect.Domain.Entities;
 using ArlaNatureConnect.WinUI.Commands;
 
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+
 using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 
@@ -17,7 +21,7 @@ public abstract partial class SideMenuViewModelBase : ListViewModelBase<IPersonR
     #region Fields
     private Person? _selectedPerson;
     private bool _isLoading;
-    private INavigationViewModelBase? _navigationViewModel;
+    protected INavigationViewModelBase? _navigationViewModel;
     #endregion
 
     #region Constructors
@@ -28,7 +32,8 @@ public abstract partial class SideMenuViewModelBase : ListViewModelBase<IPersonR
     protected SideMenuViewModelBase(
         IStatusInfoServices statusInfoServices,
         IAppMessageService appMessageService,
-        IPersonRepository repository)
+        IPersonRepository repository
+        )
         : base(statusInfoServices, appMessageService, repository)
     {
         NavigationCommand = new RelayCommand<object>(OnNavigate, CanNavigate);
@@ -97,7 +102,54 @@ public abstract partial class SideMenuViewModelBase : ListViewModelBase<IPersonR
     /// <param name="parameter"></param>
     protected virtual void OnNavigate(object? parameter)
     {
-        // no-op in base
+        try
+        {
+            ArgumentNullException.ThrowIfNull(parameter);
+            if (_navigationViewModel == null)
+                throw new InvalidOperationException("No host navigation view-model set.");
+
+
+            // If parameter is a UserControl, set it directly as the host page content
+            if (parameter is UserControl uc && _navigationViewModel is NavigationViewModelBase hostVm)
+            {
+                try { uc.DataContext = hostVm; } catch { }
+                hostVm.GetType().GetProperty("CurrentContent")?.SetValue(hostVm, uc);
+                return;
+            }
+
+            // If parameter is a factory that returns a control or element, invoke and assign
+            if (parameter is Func<object?> factory && _navigationViewModel is NavigationViewModelBase hostVm2)
+            {
+                object? obj = null;
+                try { obj = factory(); } catch { obj = null; }
+                if (obj is FrameworkElement fe)
+                {
+                    try { fe.DataContext = hostVm2; } catch { }
+                }
+                if (obj is UserControl userControl)
+                {
+                    hostVm2.GetType().GetProperty("CurrentContent")?.SetValue(hostVm2, userControl);
+                }
+                return;
+            }
+
+            // Otherwise try forwarding to host navigation command if available
+            if (_navigationViewModel is NavigationViewModelBase hostVm3)
+            {
+                ICommand? hostCmd = hostVm3.NavigationCommand as ICommand;
+                if (hostCmd != null && hostCmd.CanExecute(parameter))
+                {
+                    hostCmd.Execute(parameter);
+                    return;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException("OnNavigate failed", ex);
+        }
+
+        // No host available or unable to set content: remain a no-op.
     }
 
     private bool CanNavigate(object? parameter)

@@ -43,21 +43,27 @@ public partial class App : Application
             {
                 services
                     .AddInfrastructure()
-                    .AddSingleton<NavigationHandler>()
+
+                    // Windows
                     .AddSingleton<MainWindow>()
 
+                    // Services
+                    .AddSingleton<NavigationHandler>()
+
+                    // Controls
                     .AddSingleton<StatusBarUCViewModel>()
 
+                    // Pages
                     .AddScoped<AdministratorPageViewModel>()
                     .AddScoped<ArlaEmployeePageViewModel>()
                     .AddScoped<ConsultantPageViewModel>()
                     .AddScoped<FarmerPageViewModel>()
 
+                    // Side Menus
                     .AddScoped<AdministratorPageSideMenuUCViewModel>()
                     .AddScoped<ArlaEmployeePageSideMenuUCViewModel>()
                     .AddScoped<ConsultantPageSideMenuUCViewModel>()
                     .AddScoped<FarmerPageSideMenuUCViewModel>();
-
                 ;
             })
             .Build();

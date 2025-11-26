@@ -117,7 +117,37 @@ public abstract class SideMenuBaseUC : UserControl
 
     protected virtual void UpdateButtonStyles()
     {
-        // Implement style updates according to the actual ViewModel used by the page.
-        // Keep this minimal to avoid casting errors when different VM types are used.
+        //    if (DataContext is not ViewModels.Pages.ArlaEmployeePageViewModel viewModel)
+        //    {
+        //        return;
+        //    }
+
+        //if (Application.Current.Resources.TryGetValue("ArlaNavButton", out object navStyle) &&
+        //    Application.Current.Resources.TryGetValue("ArlaNavButtonActive", out object activeStyle))
+        //{
+        //}
+
+        //Microsoft.UI.Xaml.Style? navStyleTyped = navStyle as Microsoft.UI.Xaml.Style;
+        //Microsoft.UI.Xaml.Style? activeStyleTyped = activeStyle as Microsoft.UI.Xaml.Style;
+
+        //        // Reset all buttons to normal navigation style
+        //        DashboardsButton.Style = navStyleTyped;
+        //        FarmsButton.Style = navStyleTyped;
+        //        UsersButton.Style = navStyleTyped;
+
+        //        // Set active button based on CurrentNavigationTag
+        //        switch (viewModel.CurrentNavigationTag)
+        //        {
+        //            case "Dashboards":
+        //                DashboardsButton.Style = activeStyleTyped;
+        //                break;
+        //            case "Farms":
+        //                FarmsButton.Style = activeStyleTyped;
+        //                break;
+        //            case "Users":
+        //                UsersButton.Style = activeStyleTyped;
+        //                break;
+        //        }
+        //    }
     }
 }

@@ -1,7 +1,6 @@
 using ArlaNatureConnect.WinUI.Services;
 using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 using ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu;
-using ArlaNatureConnect.WinUI.Views.Controls.PageContents.Farmer;
 using ArlaNatureConnect.WinUI.Views.Controls.SideMenu;
 
 namespace ArlaNatureConnect.WinUI.ViewModels.Pages;
@@ -27,14 +26,14 @@ public class ArlaEmployeePageViewModel : NavigationViewModelBase
     public ArlaEmployeePageViewModel(NavigationHandler navigationHandler)
         : base(navigationHandler)
     {
-        RegisterContent("Dashboards", () => new FarmerDashboards());
-        RegisterContent("Farms", () => new FarmerNatureCheck());
-        RegisterContent("Tasks", () => new FarmerTasks());
+        //RegisterContent("Dashboards", () => new FarmerDashboards());
+        //RegisterContent("Farms", () => new FarmerNatureCheck());
+        //RegisterContent("Tasks", () => new FarmerTasks());
 
         SideMenuControlType = typeof(ArlaEmployeePageSideMenuUC);
         SideMenuViewModelType = typeof(ArlaEmployeePageSideMenuUCViewModel);
 
-        InitializeNavigation("Dashboards");
-        SwitchContentView(CurrentNavigationTag);
+        //InitializeNavigation("Dashboards");
+        //SwitchContentView(CurrentNavigationTag);
     }
 }

@@ -26,12 +26,6 @@ public abstract partial class NavPage : Page
     public INavigationViewModelBase? ViewModel { get; set; }
 
     /// <summary>
-    /// Default navigation view item tag executed when the page is first navigated to. Defaults to "Dashboards".
-    /// Derived pages can set this to show a different initial section.
-    /// </summary>
-    public string DefaultNavigationViewItemTag { get; set; } = "Dashboards";
-
-    /// <summary>
     /// Called when the page is navigated to. This implementation:
     /// - Validates that <see cref="ViewModel"/> is set and throws <see cref="InvalidOperationException"/> otherwise.
     /// - If the navigation parameter is a <see cref="Role"/>, invokes <see cref="INavigationViewModelBase.InitializeAsync"/>.
@@ -60,9 +54,6 @@ public abstract partial class NavPage : Page
             await ViewModel.InitializeAsync(role);
         }
 
-        // Set default view to Dashboards in ViewModel
-        ViewModel?.NavigationCommand?.Execute(DefaultNavigationViewItemTag);
-
         // Attach SideMenu via ViewModel
         ViewModel?.AttachSideMenuToMainWindow();
     }
@@ -77,8 +68,5 @@ public abstract partial class NavPage : Page
     protected override void OnNavigatedFrom(Microsoft.UI.Xaml.Navigation.NavigationEventArgs e)
     {
         base.OnNavigatedFrom(e);
-
-        // Restore previous SideMenu children when navigating away via ViewModel
-        ViewModel?.RestoreMainWindowSideMenu();
     }
 }

@@ -1,7 +1,6 @@
 using ArlaNatureConnect.WinUI.Services;
 using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 using ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu;
-using ArlaNatureConnect.WinUI.Views.Controls.PageContents.Administrator;
 using ArlaNatureConnect.WinUI.Views.Controls.SideMenu;
 
 namespace ArlaNatureConnect.WinUI.ViewModels.Pages;
@@ -28,12 +27,12 @@ public class ConsultantPageViewModel : NavigationViewModelBase
     public ConsultantPageViewModel(NavigationHandler navigationHandler)
         : base(navigationHandler)
     {
-        RegisterContent("Dashboards", () => new AdministratorDashboard());
+        //RegisterContent("Dashboards", () => new AdministratorDashboard());
 
         SideMenuControlType = typeof(ConsultantPageSideMenuUC);
         SideMenuViewModelType = typeof(ConsultantPageSideMenuUCViewModel);
 
-        InitializeNavigation("Dashboards");
-        SwitchContentView(CurrentNavigationTag);
+        //InitializeNavigation("Dashboards");
+        //SwitchContentView(CurrentNavigationTag);
     }
 }

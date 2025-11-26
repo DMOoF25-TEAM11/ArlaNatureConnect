@@ -49,12 +49,6 @@ public interface INavigationViewModelBase
     #endregion
 
     /// <summary>
-    /// The currently selected navigation tag. This is typically a short string (for example "Dashboards", "Farms", "Tasks")
-    /// that identifies which content view is active.
-    /// </summary>
-    string CurrentNavigationTag { get; }
-
-    /// <summary>
     /// Optional asynchronous initializer invoked when navigating to a page that hosts this view-model.
     /// Implementations should accept a <see cref="Role"/> describing the current user's role and perform any
     /// required asynchronous initialization (for example loading available users).
@@ -77,10 +71,5 @@ public interface INavigationViewModelBase
     /// </summary>
     void AttachSideMenuToMainWindow();
 
-    /// <summary>
-    /// Restore the main window's previous side-menu children. This should be called when navigating away from a page so the
-    /// application's global side-menu is returned to its prior state.
-    /// </summary>
-    void RestoreMainWindowSideMenu();
     #endregion
 }

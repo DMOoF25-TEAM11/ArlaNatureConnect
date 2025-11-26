@@ -2,8 +2,7 @@
     x:Class="ArlaNatureConnect.WinUI.Views.Controls.PageContents.Farmer.FarmerDashboards"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:ArlaNatureConnect.WinUI.Views.Controls.PageContents.Farmer"
-    Background="{StaticResource AppBackgroundBrush}">
+    xmlns:local="using:ArlaNatureConnect.WinUI.Views.Controls.PageContents.Farmer">
 
     <Grid>
         <TextBlock Text="Dashboards - Coming soon" 
