@@ -1,9 +1,9 @@
-using ArlaNatureConnect.Core.Abstract;
-using ArlaNatureConnect.WinUI.Services;
+using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 using ArlaNatureConnect.WinUI.ViewModels.Pages;
 using ArlaNatureConnect.WinUI.Views.Pages.Abstracts;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.UI.Xaml;
 
 namespace ArlaNatureConnect.WinUI.Views.Pages;
 
@@ -18,13 +18,18 @@ public sealed partial class FarmerPage : NavPage
     {
         InitializeComponent();
 
-        // Get dependencies from App's service provider
-        NavigationHandler navigationHandler = App.HostInstance.Services.GetRequiredService<NavigationHandler>();
-        IPersonRepository personRepository = App.HostInstance.Services.GetRequiredService<IPersonRepository>();
-        IRoleRepository roleRepository = App.HostInstance.Services.GetRequiredService<IRoleRepository>();
+        // Resolve the page view-model from DI so its dependencies (e.g. NavigationHandler) are injected.
+        FarmerPageViewModel vm = App.HostInstance.Services.GetRequiredService<FarmerPageViewModel>();
 
-        FarmerPageViewModel vm = new FarmerPageViewModel();
-        ViewModel = vm;           // required by NavPage
-        DataContext = vm;         // bindings in XAML
+        ViewModel = vm;      // required by NavPage
+        DataContext = vm;    // bindings in XAML
+
+        // If a side-menu control exists in the visual tree and its DataContext is a SideMenuViewModelBase,
+        // ensure it knows about this page view-model (backwards compatibility with existing side-menu wiring).
+        FrameworkElement? sideMenuControl = FindName("SideMenu") as FrameworkElement;
+        if (sideMenuControl?.DataContext is SideMenuViewModelBase sideMenuVm)
+        {
+            sideMenuVm.SetHostPageViewModel(vm);
+        }
     }
 }

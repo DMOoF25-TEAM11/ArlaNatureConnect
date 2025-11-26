@@ -1,8 +1,6 @@
-using ArlaNatureConnect.Core.Abstract;
 using ArlaNatureConnect.Domain.Entities;
 using ArlaNatureConnect.WinUI.Commands;
 using ArlaNatureConnect.WinUI.Services;
-using ArlaNatureConnect.WinUI.Views.Controls.SideMenu;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
@@ -23,24 +21,45 @@ namespace ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 /// - Provides side-menu attach/restore helpers that move UI wiring out of views and into a testable view-model layer.
 /// - Exposes observable properties (current tag, selected person, available persons, current content and loading flag)
 ///   that pages bind to for a consistent navigation/user-selection experience across the app.
+///
+/// How to use:
+/// - Derive from this class for role-based pages and call <see cref="InitializeNavigation(string)"/> from the derived
+///   constructor to set up navigation command handling.
+/// - Optionally assign <see cref="ContentFactory"/> to provide custom content creation logic for navigation tags.
+/// - Call <see cref="AttachSideMenuToMainWindow"/> (or use <see cref="AttachToView(Page?)"/>) to attach the shared side menu.
 /// </summary>
 public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewModelBase
 {
     #region Fields
     private string _currentNavigationTag = string.Empty;
 
-    private readonly NavigationHandler? _navigationHandler;
-    private readonly IPersonRepository? _person_repository;
-    private readonly IRoleRepository? _role_repository;
-    private Person? _selectedPerson;
-    protected Role? _currentRole;
-    private List<Person> _availablePersons = new();
+    // field to store last requested navigation tag (used by SwitchContentView and navigation flow)
+    private string _navigationTag = string.Empty;
+
+    /// <summary>
+    /// Delegate that derived classes may provide to create the appropriate <see cref="UserControl"/> for a navigation tag.
+    /// If null, the base implementation will create Farmer controls as a fallback.
+    /// </summary>
+    protected Func<string, UserControl?>? ContentFactory;
+
+    private readonly NavigationHandler? _navigation_handler; // renamed internal field left for existing code compatibility if needed
+    private readonly NavigationHandler? _navigationHandler; // original
     private bool _isLoading;
     private UserControl? _currentContent;
 
     // Side menu handling fields moved from view
     private UIElement[]? _previousSideMenuChildren;
     private UIElement? _addedSideMenuControl;
+    private IServiceScope? _sideMenuScope; // NEW: scope for resolved side-menu VM
+
+    // NEW: map of navigation tags to user-control factories
+    private readonly Dictionary<string, Func<UserControl>> _contentFactories = new();
+    // NEW: type of the side menu control to attach (set by derived VMs)
+    protected Type? SideMenuControlType { get; set; }
+    // Optional explicit factory if more advanced construction needed
+    protected Func<NavigationViewModelBase, UserControl>? SideMenuFactory { get; set; }
+    // NEW: explicit side menu view-model type to resolve via DI
+    protected Type? SideMenuViewModelType { get; set; }
     #endregion
     #region Fields Commands
 
@@ -64,24 +83,23 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
     /// <param name="navigationHandler">Navigation handler used for frame navigation.</param>
     /// <param name="personRepository">Repository used to load persons for the active role.</param>
     /// <param name="roleRepository">Repository used to resolve roles if needed.</param>
-    protected NavigationViewModelBase(NavigationHandler navigationHandler, IPersonRepository? personRepository, IRoleRepository? roleRepository) : base()
+    protected NavigationViewModelBase(NavigationHandler navigationHandler) : base()
     {
         _navigationHandler = navigationHandler ?? throw new ArgumentNullException(nameof(navigationHandler));
-        _person_repository = personRepository ?? throw new ArgumentNullException(nameof(personRepository));
-        _role_repository = roleRepository ?? throw new ArgumentNullException(nameof(roleRepository));
-        ChooseUserCommand = new RelayCommand<Person>(ChooseUser, p => p != null);
     }
 
     #region Properties
     /// <summary>
     /// Command to navigate between different content views.
-    /// Accepts either a string tag or a delegate (Func<string>/Action) as parameter.
+    /// Accepts either a <see cref="string"/> tag or a delegate such as <see cref="Func{UserControl}"/>.
     /// Initialized via <see cref="InitializeNavigation"/>.
     /// </summary>
     public RelayCommand<object>? NavigationCommand { get; protected set; }
 
     /// <summary>
     /// The currently selected navigation tag used by the view to determine which content is active.
+    /// Setting this property will also attempt to update <see cref="CurrentContent"/> by calling
+    /// <see cref="SwitchContentView(string?)"/>.
     /// </summary>
     public string CurrentNavigationTag
     {
@@ -92,35 +110,13 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
             {
                 _currentNavigationTag = value;
                 OnPropertyChanged();
+                // store last requested tag and switch content for derived view-models
+                _navigationTag = value ?? string.Empty;
+
+                // Ensure content is synchronized with the tag and surface any failures so tests and callers
+                // can detect and handle underlying factory/control creation errors.
+                SwitchContentView(_navigationTag);
             }
-        }
-    }
-
-    /// <summary>
-    /// Persons available for selection for the current role (bind to UI control).
-    /// </summary>
-    public List<Person> AvailablePersons
-    {
-        get => _availablePersons;
-        private set
-        {
-            _availablePersons = value ?? new List<Person>();
-            OnPropertyChanged();
-        }
-    }
-
-    /// <summary>
-    /// Currently selected person. Setting this updates dependent state and command availability.
-    /// </summary>
-    public Person? SelectedPerson
-    {
-        get => _selectedPerson;
-        set
-        {
-            _selectedPerson = value;
-            OnPropertyChanged();
-            ChooseUserCommand?.RaiseCanExecuteChanged();
-            OnPropertyChanged(nameof(IsUserSelected));
         }
     }
 
@@ -139,12 +135,7 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
     }
 
     /// <summary>
-    /// Convenience property indicating whether a person has been selected.
-    /// </summary>
-    public bool IsUserSelected => SelectedPerson != null;
-
-    /// <summary>
-    /// The current content UserControl for the page. Derived view-models may create and assign user controls here.
+    /// The current content <see cref="UserControl"/> for the page. Derived view-models may create and assign user controls here.
     /// </summary>
     public UserControl? CurrentContent
     {
@@ -168,12 +159,13 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
     protected void InitializeNavigation(string defaultTag = "")
     {
         _currentNavigationTag = defaultTag;
+        _navigationTag = defaultTag ?? string.Empty;
         NavigationCommand = new RelayCommand<object>(NavigateToView, CanNavigate);
     }
 
     /// <summary>
     /// Default asynchronous initializer. Derived view-models should override this to perform role-specific initialization
-    /// (for example call <see cref="LoadAvailableUsersAsync"/>). The base implementation is a no-op completed task to
+    /// (for example call <see cref="LoadAvailableUsersAsync(string)"/>). The base implementation is a no-op completed task to
     /// simplify callers that treat initialization as optional.
     /// </summary>
     /// <param name="role">Role used to scope initialization; may be <c>null</c>.</param>
@@ -200,15 +192,16 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
 
     /// <summary>
     /// Handles navigation requests. Supports a variety of parameter shapes:
-    /// - string: sets <see cref="CurrentNavigationTag"/>
-    /// - Func&lt;string&gt;: invokes and uses returned tag
-    /// - Func&lt;Task&lt;string&gt;&gt;: invokes asynchronously and sets tag when completed
-    /// - Action: invokes the delegate for arbitrary page-level actions
-    /// - Func&lt;NavigationViewModelBase, string&gt;: invokes with this view-model
+    /// - <see cref="Func{UserControl}"/>: invokes and uses returned control
+    /// - <see cref="string"/>: sets <see cref="CurrentNavigationTag"/>
+    /// - <see cref="Func{string}"/>: invokes and uses returned tag
+    /// - <see cref="Func{Task{string}}"/>: invokes asynchronously and sets tag when completed
+    /// - <see cref="Action"/>: invokes the delegate for arbitrary page-level actions
+    /// - <see cref="Func{NavigationViewModelBase, string}"/>: invokes with this view-model
     /// - fallback: parameter.ToString()
     ///
-    /// The method logs exceptions via <see cref="Debug.WriteLine"/> but does not throw to avoid breaking the UI.
-    /// Derived classes may override to react to tag changes (for example switch content controls).
+    /// This method logs errors to <see cref="Debug"/> and attempts to preserve UI stability by avoiding throws
+    /// originating from user-supplied delegates.
     /// </summary>
     /// <param name="parameter">The navigation parameter.</param>
     protected virtual void NavigateToView(object? parameter)
@@ -221,7 +214,7 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
             switch (parameter)
             {
                 case string tag when !string.IsNullOrWhiteSpace(tag):
-                    CurrentNavigationTag = tag;
+                    CurrentNavigationTag = tag; // will trigger SwitchContentView
                     return;
 
                 case Func<string> tagFunc:
@@ -233,7 +226,8 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
                     }
                     catch (Exception ex)
                     {
-                        Debug.WriteLine($"NavigateToView: func threw: {ex}");
+                        // bubble details to debug only; do not interrupt UI
+                        throw new Exception("NavigateToView: tagFunc threw", ex);
                     }
                     return;
 
@@ -243,6 +237,7 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
                         Task<string> task = taskFunc();
                         if (task == null) return;
 
+                        // ContinueWith ensures we don't block the UI thread; update tag when ready
                         task.ContinueWith(t =>
                         {
                             if (t.Status == TaskStatus.RanToCompletion && !string.IsNullOrWhiteSpace(t.Result))
@@ -251,13 +246,13 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
                             }
                             else if (t.Exception != null)
                             {
-                                Debug.WriteLine($"NavigateToView: taskFunc faulted: {t.Exception}");
+                                throw new Exception("NavigateToView: taskFunc task failed", t.Exception);
                             }
                         });
                     }
                     catch (Exception ex)
                     {
-                        Debug.WriteLine($"NavigateToView: taskFunc invocation failed: {ex}");
+                        throw new Exception("NavigateToView: taskFunc invocation failed", ex);
                     }
                     return;
 
@@ -268,7 +263,24 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
                     }
                     catch (Exception ex)
                     {
-                        Debug.WriteLine($"NavigateToView: action threw: {ex}");
+                        throw new Exception("NavigateToView: action threw", ex);
+                    }
+                    return;
+
+                case Func<UserControl?> contentFunc:
+                    try
+                    {
+                        // Create the control and set it as current content
+                        UserControl? ctrl = contentFunc();
+                        if (ctrl != null)
+                        {
+                            ctrl.DataContext = this;
+                            CurrentContent = ctrl;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception("NavigateToView: contentFunc threw", ex);
                     }
                     return;
 
@@ -281,7 +293,7 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
                     }
                     catch (Exception ex)
                     {
-                        Debug.WriteLine($"NavigateToView: vmTagFunc threw: {ex}");
+                        throw new Exception("NavigateToView: vmTagFunc threw", ex);
                     }
                     return;
 
@@ -294,43 +306,74 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
                     }
                     catch (Exception ex)
                     {
-                        Debug.WriteLine($"NavigateToView: fallback conversion failed: {ex}");
+                        throw new Exception("NavigateToView: fallback conversion failed", ex);
                     }
                     return;
             }
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"NavigateToView: unexpected error: {ex}");
+            throw new Exception("NavigateToView: unexpected error", ex);
         }
+
+        // Ensure content is synchronized with the tag after handling navigation
+        SwitchContentView(CurrentNavigationTag);
+    }
+
+    // NEW: registration API
+    protected void RegisterContent(string tag, Func<UserControl> factory)
+    {
+        if (string.IsNullOrWhiteSpace(tag) || factory == null) return;
+        _contentFactories[tag] = factory;
     }
 
     /// <summary>
-    /// Load persons for the specified role using the injected repository. Updates <see cref="AvailablePersons"/> and the
-    /// <see cref="IsLoading"/> flag. Swallows exceptions and logs them to avoid leaving the UI in a loading state.
+    /// Switches the content view by creating an appropriate <see cref="UserControl"/> and assigning its DataContext.
+    /// Default implementation creates Farmer page contents. Derived view-models may override to provide
+    /// role-specific content controls or assign a custom <see cref="ContentFactory"/>.
     /// </summary>
-    /// <param name="roleName">The name of the role to load persons for.</param>
-    /// <returns>A task that completes when loading finishes.</returns>
-    protected async Task LoadAvailableUsersAsync(string roleName)
+    /// <param name="navigationTag">The tag to switch to. If null or empty the <see cref="CurrentNavigationTag"/> is used.</param>
+    protected virtual void SwitchContentView(string? navigationTag)
     {
-        if (_person_repository == null)
-            return;
-
-        IsLoading = true;
         try
         {
-            List<Person> persons = await _person_repository.GetPersonsByRoleAsync(roleName);
-            AvailablePersons = persons ?? new List<Person>();
-            Debug.WriteLine($"Loaded {AvailablePersons.Count} persons with role {roleName}");
+            string tag = string.IsNullOrWhiteSpace(navigationTag) ? CurrentNavigationTag : navigationTag!;
+
+            UserControl? newContent = null;
+
+            if (_contentFactories.TryGetValue(tag, out Func<UserControl>? factory))
+            {
+                try
+                {
+                    newContent = factory();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("SwitchContentView: factory threw", ex);
+                }
+            }
+            else if (ContentFactory != null)
+            {
+                try
+                {
+                    newContent = ContentFactory(tag);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("SwitchContentView: ContentFactory threw", ex);
+                }
+            }
+
+            if (newContent != null)
+            {
+                // Set the DataContext so the content control can bind to this view-model
+                newContent.DataContext = this;
+                CurrentContent = newContent;
+            }
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"LoadAvailableUsersAsync failed: {ex}");
-            AvailablePersons = new List<Person>();
-        }
-        finally
-        {
-            IsLoading = false;
+            throw new Exception("SwitchContentView failed", ex);
         }
     }
 
@@ -358,39 +401,73 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
         try
         {
             MainWindow? mainWindow = App.HostInstance?.Services.GetService<MainWindow>();
-            if (mainWindow == null)
-                return;
+            if (mainWindow?.Content is not FrameworkElement root) return;
+            Panel? sideMenuPanel = FindSideMenuPanel(root);
+            if (sideMenuPanel == null) return;
 
-            if (mainWindow.Content is not FrameworkElement root)
-                return;
-
-            Panel? SideMenu = FindSideMenuPanel(root);
-            if (SideMenu == null)
-                return;
-
-            // If we've already added our SideMenu control, ensure DataContext is synced and return
-            if (_addedSideMenuControl is FrameworkElement added && SideMenu.Children.Contains(added))
+            if (_addedSideMenuControl is FrameworkElement added && sideMenuPanel.Children.Contains(added))
             {
-                added.DataContext = this;
+                // If control already added, ensure DataContext points to the current page VM
+                //added.DataContext = this;
                 return;
             }
 
-            // Store previous children so they can be restored
-            _previousSideMenuChildren = SideMenu.Children.Cast<UIElement>().ToArray();
+            _previousSideMenuChildren = sideMenuPanel.Children.Cast<UIElement>().ToArray();
+            sideMenuPanel.Children.Clear();
 
-            SideMenu.Children.Clear();
+            UserControl control = SideMenuFactory != null ? SideMenuFactory(this) : (SideMenuControlType != null ? (UserControl)Activator.CreateInstance(SideMenuControlType) : throw new InvalidOperationException("No SideMenuControlType or SideMenuFactory available"));
 
-            FarmerSideMenuUC control = new FarmerSideMenuUC();
-            control.DataContext = this;
+            object? resolvedVm = null;
+
+            // Prefer explicit type if provided; create a scope for scoped services so DI lifetime is correct
+            if (SideMenuViewModelType != null && App.HostInstance != null)
+            {
+                try
+                {
+                    // dispose previous scope if any
+                    _sideMenuScope?.Dispose();
+                    _sideMenuScope = App.HostInstance.Services.CreateScope();
+                    resolvedVm = _sideMenuScope.ServiceProvider.GetService(SideMenuViewModelType);
+                }
+                catch { resolvedVm = null; }
+            }
+            else
+            {
+                // Fallback convention: replace Views.Controls.SideMenu namespace with ViewModels.Controls.SideMenu and append ViewModel
+                Type controlType = control.GetType();
+                string? ns = controlType.Namespace;
+                if (!string.IsNullOrWhiteSpace(ns) && ns.Contains("Views.Controls.SideMenu"))
+                {
+                    string vmNs = ns.Replace("Views.Controls.SideMenu", "ViewModels.Controls.SideMenu");
+                    string vmFull = vmNs + "." + controlType.Name + "ViewModel";
+                    Type? vmType = Type.GetType(vmFull);
+                    if (vmType != null)
+                    {
+                        try
+                        {
+                            _sideMenuScope?.Dispose();
+                            _sideMenuScope = App.HostInstance?.Services.CreateScope();
+                            resolvedVm = _sideMenuScope?.ServiceProvider.GetService(vmType);
+                        }
+                        catch { resolvedVm = null; }
+                    }
+                }
+            }
+
+            if (resolvedVm != null)
+            {
+                control.DataContext = resolvedVm;
+            }
+            else
+            {
+                // fallback to host page VM so bindings still work
+                control.DataContext = this;
+            }
+
             _addedSideMenuControl = control;
-
-            SideMenu.Children.Add(control);
+            sideMenuPanel.Children.Add(control);
         }
-        catch (Exception ex)
-        {
-            Debug.WriteLine($"AttachSideMenuToMainWindow failed: {ex}");
-        }
-
+        catch { }
     }
 
     /// <summary>
@@ -400,53 +477,32 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
     public virtual void RestoreMainWindowSideMenu()
     {
         // If the main window's XamlRoot isn't available, the window is closed or not ready.
-        if (App.MainWindowXamlRoot == null)
-            return;
+        if (App.MainWindowXamlRoot == null) return;
 
         try
         {
             MainWindow? mainWindow = App.HostInstance?.Services.GetService<MainWindow>();
-            if (mainWindow == null)
-                return;
+            if (mainWindow?.Content is not FrameworkElement root) return;
+            Panel? sideMenuPanel = FindSideMenuPanel(root); if (sideMenuPanel == null) return;
+            if (_previousSideMenuChildren == null) return;
 
-            if (mainWindow.Content is not FrameworkElement root)
-                return;
-
-            Panel? SideMenu = FindSideMenuPanel(root);
-            if (SideMenu == null)
-                return;
-
-            if (_previousSideMenuChildren == null)
-                return;
-
-            SideMenu.Children.Clear();
-            foreach (UIElement child in _previousSideMenuChildren)
-                SideMenu.Children.Add(child);
+            sideMenuPanel.Children.Clear();
+            foreach (UIElement child in _previousSideMenuChildren) sideMenuPanel.Children.Add(child);
 
             _previousSideMenuChildren = null;
+
+            // Dispose scope for resolved side-menu VM if created
+            try { _sideMenuScope?.Dispose(); } catch { }
+            _sideMenuScope = null;
             _addedSideMenuControl = null;
         }
-        catch (System.Runtime.InteropServices.COMException)
-        {
-            // Window already closed — ignore restore
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine($"RestoreMainWindowSideMenu failed: {ex}");
-        }
+        catch { }
     }
 
-    private void Page_Loaded(object? sender, RoutedEventArgs e)
-    {
-        // Ensure SideMenu is attached when view is loaded
-        AttachSideMenuToMainWindow();
-    }
-
+    private void Page_Loaded(object? sender, RoutedEventArgs e) => AttachSideMenuToMainWindow();
     private void Page_Unloaded(object? sender, RoutedEventArgs e)
     {
-        // Restore SideMenu when view unloads
         RestoreMainWindowSideMenu();
-
         if (sender is Page page)
         {
             // detach handlers to avoid leaks
@@ -476,40 +532,17 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
             for (int i = 0; i < count; i++)
             {
                 DependencyObject child = VisualTreeHelper.GetChild(root, i);
-                if (child is Panel panel && (panel.Name == "SideMenu"))
-                    return panel;
-
+                if (child is Panel panel && panel.Name == "SideMenu") return panel;
                 if (child is FrameworkElement fe)
                 {
                     Panel? found = FindSideMenuPanel(fe);
-                    if (found != null)
-                        return found;
+                    if (found != null) return found;
                 }
             }
         }
-        catch (Exception ex)
-        {
-            Debug.WriteLine($"FindSideMenuPanel traversal failed: {ex}");
-        }
+        catch { }
 
         return null;
-    }
-
-    #endregion
-    #region OnChooseUser Command
-    /// <summary>
-    /// Selects the provided person and updates related state. Derived classes may react to selection by showing a dashboard.
-    /// </summary>
-    /// <param name="person">The person to select; if null the call is ignored.</param>
-    protected void ChooseUser(Person? person)
-    {
-        if (person == null)
-        {
-            return;
-        }
-
-        SelectedPerson = person;
-        // LoadDashboard(); // Derived classes can implement dashboard loading when selection changes
     }
 
     #endregion

@@ -5,24 +5,26 @@
     xmlns:local="using:ArlaNatureConnect.WinUI.Views.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:controls="using:ArlaNatureConnect.WinUI.ViewModels.Controls" 
-    d:DataContext="{d:DesignInstance Type=controls:StatusBarUCViewModel}"
+    xmlns:viewModels="using:ArlaNatureConnect.WinUI.ViewModels.Controls" 
+    d:DataContext="{d:DesignInstance Type=viewModels:StatusBarUCViewModel}"
     mc:Ignorable="d">
 
   <!-- DataContext is provided at runtime from DI in code-behind. Keep d:DataContext for design-time only. -->
-
   <Grid>
     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="8">
-      <ProgressBar  IsIndeterminate="True" 
-                    Visibility="{Binding IsBusy, Converter={StaticResource BoolToVis}}"
+      <!-- Visibility="{Binding IsBusy, Converter={StaticResource BoolToVis}}"-->
+      <ProgressBar  Visibility="Visible" 
+                    IsIndeterminate="{Binding IsBusy, Mode=OneWay}"
                     Width="100"
                     Height="12"
                     VerticalAlignment="Center"
                     Margin="0,0,12,0"
                     Background="Transparent"
                     Foreground="{StaticResource ArlaAccentBrush}"/>
+
+      <TextBlock Text="Busy:" VerticalAlignment="Center" Margin="0,0,4,0"/>
       <!-- Bind to symbol (string) instead of bool so UI shows emoji/text -->
-      <!--<TextBlock Text="{Binding BusySymbol}" VerticalAlignment="Center" FontSize="16" Margin="0,0,12,0" MinWidth="20"/>-->
+      <TextBlock Text="{Binding BusySymbol, Mode=OneWay}" VerticalAlignment="Center" FontSize="16" Margin="0,0,12,0" MinWidth="20"/>
 
       <TextBlock Text="DB:" VerticalAlignment="Center" Margin="0,0,4,0"/>
       <!-- Bind to symbol (string) instead of bool so UI shows emoji/text -->

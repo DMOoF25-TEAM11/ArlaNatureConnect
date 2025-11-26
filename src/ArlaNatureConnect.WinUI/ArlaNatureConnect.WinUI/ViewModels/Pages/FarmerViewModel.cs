@@ -1,8 +1,8 @@
-﻿using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
+using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 
-namespace ArlaNatureConnect.WinUI.ViewModels.Pages
+namespace ArlaNatureConnect.WinUI.ViewModels.Pages;
+
+public class FarmerViewModel : ViewModelBase
 {
-    public class FarmerViewModel : ViewModelBase
-    {
-    }
+
 }

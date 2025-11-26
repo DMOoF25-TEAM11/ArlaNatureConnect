@@ -1,10 +1,9 @@
-using ArlaNatureConnect.Core.Abstract;
-using ArlaNatureConnect.Domain.Entities;
-using ArlaNatureConnect.WinUI.Services;
+using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 using ArlaNatureConnect.WinUI.ViewModels.Pages;
+using ArlaNatureConnect.WinUI.Views.Pages.Abstracts;
 
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml;
 
 namespace ArlaNatureConnect.WinUI.Views.Pages;
 
@@ -13,53 +12,23 @@ namespace ArlaNatureConnect.WinUI.Views.Pages;
 /// This page orchestrates the ArlaEmployeeSideMenuUC and switches between different content views
 /// (Dashboards, Farms, Users) based on navigation selection.
 /// </summary>
-public sealed partial class ArlaEmployeePage : Page
+public sealed partial class ArlaEmployeePage : NavPage
 {
-    public ArlaEmployeePageViewModel ViewModel { get; }
-
     public ArlaEmployeePage() : base()
     {
         InitializeComponent();
 
-        // Get dependencies from App's service provider
-        NavigationHandler navigationHandler = App.HostInstance.Services.GetRequiredService<NavigationHandler>();
-        IPersonRepository personRepository = App.HostInstance.Services.GetRequiredService<IPersonRepository>();
-        IRoleRepository roleRepository = App.HostInstance.Services.GetRequiredService<IRoleRepository>();
+        // Resolve the page view-model from DI so its dependencies (e.g. NavigationHandler) are injected.
+        ArlaEmployeePageViewModel vm = App.HostInstance.Services.GetRequiredService<ArlaEmployeePageViewModel>();
+        ViewModel = vm;      // required by NavPage
+        DataContext = vm;    // bindings in XAML
 
-        // Initialize ViewModel with required dependencies
-        ViewModel = new ArlaEmployeePageViewModel(navigationHandler, personRepository, roleRepository);
-
-        // Set DataContext so bindings work
-        DataContext = ViewModel;
-
-        // Let the ViewModel hook into the view's lifecycle events so it can attach/restore the SideMenu
-        ViewModel.AttachToView(this);
-
-    }
-
-
-    protected override async void OnNavigatedTo(Microsoft.UI.Xaml.Navigation.NavigationEventArgs e)
-    {
-        base.OnNavigatedTo(e);
-
-        if (e.Parameter is Role role)
+        // If a side-menu control exists in the visual tree and its DataContext is a SideMenuViewModelBase,
+        // ensure it knows about this page view-model (backwards compatibility with existing side-menu wiring).
+        FrameworkElement? sideMenuControl = FindName("SideMenu") as FrameworkElement;
+        if (sideMenuControl?.DataContext is SideMenuViewModelBase sideMenuVm)
         {
-            await ViewModel.InitializeAsync(role);
+            sideMenuVm.SetHostPageViewModel(vm);
         }
-
-        // Set default view to Dashboards in ViewModel
-        ViewModel.NavigationCommand?.Execute("Dashboards");
-
-        // Attach SideMenu via ViewModel
-        ViewModel.AttachSideMenuToMainWindow();
-    }
-
-    protected override void OnNavigatedFrom(Microsoft.UI.Xaml.Navigation.NavigationEventArgs e)
-    {
-        base.OnNavigatedFrom(e);
-
-        // Restore previous SideMenu children when navigating away via ViewModel
-        ViewModel.RestoreMainWindowSideMenu();
     }
 }
-

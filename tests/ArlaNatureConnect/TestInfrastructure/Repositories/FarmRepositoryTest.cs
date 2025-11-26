@@ -1,7 +1,8 @@
-using Microsoft.EntityFrameworkCore;
+using ArlaNatureConnect.Domain.Entities;
 using ArlaNatureConnect.Infrastructure.Persistence;
 using ArlaNatureConnect.Infrastructure.Repositories;
-using ArlaNatureConnect.Domain.Entities;
+
+using Microsoft.EntityFrameworkCore;
 
 namespace TestInfrastructure.Repositories;
 

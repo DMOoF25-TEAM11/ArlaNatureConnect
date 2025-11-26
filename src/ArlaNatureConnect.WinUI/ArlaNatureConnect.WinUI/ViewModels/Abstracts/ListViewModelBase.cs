@@ -22,7 +22,7 @@ public abstract class ListViewModelBase<TRepos, TEntity> : ViewModelBase
     /// <summary>
     /// Repository used to access entities of type <typeparamref name="TEntity"/>.
     /// </summary>
-    protected readonly TRepos _repository;
+    protected readonly TRepos? _repository;
 
     /// <summary>
     /// Backing field for the <see cref="Entity"/> property.
@@ -32,13 +32,18 @@ public abstract class ListViewModelBase<TRepos, TEntity> : ViewModelBase
     /// <summary>
     /// Service used to report loading and connectivity status to the UI.
     /// </summary>
-    protected IStatusInfoServices _statusInfoServices;
+    protected IStatusInfoServices? _statusInfoServices;
 
     /// <summary>
     /// Service used to report application messages and errors to the UI.
     /// </summary>
-    protected IAppMessageService _appMessageService;
+    protected IAppMessageService? _appMessageService;
     #endregion
+
+    protected ListViewModelBase()
+    {
+
+    }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ListViewModelBase{TRepos,TEntity}"/> class.
