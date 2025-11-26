@@ -10,6 +10,10 @@
     d:DataContext="{d:DesignInstance Type=sidemenu:TitleAndLogoSideMenuUCViewModel}"
     mc:Ignorable="d">
 
+  <UserControl.DataContext>
+    <sidemenu:TitleAndLogoSideMenuUCViewModel/>
+  </UserControl.DataContext>
+
   <StackPanel Spacing="20">
     <TextBlock  Text="{Binding Title, Mode=OneTime}" 
                 Foreground="{StaticResource ArlaPrimaryDarkBrush}"

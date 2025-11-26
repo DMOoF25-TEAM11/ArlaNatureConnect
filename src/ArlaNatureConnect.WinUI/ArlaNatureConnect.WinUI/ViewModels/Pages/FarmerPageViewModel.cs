@@ -1,11 +1,8 @@
-using ArlaNatureConnect.Core.Abstract;
-using ArlaNatureConnect.Domain.Entities;
-using ArlaNatureConnect.Domain.Enums; // add content controls namespace
 using ArlaNatureConnect.WinUI.Services;
 using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
+using ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu;
 using ArlaNatureConnect.WinUI.Views.Controls.PageContents.Farmer;
-
-using Microsoft.UI.Xaml.Controls;
+using ArlaNatureConnect.WinUI.Views.Controls.SideMenu;
 
 namespace ArlaNatureConnect.WinUI.ViewModels.Pages;
 
@@ -27,73 +24,15 @@ namespace ArlaNatureConnect.WinUI.ViewModels.Pages;
 /// </summary>
 public partial class FarmerPageViewModel : NavigationViewModelBase
 {
-    public FarmerPageViewModel() : base()
+    public FarmerPageViewModel(NavigationHandler navigationHandler)
+        : base(navigationHandler)
     {
+        SideMenuControlType = typeof(FarmerPageSideMenuUC);
+        SideMenuViewModelType = typeof(FarmerPageSideMenuUCViewModel);
 
+        NavigateToView(() => new FarmerDashboards());
+        //InitializeNavigation("Dashboards");
+        //SwitchContentView(CurrentNavigationTag);
     }
 
-    public FarmerPageViewModel(NavigationHandler navigationHandler, IPersonRepository personRepository, IRoleRepository roleRepository)
-        : base(navigationHandler, personRepository, roleRepository)
-    {
-        InitializeNavigation("Dashboards");
-
-        // ensure initial content is created and bound to this VM
-        SwitchContentView(CurrentNavigationTag);
-    }
-
-    #region Load Handler
-    /// <summary>
-    /// Initializes the page with the selected role and loads available users.
-    /// </summary>
-    /// <param name="role">The role that was selected (should be Farmer).</param>
-    public override async Task InitializeAsync(Role? role)
-    {
-        _currentRole = role;
-        await LoadAvailableUsersAsync(RoleName.Farmer.ToString());
-    }
-    #endregion
-
-    #region Helpers
-    /// <summary>
-    /// Overrides navigation to also switch the content view when the tag changes.
-    /// </summary>
-    protected override void NavigateToView(object? parameter)
-    {
-        base.NavigateToView(parameter);
-        // When CurrentNavigationTag is updated, switch the view content
-        SwitchContentView(CurrentNavigationTag);
-    }
-
-    /// <summary>
-    /// Switches the content view by creating the appropriate UserControl and assigning its DataContext.
-    /// Note: Creating UI controls in ViewModel is a pragmatic choice for this prototype.
-    /// </summary>
-    /// <param name="navigationTag">The tag to switch to.</param>
-    private void SwitchContentView(string? navigationTag)
-    {
-        try
-        {
-            UserControl? newContent = navigationTag switch
-            {
-                "Dashboards" => new FarmerDashboards(),
-                "Farms" => new FarmerNatureCheck(),
-                "Tasks" => new FarmerTasks(),
-                _ => new FarmerDashboards(),
-            };
-
-            if (newContent != null)
-            {
-                newContent.DataContext = this;
-                CurrentContent = newContent;
-            }
-        }
-        catch
-        {
-            // In unit tests or when XAML context is not available, 
-            // we gracefully fail and leave CurrentContent as null
-            // This allows tests to run without requiring UI initialization
-        }
-    }
-
-    #endregion
 }

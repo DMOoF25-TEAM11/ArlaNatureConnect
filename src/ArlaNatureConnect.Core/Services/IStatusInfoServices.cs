@@ -1,3 +1,5 @@
+using System.ComponentModel;
+
 namespace ArlaNatureConnect.Core.Services;
 
 /// <summary>
@@ -12,7 +14,7 @@ namespace ArlaNatureConnect.Core.Services;
 /// automatically resets when the scope is disposed. Abstracting this behavior enables easier
 /// testing and decouples UI concerns from concrete implementations.
 /// </remarks>
-public interface IStatusInfoServices
+public interface IStatusInfoServices : IDisposable, INotifyPropertyChanged
 {
     /// <summary>
     /// Gets or sets a value indicating whether a long-running operation is in progress.
@@ -20,7 +22,7 @@ public interface IStatusInfoServices
     /// <remarks>
     /// Implementations should raise <see cref="StatusInfoChanged"/> when this value changes.
     /// </remarks>
-    bool IsLoading { get; set; }
+    bool IsLoading { get; }
 
     /// <summary>
     /// Gets or sets a value indicating whether a database connection is currently available.

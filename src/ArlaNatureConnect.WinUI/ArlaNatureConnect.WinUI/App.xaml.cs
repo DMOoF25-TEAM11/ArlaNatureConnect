@@ -7,6 +7,9 @@ namespace ArlaNatureConnect.WinUI;
 
 using ArlaNatureConnect.Core.Services;
 using ArlaNatureConnect.WinUI.Services;
+using ArlaNatureConnect.WinUI.ViewModels.Controls;
+using ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu;
+using ArlaNatureConnect.WinUI.ViewModels.Pages;
 
 using Microsoft.UI.Xaml;
 
@@ -40,10 +43,28 @@ public partial class App : Application
             {
                 services
                     .AddInfrastructure()
-                    .AddSingleton<NavigationHandler>()
+
+                    // Windows
                     .AddSingleton<MainWindow>()
-                    .AddSingleton<ArlaNatureConnect.WinUI.ViewModels.Controls.StatusBarUCViewModel>()
-                    ;
+
+                    // Services
+                    .AddSingleton<NavigationHandler>()
+
+                    // Controls
+                    .AddSingleton<StatusBarUCViewModel>()
+
+                    // Pages
+                    .AddScoped<AdministratorPageViewModel>()
+                    .AddScoped<ArlaEmployeePageViewModel>()
+                    .AddScoped<ConsultantPageViewModel>()
+                    .AddScoped<FarmerPageViewModel>()
+
+                    // Side Menus
+                    .AddScoped<AdministratorPageSideMenuUCViewModel>()
+                    .AddScoped<ArlaEmployeePageSideMenuUCViewModel>()
+                    .AddScoped<ConsultantPageSideMenuUCViewModel>()
+                    .AddScoped<FarmerPageSideMenuUCViewModel>();
+                ;
             })
             .Build();
 

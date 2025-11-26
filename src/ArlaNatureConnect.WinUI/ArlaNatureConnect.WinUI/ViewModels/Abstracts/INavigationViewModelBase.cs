@@ -3,7 +3,6 @@ using ArlaNatureConnect.WinUI.Commands;
 
 using Microsoft.UI.Xaml.Controls;
 
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace ArlaNatureConnect.WinUI.ViewModels.Abstracts;
@@ -37,27 +36,10 @@ public interface INavigationViewModelBase
     #endregion
     #region Properties
     /// <summary>
-    /// A list of persons available for selection for the active role. Implementations expose this so the view can data-bind
-    /// (for example to a ComboBox) to present selectable users.
-    /// </summary>
-    List<Person> AvailablePersons { get; }
-
-    /// <summary>
-    /// The currently selected person (nullable). Setting this typically updates dependent UI (enables actions, updates dashboard content).
-    /// </summary>
-    Person? SelectedPerson { get; }
-
-    /// <summary>
     /// Indicates whether the view-model is currently performing an asynchronous operation (for example loading candidate users).
     /// The view can bind to this property to show progress indicators.
     /// </summary>
     bool IsLoading { get; }
-
-    /// <summary>
-    /// Convenience boolean indicating whether a <see cref="SelectedPerson"/> is present.
-    /// Useful for enabling/disabling UI elements that require a selected user.
-    /// </summary>
-    bool IsUserSelected { get; }
 
     /// <summary>
     /// The currently active content control for the page. Implementations often create simple UserControl instances and set their
@@ -65,12 +47,6 @@ public interface INavigationViewModelBase
     /// </summary>
     UserControl? CurrentContent { get; }
     #endregion
-
-    /// <summary>
-    /// The currently selected navigation tag. This is typically a short string (for example "Dashboards", "Farms", "Tasks")
-    /// that identifies which content view is active.
-    /// </summary>
-    string CurrentNavigationTag { get; }
 
     /// <summary>
     /// Optional asynchronous initializer invoked when navigating to a page that hosts this view-model.
@@ -95,10 +71,5 @@ public interface INavigationViewModelBase
     /// </summary>
     void AttachSideMenuToMainWindow();
 
-    /// <summary>
-    /// Restore the main window's previous side-menu children. This should be called when navigating away from a page so the
-    /// application's global side-menu is returned to its prior state.
-    /// </summary>
-    void RestoreMainWindowSideMenu();
     #endregion
 }

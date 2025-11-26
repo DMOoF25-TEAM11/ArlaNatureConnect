@@ -1,4 +1,5 @@
 using ArlaNatureConnect.Core.Services;
+using System.Threading.Tasks;
 
 namespace TestCore.Services;
 
@@ -6,7 +7,7 @@ namespace TestCore.Services;
 public sealed class AppMessageServiceTests
 {
     [TestMethod]
-    public void Defaults_Are_Empty()
+    public async Task Defaults_Are_Empty()
     {
         var svc = new AppMessageService();
 
@@ -16,10 +17,12 @@ public sealed class AppMessageServiceTests
         Assert.IsNotNull(svc.ErrorMessages);
         Assert.IsFalse(svc.StatusMessages.Any());
         Assert.IsFalse(svc.ErrorMessages.Any());
+
+        await Task.CompletedTask;
     }
 
     [TestMethod]
-    public void Add_Info_Messages_And_Read()
+    public async Task Add_Info_Messages_And_Read()
     {
         var svc = new AppMessageService();
 
@@ -28,16 +31,20 @@ public sealed class AppMessageServiceTests
 
         Assert.IsTrue(svc.HasStatusMessages);
         CollectionAssert.AreEqual(new[] { "one", "two" }, svc.StatusMessages.ToList());
+
+        await Task.CompletedTask;
     }
 
     [TestMethod]
-    public void Add_Error_Message_And_Read()
+    public async Task Add_Error_Message_And_Read()
     {
         var svc = new AppMessageService();
 
         svc.AddErrorMessage("err1");
         Assert.IsTrue(svc.HasErrorMessages);
         CollectionAssert.AreEqual(new[] { "err1" }, svc.ErrorMessages.ToList());
+
+        await Task.CompletedTask;
     }
 
     [TestMethod]
@@ -52,20 +59,24 @@ public sealed class AppMessageServiceTests
         await Task.Delay(3500);
 
         Assert.IsFalse(svc.HasStatusMessages);
+
+        await Task.CompletedTask;
     }
 
     [TestMethod]
-    public void EntityName_Set_Get()
+    public async Task EntityName_Set_Get()
     {
         var svc = new AppMessageService();
         Assert.IsNull(svc.EntityName);
 
         svc.EntityName = "MyEntity";
         Assert.AreEqual("MyEntity", svc.EntityName);
+
+        await Task.CompletedTask;
     }
 
     [TestMethod]
-    public void Subscriber_Exceptions_Are_Swallowed()
+    public async Task Subscriber_Exceptions_Are_Swallowed()
     {
         var svc = new AppMessageService();
 
@@ -77,10 +88,12 @@ public sealed class AppMessageServiceTests
 
         Assert.IsTrue(svc.HasStatusMessages);
         CollectionAssert.Contains(svc.StatusMessages.ToList(), "safe");
+
+        await Task.CompletedTask;
     }
 
     [TestMethod]
-    public void Clear_Error_Messages_Removes_All_Errors_And_Raises_Event()
+    public async Task Clear_Error_Messages_Removes_All_Errors_And_Raises_Event()
     {
         var svc = new AppMessageService();
         bool eventRaised = false;
@@ -98,5 +111,7 @@ public sealed class AppMessageServiceTests
         Assert.IsNotNull(svc.ErrorMessages);
         Assert.IsFalse(svc.ErrorMessages.Any());
         Assert.IsTrue(eventRaised, "ClearErrorMessages should raise AppMessageChanged.");
+
+        await Task.CompletedTask;
     }
 }

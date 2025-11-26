@@ -1,107 +1,79 @@
-using System.Runtime.Versioning;
 using ArlaNatureConnect.Core.Services;
 using ArlaNatureConnect.WinUI.ViewModels.Controls;
+
+using Moq;
+
+using System.Runtime.Versioning;
 
 namespace TestWinUI.ViewModels.Controls;
 
 [TestClass]
 [SupportedOSPlatform("windows10.0.22621.0")]
-public sealed class StatusBarUCViewModelTests
+public class StatusBarUCViewModelTests
 {
-    private static string _busySymbol_WhenIsBusyTrue => "⏳";
-    private static string _busySymbol_WhenIsBusyFalse => string.Empty;
-    private static string _dbConnectionSymbol_WhenHasDbConnectionTrue => "✅";
-    private static string _dbConnectionSymbol_WhenHasDbConnectionFalse => "❌";
-
-
     [TestMethod]
-    public void ParameterlessCtor_DoesNotThrow_AndDefaultsAreFalse()
+    public async Task IsBusy_True_BusySymbolIsHourglass()
     {
-        StatusBarUCViewModel vm = new();
+        // Arrange
+        Mock<IStatusInfoServices> statusInfoMock = new Mock<IStatusInfoServices>();
+        statusInfoMock.SetupGet(s => s.IsLoading).Returns(true);
+        statusInfoMock.SetupGet(s => s.HasDbConnection).Returns(true);
+        StatusBarUCViewModel vm = new StatusBarUCViewModel(statusInfoMock.Object);
 
-        Assert.IsFalse(vm.IsBusy);
-        Assert.IsFalse(vm.HasDbConnection);
-        Assert.AreEqual(_busySymbol_WhenIsBusyFalse, vm.BusySymbol);
-        Assert.AreEqual(_dbConnectionSymbol_WhenHasDbConnectionFalse, vm.DbConnectionSymbol);
-    }
+        // Act
+        // Simulate status change
+        statusInfoMock.Raise(s => s.StatusInfoChanged += null, vm, System.EventArgs.Empty);
 
-    [TestMethod]
-    public void Ctor_WithService_InitializesFromService()
-    {
-        StatusInfoService svc = new()
-        {
-            HasDbConnection = true,
-            IsLoading = true
-        };
-
-        StatusBarUCViewModel vm = new(svc);
-
-        // constructor reads initial values from service
-        Assert.IsTrue(vm.HasDbConnection);
+        // Assert
         Assert.IsTrue(vm.IsBusy);
-        Assert.AreEqual(_busySymbol_WhenIsBusyTrue, vm.BusySymbol);
-        Assert.AreEqual(_dbConnectionSymbol_WhenHasDbConnectionTrue, vm.DbConnectionSymbol);
+        Assert.AreEqual("⏳", vm.BusySymbol);
+
+        await Task.CompletedTask;
     }
 
     [TestMethod]
-    public void StatusInfoServices_StatusInfoChanged_Updates_ViewModel()
+    public async Task IsBusy_False_BusySymbolIsCheckmark()
     {
-        StatusInfoService svc = new();
-        StatusBarUCViewModel vm = new(svc);
+        // Arrange
+        Mock<IStatusInfoServices> statusInfoMock = new Mock<IStatusInfoServices>();
+        statusInfoMock.SetupGet(s => s.IsLoading).Returns(false);
+        statusInfoMock.SetupGet(s => s.HasDbConnection).Returns(true);
+        StatusBarUCViewModel vm = new StatusBarUCViewModel(statusInfoMock.Object);
 
-        // Initially both false
+        // Act
+        // Simulate status change
+        statusInfoMock.Raise(s => s.StatusInfoChanged += null, vm, System.EventArgs.Empty);
+
+        // Assert
         Assert.IsFalse(vm.IsBusy);
+        Assert.AreEqual("✔️", vm.BusySymbol);
+
+        await Task.CompletedTask;
+    }
+
+    [TestMethod]
+    public async Task HasDbConnection_Change_Should_Update_ViewModel()
+    {
+        // Arrange
+        bool hasDb = false;
+        Mock<IStatusInfoServices> statusInfoMock = new Mock<IStatusInfoServices>();
+        statusInfoMock.SetupGet(s => s.IsLoading).Returns(false);
+        statusInfoMock.SetupGet(s => s.HasDbConnection).Returns(() => hasDb);
+        StatusBarUCViewModel vm = new StatusBarUCViewModel(statusInfoMock.Object);
+
+        // Act/Assert initial state
+        statusInfoMock.Raise(s => s.StatusInfoChanged += null, vm, System.EventArgs.Empty);
         Assert.IsFalse(vm.HasDbConnection);
+        Assert.AreEqual("❌", vm.DbConnectionSymbol);
 
-        // Change service state; StatusInfoService will raise StatusInfoChanged
-        svc.IsLoading = true;
-        svc.HasDbConnection = true;
+        // Change service state and raise event
+        hasDb = true;
+        statusInfoMock.Raise(s => s.StatusInfoChanged += null, vm, System.EventArgs.Empty);
 
-        Assert.IsTrue(vm.IsBusy);
+        // Assert updated
         Assert.IsTrue(vm.HasDbConnection);
-        Assert.AreEqual(_busySymbol_WhenIsBusyTrue, vm.BusySymbol);
-        Assert.AreEqual(_dbConnectionSymbol_WhenHasDbConnectionTrue, vm.DbConnectionSymbol);
+        Assert.AreEqual("✅", vm.DbConnectionSymbol);
 
-        // Revert
-        svc.IsLoading = false;
-        svc.HasDbConnection = false;
-
-        Assert.IsFalse(vm.IsBusy);
-        Assert.IsFalse(vm.HasDbConnection);
-        Assert.AreEqual(_busySymbol_WhenIsBusyFalse, vm.BusySymbol);
-        Assert.AreEqual(_dbConnectionSymbol_WhenHasDbConnectionFalse, vm.DbConnectionSymbol);
-    }
-
-    [TestMethod]
-    public async Task InitializeAsync_UsesBeginLoading_And_EndsNotBusy()
-    {
-        StatusInfoService svc = new StatusInfoService();
-        StatusBarUCViewModel vm = new StatusBarUCViewModel(svc);
-
-        // Call InitializeAsync and wait for it to complete
-        await vm.InitializeAsync();
-
-        // After initialization completes the service should not be loading
-        Assert.IsFalse(svc.IsLoading);
-        Assert.IsFalse(vm.IsBusy);
-    }
-
-    [TestMethod]
-    public void BusySymbol_And_DbConnectionSymbol_Reflect_Properties()
-    {
-        StatusInfoService svc = new StatusInfoService();
-        StatusBarUCViewModel vm = new StatusBarUCViewModel(svc);
-
-        svc.IsLoading = true;
-        Assert.AreEqual(_busySymbol_WhenIsBusyTrue, vm.BusySymbol);
-
-        svc.IsLoading = false;
-        Assert.AreEqual(_busySymbol_WhenIsBusyFalse, vm.BusySymbol);
-
-        svc.HasDbConnection = true;
-        Assert.AreEqual(_dbConnectionSymbol_WhenHasDbConnectionTrue, vm.DbConnectionSymbol);
-
-        svc.HasDbConnection = false;
-        Assert.AreEqual(_dbConnectionSymbol_WhenHasDbConnectionFalse, vm.DbConnectionSymbol);
+        await Task.CompletedTask;
     }
 }

@@ -29,9 +29,10 @@ public sealed class NavigationHandlerTests
     /// Creates a new NavigationHandler instance.
     /// </summary>
     [TestInitialize]
-    public void Setup()
+    public async Task Setup()
     {
         _navigationHandler = new NavigationHandler();
+        await Task.CompletedTask;
     }
 
     /// <summary>

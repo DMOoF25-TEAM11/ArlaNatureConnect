@@ -1,3 +1,4 @@
+using ArlaNatureConnect.Core.Abstract.Services;
 using ArlaNatureConnect.Core.Services;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +14,7 @@ public static class DependencyInjection
         services.AddSingleton<IStatusInfoServices, StatusInfoService>();
         services.AddSingleton<IAppMessageService, AppMessageService>();
         services.AddSingleton<IConnectionStringService, ConnectionStringService>();
+        services.AddSingleton<IPrivilegeService, PrivilegeService>();
 
         return services;
     }

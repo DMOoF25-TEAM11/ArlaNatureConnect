@@ -2,6 +2,7 @@ using ArlaNatureConnect.Domain.Entities;
 using ArlaNatureConnect.Infrastructure.Persistence;
 
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace TestInfrastructure.Persistence;
 
@@ -16,7 +17,7 @@ public class AppDbContextTest
     }
 
     [TestMethod]
-    public void CanCreateContextAndDbSetsNotNull()
+    public async Task CanCreateContextAndDbSetsNotNull()
     {
         DbContextOptions<AppDbContext> options = CreateOptions();
         using var ctx = new AppDbContext(options);
@@ -25,6 +26,8 @@ public class AppDbContextTest
         Assert.IsNotNull(ctx.Persons);
         Assert.IsNotNull(ctx.Roles);
         Assert.IsNotNull(ctx.Addresses);
+
+        await Task.CompletedTask;
     }
 
     [TestMethod]

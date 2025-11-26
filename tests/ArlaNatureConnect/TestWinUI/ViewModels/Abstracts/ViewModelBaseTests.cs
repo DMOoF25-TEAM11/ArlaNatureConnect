@@ -1,6 +1,6 @@
-using System.Collections.Generic;
-using System.Runtime.Versioning;
 using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
+
+using System.Runtime.Versioning;
 
 namespace TestWinUI.ViewModels.Abstracts;
 
@@ -29,7 +29,7 @@ public sealed class ViewModelBaseTests
     }
 
     [TestMethod]
-    public void OnPropertyChanged_WithExplicitName_RaisesEventWithThatName()
+    public async Task OnPropertyChanged_WithExplicitName_RaisesEventWithThatName()
     {
         TestViewModel vm = new TestViewModel();
         List<string?> received = new List<string?>();
@@ -39,10 +39,12 @@ public sealed class ViewModelBaseTests
 
         Assert.HasCount(1, received);
         Assert.AreEqual("ExplicitName", received[0]);
+
+        await Task.CompletedTask;
     }
 
     [TestMethod]
-    public void OnPropertyChanged_CalledFromMethod_RaisesEventWithCallerName()
+    public async Task OnPropertyChanged_CalledFromMethod_RaisesEventWithCallerName()
     {
         TestViewModel vm = new TestViewModel();
         List<string?> received = new List<string?>();
@@ -52,10 +54,12 @@ public sealed class ViewModelBaseTests
 
         Assert.HasCount(1, received);
         Assert.AreEqual("RaiseWithoutName", received[0]);
+
+        await Task.CompletedTask;
     }
 
     [TestMethod]
-    public void OnPropertyChanged_CalledFromSetter_RaisesEventWithPropertyName()
+    public async Task OnPropertyChanged_CalledFromSetter_RaisesEventWithPropertyName()
     {
         TestViewModel vm = new TestViewModel();
         List<string?> received = new List<string?>();
@@ -66,10 +70,12 @@ public sealed class ViewModelBaseTests
         Assert.HasCount(1, received);
         // When called from SetNameProp the CallerMemberName will be "SetNameProp"
         Assert.AreEqual("SetNameProp", received[0]);
+
+        await Task.CompletedTask;
     }
 
     [TestMethod]
-    public void OnPropertyChanged_MultipleHandlers_AllHandlersInvoked()
+    public async Task OnPropertyChanged_MultipleHandlers_AllHandlersInvoked()
     {
         TestViewModel vm = new TestViewModel();
         int calls = 0;
@@ -85,15 +91,19 @@ public sealed class ViewModelBaseTests
 
         vm.PropertyChanged -= Handler1;
         vm.PropertyChanged -= Handler2;
+
+        await Task.CompletedTask;
     }
 
     [TestMethod]
-    public void OnPropertyChanged_NoHandlers_DoesNotThrow()
+    public async Task OnPropertyChanged_NoHandlers_DoesNotThrow()
     {
         TestViewModel vm = new TestViewModel();
 
         // Should not throw even if there are no subscribers
         vm.RaiseWithExplicit("NoOneListening");
         vm.RaiseWithoutName();
+
+        await Task.CompletedTask;
     }
 }

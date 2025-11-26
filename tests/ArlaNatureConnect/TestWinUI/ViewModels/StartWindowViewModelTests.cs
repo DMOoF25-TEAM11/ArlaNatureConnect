@@ -19,7 +19,7 @@ public sealed class StartWindowViewModelTests
     private string _assetFile = null!;
 
     [TestInitialize]
-    public void Setup()
+    public async Task Setup()
     {
         _mockConnService = new Mock<IConnectionStringService>();
         _mockStatusInfoServices = new Mock<IStatusInfoServices>();
@@ -33,10 +33,12 @@ public sealed class StartWindowViewModelTests
         {
             try { Directory.Delete(_assetsDir, recursive: true); } catch { }
         }
+
+        await Task.CompletedTask;
     }
 
     [TestCleanup]
-    public void Cleanup()
+    public async Task Cleanup()
     {
         try
         {
@@ -44,6 +46,8 @@ public sealed class StartWindowViewModelTests
             if (Directory.Exists(_assetsDir)) Directory.Delete(_assetsDir, recursive: true);
         }
         catch { }
+
+        await Task.CompletedTask;
     }
 
     [TestMethod]

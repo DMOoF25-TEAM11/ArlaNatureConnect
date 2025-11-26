@@ -1,20 +1,19 @@
-﻿<Page
+﻿<abstracts:NavPage
   x:Class="ArlaNatureConnect.WinUI.Views.Pages.ArlaEmployeePage"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:abstracts="using:ArlaNatureConnect.WinUI.Views.Pages.Abstracts"
   xmlns:local="using:ArlaNatureConnect.WinUI.Views.Pages"
   xmlns:arlaEmployee="using:ArlaNatureConnect.WinUI.Views.Controls.SideMenu"
   xmlns:domain="using:ArlaNatureConnect.Domain.Entities" 
   xmlns:viewmodel="using:ArlaNatureConnect.WinUI.ViewModels.Pages" 
-  xmlns:d="http://schemas.microsoft.com/expression/blend/2008">
+  mc:Ignorable="d"
+  d:DataContext="{d:DesignInstance Type=viewmodel:ArlaEmployeePageViewModel}">
 
-  <Page.DataContext>
-    <viewmodel:ArlaEmployeePageViewModel />
-  </Page.DataContext>
-  
   <StackPanel Orientation="Vertical">
     <ContentPresenter x:Name="ContentPresenter"
                       DataContext="{Binding CurrentContent}"/>
   </StackPanel>
-</Page>
-
+</abstracts:NavPage>

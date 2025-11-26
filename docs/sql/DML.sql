@@ -1,6 +1,3 @@
-
-
-
 /***********************************************************************
 -- Add data for UC002 - Administrate Farms and Persons
 ***********************************************************************/
@@ -125,7 +122,7 @@ VALUES
 (@F17, N'Vindmark Farm', @FA17, N'77889900'),
 (@F18, N'Markholm Farm', @FA18, N'88990011');
 
--- Insert user addresses (Danish addresses)
+-- Insert persons addresses (Danish addresses)
 DECLARE
     @A1 UNIQUEIDENTIFIER = NEWID(),  @A2 UNIQUEIDENTIFIER = NEWID(),
     @A3 UNIQUEIDENTIFIER = NEWID(),  @A4 UNIQUEIDENTIFIER = NEWID(),
@@ -139,7 +136,8 @@ DECLARE
     @A19 UNIQUEIDENTIFIER = NEWID(), @A20 UNIQUEIDENTIFIER = NEWID(),
     @A21 UNIQUEIDENTIFIER = NEWID(), @A22 UNIQUEIDENTIFIER = NEWID(),
     @A23 UNIQUEIDENTIFIER = NEWID(), @A24 UNIQUEIDENTIFIER = NEWID(),
-    @A25 UNIQUEIDENTIFIER = NEWID();
+    @A25 UNIQUEIDENTIFIER = NEWID(), @A26 UNIQUEIDENTIFIER = NEWID(),
+    @A27 UNIQUEIDENTIFIER = NEWID();
 
 INSERT INTO [dbo].[Address] ([Id],[Street],[City],[PostalCode],[Country])
 VALUES
@@ -167,7 +165,9 @@ VALUES
 (@A22, N'Hovedgade 6',      N'Ølgod',       N'6870', N'Denmark'),
 (@A23, N'Kirkeby 3',        N'Nørre Nebel', N'6830', N'Denmark'),
 (@A24, N'Bøstrup 7',        N'Henne',       N'6854', N'Denmark'),
-(@A25, N'Strandvej 9',      N'Blåvand',     N'6857', N'Denmark');
+(@A25, N'Strandvej 9',      N'Blåvand',     N'6857', N'Denmark'),
+(@A26, N'Havnevænget 2',    N'Varde',       N'6800', N'Denmark'),
+(@A27, N'Søndermarken 5',   N'Esbjerg',     N'6700', N'Denmark');
 
 -- Insert 15 farmers (15 Persons with farms)
 DECLARE
@@ -258,6 +258,14 @@ UPDATE [dbo].[Farms] SET [PersonId] = @U15 WHERE [Id] = @F15;
 UPDATE [dbo].[Farms] SET [PersonId] = @U1 WHERE [Id] = @F16;
 UPDATE [dbo].[Farms] SET [PersonId] = @U2 WHERE [Id] = @F17;
 UPDATE [dbo].[Farms] SET [PersonId] = @U3 WHERE [Id] = @F18;
+
+-- Insert two new persons and assign the new addresses (Admin role)
+DECLARE @ADM3 UNIQUEIDENTIFIER = NEWID(), @ADM4 UNIQUEIDENTIFIER = NEWID();
+
+INSERT INTO [dbo].[Persons] ([Id],[FirstName],[LastName],[Email],[RoleId],[AddressId],[IsActive])
+VALUES
+(@ADM3, N'Louise', N'Møller', N'louise.moller@example.dk', @Role_Admin, @A26, 1),
+(@ADM4, N'Carsten', N'Birk', N'carsten.birk@example.dk', @Role_Admin, @A27, 1);
 
 -- Simple verification queries (uncomment to run)
 PRINT 'Using database [ArlaNatureConnect_Dev]...';

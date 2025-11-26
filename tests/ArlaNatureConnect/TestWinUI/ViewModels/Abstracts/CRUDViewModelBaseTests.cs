@@ -2,13 +2,8 @@ using ArlaNatureConnect.Core.Abstract;
 using ArlaNatureConnect.Core.Services;
 using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.Versioning;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace TestWinUI.ViewModels.Abstracts;
 
@@ -59,6 +54,15 @@ public sealed class CRUDViewModelBaseTests
         {
             add { }
             remove { }
+        }
+
+        // Implement INotifyPropertyChanged.PropertyChanged
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        // Implement IDisposable.Dispose()
+        public void Dispose()
+        {
+            // No resources to dispose in this fake implementation
         }
     }
 
@@ -347,7 +351,7 @@ public sealed class CRUDViewModelBaseTests
     }
 
     [TestMethod]
-    public void OnAddAsync_Raises_PropertyChanged_For_IsSaving()
+    public async Task OnAddAsync_Raises_PropertyChanged_For_IsSaving()
     {
         FakeStatusInfoServices status = new FakeStatusInfoServices();
         FakeAppMessageService msg = new FakeAppMessageService();
@@ -360,7 +364,7 @@ public sealed class CRUDViewModelBaseTests
         // Ensure add mode
         vm.SetIsEditMode(false);
         // call add
-        vm.CallOnAddAsync().GetAwaiter().GetResult();
+        await vm.CallOnAddAsync();
 
         Assert.Contains("IsSaving", received);
     }

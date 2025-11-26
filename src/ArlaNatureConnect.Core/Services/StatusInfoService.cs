@@ -1,3 +1,6 @@
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+
 namespace ArlaNatureConnect.Core.Services;
 
 /// <summary>
@@ -7,7 +10,7 @@ namespace ArlaNatureConnect.Core.Services;
 /// Implements <see cref="IStatusInfoServices"/>.
 /// </summary>
 /// </summary>
-public partial class StatusInfoService : IStatusInfoServices, IDisposable
+public partial class StatusInfoService : IStatusInfoServices
 {
     #region Fields
     private int _loadingCount;
@@ -17,6 +20,7 @@ public partial class StatusInfoService : IStatusInfoServices, IDisposable
 
     #region Event handlers
     public event EventHandler? StatusInfoChanged;
+    public event PropertyChangedEventHandler? PropertyChanged;
     #endregion
 
     public StatusInfoService()
@@ -28,21 +32,13 @@ public partial class StatusInfoService : IStatusInfoServices, IDisposable
 
     public bool IsLoading
     {
-        get => _loadingCount > 0;
+        get => Volatile.Read(ref _loadingCount) > 0;
         set
         {
-            if (value)
-            {
-                // set to1 and raise only if previously zero
-                int prev = Interlocked.Exchange(ref _loadingCount, 1);
-                if (prev == 0) OnStatusInfoChanged();
-            }
-            else
-            {
-                // set to0 and raise if it was previously >0
-                int prev = Interlocked.Exchange(ref _loadingCount, 0);
-                if (prev > 0) OnStatusInfoChanged();
-            }
+            bool currently = Volatile.Read(ref _loadingCount) > 0;
+            if (currently == value) return;
+            Interlocked.Exchange(ref _loadingCount, value ? 1 : 0);
+            NotifyStatusChanged(nameof(IsLoading));
         }
     }
 
@@ -53,26 +49,22 @@ public partial class StatusInfoService : IStatusInfoServices, IDisposable
         {
             if (_hasDbConnection == value) return;
             _hasDbConnection = value;
-            OnStatusInfoChanged();
+            NotifyStatusChanged();
         }
     }
+
     #endregion
 
     #region Helpers
-    private void OnStatusInfoChanged()
+    protected void OnPropertyChanged([CallerMemberName] string? name = null)
+        => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+    private void NotifyStatusChanged([CallerMemberName] string? propertyName = null)
     {
-        try
-        {
-            StatusInfoChanged?.Invoke(this, EventArgs.Empty);
-        }
-        catch
-        {
-            // swallow subscriber exceptions
-        }
+        OnPropertyChanged(propertyName);
+        StatusInfoChanged?.Invoke(this, EventArgs.Empty);
     }
-    #endregion
 
-    #region Helpers
+
     /// <summary>
     /// Acquire a loading token. When the returned IDisposable is disposed the loading count is decremented.
     /// Use this when multiple independent callers need to indicate "loading" and you want IsLoading to be true
@@ -81,16 +73,11 @@ public partial class StatusInfoService : IStatusInfoServices, IDisposable
     public IDisposable BeginLoading()
     {
         int newVal = Interlocked.Increment(ref _loadingCount);
-        if (newVal == 1)
-        {
-            OnStatusInfoChanged();
-        }
+        if (newVal == 1) NotifyStatusChanged(nameof(IsLoading));
 
         return new ActionOnDispose(() =>
         {
             bool raise = false;
-
-            // Decrement safely without allowing negative counts
             while (true)
             {
                 int current = Volatile.Read(ref _loadingCount);
@@ -102,8 +89,7 @@ public partial class StatusInfoService : IStatusInfoServices, IDisposable
                     break;
                 }
             }
-
-            if (raise) OnStatusInfoChanged();
+            if (raise) NotifyStatusChanged(nameof(IsLoading));
         });
     }
 
@@ -137,14 +123,7 @@ public partial class StatusInfoService : IStatusInfoServices, IDisposable
         {
             if (Interlocked.Exchange(ref _disposed, 1) == 0)
             {
-                try
-                {
-                    _onDispose();
-                }
-                catch
-                {
-                    // swallow
-                }
+                try { _onDispose(); } catch { }
             }
         }
     }
