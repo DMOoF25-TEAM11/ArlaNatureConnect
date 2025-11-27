@@ -66,8 +66,8 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
     /// Construct a navigation view-model with required services.
     /// </summary>
     /// <param name="navigationHandler">Navigation handler used for frame navigation.</param>
-    /// <param name="personRepository">Repository used to load persons for the active role.</param>
-    /// <param name="roleRepository">Repository used to resolve roles if needed.</param>
+    /// <param name="personRepository">Items used to load persons for the active role.</param>
+    /// <param name="roleRepository">Items used to resolve roles if needed.</param>
     protected NavigationViewModelBase(NavigationHandler navigationHandler) : base()
     {
         _navigationHandler = navigationHandler ?? throw new ArgumentNullException(nameof(navigationHandler));

@@ -1,5 +1,3 @@
-using Microsoft.UI.Dispatching;
-
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -51,54 +49,6 @@ public abstract class ViewModelBase : INotifyPropertyChanged
     /// </code>
     /// The method invokes <see cref="PropertyChanged"/> safely using the null-conditional operator.
     /// </remarks>
-    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-    {
-        try
-        {
-            DispatcherQueue dq = DispatcherQueue.GetForCurrentThread();
-            if (dq?.HasThreadAccess ?? true)
-            {
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            }
-            else
-            {
-                dq.TryEnqueue(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)));
-            }
-        }
-        catch (System.Runtime.InteropServices.COMException)
-        {
-            // Fallback for test environments or processes without WinRT dispatcher
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-    }
+    protected void OnPropertyChanged([CallerMemberName] string? name = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     #endregion
-
-    protected readonly IDispatcher Dispatcher;
-    protected ViewModelBase(IDispatcher? dispatcher = null)
-    {
-        Dispatcher = dispatcher ?? new WinRtDispatcher();
-    }
-}
-
-public interface IDispatcher
-{
-    bool HasThreadAccess { get; }
-    bool TryEnqueue(Action callback);
-}
-
-public class WinRtDispatcher : IDispatcher
-{
-    public bool HasThreadAccess => DispatcherQueue.GetForCurrentThread()?.HasThreadAccess ?? true;
-    public bool TryEnqueue(Action callback)
-    {
-        DispatcherQueue dq = DispatcherQueue.GetForCurrentThread();
-        if (dq == null) { callback(); return true; }
-        return dq.TryEnqueue(Microsoft.UI.Dispatching.DispatcherQueuePriority.Normal, () => { callback(); });
-    }
-}
-
-public class TestDispatcher : IDispatcher
-{
-    public bool HasThreadAccess => true;
-    public bool TryEnqueue(Action callback) { callback(); return true; }
 }

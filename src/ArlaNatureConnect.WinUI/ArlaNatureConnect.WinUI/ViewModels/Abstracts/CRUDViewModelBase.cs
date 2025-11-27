@@ -9,16 +9,17 @@ namespace ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 /// <summary>
 /// Base view-model that provides a lightweight scaffold for Create / Read / Update / Delete workflows.
 /// </summary>
-/// <typeparam name="TRepos">Repository type used to persist <typeparamref name="TEntity"/>. Must implement <see cref="IRepository{TEntity}"/>.</typeparam>
+/// <typeparam name="TRepos">Items type used to persist <typeparamref name="TEntity"/>. Must implement <see cref="IRepository{TEntity}"/>.</typeparam>
 /// <typeparam name="TEntity">Entity type managed by the view-model.</typeparam>
-public abstract class CRUDViewModelBase<TRepos, TEntity> : ListViewModelBase<TRepos, TEntity>
+public abstract class CRUDViewModelBase<TRepos, TEntity>
+    : ListViewModelBase<TRepos, TEntity>
     where TRepos : notnull, IRepository<TEntity>
     where TEntity : class
 {
     #region Fields
-    // The entity being created, read, updated, or deleted
-    // (backing fields and services are inherited from ListViewModelBase)
-    // protected TEntity? _entity;
+    protected TRepos _repository;
+    protected bool _isSaving;
+    protected bool _isEditMode;
     #endregion
     #region Fields Commands
     /// <summary>
@@ -54,71 +55,8 @@ public abstract class CRUDViewModelBase<TRepos, TEntity> : ListViewModelBase<TRe
     //public event EventHandler<TEntity?>? EntitySaved;
 
     #endregion
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="CRUDViewModelBase{TRepos, TEntity}"/> class.
-    /// </summary>
-    /// <param name="statusInfoServices">Service used to report loading state and connection information.</param>
-    /// <param name="appMessageService">Service used to surface messages and errors to the UI.</param>
-    /// <param name="repository">Repository used to load and persist <typeparamref name="TEntity"/> instances.</param>
-    protected CRUDViewModelBase(IStatusInfoServices statusInfoServices, IAppMessageService appMessageService, TRepos repository)
-        : base(statusInfoServices, appMessageService, repository)
-    {
-        AddCommand = new RelayCommand(async () => await OnAddAsync(), CanAdd);
-        SaveCommand = new RelayCommand(async () => await OnSaveAsync(), CanSave);
-        DeleteCommand = new RelayCommand(async () => await OnDeleteAsync(), CanDelete);
-        CancelCommand = new RelayCommand(async () => await OnCancelAsync(), CanCancel);
-        RefreshCommand = new RelayCommand(() => RefreshCommandStates());
-    }
-
-    /// <summary>
-    /// Loads an entity by id and prepares the view-model for edit mode if the entity exists.
-    /// This method hides the base implementation to augment loading with form hooks and edit-mode state.
-    /// </summary>
-    /// <param name="id">Identifier of the entity to load.</param>
-    /// <returns>A task that represents the asynchronous load operation.</returns>
-    /// <remarks>
-    /// The implementation uses <see cref="IStatusInfoServices.BeginLoading"/> to report loading state and
-    /// calls <see cref="OnLoadFormAsync(TEntity)"/> when an entity is found. Exceptions are swallowed intentionally
-    /// to keep UI flows predictable; derived implementations should surface errors via <see cref="IAppMessageService"/> when appropriate.
-    /// </remarks>
-    public new async Task LoadAsync(Guid id)
-    {
-        // report loading status (BeginLoading should return an IDisposable that clears the loading flag)
-        using IDisposable loading = _statusInfoServices.BeginLoading();
-
-        try
-        {
-            // Call repository inside try so synchronous exceptions are caught here
-            Task<TEntity?> loadTask = Repository.GetByIdAsync(id);
-            TEntity? entity = await loadTask;
-
-            // Set the backing Entity and invoke load hook if found
-            base.Entity = entity;
-
-            if (entity != null)
-            {
-                await OnLoadFormAsync(entity);
-                IsEditMode = true;
-            }
-            else
-            {
-                IsEditMode = false;
-            }
-        }
-        catch (Exception)
-        {
-            // swallow/log as intended by tests (do not add error message)
-        }
-        finally
-        {
-            // Ensure PropertyChanged for Entity is raised even when repository throws
-            OnPropertyChanged(nameof(Entity));
-        }
-    }
-
     #region Properties
-    protected bool _isSaving;
+    protected TRepos Repository => _repository;
 
     /// <summary>
     /// Gets a value indicating whether a save/delete operation is in progress.
@@ -134,7 +72,6 @@ public abstract class CRUDViewModelBase<TRepos, TEntity> : ListViewModelBase<TRe
             RefreshCommandStates();
         }
     }
-    protected bool _isEditMode;
 
     /// <summary>
     /// Gets a value indicating whether the view-model is in edit mode (an existing entity is loaded).
@@ -157,22 +94,71 @@ public abstract class CRUDViewModelBase<TRepos, TEntity> : ListViewModelBase<TRe
     /// </summary>
     public bool IsAddMode => !IsEditMode;
     #endregion
-    #region Observables Properties
+
     /// <summary>
-    /// Gets or sets the current entity. This shadows the base property and forwards to <see cref="ListViewModelBase{TRepos,TEntity}.Entity"/>.
-    /// Setting the property raises property change notifications.
+    /// Initializes a new instance of the <see cref="CRUDViewModelBase{TRepos, TEntity}"/> class.
     /// </summary>
-    public new TEntity? Entity
+    /// <param name="statusInfoServices">Service used to report loading state and connection information.</param>
+    /// <param name="appMessageService">Service used to surface messages and errors to the UI.</param>
+    /// <param name="repository">Items used to load and persist <typeparamref name="TEntity"/> instances.</param>
+    protected CRUDViewModelBase(IStatusInfoServices statusInfoServices, IAppMessageService appMessageService, TRepos repository)
+        : base(statusInfoServices, appMessageService, repository)
     {
-        get => base.Entity;
-        set => base.Entity = value;
+        AddCommand = new RelayCommand(async () => await OnAddAsync(), CanAdd);
+        SaveCommand = new RelayCommand(async () => await OnSaveAsync(), CanSave);
+        DeleteCommand = new RelayCommand(async () => await OnDeleteAsync(), CanDelete);
+        CancelCommand = new RelayCommand(async () => await OnCancelAsync(), CanCancel);
+        RefreshCommand = new RelayCommand(() => RefreshCommandStates());
     }
 
     /// <summary>
-    /// Gets the repository instance used by the view-model. This shadows the base property.
+    /// Loads an entity by id and prepares the view-model for edit mode if the entity exists.
+    /// This method hides the base implementation to augment loading with form hooks and edit-mode state.
     /// </summary>
-    public new TRepos Repository => base.Repository;
-    #endregion
+    /// <param name="id">Identifier of the entity to load.</param>
+    /// <returns>A task that represents the asynchronous load operation.</returns>
+    /// <remarks>
+    /// The implementation uses <see cref="IStatusInfoServices.BeginLoading"/> to report loading state and
+    /// calls <see cref="OnLoadFormAsync(TEntity)"/> when an entity is found. Exceptions are swallowed intentionally
+    /// to keep UI flows predictable; derived implementations should surface errors via <see cref="IAppMessageService"/> when appropriate.
+    /// </remarks>
+    public async Task LoadAsync(Guid id)
+    {
+        // report loading status (BeginLoading should return an IDisposable that clears the loading flag)
+        using (_statusInfoServices.BeginLoading())
+        {
+
+            try
+            {
+                // Call repository inside try so synchronous exceptions are caught here
+                Task<TEntity?> loadTask = _repository.GetByIdAsync(id);
+                TEntity? entity = await loadTask;
+
+                // Set the backing Entity and invoke load hook if found
+                SelectedItem = entity;
+
+                if (entity != null)
+                {
+                    await OnLoadFormAsync(entity);
+                    IsEditMode = true;
+                }
+                else
+                {
+                    IsEditMode = false;
+                }
+            }
+            catch (Exception)
+            {
+                // swallow/log as intended by tests (do not add error message)
+            }
+            finally
+            {
+                // Ensure PropertyChanged for Entity is raised even when repository throws
+                OnPropertyChanged(nameof(SelectedItem));
+            }
+        }
+    }
+
     #region Load handler
     #endregion
     #region Commands
@@ -249,7 +235,7 @@ public abstract class CRUDViewModelBase<TRepos, TEntity> : ListViewModelBase<TRe
     protected async Task OnResetAsync()
     {
         _appMessageService.ClearErrorMessages();
-        base.Entity = null;
+        SelectedItem = null;
         await OnResetFormAsync();
         IsEditMode = false;
         await Task.CompletedTask;
