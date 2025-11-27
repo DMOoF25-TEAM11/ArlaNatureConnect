@@ -2,8 +2,9 @@ using ArlaNatureConnect.Core.Abstract;
 using ArlaNatureConnect.Core.Services;
 using ArlaNatureConnect.Domain.Entities;
 using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
+
 using Moq;
-using System.ComponentModel;
+
 using System.Runtime.Versioning;
 
 namespace TestWinUI.ViewModels.Abstracts;
@@ -20,19 +21,27 @@ public sealed class SideMenuViewModelBaseTests
         }
 
         // expose repository for tests
-        public new IPersonRepository Repository => base.Repository;
+        public IPersonRepository Repository => this.GetRepository();
+
+        private IPersonRepository GetRepository()
+        {
+            // Use a protected getter in base, or expose _repository via a protected property in SideMenuViewModelBase
+            return (IPersonRepository)typeof(SideMenuViewModelBase)
+                .GetField("_repository", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!
+                .GetValue(this)!;
+        }
     }
 
     [TestMethod]
     public async Task LoadAvailablePersonsAsync_WithEmptyRole_ClearsAvailablePersons()
     {
-        var mockStatus = new Mock<IStatusInfoServices>();
-        var mockMsg = new Mock<IAppMessageService>();
-        var mockRepo = new Mock<IPersonRepository>();
+        Mock<IStatusInfoServices> mockStatus = new Mock<IStatusInfoServices>();
+        Mock<IAppMessageService> mockMsg = new Mock<IAppMessageService>();
+        Mock<IPersonRepository> mockRepo = new Mock<IPersonRepository>();
         mockRepo.Setup(r => r.GetPersonsByRoleAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new List<Person> { new Person { Id = Guid.NewGuid(), FirstName = "X" } });
 
-        var vm = new TestSideMenuViewModel(mockStatus.Object, mockMsg.Object, mockRepo.Object);
+        TestSideMenuViewModel vm = new TestSideMenuViewModel(mockStatus.Object, mockMsg.Object, mockRepo.Object);
 
         // pre-populate to ensure it gets cleared
         vm.AvailablePersons.Add(new Person { Id = Guid.NewGuid(), FirstName = "pre" });
@@ -46,17 +55,17 @@ public sealed class SideMenuViewModelBaseTests
     [TestMethod]
     public async Task LoadAvailablePersonsAsync_WithRole_PopulatesAvailablePersons()
     {
-        var mockStatus = new Mock<IStatusInfoServices>();
-        var mockMsg = new Mock<IAppMessageService>();
-        var list = new List<Person>
+        Mock<IStatusInfoServices> mockStatus = new Mock<IStatusInfoServices>();
+        Mock<IAppMessageService> mockMsg = new Mock<IAppMessageService>();
+        List<Person> list = new List<Person>
         {
             new Person { Id = Guid.NewGuid(), FirstName = "A" },
             new Person { Id = Guid.NewGuid(), FirstName = "B" }
         };
-        var mockRepo = new Mock<IPersonRepository>();
+        Mock<IPersonRepository> mockRepo = new Mock<IPersonRepository>();
         mockRepo.Setup(r => r.GetPersonsByRoleAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(list);
 
-        var vm = new TestSideMenuViewModel(mockStatus.Object, mockMsg.Object, mockRepo.Object);
+        TestSideMenuViewModel vm = new TestSideMenuViewModel(mockStatus.Object, mockMsg.Object, mockRepo.Object);
 
         await vm.LoadAvailablePersonsAsync("Farmer");
 
@@ -68,15 +77,15 @@ public sealed class SideMenuViewModelBaseTests
     [TestMethod]
     public async Task SelectedPerson_Set_Raises_PropertyChanged()
     {
-        var mockStatus = new Mock<IStatusInfoServices>();
-        var mockMsg = new Mock<IAppMessageService>();
-        var mockRepo = new Mock<IPersonRepository>();
-        var vm = new TestSideMenuViewModel(mockStatus.Object, mockMsg.Object, mockRepo.Object);
+        Mock<IStatusInfoServices> mockStatus = new Mock<IStatusInfoServices>();
+        Mock<IAppMessageService> mockMsg = new Mock<IAppMessageService>();
+        Mock<IPersonRepository> mockRepo = new Mock<IPersonRepository>();
+        TestSideMenuViewModel vm = new TestSideMenuViewModel(mockStatus.Object, mockMsg.Object, mockRepo.Object);
 
         List<string?> received = new();
         vm.PropertyChanged += (_, e) => received.Add(e.PropertyName);
 
-        var p = new Person { Id = Guid.NewGuid(), FirstName = "S" };
+        Person p = new Person { Id = Guid.NewGuid(), FirstName = "S" };
         vm.SelectedPerson = p;
 
         Assert.AreEqual(1, received.Count);
@@ -88,10 +97,10 @@ public sealed class SideMenuViewModelBaseTests
     [TestMethod]
     public async Task IsLoading_Set_Raises_PropertyChanged()
     {
-        var mockStatus = new Mock<IStatusInfoServices>();
-        var mockMsg = new Mock<IAppMessageService>();
-        var mockRepo = new Mock<IPersonRepository>();
-        var vm = new TestSideMenuViewModel(mockStatus.Object, mockMsg.Object, mockRepo.Object);
+        Mock<IStatusInfoServices> mockStatus = new Mock<IStatusInfoServices>();
+        Mock<IAppMessageService> mockMsg = new Mock<IAppMessageService>();
+        Mock<IPersonRepository> mockRepo = new Mock<IPersonRepository>();
+        TestSideMenuViewModel vm = new TestSideMenuViewModel(mockStatus.Object, mockMsg.Object, mockRepo.Object);
 
         List<string?> received = new();
         vm.PropertyChanged += (_, e) => received.Add(e.PropertyName);
@@ -107,10 +116,10 @@ public sealed class SideMenuViewModelBaseTests
     [TestMethod]
     public async Task NavigationCommand_CanExecute_Behavior()
     {
-        var mockStatus = new Mock<IStatusInfoServices>();
-        var mockMsg = new Mock<IAppMessageService>();
-        var mockRepo = new Mock<IPersonRepository>();
-        var vm = new TestSideMenuViewModel(mockStatus.Object, mockMsg.Object, mockRepo.Object);
+        Mock<IStatusInfoServices> mockStatus = new Mock<IStatusInfoServices>();
+        Mock<IAppMessageService> mockMsg = new Mock<IAppMessageService>();
+        Mock<IPersonRepository> mockRepo = new Mock<IPersonRepository>();
+        TestSideMenuViewModel vm = new TestSideMenuViewModel(mockStatus.Object, mockMsg.Object, mockRepo.Object);
 
         Assert.IsFalse(vm.NavigationCommand!.CanExecute(null));
         Assert.IsTrue(vm.NavigationCommand.CanExecute("Tag"));
@@ -122,10 +131,10 @@ public sealed class SideMenuViewModelBaseTests
     [TestMethod]
     public async Task LogoutCommand_CanExecute_ReturnsTrue()
     {
-        var mockStatus = new Mock<IStatusInfoServices>();
-        var mockMsg = new Mock<IAppMessageService>();
-        var mockRepo = new Mock<IPersonRepository>();
-        var vm = new TestSideMenuViewModel(mockStatus.Object, mockMsg.Object, mockRepo.Object);
+        Mock<IStatusInfoServices> mockStatus = new Mock<IStatusInfoServices>();
+        Mock<IAppMessageService> mockMsg = new Mock<IAppMessageService>();
+        Mock<IPersonRepository> mockRepo = new Mock<IPersonRepository>();
+        TestSideMenuViewModel vm = new TestSideMenuViewModel(mockStatus.Object, mockMsg.Object, mockRepo.Object);
 
         Assert.IsTrue(vm.LogoutCommand!.CanExecute(null));
         await Task.CompletedTask;

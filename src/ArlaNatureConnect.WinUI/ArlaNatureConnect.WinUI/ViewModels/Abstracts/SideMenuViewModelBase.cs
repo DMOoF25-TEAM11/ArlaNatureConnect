@@ -55,6 +55,7 @@ public abstract partial class SideMenuViewModelBase : ListViewModelBase<IPersonR
     private Person? _selectedPerson;
     private bool _isLoading;
     protected INavigationViewModelBase? _navigationViewModel;
+    private IPersonRepository _repository;
     #endregion
 
     #region Constructors
@@ -69,6 +70,7 @@ public abstract partial class SideMenuViewModelBase : ListViewModelBase<IPersonR
         )
         : base(statusInfoServices, appMessageService, repository)
     {
+        _repository = repository;
         NavigationCommand = new RelayCommand<object>(OnNavigate, CanNavigate);
         LogoutCommand = new RelayCommand<object>(OnLogout, CanLogout);
     }
@@ -121,7 +123,7 @@ public abstract partial class SideMenuViewModelBase : ListViewModelBase<IPersonR
             return;
         }
 
-        IEnumerable<Person> persons = await Repository.GetPersonsByRoleAsync(role);
+        IEnumerable<Person> persons = await _repository.GetPersonsByRoleAsync(role);
 
         // Set AvailablePersons on UI thread when possible so bindings update correctly in WinUI
         TrySetAvailablePersons(persons);

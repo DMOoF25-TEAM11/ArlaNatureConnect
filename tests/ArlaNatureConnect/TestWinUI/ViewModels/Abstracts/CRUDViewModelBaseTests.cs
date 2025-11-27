@@ -108,7 +108,14 @@ public sealed class CRUDViewModelBaseTests
         }
 
         // expose protected state for tests
-        public new FakeRepo Repository => base.Repository;
+        public new FakeRepo Repository => base._items;
+
+        // Add this property to expose Entity for tests
+        public TestEntity? Entity
+        {
+            get => SelectedItem;
+            set => SelectedItem = value;
+        }
 
         public void SetIsSaving(bool value) => _isSaving = value;
         public void SetIsEditMode(bool value) => _isEditMode = value;

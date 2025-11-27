@@ -70,7 +70,7 @@ public partial class App : Application
                     .AddScoped<FarmerPageSideMenuUCViewModel>()
 
                     // Shared Controls
-                    .AddTransient<CRUDPersonUCViewModel>()
+                    .AddScoped<CRUDPersonUCViewModel>()
                     ;
 
             })
