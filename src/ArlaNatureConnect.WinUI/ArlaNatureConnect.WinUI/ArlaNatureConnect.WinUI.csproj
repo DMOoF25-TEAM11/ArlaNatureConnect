@@ -47,6 +47,22 @@
       </Page>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="ViewModels\Controls\PageContents\Administrator\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Page Update="Views\Controls\PageContents\Administrator\AdministratePersonUC.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </Page>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Page Update="Views\Controls\SharedUC\CRUDPersonUC.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </Page>
+    </ItemGroup>
+
     <!-- Publish Properties -->
     <PropertyGroup>
         <PublishReadyToRun Condition="'$(Configuration)' == 'Debug'">False</PublishReadyToRun>

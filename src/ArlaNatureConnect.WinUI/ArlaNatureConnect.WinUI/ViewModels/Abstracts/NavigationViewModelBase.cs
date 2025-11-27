@@ -257,22 +257,25 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
             else
             {
                 // Fallback convention: replace Views.Controls.SideMenu namespace with ViewModels.Controls.SideMenu and append ViewModel
-                Type controlType = control.GetType();
-                string? ns = controlType.Namespace;
-                if (!string.IsNullOrWhiteSpace(ns) && ns.Contains("Views.Controls.SideMenu"))
+                if (control != null)
                 {
-                    string vmNs = ns.Replace("Views.Controls.SideMenu", "ViewModels.Controls.SideMenu");
-                    string vmFull = vmNs + "." + controlType.Name + "ViewModel";
-                    Type? vmType = Type.GetType(vmFull);
-                    if (vmType != null)
+                    Type controlType = control.GetType();
+                    string? ns = controlType.Namespace;
+                    if (!string.IsNullOrWhiteSpace(ns) && ns.Contains("Views.Controls.SideMenu"))
                     {
-                        try
+                        string vmNs = ns.Replace("Views.Controls.SideMenu", "ViewModels.Controls.SideMenu");
+                        string vmFull = vmNs + "." + controlType.Name + "ViewModel";
+                        Type? vmType = Type.GetType(vmFull);
+                        if (vmType != null)
                         {
-                            _sideMenuScope?.Dispose();
-                            _sideMenuScope = App.HostInstance?.Services.CreateScope();
-                            resolvedVm = _sideMenuScope?.ServiceProvider.GetService(vmType);
+                            try
+                            {
+                                _sideMenuScope?.Dispose();
+                                _sideMenuScope = App.HostInstance?.Services.CreateScope();
+                                resolvedVm = _sideMenuScope?.ServiceProvider.GetService(vmType);
+                            }
+                            catch { resolvedVm = null; }
                         }
-                        catch { resolvedVm = null; }
                     }
                 }
             }

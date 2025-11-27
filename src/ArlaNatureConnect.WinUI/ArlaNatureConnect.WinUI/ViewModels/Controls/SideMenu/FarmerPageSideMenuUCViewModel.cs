@@ -15,35 +15,20 @@ namespace ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu;
 /// <summary>
 /// View-model for the farmer side-menu user control.
 /// </summary>
-/// <remarks>
-/// This view-model provides the data and actions required by the farmer side-menu UI.
-/// It reuses common functionality from <see cref="SideMenuViewModelBase"/> such as
-/// loading available persons for a role and exposing the selected person. Keeping role-
-/// specific logic in a small derived class keeps the codebase modular and easier to test.
-/// </remarks>
-/// <remarks>
-/// Initializes a new instance of the <see cref="FarmerPageSideMenuUCViewModel"/> class.
-/// </remarks>
-/// <param name="statusInfoServices">Service used to display loading/connection status to the UI.</param>
-/// <param name="appMessageService">Service used to report informational and error messages to the UI.</param>
-/// <param name="personRepository">Repository used to load person entities from the data store.</param>
-/// <remarks>
-/// The constructor delegates most work to the base type which wires up the repository and
-/// status/message services. Keeping constructor minimal avoids doing async work during
-/// construction — async initialization is performed via <see cref="InitializeAsync"/>.
-/// </remarks>
 public sealed partial class FarmerPageSideMenuUCViewModel : SideMenuViewModelBase
 {
-    #region Types
-    // simple model for dynamic navigation buttons
-    public sealed record NavItem(string Label, System.Windows.Input.ICommand? Command = null);
+    #region Constants
+    private const string _labelDashboards = "Dashboards";
+    private const string _labelNaturCheck = "Natur Check";
+    private const string _labelTasks = "Mine opgaver";
     #endregion
 
     #region Properties
     // Collection exposed to the view to generate navigation buttons dynamically
     public ObservableCollection<NavItem> NavItems { get; } = new();
+    #endregion
 
-    // Per-item RelayCommands
+    #region Properties Commands
     public ICommand DashboardsCommand { get; }
     public ICommand NaturCheckCommand { get; }
     public ICommand TasksCommand { get; }
@@ -56,53 +41,70 @@ public sealed partial class FarmerPageSideMenuUCViewModel : SideMenuViewModelBas
         IPersonRepository personRepository)
         : base(statusInfoServices, appMessageService, personRepository)
     {
-        // Initialize per-item commands
-        DashboardsCommand = new RelayCommand(OnDashboardsExecuted, CanDashboardsExecute);
-        NaturCheckCommand = new RelayCommand(OnNaturCheckExecuted, CanNaturCheckExecute);
-        TasksCommand = new RelayCommand(OnTasksExecuted, CanTasksExecute);
-
-        // register navigation factories used by the base to create page contents, include per-item command so buttons can bind directly
-        NavItems.Add(new NavItem("Dashboards", DashboardsCommand));
-        NavItems.Add(new NavItem("Natur Check", NaturCheckCommand));
-        NavItems.Add(new NavItem("Mine opgaver", TasksCommand));
-
-        // Ensure command raises CanExecuteChanged when IsLoading changes
-        this.PropertyChanged += (s, e) =>
+        using (_statusInfoServices!.BeginLoading())
         {
-            if (e.PropertyName == nameof(IsLoading))
+
+            // Fire-and-forget initialization; exceptions handled inside InitializeAsync
+            _ = InitializeAsync();
+
+            // Initialize per-item commands
+            DashboardsCommand = new RelayCommand(OnDashboardsExecuted, CanDashboardsExecute);
+            NaturCheckCommand = new RelayCommand(OnNaturCheckExecuted, CanNaturCheckExecute);
+            TasksCommand = new RelayCommand(OnTasksExecuted, CanTasksExecute);
+
+            // register navigation factories used by the base to create page contents, include per-item command so buttons can bind directly
+            NavItems.Add(new NavItem(_labelDashboards, DashboardsCommand));
+            NavItems.Add(new NavItem(_labelNaturCheck, NaturCheckCommand));
+            NavItems.Add(new NavItem(_labelTasks, TasksCommand));
+
+            // Ensure command raises CanExecuteChanged when IsLoading changes
+            PropertyChanged += (s, e) =>
             {
-                (DashboardsCommand as RelayCommand)?.RaiseCanExecuteChanged();
-                (NaturCheckCommand as RelayCommand)?.RaiseCanExecuteChanged();
-                (TasksCommand as RelayCommand)?.RaiseCanExecuteChanged();
-            }
-        };
-
-        // Fire-and-forget initialization; exceptions handled inside InitializeAsync
-        _ = InitializeAsync();
+                if (e.PropertyName == nameof(IsLoading))
+                {
+                    (DashboardsCommand as RelayCommand)?.RaiseCanExecuteChanged();
+                    (NaturCheckCommand as RelayCommand)?.RaiseCanExecuteChanged();
+                    (TasksCommand as RelayCommand)?.RaiseCanExecuteChanged();
+                }
+            };
+        }
     }
-
 
     #region Command Handlers
     // Per-item execute/can methods
     private void OnDashboardsExecuted()
     {
-        NavigationCommand?.Execute(new Func<UserControl?>(() => new FarmerDashboards()));
+        using (_statusInfoServices!.BeginLoading())
+        {
+            SetSelectedByLabel(_labelDashboards);
+            NavigationCommand?.Execute(new Func<UserControl?>(() => new FarmerDashboards()));
+        }
     }
     private bool CanDashboardsExecute() => !IsLoading;
 
     private void OnNaturCheckExecuted()
     {
+        SetSelectedByLabel(_labelNaturCheck);
         NavigationCommand?.Execute(new Func<UserControl?>(() => new FarmerNatureCheck()));
     }
     private bool CanNaturCheckExecute() => !IsLoading;
 
     private void OnTasksExecuted()
     {
+        SetSelectedByLabel(_labelTasks);
         NavigationCommand?.Execute(new Func<UserControl?>(() => new FarmerTasks()));
     }
     private bool CanTasksExecute() => !IsLoading;
 
     #endregion
+
+    private void SetSelectedByLabel(string label)
+    {
+        foreach (NavItem item in NavItems)
+        {
+            item.IsSelected = item.Label == label;
+        }
+    }
 
     /// <summary>
     /// Performs asynchronous initialization for the view-model.

@@ -10,25 +10,16 @@
     mc:Ignorable="d">
 
   <!-- DataContext is provided at runtime from DI in code-behind. Keep d:DataContext for design-time only. -->
-  <Grid>
-    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="8">
-      <!-- Visibility="{Binding IsBusy, Converter={StaticResource BoolToVis}}"-->
-      <ProgressBar  Visibility="Visible" 
-                    IsIndeterminate="{Binding IsBusy, Mode=OneWay}"
-                    Width="100"
-                    Height="12"
-                    VerticalAlignment="Center"
-                    Margin="0,0,12,0"
-                    Background="Transparent"
-                    Foreground="{StaticResource ArlaAccentBrush}"/>
+  <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+    <!-- Visibility="{Binding IsBusy, Converter={StaticResource BoolToVis}}"-->
+    <TextBlock Text="Bruger:" Width="200" MaxWidth="200"/>
 
-      <TextBlock Text="Busy:" VerticalAlignment="Center" Margin="0,0,4,0"/>
-      <!-- Bind to symbol (string) instead of bool so UI shows emoji/text -->
-      <TextBlock Text="{Binding BusySymbol, Mode=OneWay}" VerticalAlignment="Center" FontSize="16" Margin="0,0,12,0" MinWidth="20"/>
+    <TextBlock Text="Status:"/>
+    <!-- Bind to symbol (string) instead of bool so UI shows emoji/text -->
+    <TextBlock Text="{Binding BusySymbol, Mode=OneWay}" Width="40"/>
 
-      <TextBlock Text="DB:" VerticalAlignment="Center" Margin="0,0,4,0"/>
-      <!-- Bind to symbol (string) instead of bool so UI shows emoji/text -->
-      <TextBlock Text="{Binding DbConnectionSymbol, Mode=OneWay}" VerticalAlignment="Center" FontSize="16" MinWidth="20"/>
-    </StackPanel>
-  </Grid>
+    <TextBlock Text="DB:" />
+    <!-- Bind to symbol (string) instead of bool so UI shows emoji/text -->
+    <TextBlock Text="{Binding DbConnectionSymbol, Mode=OneWay}" Width="30"/>
+  </StackPanel>
 </UserControl>

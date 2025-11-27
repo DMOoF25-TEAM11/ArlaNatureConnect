@@ -73,16 +73,19 @@
           <Button
             Command="{Binding Command}"
             Content="{Binding Label}"
-            Style="{StaticResource ArlaNavButton}" />
+            Style="{Binding IsSelected, Converter={StaticResource NavButtonStyleSelector}}" />
         </DataTemplate>
       </ItemsControl.ItemTemplate>
     </ItemsControl>
 
     <!-- Bottom Section -->
-    <Border Grid.Row="3" 
-              Padding="24">
-      <!-- Can add logout button or other actions here -->
-    </Border>
+    <StackPanel Grid.Row="3" 
+                Spacing="12"
+                Padding="20,24">
+      <Button x:Name="LogoutButton"
+                Content="Log ud"
+                Style="{StaticResource ArlaNavButton}"/>
+    </StackPanel>
   </Grid>
 </abstracts:SideMenuBaseUC>
 

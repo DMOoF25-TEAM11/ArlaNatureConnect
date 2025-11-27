@@ -7,7 +7,9 @@ namespace ArlaNatureConnect.WinUI;
 
 using ArlaNatureConnect.Core.Services;
 using ArlaNatureConnect.WinUI.Services;
+using ArlaNatureConnect.WinUI.ViewModels;
 using ArlaNatureConnect.WinUI.ViewModels.Controls;
+using ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC;
 using ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu;
 using ArlaNatureConnect.WinUI.ViewModels.Pages;
 
@@ -45,6 +47,8 @@ public partial class App : Application
                     .AddInfrastructure()
 
                     // Windows
+                    .AddScoped<StartWindow>()
+                    .AddScoped<StartWindowViewModel>()
                     .AddSingleton<MainWindow>()
 
                     // Services
@@ -63,21 +67,27 @@ public partial class App : Application
                     .AddScoped<AdministratorPageSideMenuUCViewModel>()
                     .AddScoped<ArlaEmployeePageSideMenuUCViewModel>()
                     .AddScoped<ConsultantPageSideMenuUCViewModel>()
-                    .AddScoped<FarmerPageSideMenuUCViewModel>();
-                ;
+                    .AddScoped<FarmerPageSideMenuUCViewModel>()
+
+                    // Shared Controls
+                    .AddTransient<CRUDPersonUCViewModel>()
+                    ;
+
             })
             .Build();
 
         // Resolve IConnectionStringService from DI
         IConnectionStringService connService = HostInstance.Services.GetRequiredService<IConnectionStringService>();
 
-        StartWindow start = new();
+        StartWindow start = HostInstance.Services.GetRequiredService<StartWindow>();
         start.Activate();
 
-        Task delayTask = Task.Delay(400); // simulate initialization (0.4 seconds)
-        Task initTask = start.Initialization; // task that completes when start window initialization (including any dialog) is done
-
-        await Task.WhenAll(initTask, delayTask);
+        Task[] taskInit =
+        [
+            Task.Delay(400),       // simulate initialization
+            start.Initialization,  // task from StartWindow
+        ];
+        await Task.WhenAll(taskInit);
 
         // resolve and show main window from DI so its dependencies are injected
         _window = HostInstance.Services.GetRequiredService<MainWindow>();

@@ -36,7 +36,9 @@
         </Grid.RowDefinitions>
         <Frame  x:Name="ContentFrame" 
                 Grid.Row="0"
-                Background="{StaticResource AppBackgroundBrush}"/>
+                Background="{StaticResource AppBackgroundBrush}"
+                Foreground="{StaticResource AppForegroundBrush}"
+                />
         <controls:MessageErrorSuccesUC Grid.Row="1"/>
       </Grid>
     </Grid>

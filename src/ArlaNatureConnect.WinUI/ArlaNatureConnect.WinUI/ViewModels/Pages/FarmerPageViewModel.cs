@@ -31,8 +31,5 @@ public partial class FarmerPageViewModel : NavigationViewModelBase
         SideMenuViewModelType = typeof(FarmerPageSideMenuUCViewModel);
 
         NavigateToView(() => new FarmerDashboards());
-        //InitializeNavigation("Dashboards");
-        //SwitchContentView(CurrentNavigationTag);
     }
-
 }
