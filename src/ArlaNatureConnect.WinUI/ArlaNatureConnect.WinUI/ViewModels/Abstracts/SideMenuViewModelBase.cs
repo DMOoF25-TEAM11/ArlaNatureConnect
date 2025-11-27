@@ -7,6 +7,8 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
 namespace ArlaNatureConnect.WinUI.ViewModels.Abstracts;
@@ -18,6 +20,37 @@ namespace ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 /// </summary>
 public abstract partial class SideMenuViewModelBase : ListViewModelBase<IPersonRepository, Person>
 {
+    #region Types
+    // simple model for dynamic navigation buttons
+    public sealed class NavItem : INotifyPropertyChanged
+    {
+        public NavItem(string label, ICommand? command = null)
+        {
+            Label = label;
+            Command = command;
+        }
+
+        public string Label { get; }
+        public ICommand? Command { get; }
+
+        private bool _isSelected;
+        public bool IsSelected
+        {
+            get => _isSelected;
+            set
+            {
+                if (_isSelected == value) return;
+                _isSelected = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        private void OnPropertyChanged([CallerMemberName] string? name = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+    }
+    #endregion
+
+
     #region Fields
     private Person? _selectedPerson;
     private bool _isLoading;

@@ -1,10 +1,8 @@
-using System;
-using System.Threading.Tasks;
-using System.Windows.Input;
-
 using ArlaNatureConnect.Core.Abstract;
 using ArlaNatureConnect.Core.Services;
 using ArlaNatureConnect.WinUI.Commands;
+
+using System.Windows.Input;
 
 namespace ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 
@@ -53,7 +51,7 @@ public abstract class CRUDViewModelBase<TRepos, TEntity> : ListViewModelBase<TRe
     /// Raised after an entity has been successfully saved by the view-model.
     /// Listeners can use this event to react to persistence operations (for example navigate or refresh lists).
     /// </summary>
-    public event EventHandler<TEntity?>? EntitySaved;
+    //public event EventHandler<TEntity?>? EntitySaved;
 
     #endregion
 

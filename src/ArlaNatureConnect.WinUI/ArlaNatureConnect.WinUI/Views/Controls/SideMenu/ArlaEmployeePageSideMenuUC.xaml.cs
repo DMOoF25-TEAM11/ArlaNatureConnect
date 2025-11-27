@@ -10,7 +10,7 @@ namespace ArlaNatureConnect.WinUI.Views.Controls.SideMenu;
 /// </summary>
 public sealed partial class ArlaEmployeePageSideMenuUC : SideMenuBaseUC
 {
-    private ViewModels.Pages.ArlaEmployeePageViewModel? _previousViewModel;
+    //private ViewModels.Pages.ArlaEmployeePageViewModel? _previousViewModel;
 
     public ArlaEmployeePageSideMenuUC()
     {

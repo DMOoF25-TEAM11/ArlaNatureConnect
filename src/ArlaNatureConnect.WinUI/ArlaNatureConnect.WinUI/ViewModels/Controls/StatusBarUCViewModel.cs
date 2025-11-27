@@ -41,8 +41,9 @@ public class StatusBarUCViewModel : ViewModelBase
             if (_isBusy == value) return;
             _isBusy = value;
             OnPropertyChanged();
-            // notify dependent computed property
+            // notify dependent computed properties
             OnPropertyChanged(nameof(BusySymbol));
+            OnPropertyChanged(nameof(BusyLabel));
         }
     }
 
@@ -68,6 +69,9 @@ public class StatusBarUCViewModel : ViewModelBase
             return IsBusy ? "⏳" : "✔️";
         }
     }
+
+    // New computed label property for UI text
+    public string BusyLabel => IsBusy ? "Busy:" : "Idle:";
 
     public string DbConnectionSymbol
     {
@@ -107,8 +111,9 @@ public class StatusBarUCViewModel : ViewModelBase
             IsBusy = isLoading;
             HasDbConnection = hasDb;
 
-            // Always raise BusySymbol property changed when IsBusy changes
+            // Always raise BusySymbol/Bu syLabel property changed when IsBusy changes
             OnPropertyChanged(nameof(BusySymbol));
+            OnPropertyChanged(nameof(BusyLabel));
             // Always raise DbConnectionSymbol property changed when HasDbConnection changes
             OnPropertyChanged(nameof(DbConnectionSymbol));
         }

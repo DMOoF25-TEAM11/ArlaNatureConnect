@@ -1,7 +1,9 @@
 using ArlaNatureConnect.Domain.Entities;
 using ArlaNatureConnect.Infrastructure.Persistence;
 using ArlaNatureConnect.Infrastructure.Repositories;
+
 using Microsoft.EntityFrameworkCore;
+
 using System.Reflection;
 
 namespace TestInfrastructure.Repositories;
@@ -155,7 +157,7 @@ public class PersonRepositoryTest
         TestFactory factory = new TestFactory(options);
         PersonRepository repo = new PersonRepository(factory);
 
-        List<Person> result = await repo.GetPersonsByRoleAsync("Farmer");
+        List<Person> result = (await repo.GetPersonsByRoleAsync("Farmer")).ToList();
         Assert.HasCount(2, result);
     }
 
@@ -175,7 +177,7 @@ public class PersonRepositoryTest
         TestFactory factory = new TestFactory(options);
         PersonRepository repo = new PersonRepository(factory);
 
-        List<Person> result = await repo.GetPersonsByRoleAsync("  admin  ");
+        List<Person> result = (await repo.GetPersonsByRoleAsync("  admin  ")).ToList();
         Assert.HasCount(1, result);
     }
 
@@ -188,12 +190,12 @@ public class PersonRepositoryTest
         PersonRepository repo = new PersonRepository(factory);
 
         // empty role
-        List<Person> resEmpty = await repo.GetPersonsByRoleAsync("  ");
+        List<Person> resEmpty = (await repo.GetPersonsByRoleAsync("  ")).ToList();
         Assert.IsNotNull(resEmpty);
         Assert.IsEmpty(resEmpty);
 
         // non-existing role
-        List<Person> resMissing = await repo.GetPersonsByRoleAsync("DoesNotExist");
+        List<Person> resMissing = (await repo.GetPersonsByRoleAsync("DoesNotExist")).ToList();
         Assert.IsNotNull(resMissing);
         Assert.IsEmpty(resMissing);
     }
