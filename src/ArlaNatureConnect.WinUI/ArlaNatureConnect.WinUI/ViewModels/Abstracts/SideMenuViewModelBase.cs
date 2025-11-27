@@ -91,6 +91,14 @@ public abstract partial class SideMenuViewModelBase : ListViewModelBase<IPersonR
         {
             _selectedPerson = value;
             OnPropertyChanged();
+            if (value != null)
+            {
+                RelayCommand<Person>? chooseCommand = _navigationViewModel?.ChooseUserCommand;
+                if (chooseCommand != null && chooseCommand.CanExecute(value))
+                {
+                    chooseCommand.Execute(value);
+                }
+            }
         }
     }
 

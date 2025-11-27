@@ -9,20 +9,29 @@
     <SolidColorBrush x:Key="ArlaPrimaryDarkBrush" Color="#FF004225" /> <!-- Dark Green -->
     <SolidColorBrush x:Key="ArlaSidebarLightBrush" Color="#FFC8E1C1" /> <!-- Light Green for sidebar -->
     <SolidColorBrush x:Key="ArlaTableHeaderBrush" Color="#FF6EA870" /> <!-- Table header color -->
+    <SolidColorBrush x:Key="ArlaNavHoverBrush" Color="#FFCFE9C6" /> <!-- Lighter green for nav hover -->
+    <SolidColorBrush x:Key="ArlaPrimaryHoverBrush" Color="#FF005B2E" /> <!-- Darker green for button hover -->
+    <SolidColorBrush x:Key="ArlaTableRowHoverBrush" Color="#FFC8E1C1" /> <!-- Light green for table row hover -->
+    <SolidColorBrush x:Key="ArlaTableHeaderBorderBrush" Color="#FFE5E5E5" /> <!-- Gray border for table header -->
   
     <!--  SECONDARY COLOUR PALETTE -->
-    <SolidColorBrush x:Key="ArlaAccentBrush" Color="#FFF4C542" /> <!-- Gold -->
+    <SolidColorBrush x:Key="ArlaAccentBrush" Color="#FFFFD94A" /> <!-- Yellow accent -->
+    <SolidColorBrush x:Key="ArlaAccentHoverBrush" Color="#FFE8C43F" /> <!-- Deeper yellow for button hover -->
     <SolidColorBrush x:Key="ArlaSecondaryBrush" Color="#FF007C89" /> <!-- Turquoise -->
     <SolidColorBrush x:Key="ArlaNeutralLightBrush" Color="#FFF4F4F2" /> <!-- Off White -->
-    <SolidColorBrush x:Key="ArlaNeutralDarkBrush" Color="#FF4D4D4F" /> <!-- Charcoal -->
+    <SolidColorBrush x:Key="ArlaNeutralLighterBrush" Color="#FFF9F9F7" /> <!-- Lighter Off White -->
+    <SolidColorBrush x:Key="ArlaNeutralDarkBrush" Color="#FF555555" /> <!-- Updated neutral gray text -->
     <SolidColorBrush x:Key="ArlaSurfaceBrush" Color="#FFFFFFFF" />
     <SolidColorBrush x:Key="ArlaErrorBrush" Color="#FF9E463D" /> <!-- Clay Red -->
     <SolidColorBrush x:Key="ArlaLightGreyBrush" Color="#FFE0E0E0" /> <!-- Light Grey for borders -->
+    <SolidColorBrush x:Key="ArlaPrimaryMutedBrush" Color="#FFE3F1E7" /> <!-- Muted Primary Green -->
 
     <!--  GLOBAL THEME -->
     <SolidColorBrush x:Key="AppBackgroundBrush" Color="#FFF4F4F2" />
-    <SolidColorBrush x:Key="AppForegroundBrush" Color="#FF4D4D4F" />
+    <SolidColorBrush x:Key="AppForegroundBrush" Color="#FF555555" />
     <SolidColorBrush x:Key="AppPrimaryBrush" Color="#FF00693C" />
-    <SolidColorBrush x:Key="AppAccentBrush" Color="#FFF4C542" />
+    <SolidColorBrush x:Key="AppAccentBrush" Color="#FFFFD94A" />
 
 </ResourceDictionary>
+
+

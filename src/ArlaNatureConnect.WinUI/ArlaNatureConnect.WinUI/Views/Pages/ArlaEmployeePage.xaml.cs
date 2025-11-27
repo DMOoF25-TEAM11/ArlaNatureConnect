@@ -18,13 +18,10 @@ public sealed partial class ArlaEmployeePage : NavPage
     {
         InitializeComponent();
 
-        // Resolve the page view-model from DI so its dependencies (e.g. NavigationHandler) are injected.
         ArlaEmployeePageViewModel vm = App.HostInstance.Services.GetRequiredService<ArlaEmployeePageViewModel>();
-        ViewModel = vm;      // required by NavPage
-        DataContext = vm;    // bindings in XAML
+        ViewModel = vm;
+        DataContext = vm;
 
-        // If a side-menu control exists in the visual tree and its DataContext is a SideMenuViewModelBase,
-        // ensure it knows about this page view-model (backwards compatibility with existing side-menu wiring).
         FrameworkElement? sideMenuControl = FindName("SideMenu") as FrameworkElement;
         if (sideMenuControl?.DataContext is SideMenuViewModelBase sideMenuVm)
         {

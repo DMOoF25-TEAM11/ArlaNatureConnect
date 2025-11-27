@@ -77,4 +77,12 @@
         <Optimize>false</Optimize>
         <IncludeSymbolsInPackage>true</IncludeSymbolsInPackage>
     </PropertyGroup>
+
+    <!-- Ensure WinAppRuntime native files are copied app-local when WindowsAppSdkSelfContained is enabled -->
+    <Target Name="CopyWinAppRuntime" AfterTargets="Build;Publish" Condition="'$(WindowsAppSdkSelfContained)' == 'true'">
+      <ItemGroup>
+        <_WinAppRuntimeFiles Include="$(NuGetPackageRoot)microsoft.windowsappruntime\**\runtimes\win-**\native\**\*.*" />
+      </ItemGroup>
+      <Copy SourceFiles="@(_WinAppRuntimeFiles)" DestinationFolder="$(OutputPath)WinAppRuntime\%(RecursiveDir)" SkipUnchangedFiles="true" />
+    </Target>
 </Project>

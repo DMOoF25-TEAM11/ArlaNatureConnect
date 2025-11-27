@@ -60,27 +60,21 @@
     </Border>
 
     <!-- Navigation Menu -->
-    <StackPanel Grid.Row="1" 
-                        Spacing="12"
-                        Padding="20,24">
-      <Button x:Name="DashboardsButton"
-                        Command="{Binding NavigationCommand}"
-                        CommandParameter="Dashboards"
-                        Content="Dashboards"
-                        Style="{StaticResource ArlaNavButton}"/>
-
-      <Button x:Name="FarmsButton"
-                        Command="{Binding NavigationCommand}"
-                        CommandParameter="Farms"
-                        Content="Gårde"
-                        Style="{StaticResource ArlaNavButton}"/>
-
-      <Button x:Name="UsersButton"
-                        Command="{Binding NavigationCommand}"
-                        CommandParameter="Users"
-                        Content="Brugere"
-                        Style="{StaticResource ArlaNavButton}"/>
-    </StackPanel>
+    <ItemsControl Grid.Row="2" ItemsSource="{Binding NavItems}">
+      <ItemsControl.ItemsPanel>
+        <ItemsPanelTemplate>
+          <StackPanel Orientation="Vertical" Spacing="12" Padding="20,24" />
+        </ItemsPanelTemplate>
+      </ItemsControl.ItemsPanel>
+      <ItemsControl.ItemTemplate>
+        <DataTemplate>
+          <Button
+            Command="{Binding Command}"
+            Content="{Binding Label}"
+            Style="{Binding IsSelected, Converter={StaticResource NavButtonStyleSelector}}" />
+        </DataTemplate>
+      </ItemsControl.ItemTemplate>
+    </ItemsControl>
 
     <!-- Bottom Section -->
     <Border Grid.Row="3" 

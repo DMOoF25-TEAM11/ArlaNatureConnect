@@ -19,6 +19,7 @@ public static class DependencyInjection
         string connectionString = services.BuildServiceProvider().GetRequiredService<IConnectionStringService>().ReadAsync().Result ?? string.Empty;
 
         // Register the EF Core DbContext factory after validation
+        services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
         services.AddDbContextFactory<AppDbContext>(options => options.UseSqlServer(connectionString));
 
         //services.AddSingleton<IConnectionStringService, ConnectionStringService>();
@@ -26,6 +27,7 @@ public static class DependencyInjection
         services.AddScoped<IRoleRepository, RoleRepository>();
         services.AddScoped<IPersonRepository, PersonRepository>();
         services.AddScoped<IFarmRepository, FarmRepository>();
+        services.AddScoped<INatureCheckCaseRepository, NatureCheckCaseRepository>();
 
         return services;
     }

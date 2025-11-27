@@ -31,9 +31,12 @@
   </ItemGroup>
   <PropertyGroup>
     <WapProjPath Condition="'$(WapProjPath)'==''">$(MSBuildExtensionsPath)\Microsoft\DesktopBridge\</WapProjPath>
+    <!-- Fallback to Visual Studio MSBuild if DesktopBridge not found in dotnet SDK -->
+    <WapProjPath Condition="!Exists('$(WapProjPath)Microsoft.DesktopBridge.props')">C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Microsoft\DesktopBridge\</WapProjPath>
+    <WapProjPath Condition="!Exists('$(WapProjPath)Microsoft.DesktopBridge.props') AND Exists('C:\Program Files\Microsoft Visual Studio\18\Enterprise\MSBuild\Microsoft\DesktopBridge\Microsoft.DesktopBridge.props')">C:\Program Files\Microsoft Visual Studio\18\Enterprise\MSBuild\Microsoft\DesktopBridge\</WapProjPath>
     <PathToXAMLWinRTImplementations>ArlaNatureConnect.WinUI\</PathToXAMLWinRTImplementations>
   </PropertyGroup>
-  <Import Project="$(WapProjPath)\Microsoft.DesktopBridge.props" />
+  <Import Project="$(WapProjPath)\Microsoft.DesktopBridge.props" Condition="Exists('$(WapProjPath)\Microsoft.DesktopBridge.props')" />
   <PropertyGroup>
     <ProjectGuid>eed6d5b4-20af-4c13-879b-8147e2cc1468</ProjectGuid>
     <TargetPlatformVersion>10.0.26100.0</TargetPlatformVersion>

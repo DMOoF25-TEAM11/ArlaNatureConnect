@@ -83,10 +83,11 @@ public abstract class ListViewModelBase<TRepos, TEntity> : ViewModelBase
     /// <summary>
     /// Gets the repository instance used by the view model to load and persist entities.
     /// </summary>
-    public TRepos Repository
-    {
-        get => _repository;
-    }
+    public TRepos Repository => _repository ?? throw new InvalidOperationException($"{GetType().Name} requires a repository. Use the DI constructor.");
+
+    protected IStatusInfoServices StatusInfoServices => _statusInfoServices ?? throw new InvalidOperationException($"{GetType().Name} requires IStatusInfoServices. Use the DI constructor.");
+
+    protected IAppMessageService AppMessageService => _appMessageService ?? throw new InvalidOperationException($"{GetType().Name} requires IAppMessageService. Use the DI constructor.");
     #endregion
 
     #region Load handler
@@ -103,15 +104,19 @@ public abstract class ListViewModelBase<TRepos, TEntity> : ViewModelBase
     public async Task LoadAsync(Guid id)
     {
         _entity = null;
-        using (_statusInfoServices.BeginLoading())
+        IStatusInfoServices statusSvc = StatusInfoServices;
+        IAppMessageService messageSvc = AppMessageService;
+        TRepos repository = Repository;
+
+        using (statusSvc.BeginLoading())
         {
             try
             {
-                Entity = await _repository.GetByIdAsync(id) ?? throw new Exception($"Entity {nameof(Entity)} not found");
+                Entity = await repository.GetByIdAsync(id).ConfigureAwait(false) ?? throw new Exception($"Entity {nameof(Entity)} not found");
             }
             catch (Exception ex)
             {
-                _appMessageService.AddErrorMessage("Failed to load entity: " + ex.Message);
+                messageSvc.AddErrorMessage("Failed to load entity: " + ex.Message);
             }
         }
     }

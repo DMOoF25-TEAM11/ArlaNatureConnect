@@ -85,7 +85,7 @@ public abstract class CRUDViewModelBase<TRepos, TEntity> : ListViewModelBase<TRe
     public new async Task LoadAsync(Guid id)
     {
         // report loading status (BeginLoading should return an IDisposable that clears the loading flag)
-        using IDisposable loading = _statusInfoServices.BeginLoading();
+        using IDisposable loading = StatusInfoServices.BeginLoading();
 
         try
         {
@@ -182,7 +182,7 @@ public abstract class CRUDViewModelBase<TRepos, TEntity> : ListViewModelBase<TRe
     /// <summary>
     /// Core check used by command CanExecute logic. Incorporates save state and application error messages.
     /// </summary>
-    protected virtual bool CanSubmitCore() => !IsSaving && !_appMessageService.HasErrorMessages;
+    protected virtual bool CanSubmitCore() => !IsSaving && !AppMessageService.HasErrorMessages;
 
     /// <summary>
     /// Determines whether the Add command can execute.
@@ -248,7 +248,7 @@ public abstract class CRUDViewModelBase<TRepos, TEntity> : ListViewModelBase<TRe
     /// <returns>A completed task when reset is finished.</returns>
     protected async Task OnResetAsync()
     {
-        _appMessageService.ClearErrorMessages();
+        AppMessageService.ClearErrorMessages();
         base.Entity = null;
         await OnResetFormAsync();
         IsEditMode = false;
