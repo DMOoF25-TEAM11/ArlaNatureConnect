@@ -1,4 +1,5 @@
 using ArlaNatureConnect.Core.Abstract;
+using ArlaNatureConnect.Core.Abstract.Services;
 using ArlaNatureConnect.Core.Services;
 using ArlaNatureConnect.Domain.Entities;
 using ArlaNatureConnect.WinUI.Commands;
@@ -18,6 +19,8 @@ public class CRUDPersonUCViewModel
     public const string LABEL_ADDRESSID = "Adresse Id";
     #endregion
     #region Fields
+    private readonly IPersonQueryService _personQueryService;
+
     private Guid _id;
     private Guid _roleId;
     private Guid _addressId;
@@ -50,6 +53,10 @@ public class CRUDPersonUCViewModel
             OnPropertyChanged();
         }
     }
+
+    // Convenience strongly-typed collection (wraps base Items)
+    public System.Collections.ObjectModel.ObservableCollection<Person> Persons => Items;
+
     public Guid Id
     {
         get => _id;
@@ -136,13 +143,55 @@ public class CRUDPersonUCViewModel
     public CRUDPersonUCViewModel(
         IStatusInfoServices statusInfoServices,
         IAppMessageService appMessageService,
-        IPersonRepository repository)
+        IPersonRepository repository,
+        IPersonQueryService personQueryService)
         : base(statusInfoServices, appMessageService, repository)
     {
         _repository = repository;
+        _personQueryService = personQueryService;
 
         // Initialize sort command
         SortCommand = new RelayCommand<string>(OnSortExecuted);
+
+        // Reload persons including Role navigation properties
+        _ = LoadAllWithRolesAsync();
+    }
+
+    private async Task LoadAllWithRolesAsync(CancellationToken ct = default)
+    {
+        try
+        {
+            var all = await _personQueryService.GetAllWithRolesAsync(ct);
+
+            Items.Clear();
+            foreach (var p in all)
+            {
+                Items.Add(p);
+            }
+            OnPropertyChanged(nameof(Items));
+            OnPropertyChanged(nameof(Persons));
+        }
+        catch (Exception)
+        {
+            // swallow errors to keep UI responsive; messaging service may be used if needed
+        }
+    }
+
+    private static object? GetNestedPropertyValue(object? obj, string propertyPath)
+    {
+        if (obj == null || string.IsNullOrWhiteSpace(propertyPath)) return null;
+
+        var current = obj;
+        var type = current.GetType();
+        foreach (var part in propertyPath.Split('.'))
+        {
+            var prop = type.GetProperty(part);
+            if (prop == null) return null;
+            current = prop.GetValue(current, null);
+            if (current == null) return null;
+            type = current.GetType();
+        }
+        return current;
     }
 
     private void OnSortExecuted(string? prop)
@@ -153,19 +202,15 @@ public class CRUDPersonUCViewModel
         _lastSortProp = prop;
         _lastSortDesc = descending;
 
-        // Materialize ordered list based on property value
-        IOrderedEnumerable<object?> ordered = Items.Cast<object?>()
-            .OrderBy(x => x?.GetType().GetProperty(prop)?.GetValue(x, null), Comparer<object?>.Default);
+        var list = (_lastSortDesc
+            ? Items.OrderByDescending(p => GetNestedPropertyValue(p, prop), Comparer<object?>.Default)
+            : Items.OrderBy(p => GetNestedPropertyValue(p, prop), Comparer<object?>.Default))
+            .ToList();
 
-        if (descending) ordered = (IOrderedEnumerable<object?>)ordered.Reverse();
-
-        List<object?> list = ordered.ToList();
-
-        // Reorder Items collection in-place so bindings stay intact
         Items.Clear();
-        foreach (object? it in list)
+        foreach (var p in list)
         {
-            if (it is Person p) Items.Add(p);
+            Items.Add(p);
         }
     }
 
