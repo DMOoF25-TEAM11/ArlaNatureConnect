@@ -1,6 +1,8 @@
 using ArlaNatureConnect.Core.Abstract;
 using ArlaNatureConnect.Core.Services;
 
+using System.Collections.ObjectModel;
+
 namespace ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 
 /// <summary>
@@ -19,31 +21,24 @@ public abstract class ListViewModelBase<TRepos, TEntity> : ViewModelBase
     where TEntity : class
 {
     #region Fields
-    /// <summary>
-    /// Repository used to access entities of type <typeparamref name="TEntity"/>.
-    /// </summary>
-    protected readonly TRepos? _repository;
+
+    protected TEntity _selectedItem;
 
     /// <summary>
-    /// Backing field for the <see cref="Entity"/> property.
+    /// Items used to access entities of type <typeparamref name="TEntity"/>.
     /// </summary>
-    protected TEntity? _entity;
+    protected TRepos _items;
 
     /// <summary>
     /// Service used to report loading and connectivity status to the UI.
     /// </summary>
-    protected IStatusInfoServices? _statusInfoServices;
+    protected IStatusInfoServices _statusInfoServices;
 
     /// <summary>
     /// Service used to report application messages and errors to the UI.
     /// </summary>
-    protected IAppMessageService? _appMessageService;
+    protected IAppMessageService _appMessageService;
     #endregion
-
-    protected ListViewModelBase()
-    {
-
-    }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ListViewModelBase{TRepos,TEntity}"/> class.
@@ -54,74 +49,70 @@ public abstract class ListViewModelBase<TRepos, TEntity> : ViewModelBase
     /// <param name="appMessageService">
     /// Service used to surface application messages and errors to the UI.
     /// </param>
-    /// <param name="repository">Repository used to access <typeparamref name="TEntity"/> instances.</param>
-    protected ListViewModelBase(IStatusInfoServices statusInfoServices, IAppMessageService appMessageService, TRepos repository)
+    /// <param name="repository">Items used to access <typeparamref name="TEntity"/> instances.</param>
+    /// <param name="autoLoad">If true the Items collection will be automatically loaded by calling <see cref="LoadAllAsync"/>; otherwise loading is deferred.</param>
+    protected ListViewModelBase(IStatusInfoServices statusInfoServices, IAppMessageService appMessageService, TRepos repository, bool autoLoad = true)
     {
         _statusInfoServices = statusInfoServices;
         _appMessageService = appMessageService;
-        _repository = repository;
+        _items = repository;
+
+        // Start loading items (fire-and-forget) when requested. LoadAllAsync updates the ObservableCollection on the UI thread.
+        if (autoLoad)
+        {
+            _ = LoadAllAsync();
+        }
     }
 
-    #region Properties
-    #endregion
-
     #region Observables Properties
-    /// <summary>
-    /// Gets or sets the current entity instance displayed or edited by the view model.
-    /// Setting this property raises the <see cref="ViewModelBase.OnPropertyChanged"/> notification.
-    /// </summary>
-    public TEntity? Entity
+    public TEntity SelectedItem
     {
-        get => _entity;
+        get => _selectedItem;
         set
         {
-            _entity = value;
+            if (_selectedItem == value) return;
+            _selectedItem = value;
             OnPropertyChanged();
         }
     }
-
     /// <summary>
-    /// Gets the repository instance used by the view model to load and persist entities.
+    /// Collection of entities exposed to the view. ObservableCollection ensures UI updates when items change.
     /// </summary>
-    public TRepos Repository => _repository ?? throw new InvalidOperationException($"{GetType().Name} requires a repository. Use the DI constructor.");
-
-    protected IStatusInfoServices StatusInfoServices => _statusInfoServices ?? throw new InvalidOperationException($"{GetType().Name} requires IStatusInfoServices. Use the DI constructor.");
-
-    protected IAppMessageService AppMessageService => _appMessageService ?? throw new InvalidOperationException($"{GetType().Name} requires IAppMessageService. Use the DI constructor.");
+    public ObservableCollection<TEntity> Items { get; } = new ObservableCollection<TEntity>();
     #endregion
-
-    #region Load handler
+    #region Load Handlers
     /// <summary>
-    /// Loads an entity by its identifier into the <see cref="Entity"/> property.
+    /// Loads all entities from the repository and populates the Items collection.
     /// </summary>
-    /// <param name="id">The identifier of the entity to load.</param>
-    /// <returns>A task that represents the asynchronous load operation.</returns>
-    /// <remarks>
-    /// The method reports loading status via <see cref="IStatusInfoServices.BeginLoading"/> and
-    /// propagates errors to <see cref="IAppMessageService.AddErrorMessage"/> instead of throwing.
-    /// Implementations of <see cref="IRepository{T}.GetByIdAsync"/> are expected to return the entity or null.
-    /// </remarks>
-    public async Task LoadAsync(Guid id)
+    /// <param name="ct">Cancellation token.</param>
+    public async Task LoadAllAsync(CancellationToken ct = default)
     {
-        _entity = null;
-        IStatusInfoServices statusSvc = StatusInfoServices;
-        IAppMessageService messageSvc = AppMessageService;
-        TRepos repository = Repository;
-
-        using (statusSvc.BeginLoading())
+        using (_statusInfoServices.BeginLoading())
         {
             try
             {
-                Entity = await repository.GetByIdAsync(id).ConfigureAwait(false) ?? throw new Exception($"Entity {nameof(Entity)} not found");
+                // Await repository call without ConfigureAwait(false) so continuation runs on the captured
+                // synchronization context (UI thread) and it's safe to update ObservableCollection directly.
+                IEnumerable<TEntity> all = await _items.GetAllAsync(ct);
+
+                // Update collection on UI thread
+                Items.Clear();
+                foreach (TEntity it in all ?? Array.Empty<TEntity>())
+                {
+                    Items.Add(it);
+                }
             }
             catch (Exception ex)
             {
-                messageSvc.AddErrorMessage("Failed to load entity: " + ex.Message);
+                // Surface error to UI via AppMessageService rather than throwing from a fire-and-forget task.
+                try { _appMessageService?.AddErrorMessage("Failed to load items: " + ex.Message); } catch { }
+            }
+            finally
+            {
+                OnPropertyChanged(nameof(Items));
             }
         }
     }
     #endregion
 
-    #region Helpers
-    #endregion
 }
