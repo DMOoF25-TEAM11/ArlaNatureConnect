@@ -3,6 +3,7 @@ using ArlaNatureConnect.WinUI.ViewModels.Controls;
 
 using Moq;
 
+using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 
 namespace TestWinUI.ViewModels.Controls;
@@ -12,68 +13,89 @@ namespace TestWinUI.ViewModels.Controls;
 public class StatusBarUCViewModelTests
 {
     [TestMethod]
-    public async Task IsBusy_True_BusySymbolIsHourglass()
+    public void InitializeAndEvent_IsBusy_True_ShowsHourglassAndBusyLabel()
     {
         // Arrange
-        Mock<IStatusInfoServices> statusInfoMock = new Mock<IStatusInfoServices>();
-        statusInfoMock.SetupGet(s => s.IsLoading).Returns(true);
-        statusInfoMock.SetupGet(s => s.HasDbConnection).Returns(true);
-        StatusBarUCViewModel vm = new StatusBarUCViewModel(statusInfoMock.Object);
+        Mock<IStatusInfoServices> statusMock = new Mock<IStatusInfoServices>();
+        statusMock.SetupGet(s => s.IsLoading).Returns(true);
+        statusMock.SetupGet(s => s.HasDbConnection).Returns(true);
+
+        StatusBarUCViewModel vm = new StatusBarUCViewModel(statusMock.Object);
 
         // Act
-        // Simulate status change
-        statusInfoMock.Raise(s => s.StatusInfoChanged += null, vm, System.EventArgs.Empty);
+        vm.InitializeForUi(null);
+        statusMock.Raise(s => s.StatusInfoChanged += null, vm, System.EventArgs.Empty);
 
         // Assert
         Assert.IsTrue(vm.IsBusy);
         Assert.AreEqual("⏳", vm.BusySymbol);
-
-        await Task.CompletedTask;
+        Assert.AreEqual("Busy:", vm.BusyLabel);
     }
 
     [TestMethod]
-    public async Task IsBusy_False_BusySymbolIsCheckmark()
+    public void InitializeAndEvent_IsBusy_False_ShowsCheckmarkAndIdleLabel()
     {
         // Arrange
-        Mock<IStatusInfoServices> statusInfoMock = new Mock<IStatusInfoServices>();
-        statusInfoMock.SetupGet(s => s.IsLoading).Returns(false);
-        statusInfoMock.SetupGet(s => s.HasDbConnection).Returns(true);
-        StatusBarUCViewModel vm = new StatusBarUCViewModel(statusInfoMock.Object);
+        Mock<IStatusInfoServices> statusMock = new Mock<IStatusInfoServices>();
+        statusMock.SetupGet(s => s.IsLoading).Returns(false);
+        statusMock.SetupGet(s => s.HasDbConnection).Returns(true);
+
+        StatusBarUCViewModel vm = new StatusBarUCViewModel(statusMock.Object);
 
         // Act
-        // Simulate status change
-        statusInfoMock.Raise(s => s.StatusInfoChanged += null, vm, System.EventArgs.Empty);
+        vm.InitializeForUi(null);
+        statusMock.Raise(s => s.StatusInfoChanged += null, vm, System.EventArgs.Empty);
 
         // Assert
         Assert.IsFalse(vm.IsBusy);
         Assert.AreEqual("✔️", vm.BusySymbol);
-
-        await Task.CompletedTask;
+        Assert.AreEqual("Idle:", vm.BusyLabel);
     }
 
     [TestMethod]
-    public async Task HasDbConnection_Change_Should_Update_ViewModel()
+    public void InitializeAndEvent_HasDbConnection_TogglesSymbols()
     {
-        // Arrange
         bool hasDb = false;
-        Mock<IStatusInfoServices> statusInfoMock = new Mock<IStatusInfoServices>();
-        statusInfoMock.SetupGet(s => s.IsLoading).Returns(false);
-        statusInfoMock.SetupGet(s => s.HasDbConnection).Returns(() => hasDb);
-        StatusBarUCViewModel vm = new StatusBarUCViewModel(statusInfoMock.Object);
+        Mock<IStatusInfoServices> statusMock = new Mock<IStatusInfoServices>();
+        statusMock.SetupGet(s => s.IsLoading).Returns(false);
+        statusMock.SetupGet(s => s.HasDbConnection).Returns(() => hasDb);
 
-        // Act/Assert initial state
-        statusInfoMock.Raise(s => s.StatusInfoChanged += null, vm, System.EventArgs.Empty);
+        StatusBarUCViewModel vm = new StatusBarUCViewModel(statusMock.Object);
+
+        vm.InitializeForUi(null);
+
+        // initial: false
+        statusMock.Raise(s => s.StatusInfoChanged += null, vm, System.EventArgs.Empty);
         Assert.IsFalse(vm.HasDbConnection);
         Assert.AreEqual("❌", vm.DbConnectionSymbol);
 
-        // Change service state and raise event
+        // change to true
         hasDb = true;
-        statusInfoMock.Raise(s => s.StatusInfoChanged += null, vm, System.EventArgs.Empty);
-
-        // Assert updated
+        statusMock.Raise(s => s.StatusInfoChanged += null, vm, System.EventArgs.Empty);
         Assert.IsTrue(vm.HasDbConnection);
         Assert.AreEqual("✅", vm.DbConnectionSymbol);
+    }
 
-        await Task.CompletedTask;
+    [TestMethod]
+    public void ServicePropertyAccess_Throws_COMException_IsHandled()
+    {
+        // Arrange: mock that throws COMException when getters accessed
+        Mock<IStatusInfoServices> statusMock = new Mock<IStatusInfoServices>();
+        statusMock.SetupGet(s => s.IsLoading).Throws(new COMException("COM failure"));
+        statusMock.SetupGet(s => s.HasDbConnection).Throws(new COMException("COM failure"));
+
+        StatusBarUCViewModel vm = new StatusBarUCViewModel(statusMock.Object);
+
+        // Act & Assert: InitializeForUi and raising event should not throw despite COMException
+        vm.InitializeForUi(null);
+
+        // Raising the event should be swallowed by the viewmodel
+        statusMock.Raise(s => s.StatusInfoChanged += null, vm, System.EventArgs.Empty);
+
+        // When service access throws, wrappers return false, so vm should show not busy and No DB
+        Assert.IsFalse(vm.IsBusy);
+        Assert.AreEqual("✔️", vm.BusySymbol);
+        Assert.IsFalse(vm.HasDbConnection);
+        Assert.AreEqual("❌", vm.DbConnectionSymbol);
     }
 }

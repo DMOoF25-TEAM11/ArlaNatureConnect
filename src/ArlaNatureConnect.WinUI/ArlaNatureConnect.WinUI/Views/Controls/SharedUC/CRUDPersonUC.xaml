@@ -99,7 +99,7 @@
               CommandParameter="IsActive"
               Background="Transparent"
               BorderThickness="0" />
-      <Button Content="Role"
+      <Button Content="{Binding LABEL_ROLE, Mode=OneTime}"
               Width="100"
               FontWeight="SemiBold"
               Command="{Binding SortCommand}"
@@ -107,10 +107,17 @@
               Background="Transparent"
               BorderThickness="0" />
       <Button Content="{Binding LabelAddressId, Mode=OneTime}"
-              Width="50"
+              Width="250"
               FontWeight="SemiBold"
               Command="{Binding SortCommand}"
               CommandParameter="AddressId"
+              Background="Transparent"
+              BorderThickness="0" />
+      <Button Content="{Binding LABEL_FARMS, Mode=OneTime}"
+              Width="100"
+              FontWeight="SemiBold"
+              Command="{Binding SortCommand}"
+              CommandParameter="Farms.Count"
               Background="Transparent"
               BorderThickness="0" />
     </StackPanel>
@@ -134,7 +141,12 @@
             <TextBlock Text="{Binding Email}" Width="200" />
             <TextBlock Text="{Binding IsActive}" Width="50" />
             <TextBlock Text="{Binding Role.Name}" Width="100" />
-            <TextBlock Text="{Binding AddressId}" Width="50" />
+            <StackPanel Orientation="Horizontal" Width="250">
+              <TextBlock Text="{Binding Address.PostalCode}"/>
+              <TextBlock Text=", "/>
+              <TextBlock Text="{Binding Address.Street}"/>
+            </StackPanel>
+            <TextBlock Text="{Binding Farms.Count}" Width="100" />
           </StackPanel>
         </DataTemplate>
       </ListView.ItemTemplate>

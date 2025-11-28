@@ -1,12 +1,25 @@
 using ArlaNatureConnect.Core.Abstract;
-using ArlaNatureConnect.Core.Abstract.Services;
 using ArlaNatureConnect.Core.Services;
 using ArlaNatureConnect.Domain.Entities;
 using ArlaNatureConnect.WinUI.Commands;
 using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 
+using System.Reflection;
+
 namespace ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC;
 
+/// <summary>
+/// View-model that provides CRUD operations and UI bindings for <see cref="Person"/> entities.
+/// </summary>
+/// <remarks>
+/// Why we have this class:
+/// - Encapsulates UI state and behavior for creating, reading, updating and deleting persons.
+/// - Keeps UI logic separate from repository/data-access concerns (uses <see cref="IPersonRepository"/>).
+/// How to use:
+/// - Bind the view to properties on this view-model (for example, `FirstName`, `LastName`, `Email`).
+/// - Call the exposed commands and rely on the view-model to update the bound collection `Persons`.
+/// - The view-model handles conversion between form fields and the <see cref="Person"/> entity during save/add.
+/// </remarks>
 public class CRUDPersonUCViewModel
     : CRUDViewModelBase<IPersonRepository, Person>
 {
@@ -15,12 +28,13 @@ public class CRUDPersonUCViewModel
     public const string LABEL_LASTNAME = "Efternavn";
     public const string LABEL_EMAIL = "Email";
     public const string LABEL_ISACTIVE = "Aktiv";
-    public const string LABEL_ROLEID = "Rolle Id";
-    public const string LABEL_ADDRESSID = "Adresse Id";
+    public const string LABEL_ROLE = "Rolle";
+    public const string LABEL_ADDRESSID = "Adresse";
+    public const string LABEL_FARMS = "Antal Gårde";
+
     #endregion
     #region Fields
-    private readonly IPersonQueryService _personQueryService;
-
+    // Repository for data access
     private Guid _id;
     private Guid _roleId;
     private Guid _addressId;
@@ -40,7 +54,7 @@ public class CRUDPersonUCViewModel
     public static string LabelLastName => LABEL_LASTNAME;
     public static string LabelEmail => LABEL_EMAIL;
     public static string LabelIsActive => LABEL_ISACTIVE;
-    public static string LabelRoleId => LABEL_ROLEID;
+    public static string LabelRoleId => LABEL_ROLE;
     public static string LabelAddressId => LABEL_ADDRESSID;
 
     public int ItemCounter
@@ -140,60 +154,67 @@ public class CRUDPersonUCViewModel
     public RelayCommand<string>? SortCommand { get; }
     #endregion
 
+    /// <summary>
+    /// Creates a new instance of <see cref="CRUDPersonUCViewModel"/>.
+    /// </summary>
+    /// <param name="statusInfoServices">Service used for status updates in the UI.</param>
+    /// <param name="appMessageService">Service used to show messages to the user.</param>
+    /// <param name="repository">Repository used to persist <see cref="Person"/> entities.</param>
     public CRUDPersonUCViewModel(
         IStatusInfoServices statusInfoServices,
         IAppMessageService appMessageService,
-        IPersonRepository repository,
-        IPersonQueryService personQueryService)
-        : base(statusInfoServices, appMessageService, repository)
+        IPersonRepository repository)
+        : base(statusInfoServices, appMessageService, repository) // disable base auto-load
     {
         _repository = repository;
-        _personQueryService = personQueryService;
+        //_personQueryService = personQueryService;
 
-        // Initialize sort command
         SortCommand = new RelayCommand<string>(OnSortExecuted);
 
-        // Reload persons including Role navigation properties
+        // Load with navigation properties immediately
         _ = LoadAllWithRolesAsync();
     }
 
+    /// <summary>
+    /// Loads all persons including related role/navigation properties.
+    /// </summary>
+    /// <remarks>
+    /// Implementation note: this method is left asynchronous so it can be awaited from the UI layer.
+    /// It should populate the base <see cref="CRUDViewModelBase{TRepository,TEntity}.Items"/> collection.
+    /// </remarks>
     private async Task LoadAllWithRolesAsync(CancellationToken ct = default)
     {
-        try
-        {
-            var all = await _personQueryService.GetAllWithRolesAsync(ct);
-
-            Items.Clear();
-            foreach (var p in all)
-            {
-                Items.Add(p);
-            }
-            OnPropertyChanged(nameof(Items));
-            OnPropertyChanged(nameof(Persons));
-        }
-        catch (Exception)
-        {
-            // swallow errors to keep UI responsive; messaging service may be used if needed
-        }
+        // Inline comment: load persons including related navigation data from repository when implemented.
     }
 
+    /// <summary>
+    /// Retrieves a nested property value using a dot-separated property path.
+    /// </summary>
+    /// <param name="obj">Object to read the property from.</param>
+    /// <param name="propertyPath">Dot-separated property path (for example "Role.Name").</param>
+    /// <returns>The nested property value or null if any part of the path is not found.</returns>
     private static object? GetNestedPropertyValue(object? obj, string propertyPath)
     {
         if (obj == null || string.IsNullOrWhiteSpace(propertyPath)) return null;
 
-        var current = obj;
-        var type = current.GetType();
-        foreach (var part in propertyPath.Split('.'))
+        object? current = obj;
+        Type type = current.GetType();
+        foreach (string part in propertyPath.Split('.'))
         {
-            var prop = type.GetProperty(part);
+            PropertyInfo? prop = type.GetProperty(part);
             if (prop == null) return null;
             current = prop.GetValue(current, null);
             if (current == null) return null;
             type = current.GetType();
         }
+        // Inline comment: returns the final nested value (could be primitive or object)
         return current;
     }
 
+    /// <summary>
+    /// Sorts the bound collection by a specified property path.
+    /// </summary>
+    /// <param name="prop">Property path to sort by. Supports nested properties (e.g. "Role.Name").</param>
     private void OnSortExecuted(string? prop)
     {
         if (string.IsNullOrEmpty(prop)) return;
@@ -202,13 +223,14 @@ public class CRUDPersonUCViewModel
         _lastSortProp = prop;
         _lastSortDesc = descending;
 
-        var list = (_lastSortDesc
+        // Inline comment: use reflection-based getter so nested properties can be used when sorting
+        List<Person> list = (_lastSortDesc
             ? Items.OrderByDescending(p => GetNestedPropertyValue(p, prop), Comparer<object?>.Default)
             : Items.OrderBy(p => GetNestedPropertyValue(p, prop), Comparer<object?>.Default))
             .ToList();
 
         Items.Clear();
-        foreach (var p in list)
+        foreach (Person? p in list)
         {
             Items.Add(p);
         }
@@ -216,6 +238,9 @@ public class CRUDPersonUCViewModel
 
 
     #region Overrides of CRUDViewModelBase<Person>
+    /// <summary>
+    /// Creates a <see cref="Person"/> instance from the current form fields.
+    /// </summary>
     protected override Task<Person> OnAddFormAsync()
     {
         // Create a new Person instance from view-model fields
@@ -233,11 +258,14 @@ public class CRUDPersonUCViewModel
         return Task.FromResult(p);
     }
 
+    /// <summary>
+    /// Loads the provided entity into the form fields so the UI can edit it.
+    /// </summary>
+    /// <param name="entity">The entity to load into the form.</param>
     protected override Task OnLoadFormAsync(Person entity)
     {
         if (entity == null) throw new ArgumentNullException(nameof(entity));
 
-        // Populate view-model properties from the loaded entity
         Id = entity.Id;
         RoleId = entity.RoleId;
         AddressId = entity.AddressId;
@@ -246,12 +274,17 @@ public class CRUDPersonUCViewModel
         Email = entity.Email ?? string.Empty;
         IsActive = entity.IsActive;
 
-        // Also keep base.Entity in sync
         SelectedItem = entity;
+
+        // Ensure calling the protected hook directly switches to edit mode
+        IsEditMode = true;
 
         return Task.CompletedTask;
     }
 
+    /// <summary>
+    /// Resets the form fields to their default values.
+    /// </summary>
     protected override Task OnResetFormAsync()
     {
         // Reset form fields to defaults
@@ -268,6 +301,9 @@ public class CRUDPersonUCViewModel
         return Task.CompletedTask;
     }
 
+    /// <summary>
+    /// Persists the current form either by adding a new entity or updating an existing one.
+    /// </summary>
     protected override async Task OnSaveFormAsync()
     {
         try

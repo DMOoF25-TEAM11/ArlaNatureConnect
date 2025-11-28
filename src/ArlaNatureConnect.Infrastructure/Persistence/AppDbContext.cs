@@ -1,6 +1,6 @@
 using ArlaNatureConnect.Domain.Entities;
+
 using Microsoft.EntityFrameworkCore;
-using ArlaNatureConnect.Core.Services;
 
 namespace ArlaNatureConnect.Infrastructure.Persistence;
 
@@ -19,5 +19,11 @@ public partial class AppDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        // Configure automatic inclusion of related entities
+        modelBuilder.Entity<Person>().Navigation(e => e.Role).AutoInclude();
+        modelBuilder.Entity<Person>().Navigation(e => e.Address).AutoInclude();
+        modelBuilder.Entity<Person>().Navigation(e => e.Farms).AutoInclude();
+
     }
 }

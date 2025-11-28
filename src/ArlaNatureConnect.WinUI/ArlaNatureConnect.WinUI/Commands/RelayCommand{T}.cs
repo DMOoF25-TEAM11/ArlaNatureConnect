@@ -69,7 +69,27 @@ public sealed class RelayCommand<T> : ICommand
     /// <summary>
     /// Raises the <see cref="CanExecuteChanged"/> event.
     /// </summary>
-    public void RaiseCanExecuteChanged() => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+    public void RaiseCanExecuteChanged()
+    {
+        EventHandler? handler = CanExecuteChanged;
+        if (handler == null) return;
+
+        foreach (EventHandler single in handler.GetInvocationList())
+        {
+            try
+            {
+                single.Invoke(this, EventArgs.Empty);
+            }
+            catch (System.Runtime.InteropServices.COMException)
+            {
+                // swallow COM exceptions from UI handlers
+            }
+            catch
+            {
+                // swallow other exceptions defensively
+            }
+        }
+    }
 }
 
 

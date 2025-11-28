@@ -1,12 +1,9 @@
 using ArlaNatureConnect.Core;
 using ArlaNatureConnect.Core.Abstract;
-using ArlaNatureConnect.Core.Abstract.Services;
 using ArlaNatureConnect.Core.Services;
 using ArlaNatureConnect.Infrastructure.Persistence;
 using ArlaNatureConnect.Infrastructure.Repositories;
-using ArlaNatureConnect.Infrastructure.Services;
 
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -30,7 +27,7 @@ public static class DependencyInjection
         services.AddScoped<IFarmRepository, FarmRepository>();
 
         // Query services
-        services.AddScoped<IPersonQueryService, PersonQueryService>();
+        //services.AddScoped<IPersonQueryService, PersonQueryService>();
 
         return services;
     }

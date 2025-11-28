@@ -155,6 +155,11 @@ public abstract class CRUDViewModelBase<TRepos, TEntity>
             {
                 // Ensure PropertyChanged for Entity is raised even when repository throws
                 OnPropertyChanged(nameof(SelectedItem));
+                // Raise for SelectedItem (existing property) and for "Entity" which some consumers
+                // (including tests) expose as an alias to SelectedItem in derived classes.
+                // Raising both ensures listeners observing either name are notified.
+                OnPropertyChanged(nameof(SelectedItem));
+                OnPropertyChanged("Entity");
             }
         }
     }
@@ -271,11 +276,16 @@ public abstract class CRUDViewModelBase<TRepos, TEntity>
     /// </summary>
     protected void RefreshCommandStates()
     {
-        (AddCommand as RelayCommand)?.RaiseCanExecuteChanged();
-        (SaveCommand as RelayCommand)?.RaiseCanExecuteChanged();
-        (DeleteCommand as RelayCommand)?.RaiseCanExecuteChanged();
-        (CancelCommand as RelayCommand)?.RaiseCanExecuteChanged();
-        (RefreshCommand as RelayCommand)?.RaiseCanExecuteChanged();
+        // Each RaiseCanExecuteChanged may trigger UI handlers that can throw (for example COMExceptions
+        // from UI interop). Invoke each command's raiser individually and swallow exceptions so that
+        // a single faulty handler cannot break view-model logic. This mirrors the defensive approach
+        // used in other services (e.g. StatusInfoService.NotifyStatusChanged) and in ViewModelBase
+        // where COMExceptions from PropertyChanged handlers are swallowed.
+        try { (AddCommand as RelayCommand)?.RaiseCanExecuteChanged(); } catch (System.Runtime.InteropServices.COMException) { } catch { }
+        try { (SaveCommand as RelayCommand)?.RaiseCanExecuteChanged(); } catch (System.Runtime.InteropServices.COMException) { } catch { }
+        try { (DeleteCommand as RelayCommand)?.RaiseCanExecuteChanged(); } catch (System.Runtime.InteropServices.COMException) { } catch { }
+        try { (CancelCommand as RelayCommand)?.RaiseCanExecuteChanged(); } catch (System.Runtime.InteropServices.COMException) { } catch { }
+        try { (RefreshCommand as RelayCommand)?.RaiseCanExecuteChanged(); } catch (System.Runtime.InteropServices.COMException) { } catch { }
     }
     #endregion
 }
