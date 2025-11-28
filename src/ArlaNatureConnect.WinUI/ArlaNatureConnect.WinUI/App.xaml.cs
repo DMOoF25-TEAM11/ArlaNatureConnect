@@ -63,6 +63,9 @@ public partial class App : Application
                     .AddScoped<ConsultantPageViewModel>()
                     .AddScoped<FarmerPageViewModel>()
 
+                    // Feature ViewModels
+                    .AddScoped<ArlaEmployeeAssignNatureCheckViewModel>()
+
                     // Side Menus
                     .AddScoped<AdministratorPageSideMenuUCViewModel>()
                     .AddScoped<ArlaEmployeePageSideMenuUCViewModel>()

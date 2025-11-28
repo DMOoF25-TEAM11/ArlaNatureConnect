@@ -4,6 +4,8 @@ using ArlaNatureConnect.WinUI.Views.Pages;
 using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Navigation;
 
 using Windows.Graphics;
 
@@ -32,8 +34,14 @@ public sealed partial class MainWindow : Window
         // Initialize navigation handler with the content frame
         _navigationHandler.Initialize(ContentFrame);
 
+        // Subscribe to navigation events to show/hide sidebar
+        ContentFrame.Navigated += ContentFrame_Navigated;
+
         // Navigate to login page on startup
         _navigationHandler.Navigate(typeof(LoginPage));
+        
+        // Hide sidebar initially since we start on LoginPage
+        SideMenu.Visibility = Visibility.Collapsed;
     }
 
     private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
@@ -69,5 +77,20 @@ public sealed partial class MainWindow : Window
 
         // Unsubscribe after first activation
         Activated -= MainWindow_Activated;
+    }
+
+    private void ContentFrame_Navigated(object sender, NavigationEventArgs e)
+    {
+        // Show sidebar for all pages except LoginPage
+        if (e.SourcePageType == typeof(LoginPage))
+        {
+            SideMenu.Visibility = Visibility.Collapsed;
+            SideMenuColumn.Width = new GridLength(0); // Collapse the column width
+        }
+        else
+        {
+            SideMenu.Visibility = Visibility.Visible;
+            SideMenuColumn.Width = new GridLength(280); // Restore the column width
+        }
     }
 }

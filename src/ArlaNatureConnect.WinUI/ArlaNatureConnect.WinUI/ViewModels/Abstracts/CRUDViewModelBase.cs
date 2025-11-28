@@ -101,15 +101,21 @@ public abstract class CRUDViewModelBase<TRepos, TEntity>
     /// <param name="statusInfoServices">Service used to report loading state and connection information.</param>
     /// <param name="appMessageService">Service used to surface messages and errors to the UI.</param>
     /// <param name="repository">Items used to load and persist <typeparamref name="TEntity"/> instances.</param>
-    protected CRUDViewModelBase(IStatusInfoServices statusInfoServices, IAppMessageService appMessageService, TRepos repository)
-        : base(statusInfoServices, appMessageService, repository)
+    protected CRUDViewModelBase(IStatusInfoServices statusInfoServices, IAppMessageService appMessageService, TRepos repository, bool autoLoad)
+        : base(statusInfoServices, appMessageService, repository, autoLoad)
     {
+        // copy repository reference into this class's backing field so both _items (base) and _repository (derived) are usable
+        _repository = repository;
         AddCommand = new RelayCommand(async () => await OnAddAsync(), CanAdd);
         SaveCommand = new RelayCommand(async () => await OnSaveAsync(), CanSave);
         DeleteCommand = new RelayCommand(async () => await OnDeleteAsync(), CanDelete);
         CancelCommand = new RelayCommand(async () => await OnCancelAsync(), CanCancel);
         RefreshCommand = new RelayCommand(() => RefreshCommandStates());
     }
+
+    protected CRUDViewModelBase(IStatusInfoServices statusInfoServices, IAppMessageService appMessageService, TRepos repository)
+        : this(statusInfoServices, appMessageService, repository, true)
+    { }
 
     /// <summary>
     /// Loads an entity by id and prepares the view-model for edit mode if the entity exists.
@@ -155,6 +161,11 @@ public abstract class CRUDViewModelBase<TRepos, TEntity>
             {
                 // Ensure PropertyChanged for Entity is raised even when repository throws
                 OnPropertyChanged(nameof(SelectedItem));
+                // Raise for SelectedItem (existing property) and for "Entity" which some consumers
+                // (including tests) expose as an alias to SelectedItem in derived classes.
+                // Raising both ensures listeners observing either name are notified.
+                OnPropertyChanged(nameof(SelectedItem));
+                OnPropertyChanged("Entity");
             }
         }
     }
@@ -271,11 +282,16 @@ public abstract class CRUDViewModelBase<TRepos, TEntity>
     /// </summary>
     protected void RefreshCommandStates()
     {
-        (AddCommand as RelayCommand)?.RaiseCanExecuteChanged();
-        (SaveCommand as RelayCommand)?.RaiseCanExecuteChanged();
-        (DeleteCommand as RelayCommand)?.RaiseCanExecuteChanged();
-        (CancelCommand as RelayCommand)?.RaiseCanExecuteChanged();
-        (RefreshCommand as RelayCommand)?.RaiseCanExecuteChanged();
+        // Each RaiseCanExecuteChanged may trigger UI handlers that can throw (for example COMExceptions
+        // from UI interop). Invoke each command's raiser individually and swallow exceptions so that
+        // a single faulty handler cannot break view-model logic. This mirrors the defensive approach
+        // used in other services (e.g. StatusInfoService.NotifyStatusChanged) and in ViewModelBase
+        // where COMExceptions from PropertyChanged handlers are swallowed.
+        try { (AddCommand as RelayCommand)?.RaiseCanExecuteChanged(); } catch (System.Runtime.InteropServices.COMException) { } catch { }
+        try { (SaveCommand as RelayCommand)?.RaiseCanExecuteChanged(); } catch (System.Runtime.InteropServices.COMException) { } catch { }
+        try { (DeleteCommand as RelayCommand)?.RaiseCanExecuteChanged(); } catch (System.Runtime.InteropServices.COMException) { } catch { }
+        try { (CancelCommand as RelayCommand)?.RaiseCanExecuteChanged(); } catch (System.Runtime.InteropServices.COMException) { } catch { }
+        try { (RefreshCommand as RelayCommand)?.RaiseCanExecuteChanged(); } catch (System.Runtime.InteropServices.COMException) { } catch { }
     }
     #endregion
 }

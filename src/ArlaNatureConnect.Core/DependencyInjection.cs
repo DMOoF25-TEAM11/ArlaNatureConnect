@@ -15,6 +15,7 @@ public static class DependencyInjection
         services.AddSingleton<IAppMessageService, AppMessageService>();
         services.AddSingleton<IConnectionStringService, ConnectionStringService>();
         services.AddSingleton<IPrivilegeService, PrivilegeService>();
+        services.AddScoped<INatureCheckCaseService, NatureCheckCaseService>();
 
         return services;
     }
