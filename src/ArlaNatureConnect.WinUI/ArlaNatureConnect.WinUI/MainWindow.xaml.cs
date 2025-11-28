@@ -4,6 +4,9 @@ using ArlaNatureConnect.WinUI.Views.Pages;
 using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
+
+using Microsoft.UI.Xaml.Controls;
+
 using Microsoft.UI.Xaml.Navigation;
 
 using Windows.Graphics;
@@ -38,7 +41,7 @@ public sealed partial class MainWindow : Window
 
         // Navigate to login page on startup
         _navigationHandler.Navigate(typeof(LoginPage));
-
+        
         // Hide sidebar initially since we start on LoginPage
         SideMenu.Visibility = Visibility.Collapsed;
     }

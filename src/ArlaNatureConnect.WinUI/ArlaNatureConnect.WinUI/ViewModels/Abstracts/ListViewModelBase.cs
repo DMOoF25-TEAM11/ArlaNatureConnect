@@ -50,14 +50,18 @@ public abstract class ListViewModelBase<TRepos, TEntity> : ViewModelBase
     /// Service used to surface application messages and errors to the UI.
     /// </param>
     /// <param name="repository">Items used to access <typeparamref name="TEntity"/> instances.</param>
-    protected ListViewModelBase(IStatusInfoServices statusInfoServices, IAppMessageService appMessageService, TRepos repository)
+    /// <param name="autoLoad">If true the Items collection will be automatically loaded by calling <see cref="LoadAllAsync"/>; otherwise loading is deferred.</param>
+    protected ListViewModelBase(IStatusInfoServices statusInfoServices, IAppMessageService appMessageService, TRepos repository, bool autoLoad = true)
     {
         _statusInfoServices = statusInfoServices;
         _appMessageService = appMessageService;
         _items = repository;
 
-        // Start loading items (fire-and-forget). LoadAllAsync updates the ObservableCollection on the UI thread.
-        _ = LoadAllAsync();
+        // Start loading items (fire-and-forget) when requested. LoadAllAsync updates the ObservableCollection on the UI thread.
+        if (autoLoad)
+        {
+            _ = LoadAllAsync();
+        }
     }
 
     #region Observables Properties

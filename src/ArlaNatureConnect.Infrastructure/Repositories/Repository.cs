@@ -23,11 +23,13 @@ public abstract class Repository<TEntity> : IRepository<TEntity>
     public async Task AddAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
         await _dbSet.AddAsync(entity, cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
     }
 
     public async Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
     {
         await _dbSet.AddRangeAsync(entities, cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
     }
 
     public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
@@ -36,6 +38,7 @@ public abstract class Repository<TEntity> : IRepository<TEntity>
         if (entity != null)
         {
             _dbSet.Remove(entity);
+            await _context.SaveChangesAsync(cancellationToken);
         }
     }
 
@@ -52,7 +55,7 @@ public abstract class Repository<TEntity> : IRepository<TEntity>
     public async Task UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
         _dbSet.Update(entity);
-        await Task.CompletedTask;
+        await _context.SaveChangesAsync(cancellationToken);
     }
     #endregion
 }

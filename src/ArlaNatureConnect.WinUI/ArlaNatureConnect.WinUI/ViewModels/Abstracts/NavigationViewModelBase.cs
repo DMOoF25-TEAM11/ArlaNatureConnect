@@ -51,7 +51,7 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
     /// <summary>
     /// Command used to choose a person from a list. Derived classes wire this command to selection behaviour.
     /// </summary>
-    public RelayCommand<Person>? ChooseUserCommand { get; }
+    public RelayCommand<Person>? ChooseUserCommand { get; protected set; }
     #endregion
 
     /// <summary>
