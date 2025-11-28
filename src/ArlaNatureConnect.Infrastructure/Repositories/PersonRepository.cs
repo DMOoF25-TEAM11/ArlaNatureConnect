@@ -75,29 +75,21 @@ public class PersonRepository : Repository<Person>, IPersonRepository
     /// <returns>A list of <see cref="Person"/> that belong to the requested role. Returns an empty list if role not found or an error occurs.</returns>
     public async Task<IEnumerable<Person>> GetPersonsByRoleAsync(string role, CancellationToken ct = default)
     {
-        // Use the repository's existing context which is created at construction time.
-        // The test suite seeds that context instance, and creating an additional
-        // context here (with a different internal service provider) can lead to
-        // the in-memory stores appearing out of sync in tests. Using the stored
-        // _context ensures we query the same in-memory database instance that
-        // was seeded in the tests.
-        AppDbContext ctx = _context;
+        await using AppDbContext ctx = _factory.CreateDbContext();
 
         if (string.IsNullOrWhiteSpace(role))
-            return Array.Empty<Person>();
+            return [];
 
-        // Normalize incoming role once
-        string normalized = role.Trim();
+        // Normalize and resolve role entity by name (case-insensitive)
+        string normalized = role.Trim().ToLowerInvariant();
 
         try
         {
-            // Load roles into memory and perform a case-insensitive match. This avoids surprises
-            // with provider translation (InMemory provider) when using ToLower()/ToUpper() in expressions.
-            var roles = await ctx.Set<Role>().ToListAsync(ct).ConfigureAwait(false);
-            Role? roleEntity = roles.FirstOrDefault(r => string.Equals(r.Name, normalized, StringComparison.OrdinalIgnoreCase));
+            Role? roleEntity = await ctx.Set<Role>()
+                .FirstOrDefaultAsync(r => r.Name.ToLower() == normalized, ct).ConfigureAwait(false);
 
             if (roleEntity == null)
-                return Array.Empty<Person>();
+                return [];
 
             // Use RoleId to filter persons to ensure referential integrity and performance
             return await ctx.Set<Person>()
@@ -108,7 +100,7 @@ public class PersonRepository : Repository<Person>, IPersonRepository
         {
             // Swallowing exceptions is intentional here to preserve the previous behavior of returning an empty list
             // when an error occurs during lookup. Consider logging the exception or rethrowing in future changes.
-            return Array.Empty<Person>();
+            return [];
         }
     }
 }
