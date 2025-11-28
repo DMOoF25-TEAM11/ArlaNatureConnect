@@ -54,8 +54,9 @@ public class CRUDPersonUCViewModel
     public static string LabelLastName => LABEL_LASTNAME;
     public static string LabelEmail => LABEL_EMAIL;
     public static string LabelIsActive => LABEL_ISACTIVE;
-    public static string LabelRoleId => LABEL_ROLE;
-    public static string LabelAddressId => LABEL_ADDRESSID;
+    public static string LabelRole => LABEL_ROLE;
+    public static string LabelAddress => LABEL_ADDRESSID;
+    public static string LabelFarms => LABEL_FARMS;
 
     public int ItemCounter
     {
