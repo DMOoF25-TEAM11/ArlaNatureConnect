@@ -50,6 +50,27 @@ public sealed partial class RelayCommand : ICommand
     /// <summary>
     /// Raises the <see cref="CanExecuteChanged"/> event.
     /// </summary>
-    public void RaiseCanExecuteChanged() => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+    public void RaiseCanExecuteChanged()
+    {
+        EventHandler? handler = CanExecuteChanged;
+        if (handler == null) return;
+
+        // Invoke each subscriber individually so a throwing handler does not prevent others from running
+        foreach (EventHandler single in handler.GetInvocationList())
+        {
+            try
+            {
+                single.Invoke(this, EventArgs.Empty);
+            }
+            catch (System.Runtime.InteropServices.COMException)
+            {
+                // Swallow COM exceptions coming from UI-layer handlers to avoid crashing view-model logic
+            }
+            catch
+            {
+                // Swallow other exceptions to keep RaiseCanExecuteChanged defensive
+            }
+        }
+    }
 }
 

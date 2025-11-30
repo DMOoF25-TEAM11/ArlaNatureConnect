@@ -1,4 +1,5 @@
 using ArlaNatureConnect.Domain.Entities;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace ArlaNatureConnect.Infrastructure.Persistence;
@@ -20,47 +21,9 @@ public partial class AppDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        // Configure Address table name (database uses "Address" not "Addresses")
-        modelBuilder.Entity<Address>(entity =>
-        {
-            entity.ToTable("Address");
-        });
-
-        modelBuilder.Entity<NatureCheckCase>(entity =>
-        {
-            entity.HasKey(e => e.Id);
-            // Status is stored as NVARCHAR in database (e.g., "Assigned", "InProgress"), so convert enum to/from string
-            entity.Property(e => e.Status)
-                .HasConversion(
-                    v => v.ToString(),  // Convert enum to string for database
-                    v => Enum.Parse<Domain.Enums.NatureCheckCaseStatus>(v));  // Convert string from database to enum
-            entity.Property(e => e.Notes).HasMaxLength(2000);
-            entity.Property(e => e.Priority).HasMaxLength(100);
-            
-            // Convert DateTimeOffset to/from DATETIME2 in database
-            entity.Property(e => e.CreatedAt)
-                .HasConversion(
-                    v => v.DateTime,  // Convert DateTimeOffset to DateTime for database
-                    v => new DateTimeOffset(v, TimeSpan.Zero));  // Convert DateTime from database to DateTimeOffset (assume UTC)
-            entity.Property(e => e.AssignedAt)
-                .HasConversion(
-                    v => v.HasValue ? v.Value.DateTime : (DateTime?)null,  // Convert DateTimeOffset? to DateTime? for database
-                    v => v.HasValue ? new DateTimeOffset(v.Value, TimeSpan.Zero) : (DateTimeOffset?)null);  // Convert DateTime? from database to DateTimeOffset?
-
-            entity.HasOne<Farm>()
-                .WithMany()
-                .HasForeignKey(e => e.FarmId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            entity.HasOne<Person>()
-                .WithMany()
-                .HasForeignKey(e => e.ConsultantId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            entity.HasOne<Person>()
-                .WithMany()
-                .HasForeignKey(e => e.AssignedByPersonId)
-                .OnDelete(DeleteBehavior.Restrict);
-        });
+        // Configure automatic inclusion of related entities
+        modelBuilder.Entity<Person>().Navigation(e => e.Role).AutoInclude();
+        modelBuilder.Entity<Person>().Navigation(e => e.Address).AutoInclude();
+        modelBuilder.Entity<Person>().Navigation(e => e.Farms).AutoInclude();
     }
 }

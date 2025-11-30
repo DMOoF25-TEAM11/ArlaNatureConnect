@@ -93,4 +93,28 @@ public sealed partial class MessageErrorSuccesUCViewModelTests
         Assert.IsFalse(vm.IsSuccessVisible);
         Assert.IsFalse(vm.IsErrorVisible);
     }
+
+    [TestMethod]
+    public void PropertyChangedHandler_Throws_COMException_IsHandled()
+    {
+        MessageErrorSuccesUCViewModel vm = new();
+
+        // Attach a handler that throws COMException to simulate UI layer throwing when reacting to property changes
+        vm.PropertyChanged += (s, e) => throw new System.Runtime.InteropServices.COMException("UI thread COM error");
+
+        try
+        {
+            // Should not throw despite handler throwing
+            vm.StatusMessage = "New status";
+            vm.ErrorMessage = "New error";
+        }
+        catch (System.Runtime.InteropServices.COMException)
+        {
+            Assert.Fail("ViewModel should not propagate COMException thrown by PropertyChanged handlers.");
+        }
+
+        // Ensure properties updated
+        Assert.AreEqual("New status", vm.StatusMessage);
+        Assert.AreEqual("New error", vm.ErrorMessage);
+    }
 }

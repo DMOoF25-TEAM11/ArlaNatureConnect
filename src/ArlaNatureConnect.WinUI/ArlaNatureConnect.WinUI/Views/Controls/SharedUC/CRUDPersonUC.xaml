@@ -70,74 +70,143 @@
     </StackPanel>
 
     <!-- Fixed header row placed outside the ListView so it remains visible while scrolling -->
-    <StackPanel Orientation="Horizontal" Grid.Row="6" Spacing="8" Margin="0,12,0,0">
-      <Button Content="{Binding LabelFirstName, Mode=OneTime}"
+    <Grid Grid.Row="6" MaxWidth="900">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="100" />
+        <ColumnDefinition Width="100" />
+        <ColumnDefinition Width="200" />
+        <ColumnDefinition Width="50" />
+        <ColumnDefinition Width="100" />
+        <ColumnDefinition Width="250" />
+        <ColumnDefinition Width="100" />
+      </Grid.ColumnDefinitions>
+      <Button Grid.Column="0"
+              Content="{Binding LabelFirstName, Mode=OneTime}"
               Width="100"
               FontWeight="SemiBold"
               Command="{Binding SortCommand}"
               CommandParameter="FirstName"
               Background="Transparent"
               BorderThickness="0" />
-      <Button Content="{Binding LabelLastName, Mode=OneTime}"
+      <Button Grid.Column="1"
+              Content="{Binding LabelLastName, Mode=OneTime}"
               Width="100"
               FontWeight="SemiBold"
               Command="{Binding SortCommand}"
               CommandParameter="LastName"
               Background="Transparent"
               BorderThickness="0" />
-      <Button Content="{Binding LabelEmail, Mode=OneTime}"
+      <Button Grid.Column="2"
+              Content="{Binding LabelEmail, Mode=OneTime}"
               Width="200"
               FontWeight="SemiBold"
               Command="{Binding SortCommand}"
               CommandParameter="Email"
               Background="Transparent"
               BorderThickness="0" />
-      <Button Content="{Binding LabelIsActive, Mode=OneTime}"
+      <Button Grid.Column="3"
+              Content="{Binding LabelIsActive, Mode=OneTime}"
               Width="50"
               FontWeight="SemiBold"
               Command="{Binding SortCommand}"
               CommandParameter="IsActive"
               Background="Transparent"
               BorderThickness="0" />
-      <Button Content="{Binding LabelRoleId, Mode=OneTime}"
-              Width="50"
+      <Button Grid.Column="4" 
+              Content="{Binding LabelRole, Mode=OneTime}"
+              Width="100"
               FontWeight="SemiBold"
               Command="{Binding SortCommand}"
-              CommandParameter="RoleId"
+              CommandParameter="Role.Name"
               Background="Transparent"
               BorderThickness="0" />
-      <Button Content="{Binding LabelAddressId, Mode=OneTime}"
-              Width="50"
+      <Button Grid.Column="5" 
+              Content="{Binding LabelAddress, Mode=OneTime}"
+              Width="250"
               FontWeight="SemiBold"
               Command="{Binding SortCommand}"
               CommandParameter="AddressId"
               Background="Transparent"
               BorderThickness="0" />
-    </StackPanel>
+      <Button Grid.Column="6" 
+              Content="{Binding LabelFarms, Mode=OneTime}"
+              Width="100"
+              FontWeight="SemiBold"
+              Command="{Binding SortCommand}"
+              CommandParameter="Farms.Count"
+              Background="Transparent"
+              BorderThickness="0" />
+    </Grid>
 
     <ListView Grid.Row="7"
-              ItemsSource="{Binding Items, Mode=OneWay}"
+              ItemsSource="{Binding Items}"
               SelectedItem="{Binding SelectedItem}"
               Margin="0,8,0,0"
-              MaxHeight="300">
+              MaxHeight="300"
+              MaxWidth="900">
 
        <ListView.ItemContainerStyle>
         <Style TargetType="ListViewItem">
+          <Setter Property="Padding" Value="0" />
+          <Setter Property="Margin" Value="0" />
+          <Setter Property="BorderThickness" Value="0" />
+          <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+          <Setter Property="VerticalContentAlignment" Value="Stretch" />
+          <Setter Property="MinHeight" Value="0" />
         </Style>
        </ListView.ItemContainerStyle>
 
-       <ListView.ItemTemplate>
-        <DataTemplate>
-          <StackPanel Orientation="Horizontal" Spacing="8" Background="{Binding DataContext.ItemCounter, ElementName=Root, Converter={StaticResource AlternationToBrushConverter}}">
-            <TextBlock Text="{Binding FirstName}" Width="100" />
-            <TextBlock Text="{Binding LastName}" Width="100" />
-            <TextBlock Text="{Binding Email}" Width="200" />
-            <TextBlock Text="{Binding IsActive}" Width="50" />
-            <TextBlock Text="{Binding RoleId}" Width="50" />
-            <TextBlock Text="{Binding AddressId}" Width="50" />
-          </StackPanel>
-        </DataTemplate>
-      </ListView.ItemTemplate>
+      <ListView.ItemTemplate>
+      <DataTemplate>
+        <!-- Each row is a bordered Grid to show cell separators like a table -->
+        <Border BorderBrush="{StaticResource ArlaPrimaryDarkBrush}" BorderThickness="0,0,0,1" Background="{Binding DataContext.ItemCounter, ElementName=Root, Converter={StaticResource AlternationToBrushConverter}}">
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="100" />
+              <ColumnDefinition Width="100" />
+              <ColumnDefinition Width="200" />
+              <ColumnDefinition Width="50" />
+              <ColumnDefinition Width="100" />
+              <ColumnDefinition Width="250" />
+              <ColumnDefinition Width="100" />
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" BorderBrush="{StaticResource ArlaPrimaryDarkBrush}" BorderThickness="1,0,0,0" Padding="4,0,0,0">
+              <TextBlock Text="{Binding FirstName}" VerticalAlignment="Center" />
+            </Border>
+
+            <Border Grid.Column="1" BorderBrush="{StaticResource ArlaPrimaryDarkBrush}" BorderThickness="1,0,0,0" Padding="4,0,0,0">
+              <TextBlock Text="{Binding LastName}" VerticalAlignment="Center" />
+            </Border>
+
+            <Border Grid.Column="2" BorderBrush="{StaticResource ArlaPrimaryDarkBrush}" BorderThickness="1,0,0,0" Padding="4,0,0,0">
+              <TextBlock Text="{Binding Email}" VerticalAlignment="Center" />
+            </Border>
+
+            <Border Grid.Column="3" BorderBrush="{StaticResource ArlaPrimaryDarkBrush}" BorderThickness="1,0,0,0" Padding="4,0,0,0">
+              <TextBlock Text="{Binding IsActive}" VerticalAlignment="Center" />
+            </Border>
+
+            <Border Grid.Column="4" BorderBrush="{StaticResource ArlaPrimaryDarkBrush}" BorderThickness="1,0,0,0" Padding="4,0,0,0">
+              <TextBlock Text="{Binding Role.Name}" VerticalAlignment="Center" />
+            </Border>
+
+            <Border Grid.Column="5" BorderBrush="{StaticResource ArlaPrimaryDarkBrush}" BorderThickness="1,0,0,0" Padding="4,0,0,0">
+              <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding Address.PostalCode}" />
+                <TextBlock Text=", " />
+                <TextBlock Text="{Binding Address.Street}" />
+              </StackPanel>
+            </Border>
+
+            <Border Grid.Column="6" BorderBrush="{StaticResource ArlaPrimaryDarkBrush}" BorderThickness="1,0,1,0" Padding="4,0,0,0">
+              <TextBlock Text="{Binding Farms.Count}" VerticalAlignment="Center" />
+            </Border>
+
+          </Grid>
+        </Border>
+      </DataTemplate>
+    </ListView.ItemTemplate>
     </ListView>
   </Grid>
 </UserControl>
