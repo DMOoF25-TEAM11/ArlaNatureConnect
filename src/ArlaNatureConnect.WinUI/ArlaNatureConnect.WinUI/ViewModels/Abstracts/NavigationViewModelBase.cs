@@ -28,6 +28,51 @@ namespace ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 ///   constructor to set up navigation command handling.
 /// - Optionally assign <see cref="ContentFactory"/> to provide custom content creation logic for navigation tags.
 /// - Call <see cref="AttachSideMenuToMainWindow"/> (or use <see cref="AttachToView(Page?)"/>) to attach the shared side menu.
+///
+/// Inheriting XML Documentation with <c>&lt;inheritdoc/&gt;</c>:
+/// <para>
+/// Use <c>&lt;inheritdoc/&gt;</c> on derived types or overridden members to inherit the documentation emitted by this
+/// base class. This helps avoid duplication and keeps docs consistent when the behaviour is the same.
+/// </para>
+/// <para>Why use it:</para>
+/// <list type="bullet">
+///   <item><description>Keeps documentation DRY when derived classes implement the same behavior.</description></item>
+///   <item><description>Ensures IntelliSense shows the same guidance for derived members without retyping comments.</description></item>
+///   <item><description>Works well for large hierarchies where base behaviour is the canonical description.</description></item>
+/// </list>
+///
+/// <example>
+/// <code language="csharp">
+/// // Base class already documents the behaviour
+/// public abstract class NavigationViewModelBase
+/// {
+///     /// &lt;summary&gt;
+///     /// Perform async initialization for the view-model.
+///     /// &lt;/summary&gt;
+///     public virtual Task InitializeAsync(Role? role)
+///     {
+///         return Task.CompletedTask;
+///     }
+/// }
+///
+/// // Derived class can inherit the documentation instead of repeating it
+/// /// &lt;inheritdoc/&gt;
+/// public class MyRoleViewModel : NavigationViewModelBase
+/// {
+///     /// &lt;inheritdoc/&gt;
+///     public override Task InitializeAsync(Role? role)
+///     {
+///         // role-specific initialization here
+///         return base.InitializeAsync(role);
+///     }
+/// }
+/// </code>
+/// </example>
+///
+/// <remarks>
+/// When using <c>&lt;inheritdoc/&gt;</c> in a library project, ensure XML documentation file generation is enabled
+/// for the build so the inherited comments are available to consuming projects and IntelliSense.
+/// </remarks>
 /// </summary>
 public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewModelBase
 {
@@ -48,9 +93,6 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
     #endregion
     #region Fields Commands
 
-    /// <summary>
-    /// Command used to choose a person from a list. Derived classes wire this command to selection behaviour.
-    /// </summary>
     public RelayCommand<Person>? ChooseUserCommand { get; protected set; }
     #endregion
 
@@ -133,6 +175,8 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
     /// <returns>A completed task in the base implementation; derived classes return actual initialization tasks.</returns>
     public virtual Task InitializeAsync(Role? role)
     {
+        // Inline comment: default implementation intentionally returns a completed task
+        // so that callers can await InitializeAsync without checking for null/override.
         return Task.CompletedTask;
     }
 

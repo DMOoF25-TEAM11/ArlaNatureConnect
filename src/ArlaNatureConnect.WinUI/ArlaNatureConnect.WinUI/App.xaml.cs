@@ -52,7 +52,7 @@ public partial class App : Application
                     .AddSingleton<MainWindow>()
 
                     // Services
-                    .AddSingleton<NavigationHandler>()
+                    .AddSingleton<INavigationHandler, NavigationHandler>()
 
                     // Controls
                     .AddSingleton<StatusBarUCViewModel>()

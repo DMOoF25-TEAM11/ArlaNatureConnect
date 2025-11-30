@@ -1,6 +1,7 @@
 using ArlaNatureConnect.Core.Abstract;
 using ArlaNatureConnect.Core.Services;
 using ArlaNatureConnect.Domain.Enums;
+using ArlaNatureConnect.WinUI.Services;
 using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 
 namespace ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu;
@@ -10,8 +11,9 @@ public sealed partial class ConsultantPageSideMenuUCViewModel : SideMenuViewMode
     public ConsultantPageSideMenuUCViewModel(
         IStatusInfoServices statusInfoServices,
         IAppMessageService appMessageService,
-        IPersonRepository repository)
-        : base(statusInfoServices, appMessageService, repository)
+        IPersonRepository repository,
+        INavigationHandler navigationHandler)
+        : base(statusInfoServices, appMessageService, repository, navigationHandler)
     {
         // Fire-and-forget initialization; exceptions handled inside InitializeAsync
         _ = InitializeAsync();

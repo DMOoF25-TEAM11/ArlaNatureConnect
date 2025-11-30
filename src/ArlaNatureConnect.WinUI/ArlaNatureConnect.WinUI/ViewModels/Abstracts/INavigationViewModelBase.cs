@@ -1,3 +1,4 @@
+// File charset: UTF-8
 using ArlaNatureConnect.Domain.Entities;
 using ArlaNatureConnect.WinUI.Commands;
 
@@ -16,7 +17,52 @@ namespace ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 ///   navigation pages (for example pages that display dashboards, lists and task content per user/role).
 /// - Makes it easier to write unit tests and UI components that operate against an interface rather than concrete
 ///   implementations, enabling mocking and decoupling between views and view-model implementations.
+/// 
+/// Inheriting XML Documentation with <inheritdoc/>
+/// --------------------------------------------
+/// <para>
+/// Implementations of this interface can use the `<inheritdoc/>` XML documentation tag to inherit the
+/// documentation supplied here. This keeps documentation DRY (don't repeat yourself) and ensures that
+/// the contract and its implementors remain synchronized when remarks change.
+/// </para>
+/// 
+/// How to use and why we have it:
+/// - Use `<inheritdoc/>` on members of concrete types (classes, structs, other interfaces) that implement
+///   this interface to automatically inherit summaries and parameter/returns documentation.
+/// - This is helpful for large APIs where the behaviour is documented on the contract and multiple
+///   implementations should present the same documentation in IDE tooltips and generated API docs.
+/// 
+/// <example>
+/// <code language="csharp">
+/// // Example: inherit docs from the interface on a concrete view-model implementation
+/// public class ExampleNavigationViewModel : INavigationViewModelBase
+/// {
+///     // Inherit the property and command documentation from the interface
+///     /// &lt;inheritdoc/&gt;
+///     public RelayCommand&lt;Person&gt;? ChooseUserCommand { get; }
+///
+///     /// &lt;inheritdoc/&gt;
+///     public ICommand? NavigationCommand { get; }
+///
+///     /// &lt;inheritdoc/&gt;
+///     public bool IsLoading { get; private set; }
+///
+///     /// &lt;inheritdoc/&gt;
+///     public UserControl? CurrentContent { get; private set; }
+///
+///     /// &lt;inheritdoc/&gt;
+///     public Task InitializeAsync(Role? role) => Task.CompletedTask;
+///
+///     /// &lt;inheritdoc/&gt;
+///     public void AttachToView(Page? page) { }
+///
+///     /// &lt;inheritdoc/&gt;
+///     public void AttachSideMenuToMainWindow() { }
+/// }
+/// </code>
+/// </example>
 /// </summary>
+// Inline comment: Use `<inheritdoc/>` on implementations to inherit documentation from this interface.
 public interface INavigationViewModelBase
 {
 
