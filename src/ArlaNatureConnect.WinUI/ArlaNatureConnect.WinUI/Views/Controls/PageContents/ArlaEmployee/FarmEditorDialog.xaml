@@ -1,0 +1,93 @@
+<UserControl
+    x:Class="ArlaNatureConnect.WinUI.Views.Controls.PageContents.ArlaEmployee.FarmEditorDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:pages="using:ArlaNatureConnect.WinUI.ViewModels.Pages"
+    d:DataContext="{d:DesignInstance Type=pages:ArlaEmployeeAssignNatureCheckViewModel}"
+    mc:Ignorable="d">
+
+    <!-- Modal overlay background -->
+    <Border Background="#80000000"
+            Visibility="{Binding IsFarmEditorVisible, Converter={StaticResource BoolToVis}, FallbackValue=Collapsed}">
+        <Border Background="White"
+                CornerRadius="12"
+                Padding="24"
+                Width="520"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+            <StackPanel Spacing="16">
+                <TextBlock Text="{Binding FarmEditorTitle}"
+                           Style="{StaticResource ArlaSectionHeader}" />
+
+                <StackPanel>
+                    <TextBlock Text="Gård navn"
+                               Style="{StaticResource ArlaCaptionText}" />
+                    <TextBox Text="{Binding FarmForm.Name, Mode=TwoWay}" />
+                </StackPanel>
+
+                <StackPanel>
+                    <TextBlock Text="CVR Nummer"
+                               Style="{StaticResource ArlaCaptionText}" />
+                    <TextBox Text="{Binding FarmForm.Cvr, Mode=TwoWay}" />
+                </StackPanel>
+
+                <StackPanel>
+                    <TextBlock Text="Adresse"
+                               Style="{StaticResource ArlaCaptionText}" />
+                    <TextBox Text="{Binding FarmForm.Street, Mode=TwoWay}" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Spacing="12">
+                    <StackPanel Width="220">
+                        <TextBlock Text="By"
+                                   Style="{StaticResource ArlaCaptionText}" />
+                        <TextBox Text="{Binding FarmForm.City, Mode=TwoWay}" />
+                    </StackPanel>
+                    <StackPanel Width="120">
+                        <TextBlock Text="Postnr."
+                                   Style="{StaticResource ArlaCaptionText}" />
+                        <TextBox Text="{Binding FarmForm.PostalCode, Mode=TwoWay}" />
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel>
+                    <TextBlock Text="Land"
+                               Style="{StaticResource ArlaCaptionText}" />
+                    <TextBox Text="{Binding FarmForm.Country, Mode=TwoWay}" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Spacing="12">
+                    <StackPanel Width="220">
+                        <TextBlock Text="Landmand fornavn"
+                                   Style="{StaticResource ArlaCaptionText}" />
+                        <TextBox Text="{Binding FarmForm.OwnerFirstName, Mode=TwoWay}" />
+                    </StackPanel>
+                    <StackPanel Width="220">
+                        <TextBlock Text="Landmand efternavn"
+                                   Style="{StaticResource ArlaCaptionText}" />
+                        <TextBox Text="{Binding FarmForm.OwnerLastName, Mode=TwoWay}" />
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel>
+                    <TextBlock Text="Landmand e-mail"
+                               Style="{StaticResource ArlaCaptionText}" />
+                    <TextBox Text="{Binding FarmForm.OwnerEmail, Mode=TwoWay}" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Spacing="12" HorizontalAlignment="Right">
+                    <Button Content="Annuller"
+                            Style="{StaticResource ArlaAccentButton}"
+                            Command="{Binding CancelFarmEditorCommand}" />
+                    <Button Content="{Binding FarmEditorSubmitText}"
+                            Style="{StaticResource ArlaPositiveButton}"
+                            Command="{Binding SaveFarmCommand}" />
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </Border>
+</UserControl>
+
+

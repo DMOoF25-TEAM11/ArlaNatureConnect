@@ -4,43 +4,28 @@
     xmlns:winui="using:Microsoft.UI.Xaml"
     xmlns:converters="using:ArlaNatureConnect.WinUI.Converters">
 
-  <!--  PRIMARY COLOUR PALETTE  -->
-  <!-- Define brushes directly to avoid unresolved Color type in WinUI XAML -->
+  <!--  PRIMARY COLOUR PALETTE -->
   <SolidColorBrush x:Key="ArlaPrimaryBrush" Color="#FF00693C" />
-  <!-- Primary Green -->
   <SolidColorBrush x:Key="ArlaPrimaryLightBrush" Color="#FFC8E1C1" />
-  <!-- Light Green -->
   <SolidColorBrush x:Key="ArlaPrimaryDarkBrush" Color="#FF004225" />
-  <!-- Dark Green -->
   <SolidColorBrush x:Key="ArlaSidebarLightBrush" Color="#FFC8E1C1" />
-  <!-- Light Green for sidebar -->
   <SolidColorBrush x:Key="ArlaTableHeaderBrush" Color="#FF6EA870" />
-  <!-- Darker green for table header -->
   <SolidColorBrush x:Key="ArlaNavHoverBrush" Color="#FFCFE9C6" />
-  <!-- Lighter green for nav hover -->
   <SolidColorBrush x:Key="ArlaPrimaryHoverBrush" Color="#FF005B2E" />
-  <!--  Darker green for button hover -->
   <SolidColorBrush x:Key="ArlaAccentHoverBrush" Color="#FFE8C43F" />
-  <!-- Deeper yellow for button hover -->
   <SolidColorBrush x:Key="ArlaTableRowHoverBrush" Color="#FFC8E1C1" />
-  <!-- Light green for table row hover -->
   <SolidColorBrush x:Key="ArlaTableHeaderBorderBrush" Color="#FFE5E5E5" />
-  <!-- Gray border for table header -->
 
   <!--  SECONDARY COLOUR PALETTE -->
   <SolidColorBrush x:Key="ArlaAccentBrush" Color="#FFFFD94A" />
-  <!-- Yellow accent -->
   <SolidColorBrush x:Key="ArlaSecondaryBrush" Color="#FF007C89" />
-  <!-- Turquoise -->
   <SolidColorBrush x:Key="ArlaNeutralLightBrush" Color="#FFF4F4F2" />
-  <!-- Off White -->
+  <SolidColorBrush x:Key="ArlaNeutralLighterBrush" Color="#FFF9F9F7" />
   <SolidColorBrush x:Key="ArlaNeutralDarkBrush" Color="#FF555555" />
-  <!-- Updated neutral gray text -->
   <SolidColorBrush x:Key="ArlaSurfaceBrush" Color="#FFFFFFFF" />
   <SolidColorBrush x:Key="ArlaErrorBrush" Color="#FF9E463D" />
-  <!-- Clay Red -->
   <SolidColorBrush x:Key="ArlaLightGreyBrush" Color="#FFE0E0E0" />
-  <!-- Light Grey for borders -->
+  <SolidColorBrush x:Key="ArlaPrimaryMutedBrush" Color="#FFE3F1E7" />
 
   <!--  GLOBAL THEME -->
   <SolidColorBrush x:Key="AppBackgroundBrush" Color="#FFF4F4F2" />
@@ -335,6 +320,68 @@
       </Setter.Value>
     </Setter>
   </Style>
+
+    <!--  STATUS PILL STYLE -->
+    <Style x:Key="StatusPillStyle" TargetType="Border">
+        <Setter Property="Padding" Value="12,4"/>
+        <Setter Property="CornerRadius" Value="16"/>
+        <Setter Property="Background" Value="{StaticResource ArlaNeutralLightBrush}"/>
+        <Setter Property="Margin" Value="0,0,8,0"/>
+    </Style>
+
+    <!--  SECTION HEADER TEXT STYLE -->
+    <Style x:Key="ArlaSectionHeader" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="24"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="{StaticResource ArlaPrimaryDarkBrush}"/>
+    </Style>
+
+    <!--  CAPTION TEXT STYLE -->
+    <Style x:Key="ArlaCaptionText" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Foreground" Value="{StaticResource ArlaNeutralDarkBrush}"/>
+        <Setter Property="Opacity" Value="0.8"/>
+    </Style>
+
+    <!--  FILTER PRIMARY BUTTON STYLE -->
+    <Style x:Key="ArlaFilterPrimaryButton" TargetType="Button" BasedOn="{StaticResource ArlaPrimaryButton}">
+        <Setter Property="MinWidth" Value="120"/>
+        <Setter Property="MinHeight" Value="36"/>
+        <Setter Property="Padding" Value="12,8"/>
+    </Style>
+
+    <!--  FILTER SECONDARY BUTTON STYLE -->
+    <Style x:Key="ArlaFilterSecondaryButton" TargetType="Button" BasedOn="{StaticResource ArlaSecondaryButton}">
+        <Setter Property="MinWidth" Value="120"/>
+        <Setter Property="MinHeight" Value="36"/>
+        <Setter Property="Padding" Value="12,8"/>
+    </Style>
+
+    <!--  POSITIVE BUTTON STYLE -->
+    <Style x:Key="ArlaPositiveButton" TargetType="Button" BasedOn="{StaticResource ArlaPrimaryButton}">
+        <Setter Property="MinWidth" Value="140"/>
+        <Setter Property="MinHeight" Value="40"/>
+    </Style>
+
+    <!--  ACCENT BUTTON STYLE -->
+    <Style x:Key="ArlaAccentButton" TargetType="Button" BasedOn="{StaticResource ArlaSecondaryButton}">
+        <Setter Property="MinWidth" Value="120"/>
+        <Setter Property="MinHeight" Value="40"/>
+    </Style>
+
+    <!--  DANGER BUTTON STYLE -->
+    <Style x:Key="ArlaDangerButton" TargetType="Button" BasedOn="{StaticResource ArlaSecondaryButton}">
+        <Setter Property="Background" Value="{StaticResource ArlaErrorBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource ArlaErrorBrush}"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="MinWidth" Value="120"/>
+        <Setter Property="MinHeight" Value="40"/>
+    </Style>
+
+    <!--  PRIMARY ACTION BUTTON STYLE -->
+    <Style x:Key="ArlaPrimaryActionButton" TargetType="Button" BasedOn="{StaticResource ArlaPrimaryButton}">
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+    </Style>
 
 </ResourceDictionary>
 

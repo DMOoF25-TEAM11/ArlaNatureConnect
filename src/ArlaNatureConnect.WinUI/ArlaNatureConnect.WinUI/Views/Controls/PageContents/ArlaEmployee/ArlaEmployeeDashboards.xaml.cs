@@ -1,6 +1,6 @@
 using Microsoft.UI.Xaml.Controls;
 
-namespace ArlaNatureConnect.WinUI.View.Pages.ArlaEmployee;
+namespace ArlaNatureConnect.WinUI.Views.Controls.PageContents.ArlaEmployee;
 
 /// <summary>
 /// UserControl for the Arla Employee Dashboards content area.

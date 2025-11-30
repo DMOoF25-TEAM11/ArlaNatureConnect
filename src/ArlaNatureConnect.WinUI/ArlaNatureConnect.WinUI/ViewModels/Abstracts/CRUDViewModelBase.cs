@@ -101,15 +101,21 @@ public abstract class CRUDViewModelBase<TRepos, TEntity>
     /// <param name="statusInfoServices">Service used to report loading state and connection information.</param>
     /// <param name="appMessageService">Service used to surface messages and errors to the UI.</param>
     /// <param name="repository">Items used to load and persist <typeparamref name="TEntity"/> instances.</param>
-    protected CRUDViewModelBase(IStatusInfoServices statusInfoServices, IAppMessageService appMessageService, TRepos repository)
-        : base(statusInfoServices, appMessageService, repository)
+    protected CRUDViewModelBase(IStatusInfoServices statusInfoServices, IAppMessageService appMessageService, TRepos repository, bool autoLoad)
+        : base(statusInfoServices, appMessageService, repository, autoLoad)
     {
+        // copy repository reference into this class's backing field so both _items (base) and _repository (derived) are usable
+        _repository = repository;
         AddCommand = new RelayCommand(async () => await OnAddAsync(), CanAdd);
         SaveCommand = new RelayCommand(async () => await OnSaveAsync(), CanSave);
         DeleteCommand = new RelayCommand(async () => await OnDeleteAsync(), CanDelete);
         CancelCommand = new RelayCommand(async () => await OnCancelAsync(), CanCancel);
         RefreshCommand = new RelayCommand(() => RefreshCommandStates());
     }
+
+    protected CRUDViewModelBase(IStatusInfoServices statusInfoServices, IAppMessageService appMessageService, TRepos repository)
+        : this(statusInfoServices, appMessageService, repository, true)
+    { }
 
     /// <summary>
     /// Loads an entity by id and prepares the view-model for edit mode if the entity exists.

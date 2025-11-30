@@ -10,6 +10,7 @@ public partial class AppDbContext : DbContext
     public DbSet<Person> Persons { get; set; } = null!;
     public DbSet<Role> Roles { get; set; } = null!;
     public DbSet<Address> Addresses { get; set; } = null!;
+    public DbSet<NatureCheckCase> NatureCheckCases { get; set; } = null!;
 
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)

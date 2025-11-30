@@ -23,12 +23,8 @@ public sealed partial class StartWindow : Window
     // Public task the host can await to know when startup (including connection dialog) is done
     public Task Initialization => _initializationTcs.Task;
 
-    // Accept an optional IConnectionStringService so the caller (App) can pass the same instance
     public StartWindow()
     {
-        //IConnectionStringService connSvc = App.HostInstance.Services.GetRequiredService<IConnectionStringService>();
-        //IStatusInfoServices statusSvc = App.HostInstance.Services.GetRequiredService<IStatusInfoServices>();
-
         _viewModel = App.HostInstance.Services.GetRequiredService<StartWindowViewModel>();
 
         InitializeComponent();
