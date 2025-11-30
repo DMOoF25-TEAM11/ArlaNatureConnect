@@ -13,8 +13,17 @@ public class NatureCheckCase
     public NatureCheckCaseStatus Status { get; set; }
     public string? Notes { get; set; }
     public string? Priority { get; set; }
+    
+    // Audit property - tracks when the record was created in the database.
+    // Should not be confused with AssignedAt which represents the actual assignment time.
     public DateTimeOffset CreatedAt { get; set; }
     public DateTimeOffset? AssignedAt { get; set; }
+
+    // Navigation properties - object references that represent relationships to other entities.
+    // They let you navigate and work with related data in code instead of dealing with raw foreign-key values.
+    public virtual Farm Farm { get; set; } = null!;
+    public virtual Person Consultant { get; set; } = null!;
+    public virtual Person AssignedByPerson { get; set; } = null!;
 }
 
 

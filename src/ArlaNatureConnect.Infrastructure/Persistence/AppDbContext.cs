@@ -47,19 +47,20 @@ public partial class AppDbContext : DbContext
                     v => v.HasValue ? v.Value.DateTime : (DateTime?)null,  // Convert DateTimeOffset? to DateTime? for database
                     v => v.HasValue ? new DateTimeOffset(v.Value, TimeSpan.Zero) : (DateTimeOffset?)null);  // Convert DateTime? from database to DateTimeOffset?
 
-            entity.HasOne<Farm>()
+            // Configure navigation properties
+            entity.HasOne(n => n.Farm)
                 .WithMany()
-                .HasForeignKey(e => e.FarmId)
+                .HasForeignKey(n => n.FarmId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            entity.HasOne<Person>()
+            entity.HasOne(n => n.Consultant)
                 .WithMany()
-                .HasForeignKey(e => e.ConsultantId)
+                .HasForeignKey(n => n.ConsultantId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            entity.HasOne<Person>()
+            entity.HasOne(n => n.AssignedByPerson)
                 .WithMany()
-                .HasForeignKey(e => e.AssignedByPersonId)
+                .HasForeignKey(n => n.AssignedByPersonId)
                 .OnDelete(DeleteBehavior.Restrict);
         });
     }
