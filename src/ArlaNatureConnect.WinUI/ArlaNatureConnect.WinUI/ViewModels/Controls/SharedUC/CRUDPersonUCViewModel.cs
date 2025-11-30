@@ -1,6 +1,7 @@
 using ArlaNatureConnect.Core.Abstract;
 using ArlaNatureConnect.Core.Services;
 using ArlaNatureConnect.Domain.Entities;
+using ArlaNatureConnect.WinUI.Commands;
 using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 
 namespace ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC;
@@ -16,15 +17,6 @@ public class CRUDPersonUCViewModel
     public const string LABEL_ROLEID = "Rolle Id";
     public const string LABEL_ADDRESSID = "Adresse Id";
     #endregion
-
-    // Instance properties for XAML binding to label texts
-    public string LabelFirstName => LABEL_FIRSTNAME;
-    public string LabelLastName => LABEL_LASTNAME;
-    public string LabelEmail => LABEL_EMAIL;
-    public string LabelIsActive => LABEL_ISACTIVE;
-    public string LabelRoleId => LABEL_ROLEID;
-    public string LabelAddressId => LABEL_ADDRESSID;
-
     #region Fields
     private Guid _id;
     private Guid _roleId;
@@ -33,9 +25,31 @@ public class CRUDPersonUCViewModel
     private string _lastName = string.Empty;
     private string _email = string.Empty;
     private bool _isActive;
+
+    // Sorting state
+    private string? _lastSortProp;
+    private bool _lastSortDesc;
+    private int _itemCounter = 0;
     #endregion
     #region Properties
+    // Instance properties for XAML binding to label texts
+    public static string LabelFirstName => LABEL_FIRSTNAME;
+    public static string LabelLastName => LABEL_LASTNAME;
+    public static string LabelEmail => LABEL_EMAIL;
+    public static string LabelIsActive => LABEL_ISACTIVE;
+    public static string LabelRoleId => LABEL_ROLEID;
+    public static string LabelAddressId => LABEL_ADDRESSID;
 
+    public int ItemCounter
+    {
+        get => _itemCounter++;
+        set
+        {
+            if (_itemCounter == value) return;
+            _itemCounter = value;
+            OnPropertyChanged();
+        }
+    }
     public Guid Id
     {
         get => _id;
@@ -115,6 +129,9 @@ public class CRUDPersonUCViewModel
 
     #endregion
 
+    #region Commands
+    public RelayCommand<string>? SortCommand { get; }
+    #endregion
 
     public CRUDPersonUCViewModel(
         IStatusInfoServices statusInfoServices,
@@ -122,8 +139,38 @@ public class CRUDPersonUCViewModel
         IPersonRepository repository)
         : base(statusInfoServices, appMessageService, repository)
     {
+        _repository = repository;
+
+        // Initialize sort command
+        SortCommand = new RelayCommand<string>(OnSortExecuted);
     }
 
+    private void OnSortExecuted(string? prop)
+    {
+        if (string.IsNullOrEmpty(prop)) return;
+
+        bool descending = (_lastSortProp == prop) ? !_lastSortDesc : false;
+        _lastSortProp = prop;
+        _lastSortDesc = descending;
+
+        // Materialize ordered list based on property value
+        IOrderedEnumerable<object?> ordered = Items.Cast<object?>()
+            .OrderBy(x => x?.GetType().GetProperty(prop)?.GetValue(x, null), Comparer<object?>.Default);
+
+        if (descending) ordered = (IOrderedEnumerable<object?>)ordered.Reverse();
+
+        List<object?> list = ordered.ToList();
+
+        // Reorder Items collection in-place so bindings stay intact
+        Items.Clear();
+        foreach (object? it in list)
+        {
+            if (it is Person p) Items.Add(p);
+        }
+    }
+
+
+    #region Overrides of CRUDViewModelBase<Person>
     protected override Task<Person> OnAddFormAsync()
     {
         // Create a new Person instance from view-model fields
@@ -155,7 +202,7 @@ public class CRUDPersonUCViewModel
         IsActive = entity.IsActive;
 
         // Also keep base.Entity in sync
-        base.Entity = entity;
+        SelectedItem = entity;
 
         return Task.CompletedTask;
     }
@@ -171,7 +218,7 @@ public class CRUDPersonUCViewModel
         Email = string.Empty;
         IsActive = false;
 
-        base.Entity = null;
+        SelectedItem = null;
 
         return Task.CompletedTask;
     }
@@ -185,14 +232,14 @@ public class CRUDPersonUCViewModel
             if (IsAddMode)
             {
                 Person toAdd = await OnAddFormAsync().ConfigureAwait(false);
-                await Repository.AddAsync(toAdd).ConfigureAwait(false);
+                await _repository.AddAsync(toAdd).ConfigureAwait(false);
                 // set base entity so callers can access it
-                base.Entity = toAdd;
+                SelectedItem = toAdd;
             }
             else
             {
                 // Update existing entity
-                Person? existing = base.Entity;
+                Person? existing = SelectedItem;
                 if (existing == null)
                 {
                     // nothing to update
@@ -206,7 +253,7 @@ public class CRUDPersonUCViewModel
                 existing.Email = Email ?? string.Empty;
                 existing.IsActive = IsActive;
 
-                await Repository.UpdateAsync(existing).ConfigureAwait(false);
+                await _repository.UpdateAsync(existing).ConfigureAwait(false);
             }
         }
         finally
@@ -214,4 +261,5 @@ public class CRUDPersonUCViewModel
             IsSaving = false;
         }
     }
+    #endregion
 }

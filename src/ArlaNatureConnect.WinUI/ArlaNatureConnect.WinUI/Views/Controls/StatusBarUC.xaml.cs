@@ -2,6 +2,7 @@ using ArlaNatureConnect.WinUI.ViewModels.Controls;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Dispatching;
 
 namespace ArlaNatureConnect.WinUI.Views.Controls;
 
@@ -16,30 +17,12 @@ public sealed partial class StatusBarUC : UserControl
     {
         InitializeComponent();
 
-        // Try to resolve the view-model from the application's DI container now. If the host isn't built yet
-        // (for example during design-time or early startup), defer resolution until the control is loaded.
-        //if (App.HostInstance?.Services != null)
-        //{
+        // Resolve the view-model from the application's DI container now.
         StatusBarUCViewModel vm = App.HostInstance.Services.GetRequiredService<StatusBarUCViewModel>();
-        DataContext = vm;
-        //}
-        //else
-        //{
-        //Loaded += StatusBarUC_Loaded;
-        //}
-    }
 
-    //private void StatusBarUC_Loaded(object? sender, RoutedEventArgs e)
-    //{
-    //    Loaded -= StatusBarUC_Loaded;
-    //    try
-    //    {
-    //        if (App.HostInstance?.Services != null)
-    //        {
-    //StatusBarUCViewModel vm = App.HostInstance.Services.GetRequiredService<StatusBarUCViewModel>();
-    //DataContext = vm;
-    //        }
-    //    }
-    //    catch { /* swallow to avoid throwing in UI */ }
-    //}
+        // Initialize the viewmodel for UI use from this UI thread
+        vm.InitializeForUi(DispatcherQueue.GetForCurrentThread());
+
+        DataContext = vm;
+    }
 }
