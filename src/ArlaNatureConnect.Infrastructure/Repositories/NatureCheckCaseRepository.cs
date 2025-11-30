@@ -12,8 +12,8 @@ namespace ArlaNatureConnect.Infrastructure.Repositories;
 public class NatureCheckCaseRepository : Repository<NatureCheckCase>, INatureCheckCaseRepository
 {
     #region Commands
-    public NatureCheckCaseRepository(AppDbContext context)
-        : base(context)
+    public NatureCheckCaseRepository(IDbContextFactory<AppDbContext> factory)
+        : base(factory)
     {
     }
 
@@ -26,7 +26,7 @@ public class NatureCheckCaseRepository : Repository<NatureCheckCase>, INatureChe
             NatureCheckCaseStatus.InProgress
         ];
 
-        return await _context.NatureCheckCases
+        return await _factory.CreateDbContext().NatureCheckCases
             .Where(c => activeStatuses.Contains(c.Status))
             .AsNoTracking()
             .ToListAsync(cancellationToken)
@@ -36,7 +36,7 @@ public class NatureCheckCaseRepository : Repository<NatureCheckCase>, INatureChe
     public async Task<bool> FarmHasActiveCaseAsync(Guid farmId, CancellationToken cancellationToken = default)
     {
         // EF Core will automatically convert enum values to strings based on HasConversion configuration
-        return await _context.NatureCheckCases
+        return await _factory.CreateDbContext().NatureCheckCases
             .AsNoTracking()
             .AnyAsync(c =>
                 c.FarmId == farmId &&
@@ -48,7 +48,7 @@ public class NatureCheckCaseRepository : Repository<NatureCheckCase>, INatureChe
 
     public async Task<IReadOnlyList<NatureCheckCase>> GetAssignedCasesForConsultantAsync(Guid consultantId, CancellationToken cancellationToken = default)
     {
-        return await _context.NatureCheckCases
+        return await _factory.CreateDbContext().NatureCheckCases
             .AsNoTracking()
             .Where(c => c.ConsultantId == consultantId && c.Status == NatureCheckCaseStatus.Assigned)
             .OrderByDescending(c => c.AssignedAt ?? c.CreatedAt)

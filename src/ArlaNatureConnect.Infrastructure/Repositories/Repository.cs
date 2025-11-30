@@ -8,54 +8,60 @@ namespace ArlaNatureConnect.Infrastructure.Repositories;
 public abstract class Repository<TEntity> : IRepository<TEntity>
     where TEntity : class
 {
-    #region fields
-    protected readonly AppDbContext _context;
-    protected readonly DbSet<TEntity> _dbSet;
-    #endregion
+    protected readonly IDbContextFactory<AppDbContext> _factory;
 
-    public Repository(AppDbContext context)
+    protected Repository(IDbContextFactory<AppDbContext> factory)
     {
-        _context = context;
-        _dbSet = context.Set<TEntity>();
+        _factory = factory ?? throw new ArgumentNullException(nameof(factory));
     }
 
     #region CRUD Operations
     public async Task AddAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
-        await _dbSet.AddAsync(entity, cancellationToken);
-        await _context.SaveChangesAsync(cancellationToken);
+        await using AppDbContext ctx = _factory.CreateDbContext();
+        DbSet<TEntity> dbSet = ctx.Set<TEntity>();
+        await dbSet.AddAsync(entity, cancellationToken);
+        await ctx.SaveChangesAsync(cancellationToken);
     }
 
     public async Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
     {
-        await _dbSet.AddRangeAsync(entities, cancellationToken);
-        await _context.SaveChangesAsync(cancellationToken);
+        await using AppDbContext ctx = _factory.CreateDbContext();
+        DbSet<TEntity> dbSet = ctx.Set<TEntity>();
+        await dbSet.AddRangeAsync(entities, cancellationToken);
+        await ctx.SaveChangesAsync(cancellationToken);
     }
 
     public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        TEntity? entity = await GetByIdAsync(id, cancellationToken);
+        await using AppDbContext ctx = _factory.CreateDbContext();
+        DbSet<TEntity> dbSet = ctx.Set<TEntity>();
+        TEntity? entity = await dbSet.FindAsync(new object[] { id }, cancellationToken);
         if (entity != null)
         {
-            _dbSet.Remove(entity);
-            await _context.SaveChangesAsync(cancellationToken);
+            dbSet.Remove(entity);
+            await ctx.SaveChangesAsync(cancellationToken);
         }
     }
 
     public async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        return await _dbSet.ToListAsync(cancellationToken);
+        await using AppDbContext ctx = _factory.CreateDbContext();
+        return await ctx.Set<TEntity>().ToListAsync(cancellationToken);
     }
 
     public async Task<TEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await _dbSet.FindAsync([id], cancellationToken);
+        await using AppDbContext ctx = _factory.CreateDbContext();
+        return await ctx.Set<TEntity>().FindAsync(new object[] { id }, cancellationToken);
     }
 
     public async Task UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
-        _dbSet.Update(entity);
-        await _context.SaveChangesAsync(cancellationToken);
+        await using AppDbContext ctx = _factory.CreateDbContext();
+        DbSet<TEntity> dbSet = ctx.Set<TEntity>();
+        dbSet.Update(entity);
+        await ctx.SaveChangesAsync(cancellationToken);
     }
     #endregion
 }

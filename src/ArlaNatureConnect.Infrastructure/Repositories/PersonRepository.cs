@@ -39,7 +39,7 @@ namespace ArlaNatureConnect.Infrastructure.Repositories;
 /// </remarks>
 public class PersonRepository : Repository<Person>, IPersonRepository
 {
-    private readonly IDbContextFactory<AppDbContext> _factory;
+    //private readonly IDbContextFactory<AppDbContext> _factory;
 
     /// <summary>
     /// Creates a new instance of <see cref="PersonRepository"/> using an
@@ -47,9 +47,9 @@ public class PersonRepository : Repository<Person>, IPersonRepository
     /// </summary>
     /// <param name="factory">Factory used to create short-lived <see cref="AppDbContext"/> instances.</param>
     public PersonRepository(IDbContextFactory<AppDbContext> factory)
-        : base(factory.CreateDbContext())
+        : base(factory)
     {
-        _factory = factory;
+        //_factory = factory;
     }
 
     /// <summary>
@@ -75,32 +75,30 @@ public class PersonRepository : Repository<Person>, IPersonRepository
     /// <returns>A list of <see cref="Person"/> that belong to the requested role. Returns an empty list if role not found or an error occurs.</returns>
     public async Task<IEnumerable<Person>> GetPersonsByRoleAsync(string role, CancellationToken ct = default)
     {
-        await using AppDbContext ctx = _factory.CreateDbContext();
-
         if (string.IsNullOrWhiteSpace(role))
-            return [];
+            return Enumerable.Empty<Person>();
 
         // Normalize and resolve role entity by name (case-insensitive)
         string normalized = role.Trim().ToLowerInvariant();
 
         try
         {
+            await using AppDbContext ctx = _factory.CreateDbContext();
+
             Role? roleEntity = await ctx.Set<Role>()
                 .FirstOrDefaultAsync(r => r.Name.ToLower() == normalized, ct).ConfigureAwait(false);
 
             if (roleEntity == null)
-                return [];
+                return Enumerable.Empty<Person>();
 
-            // Use RoleId to filter persons to ensure referential integrity and performance
             return await ctx.Set<Person>()
                 .Where(p => p.RoleId == roleEntity.Id)
                 .ToListAsync(ct).ConfigureAwait(false);
         }
         catch (Exception)
         {
-            // Swallowing exceptions is intentional here to preserve the previous behavior of returning an empty list
-            // when an error occurs during lookup. Consider logging the exception or rethrowing in future changes.
-            return [];
+            // Consider logging the exception rather than swallowing.
+            return Enumerable.Empty<Person>();
         }
     }
 }

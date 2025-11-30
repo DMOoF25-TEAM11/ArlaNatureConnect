@@ -1,24 +1,29 @@
-using Microsoft.EntityFrameworkCore;
+using ArlaNatureConnect.Domain.Entities;
 using ArlaNatureConnect.Infrastructure.Persistence;
 using ArlaNatureConnect.Infrastructure.Repositories;
-using ArlaNatureConnect.Domain.Entities;
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Moq;
+using System.Runtime.InteropServices;
 
 namespace TestInfrastructure.Repositories;
 
 [TestClass]
 public class AddressRepositoryTest
 {
-    private DbContextOptions<AppDbContext> CreateOptions()
+    private IDbContextFactory<AppDbContext> CreateFactory()
     {
-        return new DbContextOptionsBuilder<AppDbContext>()
+        DbContextOptions<AppDbContext> options = new DbContextOptionsBuilder<AppDbContext>()
             .UseInMemoryDatabase(Guid.NewGuid().ToString())
             .Options;
+        return new PooledDbContextFactory<AppDbContext>(options);
     }
 
     [TestMethod]
     public async Task Add_And_Get_Address_Async()
     {
-        DbContextOptions<AppDbContext> options = CreateOptions();
+        IDbContextFactory<AppDbContext> factory = CreateFactory();
 
         Address addr = new Address
         {
@@ -29,16 +34,16 @@ public class AddressRepositoryTest
             Country = "Denmark"
         };
 
-        using (AppDbContext ctx = new AppDbContext(options))
+        using (AppDbContext ctx = factory.CreateDbContext())
         {
-            AddressRepository repo = new AddressRepository(ctx);
+            AddressRepository repo = new AddressRepository(factory);
             await repo.AddAsync(addr);
             await ctx.SaveChangesAsync();
         }
 
-        using (AppDbContext ctx = new AppDbContext(options))
+        using (AppDbContext ctx = factory.CreateDbContext())
         {
-            AddressRepository repo = new AddressRepository(ctx);
+            AddressRepository repo = new AddressRepository(factory);
             Address? fetched = await repo.GetByIdAsync(addr.Id);
 
             Assert.IsNotNull(fetched);
@@ -52,7 +57,7 @@ public class AddressRepositoryTest
     [TestMethod]
     public async Task GetAll_Returns_All_Addresses()
     {
-        DbContextOptions<AppDbContext> options = CreateOptions();
+        IDbContextFactory<AppDbContext> factory = CreateFactory();
 
         Address[] addresses = new[]
         {
@@ -60,16 +65,16 @@ public class AddressRepositoryTest
             new Address { Id = Guid.NewGuid(), Street = "S2", City = "C2", PostalCode = "P2", Country = "DK" }
         };
 
-        using (AppDbContext ctx = new AppDbContext(options))
+        using (AppDbContext ctx = factory.CreateDbContext())
         {
-            AddressRepository repo = new AddressRepository(ctx);
+            AddressRepository repo = new AddressRepository(factory);
             await repo.AddRangeAsync(addresses);
             await ctx.SaveChangesAsync();
         }
 
-        using (AppDbContext ctx = new AppDbContext(options))
+        using (AppDbContext ctx = factory.CreateDbContext())
         {
-            AddressRepository repo = new AddressRepository(ctx);
+            AddressRepository repo = new AddressRepository(factory);
             List<Address> all = (await repo.GetAllAsync()).ToList();
 
             Assert.HasCount(2, all);
@@ -80,27 +85,27 @@ public class AddressRepositoryTest
     [TestMethod]
     public async Task Update_Address_Persists_Changes()
     {
-        DbContextOptions<AppDbContext> options = CreateOptions();
+        IDbContextFactory<AppDbContext> factory = CreateFactory();
 
         Address addr = new Address { Id = Guid.NewGuid(), Street = "Before", City = "City", PostalCode = "000", Country = "DK" };
-        using (AppDbContext ctx = new AppDbContext(options))
+        using (AppDbContext ctx = factory.CreateDbContext())
         {
-            AddressRepository repo = new AddressRepository(ctx);
+            AddressRepository repo = new AddressRepository(factory);
             await repo.AddAsync(addr);
             await ctx.SaveChangesAsync();
         }
 
-        using (AppDbContext ctx = new AppDbContext(options))
+        using (AppDbContext ctx = factory.CreateDbContext())
         {
-            AddressRepository repo = new AddressRepository(ctx);
+            AddressRepository repo = new AddressRepository(factory);
             addr.Street = "After";
             await repo.UpdateAsync(addr);
             await ctx.SaveChangesAsync();
         }
 
-        using (AppDbContext ctx = new AppDbContext(options))
+        using (AppDbContext ctx = factory.CreateDbContext())
         {
-            AddressRepository repo = new AddressRepository(ctx);
+            AddressRepository repo = new AddressRepository(factory);
             Address? fetched = await repo.GetByIdAsync(addr.Id);
             Assert.IsNotNull(fetched);
             Assert.AreEqual("After", fetched!.Street);
@@ -110,28 +115,80 @@ public class AddressRepositoryTest
     [TestMethod]
     public async Task Delete_Address_Removes_Entity()
     {
-        DbContextOptions<AppDbContext> options = CreateOptions();
+        IDbContextFactory<AppDbContext> factory = CreateFactory();
 
         Address addr = new Address { Id = Guid.NewGuid(), Street = "ToDelete", City = "City", PostalCode = "X", Country = "DK" };
-        using (AppDbContext ctx = new AppDbContext(options))
+        using (AppDbContext ctx = factory.CreateDbContext())
         {
-            AddressRepository repo = new AddressRepository(ctx);
+            AddressRepository repo = new AddressRepository(factory);
             await repo.AddAsync(addr);
             await ctx.SaveChangesAsync();
         }
 
-        using (AppDbContext ctx = new AppDbContext(options))
+        using (AppDbContext ctx = factory.CreateDbContext())
         {
-            AddressRepository repo = new AddressRepository(ctx);
+            AddressRepository repo = new AddressRepository(factory);
             await repo.DeleteAsync(addr.Id);
             await ctx.SaveChangesAsync();
         }
 
-        using (AppDbContext ctx = new AppDbContext(options))
+        using (AppDbContext ctx = factory.CreateDbContext())
         {
-            AddressRepository repo = new AddressRepository(ctx);
+            AddressRepository repo = new AddressRepository(factory);
             Address? fetched = await repo.GetByIdAsync(addr.Id);
             Assert.IsNull(fetched);
+        }
+    }
+
+    // New tests: thread-safety and COM exception
+
+    [TestMethod]
+    public async Task GetAllAsync_Is_ThreadSafe_When_Called_Concurrently()
+    {
+        // use explicit in-memory options so multiple contexts share the same in-memory DB
+        var options = new DbContextOptionsBuilder<AppDbContext>()
+            .UseInMemoryDatabase(Guid.NewGuid().ToString())
+            .Options;
+
+        using (var seed = new AppDbContext(options))
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                seed.Addresses.Add(new Address { Id = Guid.NewGuid(), Street = $"S{i}", City = "C", PostalCode = "P", Country = "DK" });
+            }
+            await seed.SaveChangesAsync();
+        }
+
+        var factoryMock = new Mock<IDbContextFactory<AppDbContext>>();
+        factoryMock.Setup(f => f.CreateDbContext()).Returns(() => new AppDbContext(options));
+
+        var repo = new AddressRepository(factoryMock.Object);
+
+        IEnumerable<Task<List<Address>>> tasks = Enumerable.Range(0, 8).Select(_ => Task.Run(async () => (await repo.GetAllAsync()).ToList()));
+        List<Address>[] results = await Task.WhenAll(tasks);
+
+        foreach (List<Address>? r in results)
+        {
+            Assert.AreEqual(10, r.Count);
+        }
+    }
+
+    [TestMethod]
+    public async Task Repository_Methods_Throw_On_COMException_From_Factory()
+    {
+        var factoryMock = new Mock<IDbContextFactory<AppDbContext>>();
+        factoryMock.Setup(f => f.CreateDbContext()).Throws(new COMException("COM error"));
+
+        var repo = new AddressRepository(factoryMock.Object);
+
+        try
+        {
+            await repo.GetAllAsync();
+            Assert.Fail("Expected COMException to be thrown");
+        }
+        catch (COMException)
+        {
+            // expected
         }
     }
 }
