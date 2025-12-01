@@ -5,15 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ArlaNatureConnect.Infrastructure.Repositories;
 
-public abstract class Repository<TEntity> : IRepository<TEntity>
+public abstract class Repository<TEntity>(IDbContextFactory<AppDbContext> factory) : IRepository<TEntity>
     where TEntity : class
 {
-    protected readonly IDbContextFactory<AppDbContext> _factory;
-
-    protected Repository(IDbContextFactory<AppDbContext> factory)
-    {
-        _factory = factory ?? throw new ArgumentNullException(nameof(factory));
-    }
+    protected readonly IDbContextFactory<AppDbContext> _factory = factory;
 
     #region CRUD Operations
     public async Task AddAsync(TEntity entity, CancellationToken cancellationToken = default)
@@ -36,7 +31,7 @@ public abstract class Repository<TEntity> : IRepository<TEntity>
     {
         await using AppDbContext ctx = _factory.CreateDbContext();
         DbSet<TEntity> dbSet = ctx.Set<TEntity>();
-        TEntity? entity = await dbSet.FindAsync(new object[] { id }, cancellationToken);
+        TEntity? entity = await dbSet.FindAsync([id], cancellationToken);
         if (entity != null)
         {
             dbSet.Remove(entity);
@@ -53,7 +48,7 @@ public abstract class Repository<TEntity> : IRepository<TEntity>
     public async Task<TEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         await using AppDbContext ctx = _factory.CreateDbContext();
-        return await ctx.Set<TEntity>().FindAsync(new object[] { id }, cancellationToken);
+        return await ctx.Set<TEntity>().FindAsync([id], cancellationToken);
     }
 
     public async Task UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)

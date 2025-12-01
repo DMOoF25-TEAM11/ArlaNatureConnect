@@ -37,21 +37,8 @@ namespace ArlaNatureConnect.Infrastructure.Repositories;
 ///   an error occurs while querying; callers should treat an empty result set as "none found"
 ///   and not necessarily as an error condition.
 /// </remarks>
-public class PersonRepository : Repository<Person>, IPersonRepository
+public class PersonRepository(IDbContextFactory<AppDbContext> factory) : Repository<Person>(factory), IPersonRepository
 {
-    //private readonly IDbContextFactory<AppDbContext> _factory;
-
-    /// <summary>
-    /// Creates a new instance of <see cref="PersonRepository"/> using an
-    /// <see cref="IDbContextFactory{AppDbContext}"/>.
-    /// </summary>
-    /// <param name="factory">Factory used to create short-lived <see cref="AppDbContext"/> instances.</param>
-    public PersonRepository(IDbContextFactory<AppDbContext> factory)
-        : base(factory)
-    {
-        //_factory = factory;
-    }
-
     /// <summary>
     /// Returns all persons that have the specified role name.
     /// </summary>
@@ -76,7 +63,7 @@ public class PersonRepository : Repository<Person>, IPersonRepository
     public async Task<IEnumerable<Person>> GetPersonsByRoleAsync(string role, CancellationToken ct = default)
     {
         if (string.IsNullOrWhiteSpace(role))
-            return Enumerable.Empty<Person>();
+            return [];
 
         // Normalize and resolve role entity by name (case-insensitive)
         string normalized = role.Trim().ToLowerInvariant();
@@ -89,7 +76,7 @@ public class PersonRepository : Repository<Person>, IPersonRepository
                 .FirstOrDefaultAsync(r => r.Name.ToLower() == normalized, ct).ConfigureAwait(false);
 
             if (roleEntity == null)
-                return Enumerable.Empty<Person>();
+                return [];
 
             return await ctx.Set<Person>()
                 .Where(p => p.RoleId == roleEntity.Id)
@@ -98,7 +85,7 @@ public class PersonRepository : Repository<Person>, IPersonRepository
         catch (Exception)
         {
             // Consider logging the exception rather than swallowing.
-            return Enumerable.Empty<Person>();
+            return [];
         }
     }
 }
