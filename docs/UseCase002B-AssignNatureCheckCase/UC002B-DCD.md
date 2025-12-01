@@ -1,36 +1,13 @@
-## UC002B – High-Level Design Class Diagram
+## UC002B – Design Class Diagram
 
-This draft shows the main components that will collaborate when an Arla employee assigns a Nature Check Case to a consultant. It focuses on responsibilities and relationships only; properties/methods will be refined when the detailed design solidifies.
+This diagram shows the main components that collaborate when an Arla employee assigns a Nature Check Case to a consultant. It follows Larmann's UML conventions with proper visibility notation, relationships, and namespace organization.
 
 ```mermaid
 classDiagram
     direction TB
+    %% === DCD – UC002B: Assign Nature Check Case ===
 
-    namespace ArlaNatureConnect.WinUI.ViewModels.Pages {
-        class ArlaEmployeePageViewModel {
-            +ObservableCollection~Farm~ Farms
-            +ObservableCollection~Person~ Consultants
-            +Farm? SelectedFarm
-            +Person? SelectedConsultant
-            +string? AssignmentNotes
-            +Task InitializeAsync(Role role)
-            +Task AssignCaseAsync()
-        }
-    }
-
-    namespace ArlaNatureConnect.Core.Services {
-        class INatureCheckCaseService {
-            <<interface>>
-            +Task~(IReadOnlyList~Farm~,IReadOnlyList~Person~)~ LoadFarmsAndConsultantsAsync(CancellationToken) Task
-            +Task~NatureCheckCase~ AssignCaseAsync(Guid farmId, Guid consultantId, Guid assignedByPersonId, string? notes, bool allowDuplicate, CancellationToken) Task
-        }
-
-        class NatureCheckCaseService {
-            +Task~(IReadOnlyList~Farm~,IReadOnlyList~Person~)~ LoadFarmsAndConsultantsAsync(CancellationToken) Task
-            +Task~NatureCheckCase~ AssignCaseAsync(Guid farmId, Guid consultantId, Guid assignedByPersonId, string? notes, bool allowDuplicate, CancellationToken) Task
-        }
-    }
-
+    %% === DOMAIN ENTITIES ===
     namespace ArlaNatureConnect.Domain.Entities {
         class NatureCheckCase {
             +Guid Id
@@ -42,6 +19,9 @@ classDiagram
             +string? Priority
             +DateTimeOffset CreatedAt
             +DateTimeOffset? AssignedAt
+            +Farm Farm
+            +Person Consultant
+            +Person AssignedByPerson
         }
 
         class Farm {
@@ -50,26 +30,232 @@ classDiagram
             +string CVR
             +Guid PersonId
             +Guid AddressId
+            +Person Person
+            +Address Address
         }
 
         class Person {
             +Guid Id
             +Guid RoleId
+            +Guid AddressId
             +string FirstName
             +string LastName
             +string Email
             +bool IsActive
         }
+
+        class Address {
+            +Guid Id
+            +string Street
+            +string City
+            +string PostalCode
+            +string Country
+        }
+
+        class Role {
+            +Guid Id
+            +string Name
+        }
     }
 
+    %% === DTOs (Data Transfer Objects) ===
+    namespace ArlaNatureConnect.Core.DTOs {
+        class FarmAssignmentOverviewDto {
+            +Guid FarmId
+            +string FarmName
+            +string Cvr
+            +string OwnerFirstName
+            +string OwnerLastName
+            +string OwnerEmail
+            +string Street
+            +string City
+            +string PostalCode
+            +string Country
+            +bool HasActiveCase
+            +string? AssignedConsultantFirstName
+            +string? AssignedConsultantLastName
+            +Guid? AssignedConsultantId
+            +string? Priority
+            +string? Notes
+            +string OwnerName
+            +string AddressLine
+            +string StatusLabel
+            +string AssignedConsultantName
+        }
+
+        class ConsultantNotificationDto {
+            +Guid CaseId
+            +Guid FarmId
+            +string FarmName
+            +DateTimeOffset AssignedAt
+            +string? Priority
+            +string? Notes
+        }
+
+        class NatureCheckCaseAssignmentContext {
+            +IReadOnlyList~FarmAssignmentOverviewDto~ Farms
+            +IReadOnlyList~Person~ Consultants
+        }
+
+        class NatureCheckCaseAssignmentRequest {
+            +Guid FarmId
+            +Guid ConsultantId
+            +Guid AssignedByPersonId
+            +string? Notes
+            +string? Priority
+            +bool AllowDuplicateActiveCase
+        }
+
+        class FarmRegistrationRequest {
+            +Guid? FarmId
+            +string FarmName
+            +string Cvr
+            +string Street
+            +string City
+            +string PostalCode
+            +string Country
+            +string OwnerFirstName
+            +string OwnerLastName
+            +string OwnerEmail
+            +bool OwnerIsActive
+        }
+    }
+
+    %% === VIEWMODELS (Application Layer) ===
+    namespace ArlaNatureConnect.WinUI.ViewModels.Pages {
+        class ArlaEmployeeAssignNatureCheckViewModel {
+            -INatureCheckCaseService _natureCheckCaseService
+            -IAppMessageService _appMessageService
+            -IStatusInfoServices _statusInfoServices
+            -List~AssignableFarmViewModel~ _allFarms
+            -AssignableFarmViewModel? _selectedFarm
+            -Person? _selectedConsultant
+            -string _farmSearchText
+            -string _assignmentNotes
+            -string? _selectedPriority
+            +ObservableCollection~AssignableFarmViewModel~ FilteredFarms
+            +ObservableCollection~Person~ Consultants
+            +AssignableFarmViewModel? SelectedFarm
+            +Person? SelectedConsultant
+            +string? SelectedPriority
+            +string AssignmentNotes
+            +bool IsFarmSelected
+            +RelayCommand AssignNatureCheckCaseCommand
+            +RelayCommand~string~ ApplyStatusFilterCommand
+            +RelayCommand ShowFarmEditorCommand
+            +RelayCommand DeleteFarmCommand
+            +Task InitializeAsync()
+            +Task AssignNatureCheckCaseAsync()
+            -Task EnsureAssignmentDataAsync()
+            -void UpdateFarms(IReadOnlyList~FarmAssignmentOverviewDto~)
+            -void UpdateConsultants(IEnumerable~Person~)
+        }
+
+        class ConsultantNatureCheckViewModel {
+            -INatureCheckCaseService _natureCheckCaseService
+            -ObservableCollection~ConsultantNotificationDto~ _notifications
+            -int _notificationCount
+            -Person? _selectedConsultant
+            +ObservableCollection~ConsultantNotificationDto~ Notifications
+            +int NotificationCount
+            +bool HasNotifications
+            +Person? SelectedConsultant
+            +Task LoadNotificationsAsync()
+        }
+    }
+
+    namespace ArlaNatureConnect.WinUI.ViewModels.Items {
+        class AssignableFarmViewModel {
+            -bool _hasActiveCase
+            -string _farmName
+            -string _cvr
+            -string _ownerFirstName
+            -string _ownerLastName
+            -string _street
+            -string _city
+            -string _postalCode
+            +Guid FarmId
+            +string FarmName
+            +string Cvr
+            +string OwnerFirstName
+            +string OwnerLastName
+            +string OwnerName
+            +string AddressLine
+            +bool HasActiveCase
+            +string StatusLabel
+            +string? Priority
+            +string? PriorityDisplay
+            +Guid? AssignedConsultantId
+            +string ConsultantDisplay
+            +void Apply(FarmAssignmentOverviewDto)
+        }
+    }
+
+    namespace ArlaNatureConnect.WinUI.ViewModels.Abstracts {
+        class ViewModelBase {
+            <<abstract>>
+            +event PropertyChangedEventHandler? PropertyChanged
+            +void OnPropertyChanged(string?)
+        }
+    }
+
+    %% === SERVICES (Core Layer) ===
+    namespace ArlaNatureConnect.Core.Services {
+        class INatureCheckCaseService {
+            <<interface>>
+            +Task~NatureCheckCaseAssignmentContext~ LoadAssignmentContextAsync(CancellationToken) Task
+            +Task~NatureCheckCase~ AssignCaseAsync(NatureCheckCaseAssignmentRequest, CancellationToken) Task
+            +Task~Farm~ SaveFarmAsync(FarmRegistrationRequest, CancellationToken) Task
+            +Task DeleteFarmAsync(Guid, CancellationToken) Task
+            +Task~IReadOnlyList~ConsultantNotificationDto~~ GetNotificationsForConsultantAsync(Guid, CancellationToken) Task
+        }
+
+        class NatureCheckCaseService {
+            -IFarmRepository _farmRepository
+            -IPersonRepository _personRepository
+            -IAddressRepository _addressRepository
+            -INatureCheckCaseRepository _natureCheckCaseRepository
+            -IRoleRepository _roleRepository
+            +Task~NatureCheckCaseAssignmentContext~ LoadAssignmentContextAsync(CancellationToken) Task
+            +Task~NatureCheckCase~ AssignCaseAsync(NatureCheckCaseAssignmentRequest, CancellationToken) Task
+            +Task~Farm~ SaveFarmAsync(FarmRegistrationRequest, CancellationToken) Task
+            +Task DeleteFarmAsync(Guid, CancellationToken) Task
+            +Task~IReadOnlyList~ConsultantNotificationDto~~ GetNotificationsForConsultantAsync(Guid, CancellationToken) Task
+            -FarmAssignmentOverviewDto CreateFarmOverview(Farm, IDictionary~Guid,Person~, IDictionary~Guid,Address~, bool, IDictionary~Guid,NatureCheckCase~) FarmAssignmentOverviewDto
+            -void ValidateFarmRegistration(FarmRegistrationRequest) void
+            -Task~Role~ EnsureRoleAsync(string, CancellationToken) Task
+        }
+
+        class IAppMessageService {
+            <<interface>>
+            +void AddErrorMessage(string)
+            +void AddInfoMessage(string)
+            +void ClearErrorMessages()
+            +bool HasErrorMessages
+        }
+
+        class IStatusInfoServices {
+            <<interface>>
+            +IDisposable BeginLoading()
+        }
+    }
+
+    %% === REPOSITORIES (Core Abstract Layer) ===
     namespace ArlaNatureConnect.Core.Abstract {
+        class IRepository~TEntity~ {
+            <<interface>>
+            +Task~TEntity?~ GetByIdAsync(Guid, CancellationToken) Task
+            +Task~IEnumerable~TEntity~~ GetAllAsync(CancellationToken) Task
+            +Task AddAsync(TEntity, CancellationToken) Task
+            +Task UpdateAsync(TEntity, CancellationToken) Task
+            +Task DeleteAsync(Guid, CancellationToken) Task
+        }
+
         class INatureCheckCaseRepository {
             <<interface>>
-            +GetByIdAsync(Guid id, CancellationToken) Task~NatureCheckCase~
-            +GetAllAsync(CancellationToken) Task~IEnumerable~NatureCheckCase~~
-            +AddAsync(NatureCheckCase entity, CancellationToken) Task
-            +UpdateAsync(NatureCheckCase entity, CancellationToken) Task
-            +DeleteAsync(Guid id, CancellationToken) Task
+            +Task~IReadOnlyList~NatureCheckCase~~ GetActiveCasesAsync(CancellationToken) Task
+            +Task~bool~ FarmHasActiveCaseAsync(Guid, CancellationToken) Task
+            +Task~IReadOnlyList~NatureCheckCase~~ GetAssignedCasesForConsultantAsync(Guid, CancellationToken) Task
         }
 
         class IFarmRepository {
@@ -78,59 +264,76 @@ classDiagram
 
         class IPersonRepository {
             <<interface>>
-            +GetPersonsByRoleAsync(string role, CancellationToken) Task~List~Person~~
+            +Task~IEnumerable~Person~~ GetPersonsByRoleAsync(string, CancellationToken) Task
         }
 
-        class IAppMessageService {
+        class IAddressRepository {
             <<interface>>
         }
 
-        class IStatusInfoServices {
+        class IRoleRepository {
             <<interface>>
-        }
-
-        class INotificationService {
-            <<interface>>
-            +NotifyConsultantAsync(Guid consultantId, Guid caseId, CancellationToken) Task
+            +Task~Role?~ GetByNameAsync(string, CancellationToken) Task
         }
     }
 
-    namespace ArlaNatureConnect.WinUI.ViewModels.Abstracts {
-        class NavigationViewModelBase {
-            <<abstract>>
-            +string CurrentNavigationTag
-            +List~Person~ AvailablePersons
-            +Person? SelectedPerson
-        }
-
-        class ViewModelBase {
-            <<abstract>>
-        }
-    }
-
+    %% === RELATIONER (Relationships) ===
     %% Inheritance
-    ArlaEmployeePageViewModel --|> NavigationViewModelBase
-    NavigationViewModelBase --|> ViewModelBase
+    ArlaEmployeeAssignNatureCheckViewModel --|> ViewModelBase
+    ConsultantNatureCheckViewModel --|> ViewModelBase
+    AssignableFarmViewModel --|> ViewModelBase
 
-    %% Service Implementation
+    %% Interface Implementation
     NatureCheckCaseService ..|> INatureCheckCaseService : implements
+    INatureCheckCaseRepository --|> IRepository : extends
+    IFarmRepository --|> IRepository : extends
+    IPersonRepository --|> IRepository : extends
+    IAddressRepository --|> IRepository : extends
+    IRoleRepository --|> IRepository : extends
 
-    %% Dependencies
-    ArlaEmployeePageViewModel --> INatureCheckCaseService : uses
-    ArlaEmployeePageViewModel --> IAppMessageService : uses
-    ArlaEmployeePageViewModel --> IStatusInfoServices : uses
+    %% Dependencies (uses)
+    ArlaEmployeeAssignNatureCheckViewModel --> INatureCheckCaseService : uses
+    ArlaEmployeeAssignNatureCheckViewModel --> IAppMessageService : uses
+    ArlaEmployeeAssignNatureCheckViewModel --> IStatusInfoServices : uses
+    ConsultantNatureCheckViewModel --> INatureCheckCaseService : uses
+
     NatureCheckCaseService --> INatureCheckCaseRepository : uses
     NatureCheckCaseService --> IFarmRepository : uses
     NatureCheckCaseService --> IPersonRepository : uses
-    NatureCheckCaseService --> INotificationService : uses
+    NatureCheckCaseService --> IAddressRepository : uses
+    NatureCheckCaseService --> IRoleRepository : uses
+
+    %% Repository manages Entities
     INatureCheckCaseRepository --> NatureCheckCase : manages
     IFarmRepository --> Farm : manages
     IPersonRepository --> Person : manages
+    IAddressRepository --> Address : manages
+    IRoleRepository --> Role : manages
+
+    %% ViewModel uses DTOs
+    ArlaEmployeeAssignNatureCheckViewModel --> FarmAssignmentOverviewDto : uses
+    ArlaEmployeeAssignNatureCheckViewModel --> NatureCheckCaseAssignmentContext : uses
+    ArlaEmployeeAssignNatureCheckViewModel --> NatureCheckCaseAssignmentRequest : uses
+    ArlaEmployeeAssignNatureCheckViewModel --> FarmRegistrationRequest : uses
+    ConsultantNatureCheckViewModel --> ConsultantNotificationDto : uses
+
+    %% ViewModel Items use DTOs
+    AssignableFarmViewModel --> FarmAssignmentOverviewDto : uses
+
+    %% Service uses DTOs
+    NatureCheckCaseService --> FarmAssignmentOverviewDto : creates
+    NatureCheckCaseService --> ConsultantNotificationDto : creates
+    NatureCheckCaseService --> NatureCheckCaseAssignmentContext : creates
+    NatureCheckCaseService --> NatureCheckCaseAssignmentRequest : uses
+    NatureCheckCaseService --> FarmRegistrationRequest : uses
+
+    %% Domain Entity Relationships (Navigation Properties)
+    NatureCheckCase --> Farm : Farm
+    NatureCheckCase --> Person : Consultant
+    NatureCheckCase --> Person : AssignedByPerson
+    Farm --> Person : Person
+    Farm --> Address : Address
+    Person --> Role : Role
+    Person --> Address : Address
 ```
 
-**Notes**
-- `ArlaEmployeePageViewModel` inherits from `NavigationViewModelBase` and handles the UI flow: showing farms/consultants and triggering `AssignCaseAsync`.
-- `INatureCheckCaseService` and `NatureCheckCaseService` orchestrate the use case and call repositories plus the notification service.
-- Repositories stay abstract in `ArlaNatureConnect.Core.Abstract` to align with the current architecture (the EF Core implementation lives in Infrastructure).
-- `IAppMessageService` and `IStatusInfoServices` are existing Core services used for user feedback and status.
-- `INotificationService` represents a planned infrastructure service for consultant notifications.
