@@ -5,8 +5,6 @@ using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 
-using Microsoft.UI.Xaml.Controls;
-
 using Microsoft.UI.Xaml.Navigation;
 
 using Windows.Graphics;
@@ -25,10 +23,10 @@ public sealed partial class MainWindow : Window
 {
     private readonly NavigationHandler _navigationHandler;
 
-    public MainWindow(NavigationHandler navigationHandler)
+    public MainWindow(INavigationHandler navigationHandler)
     {
         InitializeComponent();
-        _navigationHandler = navigationHandler ?? throw new ArgumentNullException(nameof(navigationHandler));
+        _navigationHandler = (NavigationHandler?)(navigationHandler ?? throw new ArgumentNullException(nameof(navigationHandler)));
 
         // Set window size after window is activated
         Activated += MainWindow_Activated;
@@ -41,7 +39,7 @@ public sealed partial class MainWindow : Window
 
         // Navigate to login page on startup
         _navigationHandler.Navigate(typeof(LoginPage));
-        
+
         // Hide sidebar initially since we start on LoginPage
         SideMenu.Visibility = Visibility.Collapsed;
     }

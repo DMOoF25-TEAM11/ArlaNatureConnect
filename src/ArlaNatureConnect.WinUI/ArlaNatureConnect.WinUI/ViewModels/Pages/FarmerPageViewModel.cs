@@ -24,7 +24,7 @@ namespace ArlaNatureConnect.WinUI.ViewModels.Pages;
 /// </summary>
 public partial class FarmerPageViewModel : NavigationViewModelBase
 {
-    public FarmerPageViewModel(NavigationHandler navigationHandler)
+    public FarmerPageViewModel(INavigationHandler navigationHandler)
         : base(navigationHandler)
     {
         SideMenuControlType = typeof(FarmerPageSideMenuUC);

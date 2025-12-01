@@ -20,9 +20,9 @@ public sealed partial class ConsultantPage : NavPage
         InitializeComponent();
 
         // Resolve dependencies
-        NavigationHandler navigationHandler = App.HostInstance.Services.GetRequiredService<NavigationHandler>();
+        INavigationHandler navigationHandler = App.HostInstance.Services.GetRequiredService<INavigationHandler>();
         Core.Services.INatureCheckCaseService natureCheckCaseService = App.HostInstance.Services.GetRequiredService<Core.Services.INatureCheckCaseService>();
-        
+
         // Create view model with dependencies
         ConsultantPageViewModel vm = new ConsultantPageViewModel(navigationHandler, natureCheckCaseService);
 

@@ -18,7 +18,7 @@ public sealed partial class LoginPage : Page
         InitializeComponent();
 
         // Get NavigationHandler from App's service provider
-        NavigationHandler navigationHandler = App.HostInstance.Services.GetRequiredService<ArlaNatureConnect.WinUI.Services.NavigationHandler>();
+        NavigationHandler navigationHandler = (NavigationHandler)App.HostInstance.Services.GetRequiredService<ArlaNatureConnect.WinUI.Services.INavigationHandler>();
         ViewModel = new LoginPageViewModel(navigationHandler);
         DataContext = ViewModel;
     }

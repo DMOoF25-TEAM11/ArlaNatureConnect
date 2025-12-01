@@ -77,9 +77,7 @@ namespace ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewModelBase
 {
     #region Fields
-    private readonly NavigationHandler? _navigationHandler; // original
-    private bool _isLoading;
-    private UserControl? _currentContent;
+    private readonly INavigationHandler? _navigationHandler; // original
 
     // Side menu handling fields moved from view
     private UIElement[]? _previousSideMenuChildren;
@@ -110,9 +108,9 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
     /// <param name="navigationHandler">Navigation handler used for frame navigation.</param>
     /// <param name="personRepository">Items used to load persons for the active role.</param>
     /// <param name="roleRepository">Items used to resolve roles if needed.</param>
-    protected NavigationViewModelBase(NavigationHandler navigationHandler) : base()
+    protected NavigationViewModelBase(INavigationHandler navigationHandler) : base()
     {
-        _navigationHandler = navigationHandler ?? throw new ArgumentNullException(nameof(navigationHandler));
+        _navigationHandler = (INavigationHandler?)(navigationHandler ?? throw new ArgumentNullException(nameof(navigationHandler)));
     }
 
     #region Properties
@@ -129,10 +127,10 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
     /// </summary>
     public bool IsLoading
     {
-        get => _isLoading;
+        get;
         protected set
         {
-            _isLoading = value;
+            field = value;
             OnPropertyChanged();
         }
     }
@@ -142,11 +140,11 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
     /// </summary>
     public UserControl? CurrentContent
     {
-        get => _currentContent;
+        get;
         protected set
         {
-            if (_currentContent == value) return;
-            _currentContent = value;
+            if (field == value) return;
+            field = value;
             OnPropertyChanged();
         }
     }
