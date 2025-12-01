@@ -2,7 +2,6 @@ using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 using ArlaNatureConnect.WinUI.ViewModels.Pages;
 using ArlaNatureConnect.WinUI.Views.Pages.Abstracts;
 
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 
 namespace ArlaNatureConnect.WinUI.Views.Pages;
@@ -19,7 +18,7 @@ public sealed partial class FarmerPage : NavPage
         InitializeComponent();
 
         // Resolve the page view-model from DI so its dependencies (e.g. NavigationHandler) are injected.
-        FarmerPageViewModel vm = App.HostInstance.Services.GetRequiredService<FarmerPageViewModel>();
+        FarmerPageViewModel vm = App.HostInstance?.Services.GetService(typeof(FarmerPageViewModel)) as FarmerPageViewModel ?? throw new InvalidOperationException("Failed to resolve FarmerPageViewModel");
 
         ViewModel = vm;      // required by NavPage
         DataContext = vm;    // bindings in XAML

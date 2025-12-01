@@ -84,9 +84,13 @@
     </StackPanel>
 
     <!-- Bottom Section -->
-    <Border Grid.Row="3" 
-                    Padding="24">
-      <!-- Can add logout button or other actions here -->
-    </Border>
+    <StackPanel Grid.Row="3" 
+                Spacing="12"
+                Padding="20,24">
+      <Button x:Name="LogoutButton"
+                Content="Log ud"
+                Command="{Binding LogoutCommand}"
+                Style="{StaticResource ArlaNavButton}"/>
+    </StackPanel>
   </Grid>
 </abstracts:SideMenuBaseUC>

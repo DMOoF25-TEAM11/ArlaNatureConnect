@@ -24,8 +24,7 @@ public class LoginPageViewModel : NavigationViewModelBase
 {
     #region Fields
 
-    private readonly NavigationHandler _navigationHandler;
-    private Role? _selectedRole;
+    private readonly INavigationHandler _navigationHandler;
 
     #endregion
 
@@ -46,10 +45,10 @@ public class LoginPageViewModel : NavigationViewModelBase
     /// </summary>
     public Role? SelectedRole
     {
-        get => _selectedRole;
+        get;
         private set
         {
-            _selectedRole = value;
+            field = value;
             OnPropertyChanged();
         }
     }
@@ -58,7 +57,7 @@ public class LoginPageViewModel : NavigationViewModelBase
 
     #region Constructor
 
-    public LoginPageViewModel(Services.NavigationHandler navigationHandler)
+    public LoginPageViewModel(INavigationHandler navigationHandler)
         : base(navigationHandler)
     {
         _navigationHandler = navigationHandler ?? throw new ArgumentNullException(nameof(navigationHandler));

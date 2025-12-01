@@ -2,6 +2,7 @@ using ArlaNatureConnect.Core.Abstract;
 using ArlaNatureConnect.Core.Services;
 using ArlaNatureConnect.Domain.Enums;
 using ArlaNatureConnect.WinUI.Commands;
+using ArlaNatureConnect.WinUI.Services;
 using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 using ArlaNatureConnect.WinUI.Views.Controls.PageContents.ArlaEmployee;
 
@@ -43,8 +44,9 @@ public sealed partial class ArlaEmployeePageSideMenuUCViewModel : SideMenuViewMo
     public ArlaEmployeePageSideMenuUCViewModel(
         IStatusInfoServices statusInfoServices,
         IAppMessageService appMessageService,
-        IPersonRepository personRepository)
-        : base(statusInfoServices, appMessageService, personRepository)
+        IPersonRepository personRepository,
+        INavigationHandler navigationHandler)
+        : base(statusInfoServices, appMessageService, personRepository, navigationHandler)
     {
         using (_statusInfoServices!.BeginLoading())
         {
@@ -121,13 +123,13 @@ public sealed partial class ArlaEmployeePageSideMenuUCViewModel : SideMenuViewMo
         {
             object? obj = null;
             try { obj = factory(); } catch { obj = null; }
-            
+
             if (obj is ArlaEmployeeAssignNatureCheck farmsView)
             {
                 // Set DataContext to AssignNatureCheckViewModel BEFORE setting CurrentContent
                 // This prevents binding failures during XAML evaluation
                 farmsView.DataContext = pageVm.AssignNatureCheckViewModel;
-                
+
                 // Set CurrentContent using cached property info (better performance than reflection on each call)
                 if (_navigationViewModel is NavigationViewModelBase hostVm && _currentContentProperty != null)
                 {

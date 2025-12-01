@@ -28,18 +28,61 @@ namespace ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 ///   constructor to set up navigation command handling.
 /// - Optionally assign <see cref="ContentFactory"/> to provide custom content creation logic for navigation tags.
 /// - Call <see cref="AttachSideMenuToMainWindow"/> (or use <see cref="AttachToView(Page?)"/>) to attach the shared side menu.
+///
+/// Inheriting XML Documentation with <c>&lt;inheritdoc/&gt;</c>:
+/// <para>
+/// Use <c>&lt;inheritdoc/&gt;</c> on derived types or overridden members to inherit the documentation emitted by this
+/// base class. This helps avoid duplication and keeps docs consistent when the behaviour is the same.
+/// </para>
+/// <para>Why use it:</para>
+/// <list type="bullet">
+///   <item><description>Keeps documentation DRY when derived classes implement the same behavior.</description></item>
+///   <item><description>Ensures IntelliSense shows the same guidance for derived members without retyping comments.</description></item>
+///   <item><description>Works well for large hierarchies where base behaviour is the canonical description.</description></item>
+/// </list>
+///
+/// <example>
+/// <code language="csharp">
+/// // Base class already documents the behaviour
+/// public abstract class NavigationViewModelBase
+/// {
+///     /// &lt;summary&gt;
+///     /// Perform async initialization for the view-model.
+///     /// &lt;/summary&gt;
+///     public virtual Task InitializeAsync(Role? role)
+///     {
+///         return Task.CompletedTask;
+///     }
+/// }
+///
+/// // Derived class can inherit the documentation instead of repeating it
+/// /// &lt;inheritdoc/&gt;
+/// public class MyRoleViewModel : NavigationViewModelBase
+/// {
+///     /// &lt;inheritdoc/&gt;
+///     public override Task InitializeAsync(Role? role)
+///     {
+///         // role-specific initialization here
+///         return base.InitializeAsync(role);
+///     }
+/// }
+/// </code>
+/// </example>
+///
+/// <remarks>
+/// When using <c>&lt;inheritdoc/&gt;</c> in a library project, ensure XML documentation file generation is enabled
+/// for the build so the inherited comments are available to consuming projects and IntelliSense.
+/// </remarks>
 /// </summary>
-public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewModelBase
+public abstract class NavigationViewModelBase(INavigationHandler navigationHandler) : ViewModelBase, INavigationViewModelBase
 {
     #region Fields
-    private readonly NavigationHandler? _navigationHandler; // original
-    private bool _isLoading;
-    private UserControl? _currentContent;
+    private readonly INavigationHandler? _navigationHandler = (NavigationHandler?)(navigationHandler ?? throw new ArgumentNullException(nameof(navigationHandler)));
 
     // Side menu handling fields moved from view
     private UIElement[]? _previousSideMenuChildren;
     private UIElement? _addedSideMenuControl;
-    private IServiceScope? _sideMenuScope; // NEW: scope for resolved side-menu VM
+    private IServiceScope? _sideMenuScope;
 
     // NEW: type of the side menu control to attach (set by derived VMs)
     protected Type? SideMenuControlType { get; set; }
@@ -48,30 +91,8 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
     #endregion
     #region Fields Commands
 
-    /// <summary>
-    /// Command used to choose a person from a list. Derived classes wire this command to selection behaviour.
-    /// </summary>
     public RelayCommand<Person>? ChooseUserCommand { get; protected set; }
     #endregion
-
-    /// <summary>
-    /// Parameterless constructor used for design-time and tests. Derived classes that need repositories should use
-    /// the constructor that accepts dependencies.
-    /// </summary>
-    //public NavigationViewModelBase() : base()
-    //{
-    //}
-
-    /// <summary>
-    /// Construct a navigation view-model with required services.
-    /// </summary>
-    /// <param name="navigationHandler">Navigation handler used for frame navigation.</param>
-    /// <param name="personRepository">Items used to load persons for the active role.</param>
-    /// <param name="roleRepository">Items used to resolve roles if needed.</param>
-    protected NavigationViewModelBase(NavigationHandler navigationHandler) : base()
-    {
-        _navigationHandler = navigationHandler ?? throw new ArgumentNullException(nameof(navigationHandler));
-    }
 
     #region Properties
     /// <summary>
@@ -87,10 +108,10 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
     /// </summary>
     public bool IsLoading
     {
-        get => _isLoading;
+        get;
         protected set
         {
-            _isLoading = value;
+            field = value;
             OnPropertyChanged();
         }
     }
@@ -100,11 +121,11 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
     /// </summary>
     public UserControl? CurrentContent
     {
-        get => _currentContent;
+        get;
         protected set
         {
-            if (_currentContent == value) return;
-            _currentContent = value;
+            if (field == value) return;
+            field = value;
             OnPropertyChanged();
         }
     }
@@ -133,6 +154,8 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
     /// <returns>A completed task in the base implementation; derived classes return actual initialization tasks.</returns>
     public virtual Task InitializeAsync(Role? role)
     {
+        // Inline comment: default implementation intentionally returns a completed task
+        // so that callers can await InitializeAsync without checking for null/override.
         return Task.CompletedTask;
     }
 
@@ -142,7 +165,7 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
     /// </summary>
     /// <param name="parameter">Navigation parameter (string or delegate).</param>
     /// <returns><c>true</c> when navigation can proceed.</returns>
-    private bool CanNavigate(object? parameter)
+    private static bool CanNavigate(object? parameter)
     {
         if (parameter == null) return false;
         if (parameter is string s) return !string.IsNullOrWhiteSpace(s);
@@ -236,7 +259,7 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
             //    return;
             //}
 
-            _previousSideMenuChildren = sideMenuPanel.Children.Cast<UIElement>().ToArray();
+            _previousSideMenuChildren = [.. sideMenuPanel.Children.Cast<UIElement>()];
             sideMenuPanel.Children.Clear();
 
             object? resolvedVm = null;
@@ -328,8 +351,8 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
                 else
                 {
                     // Fallback: try to call a SetHostPageViewModel method if present
-                    MethodInfo? method = resolvedVm.GetType().GetMethod("SetHostPageViewModel", new[] { typeof(object) });
-                    method?.Invoke(resolvedVm, new object[] { this });
+                    MethodInfo? method = resolvedVm.GetType().GetMethod("SetHostPageViewModel", [typeof(object)]);
+                    method?.Invoke(resolvedVm, [this]);
                 }
             }
 

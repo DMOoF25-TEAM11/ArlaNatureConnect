@@ -19,8 +19,42 @@ namespace ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC;
 /// - Bind the view to properties on this view-model (for example, `FirstName`, `LastName`, `Email`).
 /// - Call the exposed commands and rely on the view-model to update the bound collection `Persons`.
 /// - The view-model handles conversion between form fields and the <see cref="Person"/> entity during save/add.
+///
+/// Inheriting XML documentation with <c>&lt;inheritdoc/&gt;</c>:
+/// <para>
+/// The <c>&lt;inheritdoc/&gt;</c> tag lets a member inherit documentation from its base declaration. Use it
+/// on overrides or interface implementations when the behavior is the same as the base member to avoid
+/// duplicating documentation and keep docs consistent.
+/// </para>
+/// <para>
+/// Why use it:
+/// - Reduces duplication across derived members.
+/// - Keeps documentation synchronized with the original contract.
+/// - Makes intent explicit when a derived member does not change the base behavior.
+/// </para>
+/// <example>
+/// Example: inherit documentation for an overridden method
+/// <code language="csharp">
+/// // base class
+/// public abstract class FooBase
+/// {
+///     /// <summary>Performs an important operation.</summary>
+///     public abstract void DoWork();
+/// }
+///
+/// // derived class uses &lt;inheritdoc/&gt; to reuse the base summary
+/// public class FooDerived : FooBase
+/// {
+///     /// &lt;inheritdoc/&gt;
+///     public override void DoWork()
+///     {
+///         // implementation here
+///     }
+/// }
+/// </code>
+/// </example>
 /// </remarks>
-public class CRUDPersonUCViewModel
+public sealed partial class CRUDPersonUCViewModel
     : CRUDViewModelBase<IPersonRepository, Person>
 {
     #region constants
@@ -35,18 +69,10 @@ public class CRUDPersonUCViewModel
     #endregion
     #region Fields
     // Repository for data access
-    private Guid _id;
-    private Guid _roleId;
-    private Guid _addressId;
-    private string _firstName = string.Empty;
-    private string _lastName = string.Empty;
-    private string _email = string.Empty;
-    private bool _isActive;
 
     // Sorting state
     private string? _lastSortProp;
     private bool _lastSortDesc;
-    private int _itemCounter = 0;
     #endregion
     #region Properties
     // Instance properties for XAML binding to label texts
@@ -60,91 +86,91 @@ public class CRUDPersonUCViewModel
 
     public int ItemCounter
     {
-        get => _itemCounter++;
+        get => field++;
         set
         {
-            if (_itemCounter == value) return;
-            _itemCounter = value;
+            if (field == value) return;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = 0;
 
     // Convenience strongly-typed collection (wraps base Items)
     public System.Collections.ObjectModel.ObservableCollection<Person> Persons => Items;
 
     public Guid Id
     {
-        get => _id;
+        get;
         set
         {
-            if (_id == value) return;
-            _id = value;
+            if (field == value) return;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public Guid RoleId
     {
-        get => _roleId;
+        get;
         set
         {
-            if (_roleId == value) return;
-            _roleId = value;
+            if (field == value) return;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public Guid AddressId
     {
-        get => _addressId;
+        get;
         set
         {
-            if (_addressId == value) return;
-            _addressId = value;
+            if (field == value) return;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public string FirstName
     {
-        get => _firstName;
+        get;
         set
         {
-            if (_firstName == value) return;
-            _firstName = value ?? string.Empty;
+            if (field == value) return;
+            field = value ?? string.Empty;
             OnPropertyChanged();
         }
-    }
+    } = string.Empty;
 
     public string LastName
     {
-        get => _lastName;
+        get;
         set
         {
-            if (_lastName == value) return;
-            _lastName = value ?? string.Empty;
+            if (field == value) return;
+            field = value ?? string.Empty;
             OnPropertyChanged();
         }
-    }
+    } = string.Empty;
 
     public string Email
     {
-        get => _email;
+        get;
         set
         {
-            if (_email == value) return;
-            _email = value ?? string.Empty;
+            if (field == value) return;
+            field = value ?? string.Empty;
             OnPropertyChanged();
         }
-    }
+    } = string.Empty;
 
     public bool IsActive
     {
-        get => _isActive;
+        get;
         set
         {
-            if (_isActive == value) return;
-            _isActive = value;
+            if (field == value) return;
+            field = value;
             OnPropertyChanged();
         }
     }
@@ -183,7 +209,7 @@ public class CRUDPersonUCViewModel
     /// Implementation note: this method is left asynchronous so it can be awaited from the UI layer.
     /// It should populate the base <see cref="CRUDViewModelBase{TRepository,TEntity}.Items"/> collection.
     /// </remarks>
-    private async Task LoadAllWithRolesAsync(CancellationToken ct = default)
+    private static async Task LoadAllWithRolesAsync(/* CancellationToken ct = default */)
     {
         // Inline comment: load persons including related navigation data from repository when implemented.
     }
@@ -220,15 +246,14 @@ public class CRUDPersonUCViewModel
     {
         if (string.IsNullOrEmpty(prop)) return;
 
-        bool descending = (_lastSortProp == prop) ? !_lastSortDesc : false;
+        bool descending = (_lastSortProp == prop) && !_lastSortDesc;
         _lastSortProp = prop;
         _lastSortDesc = descending;
 
         // Inline comment: use reflection-based getter so nested properties can be used when sorting
-        List<Person> list = (_lastSortDesc
+        List<Person> list = [.. (_lastSortDesc
             ? Items.OrderByDescending(p => GetNestedPropertyValue(p, prop), Comparer<object?>.Default)
-            : Items.OrderBy(p => GetNestedPropertyValue(p, prop), Comparer<object?>.Default))
-            .ToList();
+            : Items.OrderBy(p => GetNestedPropertyValue(p, prop), Comparer<object?>.Default))];
 
         Items.Clear();
         foreach (Person? p in list)
@@ -245,7 +270,7 @@ public class CRUDPersonUCViewModel
     protected override Task<Person> OnAddFormAsync()
     {
         // Create a new Person instance from view-model fields
-        Person p = new Person
+        Person p = new()
         {
             Id = Id == Guid.Empty ? Guid.NewGuid() : Id,
             RoleId = RoleId,
@@ -265,7 +290,7 @@ public class CRUDPersonUCViewModel
     /// <param name="entity">The entity to load into the form.</param>
     protected override Task OnLoadFormAsync(Person entity)
     {
-        if (entity == null) throw new ArgumentNullException(nameof(entity));
+        ArgumentNullException.ThrowIfNull(entity);
 
         Id = entity.Id;
         RoleId = entity.RoleId;
@@ -297,7 +322,7 @@ public class CRUDPersonUCViewModel
         Email = string.Empty;
         IsActive = false;
 
-        SelectedItem = null;
+        SelectedItem = null!;
 
         return Task.CompletedTask;
     }

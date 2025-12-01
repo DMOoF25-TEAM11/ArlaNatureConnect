@@ -10,5 +10,3 @@ public enum NatureCheckCaseStatus
     Completed = 3,
     Cancelled = 4
 }
-
-

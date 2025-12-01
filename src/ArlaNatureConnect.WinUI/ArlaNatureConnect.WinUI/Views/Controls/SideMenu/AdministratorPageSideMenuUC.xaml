@@ -83,6 +83,7 @@
                 Padding="20,24">
       <Button x:Name="LogoutButton"
                 Content="Log ud"
+                Command="{Binding LogoutCommand}"
                 Style="{StaticResource ArlaNavButton}"/>
     </StackPanel>
 

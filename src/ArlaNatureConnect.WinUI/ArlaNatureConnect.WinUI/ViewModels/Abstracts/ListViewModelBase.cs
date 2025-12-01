@@ -22,7 +22,7 @@ public abstract class ListViewModelBase<TRepos, TEntity> : ViewModelBase
 {
     #region Fields
 
-    protected TEntity _selectedItem;
+    protected TEntity? _selectedItem;
 
     /// <summary>
     /// Items used to access entities of type <typeparamref name="TEntity"/>.
@@ -65,7 +65,7 @@ public abstract class ListViewModelBase<TRepos, TEntity> : ViewModelBase
     }
 
     #region Observables Properties
-    public TEntity SelectedItem
+    public TEntity? SelectedItem
     {
         get => _selectedItem;
         set
@@ -78,7 +78,7 @@ public abstract class ListViewModelBase<TRepos, TEntity> : ViewModelBase
     /// <summary>
     /// Collection of entities exposed to the view. ObservableCollection ensures UI updates when items change.
     /// </summary>
-    public ObservableCollection<TEntity> Items { get; } = new ObservableCollection<TEntity>();
+    public ObservableCollection<TEntity> Items { get; } = [];
     #endregion
     #region Load Handlers
     /// <summary>
@@ -97,7 +97,7 @@ public abstract class ListViewModelBase<TRepos, TEntity> : ViewModelBase
 
                 // Update collection on UI thread
                 Items.Clear();
-                foreach (TEntity it in all ?? Array.Empty<TEntity>())
+                foreach (TEntity it in all ?? [])
                 {
                     Items.Add(it);
                 }

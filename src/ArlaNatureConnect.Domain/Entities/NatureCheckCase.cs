@@ -15,6 +15,11 @@ public class NatureCheckCase
     public string? Priority { get; set; }
     public DateTimeOffset CreatedAt { get; set; }
     public DateTimeOffset? AssignedAt { get; set; }
+
+    public static implicit operator Task<object>(NatureCheckCase? v)
+    {
+        throw new NotImplementedException();
+    }
 }
 
 

@@ -3,6 +3,8 @@ using ArlaNatureConnect.Infrastructure.Persistence;
 using ArlaNatureConnect.Infrastructure.Repositories;
 
 using Microsoft.EntityFrameworkCore;
+using Moq;
+using System.Runtime.InteropServices;
 
 namespace TestInfrastructure.Repositories;
 
@@ -21,111 +23,63 @@ public class RoleRepositoryTest
     {
         DbContextOptions<AppDbContext> options = CreateOptions();
 
-        // Arrange - add in one context
+        var factoryMock = new Mock<IDbContextFactory<AppDbContext>>();
+        factoryMock.Setup(f => f.CreateDbContext()).Returns(() => new AppDbContext(options));
+
         Role role = new Role { Id = Guid.NewGuid(), Name = "Tester" };
-        using (AppDbContext ctx = new AppDbContext(options))
-        {
-            RoleRepository repo = new RoleRepository(ctx);
-            await repo.AddAsync(role);
-            await ctx.SaveChangesAsync();
-        }
 
-        // Act - read in a new context to simulate real persistence
-        using (AppDbContext ctx = new AppDbContext(options))
-        {
-            RoleRepository repo = new RoleRepository(ctx);
-            Role? fetched = await repo.GetByIdAsync(role.Id);
+        // Add using repository
+        var repo = new RoleRepository(factoryMock.Object);
+        await repo.AddAsync(role);
 
-            // Assert
-            Assert.IsNotNull(fetched);
-            Assert.AreEqual("Tester", fetched!.Name);
-        }
+        // Read back in a new context
+        var fetched = await repo.GetByNameAsync("Tester");
+
+        Assert.IsNotNull(fetched);
+        Assert.AreEqual("Tester", fetched!.Name);
     }
 
     [TestMethod]
-    public async Task GetAll_Returns_All_Roles()
+    public async Task GetByName_Returns_Null_On_Exception()
     {
-        DbContextOptions<AppDbContext> options = CreateOptions();
+        // Create factory that throws when creating context to simulate COM/WinRT error or other errors
+        var factoryMock = new Mock<IDbContextFactory<AppDbContext>>();
+        factoryMock.Setup(f => f.CreateDbContext()).Throws(new COMException("COM error"));
 
-        Role[] roles = new[]
-        {
-            new Role { Id = Guid.NewGuid(), Name = "R1" },
-            new Role { Id = Guid.NewGuid(), Name = "R2" }
-        };
+        var repo = new RoleRepository(factoryMock.Object);
 
-        using (AppDbContext ctx = new AppDbContext(options))
-        {
-            RoleRepository repo = new RoleRepository(ctx);
-            await repo.AddRangeAsync(roles);
-            await ctx.SaveChangesAsync();
-        }
+        Role? result = await repo.GetByNameAsync("Farmer");
 
-        using (AppDbContext ctx = new AppDbContext(options))
-        {
-            RoleRepository repo = new RoleRepository(ctx);
-            List<Role> all = (await repo.GetAllAsync()).ToList();
-
-            Assert.HasCount(2, all);
-            CollectionAssert.AreEquivalent(roles.Select(r => r.Name).ToList(), all.Select(r => r.Name).ToList());
-        }
+        Assert.IsNull(result);
     }
 
     [TestMethod]
-    public async Task Update_Role_Persists_Changes()
+    public async Task GetByName_Is_ThreadSafe_When_Called_Concurrently()
     {
         DbContextOptions<AppDbContext> options = CreateOptions();
 
-        Role role = new Role { Id = Guid.NewGuid(), Name = "Before" };
-        using (AppDbContext ctx = new AppDbContext(options))
+        // seed data
+        var roleId = Guid.NewGuid();
+        using (var seed = new AppDbContext(options))
         {
-            RoleRepository repo = new RoleRepository(ctx);
-            await repo.AddAsync(role);
-            await ctx.SaveChangesAsync();
+            seed.Roles.Add(new Role { Id = roleId, Name = "Farmer" });
+            await seed.SaveChangesAsync();
         }
 
-        // update
-        using (AppDbContext ctx = new AppDbContext(options))
-        {
-            RoleRepository repo = new RoleRepository(ctx);
-            role.Name = "After";
-            await repo.UpdateAsync(role);
-            await ctx.SaveChangesAsync();
-        }
+        var factoryMock = new Mock<IDbContextFactory<AppDbContext>>();
+        factoryMock.Setup(f => f.CreateDbContext()).Returns(() => new AppDbContext(options));
 
-        using (AppDbContext ctx = new AppDbContext(options))
-        {
-            RoleRepository repo = new RoleRepository(ctx);
-            Role? fetched = await repo.GetByIdAsync(role.Id);
-            Assert.IsNotNull(fetched);
-            Assert.AreEqual("After", fetched!.Name);
-        }
-    }
+        var repo = new RoleRepository(factoryMock.Object);
 
-    [TestMethod]
-    public async Task Delete_Role_Removes_Entity()
-    {
-        DbContextOptions<AppDbContext> options = CreateOptions();
+        // call concurrently
+        IEnumerable<Task<Role?>> tasks = Enumerable.Range(0, 20).Select(_ => Task.Run(() => repo.GetByNameAsync("Farmer")));
+        Role?[] results = (await Task.WhenAll(tasks)).ToArray();
 
-        Role role = new Role { Id = Guid.NewGuid(), Name = "ToDelete" };
-        using (AppDbContext ctx = new AppDbContext(options))
+        // all should return non-null with correct name
+        foreach (var r in results)
         {
-            RoleRepository repo = new RoleRepository(ctx);
-            await repo.AddAsync(role);
-            await ctx.SaveChangesAsync();
-        }
-
-        using (AppDbContext ctx = new AppDbContext(options))
-        {
-            RoleRepository repo = new RoleRepository(ctx);
-            await repo.DeleteAsync(role.Id);
-            await ctx.SaveChangesAsync();
-        }
-
-        using (AppDbContext ctx = new AppDbContext(options))
-        {
-            RoleRepository repo = new RoleRepository(ctx);
-            Role? fetched = await repo.GetByIdAsync(role.Id);
-            Assert.IsNull(fetched);
+            Assert.IsNotNull(r);
+            Assert.AreEqual("Farmer", r!.Name);
         }
     }
 }

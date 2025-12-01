@@ -2,11 +2,13 @@ using ArlaNatureConnect.Core.Abstract;
 using ArlaNatureConnect.Domain.Entities;
 using ArlaNatureConnect.Infrastructure.Persistence;
 
+using Microsoft.EntityFrameworkCore;
+
 namespace ArlaNatureConnect.Infrastructure.Repositories;
 
 public class FarmRepository : Repository<Farm>, IFarmRepository
 {
-    public FarmRepository(AppDbContext context) : base(context)
+    public FarmRepository(IDbContextFactory<AppDbContext> factory) : base(factory)
     {
     }
 }

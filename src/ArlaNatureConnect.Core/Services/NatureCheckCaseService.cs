@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using ArlaNatureConnect.Core.Abstract;
 using ArlaNatureConnect.Core.DTOs;
 using ArlaNatureConnect.Domain.Entities;
@@ -175,9 +173,9 @@ public class NatureCheckCaseService : INatureCheckCaseService
                 throw new InvalidOperationException("Kunne ikke finde gården til redigering.");
             }
 
-            if (existingFarm.AddressId.HasValue)
+            if (existingFarm.AddressId != Guid.Empty)
             {
-                Address? farmAddress = await _addressRepository.GetByIdAsync(existingFarm.AddressId.Value, cancellationToken).ConfigureAwait(false);
+                Address? farmAddress = await _addressRepository.GetByIdAsync(existingFarm.AddressId, cancellationToken).ConfigureAwait(false);
                 if (farmAddress != null)
                 {
                     farmAddress.Street = request.Street;
@@ -188,9 +186,9 @@ public class NatureCheckCaseService : INatureCheckCaseService
                 }
             }
 
-            if (existingFarm.PersonId.HasValue)
+            if (existingFarm.PersonId != Guid.Empty)
             {
-                Person? farmer = await _personRepository.GetByIdAsync(existingFarm.PersonId.Value, cancellationToken).ConfigureAwait(false);
+                Person? farmer = await _personRepository.GetByIdAsync(existingFarm.PersonId, cancellationToken).ConfigureAwait(false);
                 if (farmer != null)
                 {
                     farmer.FirstName = request.OwnerFirstName;
@@ -265,7 +263,7 @@ public class NatureCheckCaseService : INatureCheckCaseService
     public async Task<IReadOnlyList<ConsultantNotificationDto>> GetNotificationsForConsultantAsync(Guid consultantId, CancellationToken cancellationToken = default)
     {
         IReadOnlyList<NatureCheckCase> assignedCases = await _natureCheckCaseRepository.GetAssignedCasesForConsultantAsync(consultantId, cancellationToken).ConfigureAwait(false);
-        
+
         if (assignedCases.Count == 0)
         {
             return Array.Empty<ConsultantNotificationDto>();
@@ -273,7 +271,7 @@ public class NatureCheckCaseService : INatureCheckCaseService
 
         // Get all farm IDs
         HashSet<Guid> farmIds = assignedCases.Select(c => c.FarmId).ToHashSet();
-        
+
         // Load all farms in one query
         List<Farm> farms = (await _farmRepository.GetAllAsync(cancellationToken).ConfigureAwait(false))
             .Where(f => farmIds.Contains(f.Id))
@@ -313,15 +311,15 @@ public class NatureCheckCaseService : INatureCheckCaseService
         IDictionary<Guid, NatureCheckCase> activeCasesByFarm)
     {
         Person? owner = null;
-        if (farm.PersonId.HasValue)
+        if (farm.PersonId != Guid.Empty)
         {
-            personsById.TryGetValue(farm.PersonId.Value, out owner);
+            personsById.TryGetValue(farm.PersonId, out owner);
         }
-        
+
         Address? address = null;
-        if (farm.AddressId.HasValue)
+        if (farm.AddressId != Guid.Empty)
         {
-            addressesById.TryGetValue(farm.AddressId.Value, out address);
+            addressesById.TryGetValue(farm.AddressId, out address);
         }
 
         string? consultantFirstName = null;

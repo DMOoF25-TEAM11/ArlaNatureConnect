@@ -83,8 +83,9 @@
                 Spacing="12"
                 Padding="20,24">
       <Button x:Name="LogoutButton"
-                Content="Log ud"
-                Style="{StaticResource ArlaNavButton}"/>
+              Content="Log ud"
+              Command="{Binding LogoutCommand}"
+              Style="{StaticResource ArlaNavButton}"/>
     </StackPanel>
   </Grid>
 </abstracts:SideMenuBaseUC>
