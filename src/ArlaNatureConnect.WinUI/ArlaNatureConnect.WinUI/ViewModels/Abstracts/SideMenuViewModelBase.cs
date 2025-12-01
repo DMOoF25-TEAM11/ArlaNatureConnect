@@ -2,7 +2,10 @@ using ArlaNatureConnect.Core.Abstract;
 using ArlaNatureConnect.Core.Services;
 using ArlaNatureConnect.Domain.Entities;
 using ArlaNatureConnect.WinUI.Commands;
+using ArlaNatureConnect.WinUI.Services;
+using ArlaNatureConnect.WinUI.Views.Pages;
 
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
@@ -15,9 +18,30 @@ namespace ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 
 /// <summary>
 /// Base view-model for side-menu view-models.
-/// Inherits ListViewModelBase specialized for Person repository/entity.
-/// Exposes AvailablePersons, SelectedPerson and a NavigationCommand usable by side-menu views.
+/// Inherits <see cref="ListViewModelBase{IPersonRepository, Person}"/> specialized for the <see cref="Person"/> entity.
+/// Exposes <see cref="AvailablePersons"/>, <see cref="SelectedPerson"/> and a <see cref="NavigationCommand"/> usable by side-menu views.
 /// </summary>
+/// <remarks>
+/// How to use:
+/// - Construct or resolve a concrete side-menu view-model and set it as the DataContext for the side-menu UserControl.
+/// - Call <see cref="LoadAvailablePersonsAsync(string)"/> with the desired role to populate <see cref="AvailablePersons"/>.
+/// - Bind <see cref="SelectedPerson"/> to the view's selection control and hook up <see cref="NavigationCommand"/> / <see cref="LogoutCommand"/> to buttons.
+/// 
+/// Why we have it:
+/// - Centralizes side-menu behaviour (person loading, selection notification and navigation wiring) so pages can remain thin
+///   and share consistent behaviour across roles (Farmer, Consultant, Administrator, etc.).
+/// 
+/// Example:
+/// <example>
+/// <code>
+/// // In a page or DI-constructed view-model:
+/// var sideVm = new FarmerPageSideMenuUCViewModel(statusService, appMsgService, personRepo);
+/// mySideMenuControl.DataContext = sideVm;
+/// await sideVm.LoadAvailablePersonsAsync("Farmer");
+/// // Bindings will update and selecting a person will notify the host page view-model.
+/// </code>
+/// </example>
+/// </remarks>
 public abstract partial class SideMenuViewModelBase : ListViewModelBase<IPersonRepository, Person>
 {
     #region Types
@@ -33,14 +57,13 @@ public abstract partial class SideMenuViewModelBase : ListViewModelBase<IPersonR
         public string Label { get; }
         public ICommand? Command { get; }
 
-        private bool _isSelected;
         public bool IsSelected
         {
-            get => _isSelected;
+            get;
             set
             {
-                if (_isSelected == value) return;
-                _isSelected = value;
+                if (field == value) return;
+                field = value;
                 OnPropertyChanged();
             }
         }
@@ -52,10 +75,9 @@ public abstract partial class SideMenuViewModelBase : ListViewModelBase<IPersonR
 
 
     #region Fields
-    private Person? _selectedPerson;
-    private bool _isLoading;
     protected INavigationViewModelBase? _navigationViewModel;
-    private IPersonRepository _repository;
+    private readonly IPersonRepository _repository;
+    private readonly INavigationHandler _navigationHandler;
     #endregion
 
     #region Constructors
@@ -66,11 +88,13 @@ public abstract partial class SideMenuViewModelBase : ListViewModelBase<IPersonR
     protected SideMenuViewModelBase(
         IStatusInfoServices statusInfoServices,
         IAppMessageService appMessageService,
-        IPersonRepository repository
+        IPersonRepository repository,
+        INavigationHandler navigationHandler
         )
         : base(statusInfoServices, appMessageService, repository)
     {
         _repository = repository;
+        _navigationHandler = navigationHandler;
         NavigationCommand = new RelayCommand<object>(OnNavigate, CanNavigate);
         LogoutCommand = new RelayCommand<object>(OnLogout, CanLogout);
     }
@@ -80,7 +104,7 @@ public abstract partial class SideMenuViewModelBase : ListViewModelBase<IPersonR
     /// <summary>
     /// Persons available for selection in the side-menu.
     /// </summary>
-    public ObservableCollection<Person> AvailablePersons { get; set; } = [];
+    public ObservableCollection<Person> AvailablePersons { get; set; } = new();
 
 
     /// <summary>
@@ -88,10 +112,10 @@ public abstract partial class SideMenuViewModelBase : ListViewModelBase<IPersonR
     /// </summary>
     public Person? SelectedPerson
     {
-        get => _selectedPerson;
+        get;
         set
         {
-            _selectedPerson = value;
+            field = value;
             OnPropertyChanged();
             if (value != null)
             {
@@ -106,10 +130,10 @@ public abstract partial class SideMenuViewModelBase : ListViewModelBase<IPersonR
 
     public bool IsLoading
     {
-        get => _isLoading;
+        get;
         set
         {
-            _isLoading = value;
+            field = value;
             OnPropertyChanged();
         }
     }
@@ -127,7 +151,7 @@ public abstract partial class SideMenuViewModelBase : ListViewModelBase<IPersonR
         if (string.IsNullOrWhiteSpace(role))
         {
             // Ensure property change happens on UI thread when possible
-            TrySetAvailablePersons([]);
+            TrySetAvailablePersons(Enumerable.Empty<Person>());
             return;
         }
 
@@ -179,7 +203,7 @@ public abstract partial class SideMenuViewModelBase : ListViewModelBase<IPersonR
             // Otherwise try forwarding to host navigation command if available
             if (_navigationViewModel is NavigationViewModelBase hostVm3)
             {
-                ICommand? hostCmd = hostVm3.NavigationCommand as ICommand;
+                ICommand? hostCmd = hostVm3.NavigationCommand;
                 if (hostCmd != null && hostCmd.CanExecute(parameter))
                 {
                     hostCmd.Execute(parameter);
@@ -205,7 +229,34 @@ public abstract partial class SideMenuViewModelBase : ListViewModelBase<IPersonR
 
     protected virtual void OnLogout(object? parameter)
     {
+        try
+        {
+            // Clear selected person and any local state
+            SelectedPerson = null;
 
+            // Try to resolve the NavigationHandler from the host DI container and navigate to LoginPage
+            INavigationHandler? navigationHandler = App.HostInstance?.Services.GetService<INavigationHandler>();
+            if (navigationHandler != null)
+            {
+                navigationHandler.Navigate(typeof(LoginPage));
+                return;
+            }
+
+            // Fallback: attempt to get NavigationHandler via GetRequiredService (throws if missing)
+            try
+            {
+                INavigationHandler? required = App.HostInstance?.Services.GetRequiredService<INavigationHandler>();
+                required?.Navigate(typeof(LoginPage));
+            }
+            catch
+            {
+                // swallow - best effort navigation
+            }
+        }
+        catch
+        {
+            // swallow - logout is best-effort
+        }
     }
     private bool CanLogout(object? parameter)
     {
@@ -221,7 +272,8 @@ public abstract partial class SideMenuViewModelBase : ListViewModelBase<IPersonR
     {
         try
         {
-            List<Person> availablePersons = [.. persons];
+            // Inline comment: materialize enumerable to avoid deferred execution and potential collection-modification issues
+            List<Person> availablePersons = persons.ToList();
             AvailablePersons.Clear();
             foreach (Person person in availablePersons)
             {

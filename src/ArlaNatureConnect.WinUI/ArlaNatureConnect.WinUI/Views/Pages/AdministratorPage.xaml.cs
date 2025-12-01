@@ -2,7 +2,6 @@ using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 using ArlaNatureConnect.WinUI.ViewModels.Pages;
 using ArlaNatureConnect.WinUI.Views.Pages.Abstracts;
 
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -19,19 +18,16 @@ public sealed partial class AdministratorPage : NavPage
     {
         InitializeComponent();
 
-        // Resolve the page view-model from DI so its dependencies (e.g. NavigationHandler) are injected.
-        AdministratorPageViewModel vm = App.HostInstance.Services.GetRequiredService<AdministratorPageViewModel>();
+        // Create view model with dependencies
+        AdministratorPageViewModel vm = App.HostInstance?.Services.GetService(typeof(AdministratorPageViewModel)) as AdministratorPageViewModel ?? throw new InvalidOperationException("Failed to resolve AdministratorPageViewModel");
 
         ViewModel = vm;      // required by NavPage
         DataContext = vm;    // bindings in XAML
 
-        // Let the view-model attach to this page (subscribe to lifecycle events, attach side menu, etc.)
-        //vm.AttachToView(this);
-
         // If a side-menu control exists in the visual tree and its DataContext is a SideMenuViewModelBase,
         // ensure it knows about this page view-model (backwards compatibility with existing side-menu wiring).
         FrameworkElement? sideMenuControl = FindName("SideMenu") as FrameworkElement;
-        if (sideMenuControl?.DataContext is SideMenuViewModelBase sideMenuVm)
+        if (sideMenuControl != null && sideMenuControl.DataContext is SideMenuViewModelBase sideMenuVm)
         {
             sideMenuVm.SetHostPageViewModel(vm);
         }

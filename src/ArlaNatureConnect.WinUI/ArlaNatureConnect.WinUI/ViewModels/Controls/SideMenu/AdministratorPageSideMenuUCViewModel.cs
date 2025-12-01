@@ -2,6 +2,7 @@ using ArlaNatureConnect.Core.Abstract;
 using ArlaNatureConnect.Core.Services;
 using ArlaNatureConnect.Domain.Enums;
 using ArlaNatureConnect.WinUI.Commands;
+using ArlaNatureConnect.WinUI.Services;
 using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 using ArlaNatureConnect.WinUI.Views.Controls.PageContents.Administrator;
 
@@ -22,7 +23,7 @@ public sealed partial class AdministratorPageSideMenuUCViewModel : SideMenuViewM
     private const string _labelAdministratePersons = "Administrere personer";
     #endregion
     #region Properties
-    public ObservableCollection<NavItem> NavItems { get; } = new();
+    public ObservableCollection<NavItem> NavItems { get; } = [];
     #endregion
     #region Properties Commands
     public ICommand DashboardsCommand { get; }
@@ -33,8 +34,9 @@ public sealed partial class AdministratorPageSideMenuUCViewModel : SideMenuViewM
     public AdministratorPageSideMenuUCViewModel(
         IStatusInfoServices statusInfoServices,
         IAppMessageService appMessageService,
-        IPersonRepository personRepository)
-        : base(statusInfoServices, appMessageService, personRepository)
+        IPersonRepository personRepository,
+        INavigationHandler navigationHandler)
+        : base(statusInfoServices, appMessageService, personRepository, navigationHandler)
     {
         using (_statusInfoServices!.BeginLoading())
         {

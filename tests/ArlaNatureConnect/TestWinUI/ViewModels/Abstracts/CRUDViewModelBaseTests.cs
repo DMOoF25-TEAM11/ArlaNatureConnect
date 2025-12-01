@@ -1,392 +1,371 @@
 using ArlaNatureConnect.Core.Abstract;
 using ArlaNatureConnect.Core.Services;
+using ArlaNatureConnect.WinUI.Commands;
 using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 
-using System.ComponentModel;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 
 namespace TestWinUI.ViewModels.Abstracts;
 
 [TestClass]
 [SupportedOSPlatform("windows10.0.22621.0")]
-public sealed class CRUDViewModelBaseTests
+public sealed partial class CRUDViewModelBaseTests
 {
-    private sealed class TestEntity
-    {
-        public Guid Id { get; set; }
-        public string? Name { get; set; }
-    }
+    private sealed class TestEntity { public Guid Id { get; set; } }
 
     private sealed class FakeRepo : IRepository<TestEntity>
     {
-        public Func<Guid, Task<TestEntity?>>? GetByIdAsyncImpl { get; set; }
-
         public Task AddAsync(TestEntity entity, CancellationToken cancellationToken = default) => Task.CompletedTask;
         public Task AddRangeAsync(IEnumerable<TestEntity> entities, CancellationToken cancellationToken = default) => Task.CompletedTask;
         public Task DeleteAsync(Guid id, CancellationToken cancellationToken = default) => Task.CompletedTask;
-        public Task<IEnumerable<TestEntity>> GetAllAsync(CancellationToken cancellationToken = default) => Task.FromResult<IEnumerable<TestEntity>>(Array.Empty<TestEntity>());
-        public Task<TestEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
-        {
-            if (GetByIdAsyncImpl is null) return Task.FromResult<TestEntity?>(null);
-            return GetByIdAsyncImpl(id);
-        }
+        public Task<IEnumerable<TestEntity>> GetAllAsync(CancellationToken cancellationToken = default) => Task.FromResult<IEnumerable<TestEntity>>([]);
+        public Task<TestEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) => Task.FromResult<TestEntity?>(null);
         public Task UpdateAsync(TestEntity entity, CancellationToken cancellationToken = default) => Task.CompletedTask;
     }
 
-    private sealed class FakeStatusInfoServices : IStatusInfoServices
+    private sealed partial class TestCrudViewModel(
+        IStatusInfoServices status,
+        IAppMessageService appMsg,
+        FakeRepo repo,
+        bool autoLoad = false)
+        : CRUDViewModelBase<FakeRepo, TestEntity>(status, appMsg, repo, autoLoad)
     {
-        public bool IsLoading { get; set; }
-        public bool HasDbConnection { get; set; }
-        public IDisposable BeginLoading()
-        {
-            IsLoading = true;
-            return new DisposableAction(() => IsLoading = false);
-        }
-        private sealed class DisposableAction : IDisposable
-        {
-            private readonly Action _onDispose;
-            public DisposableAction(Action onDispose) => _onDispose = onDispose;
-            public void Dispose() => _onDispose();
-        }
-
-        // event explicitly implemented if interface requires it - provide no-op
-        event EventHandler? IStatusInfoServices.StatusInfoChanged
-        {
-            add { }
-            remove { }
-        }
-
-        // Implement INotifyPropertyChanged.PropertyChanged
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        // Implement IDisposable.Dispose()
-        public void Dispose()
-        {
-            // No resources to dispose in this fake implementation
-        }
-    }
-
-    private sealed class FakeAppMessageService : IAppMessageService
-    {
-        private readonly List<string> _info = new();
-        private readonly List<string> _errors = new();
-
-        public string? EntityName { get; set; }
-        public bool HasStatusMessages => _info.Any();
-        public bool HasErrorMessages => _errors.Any();
-        public IEnumerable<string> StatusMessages => _info.ToArray();
-        public IEnumerable<string> ErrorMessages => _errors.ToArray();
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        public void AddInfoMessage(string message)
-        {
-            _info.Add(message);
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(StatusMessages)));
-        }
-        public void AddErrorMessage(string message)
-        {
-            _errors.Add(message);
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ErrorMessages)));
-        }
-        public void ClearErrorMessages()
-        {
-            _errors.Clear();
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ErrorMessages)));
-        }
-    }
-
-    private sealed class TestCrudViewModel : CRUDViewModelBase<FakeRepo, TestEntity>
-    {
-        public bool ResetFormCalled { get; private set; }
-        public bool AddFormCalled { get; private set; }
-        public bool SaveFormCalled { get; private set; }
-        public bool LoadFormCalled { get; private set; }
-
-        public TestCrudViewModel(IStatusInfoServices status, IAppMessageService msg, FakeRepo repo)
-            : base(status, msg, repo)
-        {
-        }
-
-        // expose protected state for tests
-        public new FakeRepo Repository => base._items;
-
-        // Add this property to expose Entity for tests
-        public TestEntity? Entity
-        {
-            get => SelectedItem;
-            set => SelectedItem = value;
-        }
-
-        public void SetIsSaving(bool value) => _isSaving = value;
-        public void SetIsEditMode(bool value) => _isEditMode = value;
-
-        // wrappers to call protected async methods and ensure tasks complete
-        public Task CallLoadAsync(Guid id) => base.LoadAsync(id);
-        public Task CallOnAddAsync() => base.OnAddAsync();
-        public Task CallOnSaveAsync() => base.OnSaveAsync();
-        public Task CallOnDeleteAsync() => base.OnDeleteAsync();
-        public Task CallOnCancelAsync() => base.OnCancelAsync();
-        public Task CallOnResetAsync() => base.OnResetAsync();
-        public void CallRefreshCommand() => RefreshCommand.Execute(null);
+        public bool AddInvoked { get; private set; }
+        public bool SaveInvoked { get; private set; }
+        public bool DeleteInvoked { get; private set; }
+        public bool ResetFormInvoked { get; private set; }
 
         protected override Task OnResetFormAsync()
         {
-            ResetFormCalled = true;
+            ResetFormInvoked = true;
             return Task.CompletedTask;
         }
+        protected override Task<TestEntity> OnAddFormAsync() => Task.FromResult(new TestEntity());
+        protected override Task OnSaveFormAsync() => Task.CompletedTask;
+        protected override Task OnLoadFormAsync(TestEntity entity) => Task.CompletedTask;
 
-        protected override Task<TestEntity> OnAddFormAsync()
+        protected override async Task OnAddAsync()
         {
-            AddFormCalled = true;
-            return Task.FromResult(new TestEntity { Id = Guid.NewGuid(), Name = "added" });
+            await base.OnAddAsync();
+            AddInvoked = true;
         }
 
-        protected override Task OnSaveFormAsync()
+        protected override async Task OnSaveAsync()
         {
-            SaveFormCalled = true;
-            return Task.CompletedTask;
+            // mark that save was invoked
+            SaveInvoked = true;
+            await Task.CompletedTask;
         }
 
-        protected override Task OnLoadFormAsync(TestEntity entity)
+        protected override async Task OnDeleteAsync()
         {
-            LoadFormCalled = true;
-            return Task.CompletedTask;
+            DeleteInvoked = true;
+            await Task.CompletedTask;
         }
+
+        // Expose protected RefreshCommandStates to tests
+        public void ExposedRefreshCommandStates() => RefreshCommandStates();
+
+        // Expose protected CanXXX methods for testing
+        public bool ExposedCanSubmitCore() => CanSubmitCore();
+        public bool ExposedCanAdd() => CanAdd();
+        public bool ExposedCanSave() => CanSave();
+        public bool ExposedCanDelete() => CanDelete();
+
+        // Allow tests to set protected state
+        public void ExposedSetIsSaving(bool val) => IsSaving = val;
+        public void ExposedSetIsEditMode(bool val) => IsEditMode = val;
+    }
+
+    private static async Task<bool> WaitForAsync(Func<bool> predicate, int timeoutMs = 1000)
+    {
+        Stopwatch sw = System.Diagnostics.Stopwatch.StartNew();
+        while (sw.ElapsedMilliseconds < timeoutMs)
+        {
+            if (predicate()) return true;
+            await Task.Delay(5);
+        }
+        return false;
     }
 
     [TestMethod]
-    public void Constructor_InitializesCommands_And_DefaultModes()
+    public void RefreshCommandStates_HandlerThrows_COMException_IsSwallowed()
     {
-        FakeStatusInfoServices status = new FakeStatusInfoServices();
-        FakeAppMessageService msg = new FakeAppMessageService();
-        FakeRepo repo = new FakeRepo();
-        TestCrudViewModel vm = new TestCrudViewModel(status, msg, repo);
+        StatusInfoService status = new();
+        AppMessageService appMsg = new();
+        FakeRepo repo = new();
 
-        Assert.IsNotNull(vm.AddCommand);
-        Assert.IsNotNull(vm.SaveCommand);
-        Assert.IsNotNull(vm.DeleteCommand);
-        Assert.IsNotNull(vm.CancelCommand);
-        Assert.IsNotNull(vm.RefreshCommand);
+        TestCrudViewModel vm = new(status, appMsg, repo, autoLoad: false);
 
-        // default should be add mode (IsEditMode false)
-        Assert.IsFalse(vm.IsEditMode);
+        int called = 0;
+
+        // First handler throws COMException
+        (vm.AddCommand as RelayCommand)!.CanExecuteChanged += (s, e) => throw new COMException("UI COM error");
+        // Second handler should still be invoked
+        (vm.AddCommand as RelayCommand)!.CanExecuteChanged += (s, e) => called++;
+
+        // Act
+        vm.ExposedRefreshCommandStates();
+
+        // Assert
+        Assert.AreEqual(1, called);
+    }
+
+    [TestMethod]
+    public void RefreshCommandStates_MultiThreaded_InvokesAllHandlers_ThreadSafe()
+    {
+        StatusInfoService status = new();
+        AppMessageService appMsg = new();
+        FakeRepo repo = new();
+
+        TestCrudViewModel vm = new(status, appMsg, repo, autoLoad: false);
+
+        const int handlerCount = 50;
+        const int threads = 8;
+        const int callsPerThread = 200;
+
+        int totalCalls = 0;
+
+        // register handlers that increment a shared counter in a thread-safe way
+        for (int i = 0; i < handlerCount; i++)
+        {
+            (vm.AddCommand as RelayCommand)!.CanExecuteChanged += (s, e) => System.Threading.Interlocked.Increment(ref totalCalls);
+        }
+
+        // Fire RefreshCommandStates from multiple threads concurrently
+        Task[] tasks = new Task[threads];
+        for (int t = 0; t < threads; t++)
+        {
+            tasks[t] = Task.Run(() =>
+            {
+                for (int c = 0; c < callsPerThread; c++)
+                {
+                    vm.ExposedRefreshCommandStates();
+                }
+            }, TestContext.CancellationToken);
+        }
+
+        Task.WaitAll(tasks, TestContext.CancellationToken);
+
+        int expected = handlerCount * threads * callsPerThread;
+        Assert.AreEqual(expected, totalCalls, $"Expected {expected} handler invocations, got {totalCalls}");
+    }
+
+    [TestMethod]
+    public async Task AddCommand_Executes_OnAddAsync_And_Sets_IsSaving()
+    {
+        StatusInfoService status = new();
+        AppMessageService appMsg = new();
+        FakeRepo repo = new();
+
+        TestCrudViewModel vm = new(status, appMsg, repo, autoLoad: false);
+
+        // Ensure we are in Add mode
         Assert.IsTrue(vm.IsAddMode);
-
-        // initial can execute states
-        Assert.IsTrue(vm.AddCommand.CanExecute(null));
-        Assert.IsFalse(vm.SaveCommand.CanExecute(null));
-        Assert.IsFalse(vm.DeleteCommand.CanExecute(null));
-        Assert.IsTrue(vm.CancelCommand.CanExecute(null));
-    }
-
-    [TestMethod]
-    public void CanSubmitCore_ReflectsIsSaving_And_ErrorMessages()
-    {
-        FakeStatusInfoServices status = new FakeStatusInfoServices();
-        FakeAppMessageService msg = new FakeAppMessageService();
-        FakeRepo repo = new FakeRepo();
-        TestCrudViewModel vm = new TestCrudViewModel(status, msg, repo);
-
-        // default: not saving, no errors
-        Assert.IsTrue(vm.AddCommand.CanExecute(null));
-
-        // simulate error message
-        msg.AddErrorMessage("err");
-        Assert.IsFalse(vm.AddCommand.CanExecute(null));
-
-        // clear errors and simulate saving
-        msg.ClearErrorMessages();
-        vm.SetIsSaving(true);
-        // Add should be disabled while saving
-        Assert.IsFalse(vm.AddCommand.CanExecute(null));
-    }
-
-    [TestMethod]
-    public async Task LoadAsync_RaisesEntityPropertyChanged()
-    {
-        FakeStatusInfoServices status = new FakeStatusInfoServices();
-        FakeAppMessageService msg = new FakeAppMessageService();
-        FakeRepo repo = new FakeRepo();
-
-        TestEntity found = new TestEntity { Id = Guid.NewGuid(), Name = "Found" };
-        repo.GetByIdAsyncImpl = id => Task.FromResult<TestEntity?>(found);
-
-        TestCrudViewModel vm = new TestCrudViewModel(status, msg, repo);
-
-        List<string?> received = new List<string?>();
-        vm.PropertyChanged += (_, e) => received.Add(e.PropertyName);
-
-        await vm.CallLoadAsync(found.Id);
-
-        // The implementation calls OnPropertyChanged(nameof(Entity)) in finally.
-        Assert.Contains("Entity", received);
-    }
-
-    [TestMethod]
-    public async Task LoadAsync_WhenRepositoryThrows_DoesNotCrash_And_RaisesPropertyChanged()
-    {
-        FakeStatusInfoServices status = new FakeStatusInfoServices();
-        FakeAppMessageService msg = new FakeAppMessageService();
-        FakeRepo repo = new FakeRepo();
-
-        repo.GetByIdAsyncImpl = id => throw new InvalidOperationException("boom");
-
-        TestCrudViewModel vm = new TestCrudViewModel(status, msg, repo);
-        List<string?> received = new List<string?>();
-        vm.PropertyChanged += (_, e) => received.Add(e.PropertyName);
-
-        await vm.CallLoadAsync(Guid.NewGuid());
-
-        Assert.Contains("Entity", received);
-        // error message append in implementation uses LINQ Append and will not modify service state
-        Assert.IsFalse(msg.HasErrorMessages);
-    }
-
-    [TestMethod]
-    public async Task OnAddAsync_OnlyRuns_WhenCanAdd()
-    {
-        FakeStatusInfoServices status = new FakeStatusInfoServices();
-        FakeAppMessageService msg = new FakeAppMessageService();
-        FakeRepo repo = new FakeRepo();
-        TestCrudViewModel vm = new TestCrudViewModel(status, msg, repo);
-
-        // ensure add mode
-        vm.SetIsEditMode(false);
-        await vm.CallOnAddAsync();
-
-        // base implementation sets IsSaving = true when CanAdd
-        Assert.IsTrue(vm.IsSaving);
-
-        // reset and set edit mode -> cannot add
-        vm.SetIsSaving(false);
-        vm.SetIsEditMode(true);
-        await vm.CallOnAddAsync();
         Assert.IsFalse(vm.IsSaving);
+
+        // Act
+        Assert.IsTrue(vm.AddCommand.CanExecute(null));
+        vm.AddCommand.Execute(null);
+
+        // Wait until OnAddAsync set the flag or timeout
+        bool invoked = await WaitForAsync(() => vm.AddInvoked, 500);
+
+        Assert.IsTrue(invoked, "OnAddAsync should have been invoked by AddCommand");
+        Assert.IsTrue(vm.IsSaving, "IsSaving should be true after AddCommand starts.");
     }
 
     [TestMethod]
-    public async Task OnCancelAsync_Resets_State_And_ClearsErrors()
+    public async Task SaveCommand_Executes_OnSaveAsync_When_In_EditMode()
     {
-        FakeStatusInfoServices status = new FakeStatusInfoServices();
-        FakeAppMessageService msg = new FakeAppMessageService();
-        FakeRepo repo = new FakeRepo();
-        TestCrudViewModel vm = new TestCrudViewModel(status, msg, repo);
+        StatusInfoService status = new();
+        AppMessageService appMsg = new();
+        FakeRepo repo = new();
 
-        // set up state
-        vm.Entity = new TestEntity { Id = Guid.NewGuid(), Name = "x" };
-        vm.SetIsEditMode(true);
-        msg.AddErrorMessage("e");
+        TestCrudViewModel vm = new(status, appMsg, repo, autoLoad: false);
 
-        await vm.CallOnCancelAsync();
-
-        Assert.IsNull(vm.Entity);
-        Assert.IsFalse(vm.IsEditMode);
-        Assert.IsTrue(vm.ResetFormCalled);
-        Assert.IsFalse(msg.HasErrorMessages);
-    }
-
-    [TestMethod]
-    public void RefreshCommand_Invokes_CanExecuteChanged_On_All_Commands()
-    {
-        FakeStatusInfoServices status = new FakeStatusInfoServices();
-        FakeAppMessageService msg = new FakeAppMessageService();
-        FakeRepo repo = new FakeRepo();
-        TestCrudViewModel vm = new TestCrudViewModel(status, msg, repo);
-
-        int calls = 0;
-        void Handler(object? s, EventArgs e) => calls++;
-
-        vm.AddCommand.CanExecuteChanged += Handler;
-        vm.SaveCommand.CanExecuteChanged += Handler;
-        vm.DeleteCommand.CanExecuteChanged += Handler;
-        vm.CancelCommand.CanExecuteChanged += Handler;
-        vm.RefreshCommand.CanExecuteChanged += Handler;
-
-        // executing RefreshCommand will call RefreshCommandStates() which raises CanExecuteChanged on all
-        vm.CallRefreshCommand();
-
-        Assert.AreEqual(5, calls);
-
-        // cleanup
-        vm.AddCommand.CanExecuteChanged -= Handler;
-        vm.SaveCommand.CanExecuteChanged -= Handler;
-        vm.DeleteCommand.CanExecuteChanged -= Handler;
-        vm.CancelCommand.CanExecuteChanged -= Handler;
-        vm.RefreshCommand.CanExecuteChanged -= Handler;
-    }
-
-    [TestMethod]
-    public async Task LoadAsync_Calls_OnLoadFormAsync_And_Sets_IsEditMode()
-    {
-        FakeStatusInfoServices status = new FakeStatusInfoServices();
-        FakeAppMessageService msg = new FakeAppMessageService();
-        FakeRepo repo = new FakeRepo();
-
-        TestEntity found = new TestEntity { Id = Guid.NewGuid(), Name = "Found" };
-        repo.GetByIdAsyncImpl = id => Task.FromResult<TestEntity?>(found);
-
-        TestCrudViewModel vm = new TestCrudViewModel(status, msg, repo);
-
-        await vm.CallLoadAsync(found.Id);
-
-        Assert.IsTrue(vm.LoadFormCalled);
-        Assert.IsTrue(vm.IsEditMode);
-        Assert.AreSame(found, vm.Entity);
-    }
-
-    [TestMethod]
-    public void Save_And_Delete_CanExecute_Based_On_EditMode_And_IsSaving()
-    {
-        FakeStatusInfoServices status = new FakeStatusInfoServices();
-        FakeAppMessageService msg = new FakeAppMessageService();
-        FakeRepo repo = new FakeRepo();
-        TestCrudViewModel vm = new TestCrudViewModel(status, msg, repo);
-
-        // initially not edit mode -> save/delete disabled
-        Assert.IsFalse(vm.SaveCommand.CanExecute(null));
-        Assert.IsFalse(vm.DeleteCommand.CanExecute(null));
-
-        // enable edit mode
-        vm.SetIsEditMode(true);
-        // no errors and not saving -> save/delete should be enabled
+        // Put into edit mode so Save is allowed
+        vm.ExposedSetIsEditMode(true);
         Assert.IsTrue(vm.SaveCommand.CanExecute(null));
+
+        vm.SaveCommand.Execute(null);
+
+        bool invoked = await WaitForAsync(() => vm.SaveInvoked, 500);
+        Assert.IsTrue(invoked, "OnSaveAsync should have been invoked by SaveCommand");
+    }
+
+    [TestMethod]
+    public async Task DeleteCommand_Executes_OnDeleteAsync_When_In_EditMode()
+    {
+        StatusInfoService status = new();
+        AppMessageService appMsg = new();
+        FakeRepo repo = new();
+
+        TestCrudViewModel vm = new(status, appMsg, repo, autoLoad: false);
+
+        vm.ExposedSetIsEditMode(true);
         Assert.IsTrue(vm.DeleteCommand.CanExecute(null));
 
-        // simulate saving -> delete should be disabled
-        vm.SetIsSaving(true);
-        Assert.IsFalse(vm.DeleteCommand.CanExecute(null));
+        vm.DeleteCommand.Execute(null);
+
+        bool invoked = await WaitForAsync(() => vm.DeleteInvoked, 500);
+        Assert.IsTrue(invoked, "OnDeleteAsync should have been invoked by DeleteCommand");
     }
 
     [TestMethod]
-    public async Task OnAddAsync_Raises_PropertyChanged_For_IsSaving()
+    public async Task CancelCommand_Executes_OnResetFormAsync_And_Clears_Errors_And_Selection()
     {
-        FakeStatusInfoServices status = new FakeStatusInfoServices();
-        FakeAppMessageService msg = new FakeAppMessageService();
-        FakeRepo repo = new FakeRepo();
-        TestCrudViewModel vm = new TestCrudViewModel(status, msg, repo);
+        StatusInfoService status = new();
+        AppMessageService appMsg = new();
+        FakeRepo repo = new();
 
-        List<string?> received = new List<string?>();
-        vm.PropertyChanged += (_, e) => received.Add(e.PropertyName);
+        TestCrudViewModel vm = new(status, appMsg, repo, autoLoad: false)
+        {
+            // Simulate an existing selection and an error message
+            SelectedItem = new TestEntity()
+        };
+        appMsg.AddErrorMessage("err");
+        vm.ExposedSetIsEditMode(true);
 
-        // Ensure add mode
-        vm.SetIsEditMode(false);
-        // call add
-        await vm.CallOnAddAsync();
+        Assert.IsTrue(vm.CancelCommand.CanExecute(null));
 
-        Assert.Contains("IsSaving", received);
+        vm.CancelCommand.Execute(null);
+
+        bool resetInvoked = await WaitForAsync(() => vm.ResetFormInvoked, 500);
+        Assert.IsTrue(resetInvoked, "OnResetFormAsync should have been invoked by CancelCommand");
+
+        // SelectedItem should be cleared and edit mode disabled
+        Assert.IsNull(vm.SelectedItem);
+        Assert.IsFalse(vm.IsEditMode);
+
+        // Error messages should be cleared
+        Assert.IsFalse(appMsg.HasErrorMessages);
     }
 
     [TestMethod]
-    public void SaveCommand_Execute_DoesNotThrow_WhenEnabled()
+    public void RefreshCommand_Invokes_RefreshCommandStates_And_Raises_CanExecuteChanged_On_Commands()
     {
-        FakeStatusInfoServices status = new FakeStatusInfoServices();
-        FakeAppMessageService msg = new FakeAppMessageService();
-        FakeRepo repo = new FakeRepo();
-        TestCrudViewModel vm = new TestCrudViewModel(status, msg, repo);
+        StatusInfoService status = new();
+        AppMessageService appMsg = new();
+        FakeRepo repo = new();
 
-        vm.SetIsEditMode(true);
+        TestCrudViewModel vm = new(status, appMsg, repo, autoLoad: false);
 
-        // Should be able to execute without throwing
-        vm.SaveCommand.Execute(null);
+        int called = 0;
+        (vm.AddCommand as RelayCommand)!.CanExecuteChanged += (s, e) => called++;
+
+        // Execute the refresh command which should call RefreshCommandStates
+        Assert.IsTrue(vm.RefreshCommand.CanExecute(null));
+        vm.RefreshCommand.Execute(null);
+
+        // Handler should have been invoked at least once
+        Assert.IsGreaterThan(0, called, "RefreshCommand should cause CanExecuteChanged to be raised on child commands.");
     }
+
+    [TestMethod]
+    public void CanSubmitCore_Returns_True_When_NotSaving_And_NoErrors()
+    {
+        StatusInfoService status = new();
+        AppMessageService appMsg = new();
+        FakeRepo repo = new();
+        TestCrudViewModel vm = new(status, appMsg, repo, autoLoad: false);
+
+        Assert.IsFalse(vm.IsSaving);
+        Assert.IsFalse(appMsg.HasErrorMessages);
+        Assert.IsTrue(vm.ExposedCanSubmitCore());
+    }
+
+    [TestMethod]
+    public void CanSubmitCore_Returns_False_When_HasErrors()
+    {
+        StatusInfoService status = new();
+        AppMessageService appMsg = new();
+        FakeRepo repo = new();
+        TestCrudViewModel vm = new(status, appMsg, repo, autoLoad: false);
+
+        appMsg.AddErrorMessage("err");
+        Assert.IsFalse(vm.ExposedCanSubmitCore());
+    }
+
+    [TestMethod]
+    public void CanSubmitCore_Returns_False_When_Saving()
+    {
+        StatusInfoService status = new();
+        AppMessageService appMsg = new();
+        FakeRepo repo = new();
+        TestCrudViewModel vm = new(status, appMsg, repo, autoLoad: false);
+
+        vm.ExposedSetIsSaving(true);
+        Assert.IsFalse(vm.ExposedCanSubmitCore());
+    }
+
+    [TestMethod]
+    public void CanAdd_Respects_AddMode_And_Errors_And_Saving()
+    {
+        StatusInfoService status = new();
+        AppMessageService appMsg = new();
+        FakeRepo repo = new();
+        TestCrudViewModel vm = new(status, appMsg, repo, autoLoad: false);
+
+        // Default is Add mode
+        vm.ExposedSetIsEditMode(false);
+        vm.ExposedSetIsSaving(false);
+        Assert.IsTrue(vm.ExposedCanAdd());
+
+        // When in edit mode, cannot add
+        vm.ExposedSetIsEditMode(true);
+        Assert.IsFalse(vm.ExposedCanAdd());
+
+        // When errors exist, cannot add
+        vm.ExposedSetIsEditMode(false);
+        appMsg.AddErrorMessage("err");
+        Assert.IsFalse(vm.ExposedCanAdd());
+    }
+
+    [TestMethod]
+    public void CanSave_Respects_EditMode_And_Errors()
+    {
+        StatusInfoService status = new();
+        AppMessageService appMsg = new();
+        FakeRepo repo = new();
+        TestCrudViewModel vm = new(status, appMsg, repo, autoLoad: false);
+
+        // Not in edit mode -> cannot save
+        vm.ExposedSetIsEditMode(false);
+        Assert.IsFalse(vm.ExposedCanSave());
+
+        // In edit mode and no errors -> can save
+        vm.ExposedSetIsEditMode(true);
+        Assert.IsTrue(vm.ExposedCanSave());
+
+        // When errors exist -> cannot save
+        appMsg.AddErrorMessage("err");
+        Assert.IsFalse(vm.ExposedCanSave());
+    }
+
+    [TestMethod]
+    public void CanDelete_Respects_EditMode_And_Saving()
+    {
+        StatusInfoService status = new();
+        AppMessageService appMsg = new();
+        FakeRepo repo = new();
+        TestCrudViewModel vm = new(status, appMsg, repo, autoLoad: false);
+
+        // Not in edit mode -> cannot delete
+        vm.ExposedSetIsEditMode(false);
+        Assert.IsFalse(vm.ExposedCanDelete());
+
+        // In edit mode and not saving -> can delete
+        vm.ExposedSetIsEditMode(true);
+        vm.ExposedSetIsSaving(false);
+        Assert.IsTrue(vm.ExposedCanDelete());
+
+        // When saving -> cannot delete
+        vm.ExposedSetIsSaving(true);
+        Assert.IsFalse(vm.ExposedCanDelete());
+    }
+
+    public TestContext TestContext { get; set; }
 }

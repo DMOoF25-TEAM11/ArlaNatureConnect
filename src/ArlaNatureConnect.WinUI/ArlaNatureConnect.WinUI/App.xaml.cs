@@ -12,6 +12,7 @@ using ArlaNatureConnect.WinUI.ViewModels.Controls;
 using ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC;
 using ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu;
 using ArlaNatureConnect.WinUI.ViewModels.Pages;
+using ArlaNatureConnect.WinUI.Views.Pages;
 
 using Microsoft.UI.Xaml;
 
@@ -52,12 +53,13 @@ public partial class App : Application
                     .AddSingleton<MainWindow>()
 
                     // Services
-                    .AddSingleton<NavigationHandler>()
+                    .AddSingleton<INavigationHandler, NavigationHandler>()
 
-                    // Controls
+                    // Control ViewModels
                     .AddSingleton<StatusBarUCViewModel>()
 
-                    // Pages
+                    // Page ViewModels
+                    .AddScoped<LoginPageViewModel>()
                     .AddScoped<AdministratorPageViewModel>()
                     .AddScoped<ArlaEmployeePageViewModel>()
                     .AddScoped<ConsultantPageViewModel>()
@@ -66,14 +68,21 @@ public partial class App : Application
                     // Feature ViewModels
                     .AddScoped<ArlaEmployeeAssignNatureCheckViewModel>()
 
-                    // Side Menus
+                    // Side Menu ViewModels
                     .AddScoped<AdministratorPageSideMenuUCViewModel>()
                     .AddScoped<ArlaEmployeePageSideMenuUCViewModel>()
                     .AddScoped<ConsultantPageSideMenuUCViewModel>()
                     .AddScoped<FarmerPageSideMenuUCViewModel>()
 
-                    // Shared Controls
+                    // Shared Control ViewModels
                     .AddScoped<CRUDPersonUCViewModel>()
+
+                    // Pages
+                    .AddScoped<LoginPage>()
+                    .AddScoped<AdministratorPage>()
+                    .AddScoped<ArlaEmployeePage>()
+                    .AddScoped<ConsultantPage>()
+                    .AddScoped<FarmerPage>()
                     ;
 
             })

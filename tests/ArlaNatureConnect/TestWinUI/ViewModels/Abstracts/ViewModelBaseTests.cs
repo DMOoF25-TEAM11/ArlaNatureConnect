@@ -1,5 +1,5 @@
 using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
-
+using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 
 namespace TestWinUI.ViewModels.Abstracts;
@@ -105,5 +105,61 @@ public sealed class ViewModelBaseTests
         vm.RaiseWithoutName();
 
         await Task.CompletedTask;
+    }
+
+    [TestMethod]
+    public void OnPropertyChanged_HandlerThrows_COMException_IsSwallowed()
+    {
+        TestViewModel vm = new TestViewModel();
+
+        int called = 0;
+
+        // First handler throws COMException to simulate UI interop error
+        vm.PropertyChanged += (s, e) => throw new COMException("UI COM error");
+        // Second handler increments counter
+        vm.PropertyChanged += (s, e) => called++;
+
+        // Act: should not throw despite handler throwing
+        vm.RaiseWithExplicit("Test");
+
+        // Assert the second handler was invoked
+        Assert.AreEqual(1, called);
+    }
+
+    [TestMethod]
+    public void OnPropertyChanged_MultiThreaded_InvokesAllHandlers_ThreadSafe()
+    {
+        TestViewModel vm = new TestViewModel();
+
+        const int handlerCount = 50;
+        const int threads = 8;
+        const int callsPerThread = 200;
+
+        int totalCalls = 0;
+
+        // register handlers that increment a shared counter in a thread-safe way
+        for (int i = 0; i < handlerCount; i++)
+        {
+            vm.PropertyChanged += (s, e) => System.Threading.Interlocked.Increment(ref totalCalls);
+        }
+
+        // Fire property changed from multiple threads concurrently
+        Task[] tasks = new Task[threads];
+        for (int t = 0; t < threads; t++)
+        {
+            tasks[t] = Task.Run(() =>
+            {
+                for (int c = 0; c < callsPerThread; c++)
+                {
+                    vm.RaiseWithExplicit("Concurrent");
+                }
+            });
+        }
+
+        // Wait for all tasks to complete
+        Task.WaitAll(tasks);
+
+        int expected = handlerCount * threads * callsPerThread;
+        Assert.AreEqual(expected, totalCalls, $"Expected {expected} handler invocations, got {totalCalls}");
     }
 }

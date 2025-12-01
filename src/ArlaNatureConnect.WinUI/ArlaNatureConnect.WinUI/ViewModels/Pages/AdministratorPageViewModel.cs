@@ -8,7 +8,7 @@ namespace ArlaNatureConnect.WinUI.ViewModels.Pages;
 
 public class AdministratorPageViewModel : NavigationViewModelBase
 {
-    public AdministratorPageViewModel(NavigationHandler navigationHandler)
+    public AdministratorPageViewModel(INavigationHandler navigationHandler)
         : base(navigationHandler)
     {
         SideMenuControlType = typeof(AdministratorPageSideMenuUC);

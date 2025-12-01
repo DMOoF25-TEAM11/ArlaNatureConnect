@@ -10,13 +10,8 @@ public class Person
     public string Email { get; set; } = string.Empty;
     public bool IsActive { get; set; }
 
-    public Person()
-    {
-        Farms = new List<Farm>().Where(farm => farm.PersonId == Id);
-    }
-
     // Navigation properties
-    virtual public Role Role { get; set; } = null!;
-    virtual public Address Address { get; set; } = null!;
-    virtual public IEnumerable<Farm> Farms { get; set; } = [];
+    public virtual Role Role { get; set; } = null!;
+    public virtual Address Address { get; set; } = null!;
+    public virtual ICollection<Farm> Farms { get; set; } = new List<Farm>();
 }

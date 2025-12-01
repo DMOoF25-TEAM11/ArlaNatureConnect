@@ -2,7 +2,6 @@ using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 using ArlaNatureConnect.WinUI.ViewModels.Pages;
 using ArlaNatureConnect.WinUI.Views.Pages.Abstracts;
 
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 
 namespace ArlaNatureConnect.WinUI.Views.Pages;
@@ -18,10 +17,13 @@ public sealed partial class ArlaEmployeePage : NavPage
     {
         InitializeComponent();
 
-        ArlaEmployeePageViewModel vm = App.HostInstance.Services.GetRequiredService<ArlaEmployeePageViewModel>();
-        ViewModel = vm;
-        DataContext = vm;
+        ArlaEmployeePageViewModel vm = App.HostInstance?.Services.GetService(typeof(ArlaEmployeePageViewModel)) as ArlaEmployeePageViewModel ?? throw new InvalidOperationException("Failed to resolve ArlaEmployeePageViewModel");
 
+        ViewModel = vm;      // required by NavPage
+        DataContext = vm;    // bindings in XAML
+
+        // If a side-menu control exists in the visual tree and its DataContext is a SideMenuViewModelBase,
+        // ensure it knows about this page view-model (backwards compatibility with existing side-menu wiring).
         FrameworkElement? sideMenuControl = FindName("SideMenu") as FrameworkElement;
         if (sideMenuControl?.DataContext is SideMenuViewModelBase sideMenuVm)
         {

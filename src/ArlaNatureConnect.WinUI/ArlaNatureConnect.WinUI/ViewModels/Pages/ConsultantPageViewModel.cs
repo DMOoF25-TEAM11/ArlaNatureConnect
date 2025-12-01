@@ -17,47 +17,42 @@ namespace ArlaNatureConnect.WinUI.ViewModels.Pages;
 public sealed class ConsultantPageViewModel : NavigationViewModelBase
 {
     private readonly INatureCheckCaseService? _natureCheckCaseService;
-    private Person? _selectedConsultant;
-    private string _currentSection = "Dashboards";
-    private ConsultantNatureCheckViewModel? _natureCheckViewModel;
 
-    public ConsultantNatureCheckViewModel? NatureCheckViewModel => _natureCheckViewModel;
+    public ConsultantNatureCheckViewModel? NatureCheckViewModel { get; }
 
     public Person? SelectedConsultant
     {
-        get => _selectedConsultant;
-        private set
+        get; private set
         {
-            if (_selectedConsultant == value)
+            if (field == value)
             {
                 return;
             }
 
-            _selectedConsultant = value;
+            field = value;
             OnPropertyChanged();
-            
+
             // Update notification view model when consultant changes
-            if (_natureCheckViewModel != null)
+            if (NatureCheckViewModel != null)
             {
-                _natureCheckViewModel.SelectedConsultant = value;
+                NatureCheckViewModel.SelectedConsultant = value;
             }
         }
     }
 
     public string CurrentSection
     {
-        get => _currentSection;
-        private set
+        get; private set
         {
-            if (_currentSection == value)
+            if (field == value)
             {
                 return;
             }
 
-            _currentSection = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = "Dashboards";
 
     public ConsultantPageViewModel(NavigationHandler navigationHandler)
         : base(navigationHandler)
@@ -71,7 +66,7 @@ public sealed class ConsultantPageViewModel : NavigationViewModelBase
         SetContent("Dashboards");
     }
 
-    public ConsultantPageViewModel(NavigationHandler navigationHandler, INatureCheckCaseService natureCheckCaseService)
+    public ConsultantPageViewModel(INavigationHandler navigationHandler, INatureCheckCaseService natureCheckCaseService)
         : base(navigationHandler)
     {
         _natureCheckCaseService = natureCheckCaseService ?? throw new ArgumentNullException(nameof(natureCheckCaseService));
@@ -79,7 +74,7 @@ public sealed class ConsultantPageViewModel : NavigationViewModelBase
         SideMenuViewModelType = typeof(ConsultantPageSideMenuUCViewModel);
 
         // Initialize nature check view model
-        _natureCheckViewModel = new ConsultantNatureCheckViewModel(_natureCheckCaseService);
+        NatureCheckViewModel = new ConsultantNatureCheckViewModel(_natureCheckCaseService);
 
         NavigationCommand = new RelayCommand<object>(OnNavigate, CanNavigate);
         ChooseUserCommand = new RelayCommand<Person>(OnConsultantSelected);
@@ -119,11 +114,11 @@ public sealed class ConsultantPageViewModel : NavigationViewModelBase
         }
 
         // Use dedicated ViewModel for ConsultantNatureCheck if available
-        if (newContent is ConsultantNatureCheck && _natureCheckViewModel != null)
+        if (newContent is ConsultantNatureCheck && NatureCheckViewModel != null)
         {
-            newContent.DataContext = _natureCheckViewModel;
+            newContent.DataContext = NatureCheckViewModel;
             // Ensure notifications are loaded when switching to this view
-            _ = _natureCheckViewModel.LoadNotificationsAsync();
+            _ = NatureCheckViewModel.LoadNotificationsAsync();
         }
         else
         {

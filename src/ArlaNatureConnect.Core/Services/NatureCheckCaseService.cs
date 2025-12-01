@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using ArlaNatureConnect.Core.Abstract;
 using ArlaNatureConnect.Core.DTOs;
 using ArlaNatureConnect.Domain.Entities;
@@ -265,7 +263,7 @@ public class NatureCheckCaseService : INatureCheckCaseService
     public async Task<IReadOnlyList<ConsultantNotificationDto>> GetNotificationsForConsultantAsync(Guid consultantId, CancellationToken cancellationToken = default)
     {
         IReadOnlyList<NatureCheckCase> assignedCases = await _natureCheckCaseRepository.GetAssignedCasesForConsultantAsync(consultantId, cancellationToken).ConfigureAwait(false);
-        
+
         if (assignedCases.Count == 0)
         {
             return Array.Empty<ConsultantNotificationDto>();
@@ -273,7 +271,7 @@ public class NatureCheckCaseService : INatureCheckCaseService
 
         // Get all farm IDs
         HashSet<Guid> farmIds = assignedCases.Select(c => c.FarmId).ToHashSet();
-        
+
         // Load all farms in one query
         List<Farm> farms = (await _farmRepository.GetAllAsync(cancellationToken).ConfigureAwait(false))
             .Where(f => farmIds.Contains(f.Id))
@@ -317,7 +315,7 @@ public class NatureCheckCaseService : INatureCheckCaseService
         {
             personsById.TryGetValue(farm.PersonId, out owner);
         }
-        
+
         Address? address = null;
         if (farm.AddressId != Guid.Empty)
         {

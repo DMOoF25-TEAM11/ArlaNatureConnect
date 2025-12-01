@@ -1,3 +1,13 @@
+/*
+File: docs/sql/DML.sql
+Description: Sample data insertion for UC002 - Administrate Farms and Persons
+
+Version: 1.0.0
+Changes:
+
+ - 2025-12-19: 1.0.0 - Initial script content (original sample data)
+*/
+
 /***********************************************************************
 -- Add data for UC002 - Administrate Farms and Persons
 ***********************************************************************/
@@ -19,8 +29,8 @@ IF OBJECT_ID(N'[dbo].[Farms]', N'U') IS NOT NULL
 IF OBJECT_ID(N'[dbo].[Persons]', N'U') IS NOT NULL
     DELETE FROM [dbo].[Persons];
 
-IF OBJECT_ID(N'[dbo].[Address]', N'U') IS NOT NULL
-    DELETE FROM [dbo].[Address];
+IF OBJECT_ID(N'[dbo].[Addresses]', N'U') IS NOT NULL
+    DELETE FROM [dbo].[Addresses];
 
 -- Only remove the sample roles we will re-create to avoid removing other role records
 IF OBJECT_ID(N'[dbo].[Roles]', N'U') IS NOT NULL
@@ -79,7 +89,7 @@ DECLARE
     @F18 UNIQUEIDENTIFIER = NEWID(), @FA18 UNIQUEIDENTIFIER = NEWID();
 
 -- Addresses for farms (near Varde)
-INSERT INTO [dbo].[Address] ([Id],[Street],[City],[PostalCode],[Country])
+INSERT INTO [dbo].[Addresses] ([Id],[Street],[City],[PostalCode],[Country])
 VALUES
 (@FA1, N'Stuevej 1',      N'Varde',        N'6800', N'Denmark'),
 (@FA2, N'Agerskovvej 12',  N'Ølgod',        N'6870', N'Denmark'),
@@ -139,7 +149,7 @@ DECLARE
     @A25 UNIQUEIDENTIFIER = NEWID(), @A26 UNIQUEIDENTIFIER = NEWID(),
     @A27 UNIQUEIDENTIFIER = NEWID();
 
-INSERT INTO [dbo].[Address] ([Id],[Street],[City],[PostalCode],[Country])
+INSERT INTO [dbo].[Addresses] ([Id],[Street],[City],[PostalCode],[Country])
 VALUES
 (@A1,  N'Rosenvej 3',       N'København',   N'2300', N'Denmark'),
 (@A2,  N'Borggade 12',      N'Aarhus',      N'8000', N'Denmark'),
@@ -277,4 +287,5 @@ SELECT TOP 50 * FROM [dbo].[UserFarms] JOIN [dbo].[Persons] u ON UserFarms.Perso
 
 
 PRINT 'Sample data insertion completed.';
+
 

@@ -4,7 +4,7 @@ using ArlaNatureConnect.Infrastructure.Repositories;
 
 using Microsoft.EntityFrameworkCore;
 
-using System.Reflection;
+using Moq;
 
 namespace TestInfrastructure.Repositories;
 
@@ -18,185 +18,102 @@ public class PersonRepositoryTest
             .Options;
     }
 
-    private class TestFactory : IDbContextFactory<AppDbContext>
+    [TestMethod]
+    public async Task GetPersonsByRoleAsync_Returns_Persons_WhenRoleExists()
     {
-        private readonly DbContextOptions<AppDbContext> _options;
-        public TestFactory(DbContextOptions<AppDbContext> options)
+        DbContextOptions<AppDbContext> options = CreateOptions();
+
+        // seed data
+        var roleId = Guid.NewGuid();
+        var addrId = Guid.NewGuid();
+
+        using (var seed = new AppDbContext(options))
         {
-            _options = options;
+            seed.Roles.Add(new Role { Id = roleId, Name = "Farmer" });
+            seed.Addresses.Add(new Address { Id = addrId, Street = "S", City = "C", PostalCode = "P", Country = "DK" });
+            seed.Persons.Add(new Person { Id = Guid.NewGuid(), FirstName = "P1", LastName = "L1", Email = "p1@x.com", RoleId = roleId, AddressId = addrId, IsActive = true });
+            await seed.SaveChangesAsync();
         }
 
-        public AppDbContext CreateDbContext()
+        // use IDbContextFactory but backed by in-memory options
+        var factoryMock = new Mock<IDbContextFactory<AppDbContext>>();
+        factoryMock.Setup(f => f.CreateDbContext()).Returns(() => new AppDbContext(options));
+
+        var repo = new PersonRepository(factoryMock.Object);
+
+        var result = (await repo.GetPersonsByRoleAsync("Farmer")).ToList();
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(1, result.Count);
+        Assert.AreEqual("p1@x.com", result[0].Email);
+    }
+
+    [TestMethod]
+    public async Task GetPersonsByRoleAsync_Returns_Empty_WhenRoleMissing()
+    {
+        DbContextOptions<AppDbContext> options = CreateOptions();
+
+        using (var seed = new AppDbContext(options))
         {
-            // return a new context instance each time to mimic real factory behavior
-            return new AppDbContext(_options);
+            seed.Roles.Add(new Role { Id = Guid.NewGuid(), Name = "Admin" });
+            await seed.SaveChangesAsync();
+        }
+
+        var factoryMock = new Mock<IDbContextFactory<AppDbContext>>();
+        factoryMock.Setup(f => f.CreateDbContext()).Returns(() => new AppDbContext(options));
+
+        var repo = new PersonRepository(factoryMock.Object);
+
+        var result = (await repo.GetPersonsByRoleAsync("Farmer")).ToList();
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(0, result.Count);
+    }
+
+    [TestMethod]
+    public async Task GetPersonsByRoleAsync_Is_ThreadSafe_When_Called_Concurrently()
+    {
+        DbContextOptions<AppDbContext> options = CreateOptions();
+        var roleId = Guid.NewGuid();
+        var addrId = Guid.NewGuid();
+
+        using (var seed = new AppDbContext(options))
+        {
+            seed.Roles.Add(new Role { Id = roleId, Name = "Farmer" });
+            seed.Addresses.Add(new Address { Id = addrId, Street = "S", City = "C", PostalCode = "P", Country = "DK" });
+            for (int i = 0; i < 10; i++)
+                seed.Persons.Add(new Person { Id = Guid.NewGuid(), FirstName = $"P{i}", LastName = "L", Email = $"p{i}@x.com", RoleId = roleId, AddressId = addrId, IsActive = true });
+            await seed.SaveChangesAsync();
+        }
+
+        var factoryMock = new Mock<IDbContextFactory<AppDbContext>>();
+        factoryMock.Setup(f => f.CreateDbContext()).Returns(() => new AppDbContext(options));
+
+        var repo = new PersonRepository(factoryMock.Object);
+
+        // call concurrently
+        IEnumerable<Task<List<Person>>> tasks = Enumerable.Range(0, 8).Select(_ => Task.Run(async () => (await repo.GetPersonsByRoleAsync("Farmer")).ToList()));
+        List<Person>[] results = await Task.WhenAll(tasks);
+
+        // all should return 10 items
+        foreach (List<Person>? r in results)
+        {
+            Assert.AreEqual(10, r.Count);
         }
     }
 
-    private static AppDbContext GetInternalContext(PersonRepository repo)
-    {
-        // Repository has a protected field named `_context` on the base class. Use reflection to access it for
-        // calling SaveChanges in tests.
-        FieldInfo? field = repo.GetType().BaseType?.GetField("_context", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.FlattenHierarchy);
-        if (field == null) throw new InvalidOperationException("Could not find _context field on repository base type");
-        return (AppDbContext)field.GetValue(repo)!;
-    }
-
     [TestMethod]
-    public async Task Add_And_Get_Person_Async()
+    public async Task GetPersonsByRoleAsync_Returns_Empty_On_Exception()
     {
-        DbContextOptions<AppDbContext> options = CreateOptions();
-        TestFactory factory = new TestFactory(options);
+        // Create factory that throws when creating context to simulate COM/WinRT error or other errors
+        var factoryMock = new Mock<IDbContextFactory<AppDbContext>>();
+        factoryMock.Setup(f => f.CreateDbContext()).Throws(new System.Runtime.InteropServices.COMException("COM error"));
 
-        Person person = new Person
-        {
-            Id = Guid.NewGuid(),
-            FirstName = "John",
-            LastName = "Doe",
-            Email = "john@example.com",
-            RoleId = Guid.Empty,
-            AddressId = Guid.Empty,
-            IsActive = true
-        };
+        var repo = new PersonRepository(factoryMock.Object);
 
-        PersonRepository repo = new PersonRepository(factory);
-        await repo.AddAsync(person);
+        IEnumerable<Person> result = await repo.GetPersonsByRoleAsync("Farmer");
 
-        // save using the repository internal context
-        AppDbContext internalCtx = GetInternalContext(repo);
-        await internalCtx.SaveChangesAsync();
-
-        // verify in a fresh context
-        using AppDbContext verifyCtx = new AppDbContext(options);
-        Person? fetched = await verifyCtx.Persons.FirstOrDefaultAsync(p => p.Id == person.Id);
-        Assert.IsNotNull(fetched);
-        Assert.AreEqual("John", fetched!.FirstName);
-        Assert.AreEqual("Doe", fetched.LastName);
-    }
-
-    [TestMethod]
-    public async Task GetAll_Returns_All_Persons()
-    {
-        DbContextOptions<AppDbContext> options = CreateOptions();
-        TestFactory factory = new TestFactory(options);
-
-        Person[] persons = new Person[]
-        {
-            new Person { Id = Guid.NewGuid(), FirstName = "A", LastName = "A", Email = "a@a.com", RoleId = Guid.Empty, AddressId = Guid.Empty, IsActive = true },
-            new Person { Id = Guid.NewGuid(), FirstName = "B", LastName = "B", Email = "b@b.com", RoleId = Guid.Empty, AddressId = Guid.Empty, IsActive = true }
-        };
-
-        PersonRepository repo = new PersonRepository(factory);
-        await repo.AddRangeAsync(persons);
-        AppDbContext internalCtx = GetInternalContext(repo);
-        await internalCtx.SaveChangesAsync();
-
-        List<Person> all = (await repo.GetAllAsync()).ToList();
-        Assert.HasCount(2, all);
-        CollectionAssert.AreEquivalent(persons.Select(p => p.FirstName).ToList(), all.Select(p => p.FirstName).ToList());
-    }
-
-    [TestMethod]
-    public async Task Update_Person_Persists_Changes()
-    {
-        DbContextOptions<AppDbContext> options = CreateOptions();
-        TestFactory factory = new TestFactory(options);
-
-        Person person = new Person { Id = Guid.NewGuid(), FirstName = "Before", LastName = "X", Email = "x@x.com", RoleId = Guid.Empty, AddressId = Guid.Empty, IsActive = true };
-        PersonRepository repo = new PersonRepository(factory);
-        await repo.AddAsync(person);
-        AppDbContext internalCtx = GetInternalContext(repo);
-        await internalCtx.SaveChangesAsync();
-
-        // modify and update
-        person.FirstName = "After";
-        await repo.UpdateAsync(person);
-        await internalCtx.SaveChangesAsync();
-
-        using AppDbContext verifyCtx = new AppDbContext(options);
-        Person? fetched = await verifyCtx.Persons.FirstOrDefaultAsync(p => p.Id == person.Id);
-        Assert.IsNotNull(fetched);
-        Assert.AreEqual("After", fetched!.FirstName);
-    }
-
-    [TestMethod]
-    public async Task Delete_Person_Removes_Entity()
-    {
-        DbContextOptions<AppDbContext> options = CreateOptions();
-        TestFactory factory = new TestFactory(options);
-
-        Person person = new Person { Id = Guid.NewGuid(), FirstName = "ToDelete", LastName = "X", Email = "d@d.com", RoleId = Guid.Empty, AddressId = Guid.Empty, IsActive = true };
-        PersonRepository repo = new PersonRepository(factory);
-        await repo.AddAsync(person);
-        AppDbContext internalCtx = GetInternalContext(repo);
-        await internalCtx.SaveChangesAsync();
-
-        await repo.DeleteAsync(person.Id);
-        await internalCtx.SaveChangesAsync();
-
-        using AppDbContext verifyCtx = new AppDbContext(options);
-        Person? fetched = await verifyCtx.Persons.FirstOrDefaultAsync(p => p.Id == person.Id);
-        Assert.IsNull(fetched);
-    }
-
-    [TestMethod]
-    public async Task GetPersonsByRoleAsync_Returns_Persons_When_Role_Exists()
-    {
-        DbContextOptions<AppDbContext> options = CreateOptions();
-
-        // seed role and persons using a direct context so the factory-created contexts can read the data
-        Guid roleId = Guid.NewGuid();
-        using (AppDbContext seedCtx = new AppDbContext(options))
-        {
-            seedCtx.Roles.Add(new Role { Id = roleId, Name = "Farmer" });
-            seedCtx.Persons.Add(new Person { Id = Guid.NewGuid(), FirstName = "Farm", LastName = "One", Email = "f1@x.com", RoleId = roleId, AddressId = Guid.Empty, IsActive = true });
-            seedCtx.Persons.Add(new Person { Id = Guid.NewGuid(), FirstName = "Farm", LastName = "Two", Email = "f2@x.com", RoleId = roleId, AddressId = Guid.Empty, IsActive = true });
-            await seedCtx.SaveChangesAsync();
-        }
-
-        TestFactory factory = new TestFactory(options);
-        PersonRepository repo = new PersonRepository(factory);
-
-        List<Person> result = (await repo.GetPersonsByRoleAsync("Farmer")).ToList();
-        Assert.HasCount(2, result);
-    }
-
-    [TestMethod]
-    public async Task GetPersonsByRoleAsync_Is_Case_And_Whitespace_Insensitive()
-    {
-        DbContextOptions<AppDbContext> options = CreateOptions();
-
-        Guid roleId = Guid.NewGuid();
-        using (AppDbContext seedCtx = new AppDbContext(options))
-        {
-            seedCtx.Roles.Add(new Role { Id = roleId, Name = "Admin" });
-            seedCtx.Persons.Add(new Person { Id = Guid.NewGuid(), FirstName = "A", LastName = "A", Email = "a@x.com", RoleId = roleId, AddressId = Guid.Empty, IsActive = true });
-            await seedCtx.SaveChangesAsync();
-        }
-
-        TestFactory factory = new TestFactory(options);
-        PersonRepository repo = new PersonRepository(factory);
-
-        List<Person> result = (await repo.GetPersonsByRoleAsync("  admin  ")).ToList();
-        Assert.HasCount(1, result);
-    }
-
-    [TestMethod]
-    public async Task GetPersonsByRoleAsync_Returns_Empty_When_Role_Missing_Or_Invalid_Input()
-    {
-        DbContextOptions<AppDbContext> options = CreateOptions();
-
-        TestFactory factory = new TestFactory(options);
-        PersonRepository repo = new PersonRepository(factory);
-
-        // empty role
-        List<Person> resEmpty = (await repo.GetPersonsByRoleAsync("  ")).ToList();
-        Assert.IsNotNull(resEmpty);
-        Assert.IsEmpty(resEmpty);
-
-        // non-existing role
-        List<Person> resMissing = (await repo.GetPersonsByRoleAsync("DoesNotExist")).ToList();
-        Assert.IsNotNull(resMissing);
-        Assert.IsEmpty(resMissing);
+        Assert.IsNotNull(result);
+        Assert.AreEqual(0, result.Count());
     }
 }

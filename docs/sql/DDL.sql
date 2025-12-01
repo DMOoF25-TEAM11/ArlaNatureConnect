@@ -1,5 +1,16 @@
+/*
+ Project: ArlaNatureConnect
+ Database: ArlaNatureConnect_Dev
+ Version: 1.0.0
+ 
+ Change Log:
+  - 2025-12-19: v1.0.0 - Initial schema creation: VersionInfo, Roles, Addresses, Farms, Persons, AuditLog; added foreign keys and indexes.
 
+  Purpose:
+  - Define the initial database schema for ArlaNatureConnect_Dev.
 
+  Fix issue: Table name Address to Addresses so C# can handle navigation properties correctly.
+*/
 
 SET QUOTED_IDENTIFIER ON;
 SET ANSI_NULLS ON;
@@ -53,12 +64,12 @@ END
 GO
 
 /***************************************************************************************************
-    Table: Address
-    Purpose: Stores address information.
+    Table: Addresses
+    Purpose: Stores addresses information.
 ***************************************************************************************************/
-IF OBJECT_ID(N'[dbo].[Address]') IS NULL
+IF OBJECT_ID(N'[dbo].[Addresses]') IS NULL
 BEGIN
-    CREATE TABLE [dbo].[Address] (
+    CREATE TABLE [dbo].[Addresses] (
         [Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY DEFAULT NEWID(),
         [Street] NVARCHAR(200) NULL,
         [City] NVARCHAR(100) NULL,
@@ -104,7 +115,7 @@ BEGIN
         [RowVersion] ROWVERSION,
         CONSTRAINT [UQ_Persons_Email] UNIQUE([Email]),
         CONSTRAINT [FK_Persons_Roles] FOREIGN KEY ([RoleId]) REFERENCES [dbo].[Roles]([Id]),
-        CONSTRAINT [FK_Persons_Address] FOREIGN KEY ([AddressId]) REFERENCES [dbo].[Address]([Id])
+        CONSTRAINT [FK_Persons_Addresses] FOREIGN KEY ([AddressId]) REFERENCES [dbo].[Addresses]([Id])
     );
     CREATE INDEX [IX_Persons_RoleId] ON [dbo].[Persons]([RoleId]);
 END

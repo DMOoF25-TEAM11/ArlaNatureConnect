@@ -246,7 +246,7 @@ public abstract class CRUDViewModelBase<TRepos, TEntity>
     protected async Task OnResetAsync()
     {
         _appMessageService.ClearErrorMessages();
-        SelectedItem = null;
+        SelectedItem = null!;
         await OnResetFormAsync();
         IsEditMode = false;
         await Task.CompletedTask;

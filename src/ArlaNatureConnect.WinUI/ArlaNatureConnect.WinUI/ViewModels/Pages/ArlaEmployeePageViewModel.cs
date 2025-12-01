@@ -1,9 +1,9 @@
 using ArlaNatureConnect.Domain.Entities;
 using ArlaNatureConnect.WinUI.Commands;
 using ArlaNatureConnect.WinUI.Services;
-using ArlaNatureConnect.WinUI.Views.Controls.PageContents.ArlaEmployee;
 using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 using ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu;
+using ArlaNatureConnect.WinUI.Views.Controls.PageContents.ArlaEmployee;
 using ArlaNatureConnect.WinUI.Views.Controls.SideMenu;
 
 using Microsoft.UI.Xaml.Controls;
@@ -15,16 +15,14 @@ namespace ArlaNatureConnect.WinUI.ViewModels.Pages;
 /// </summary>
 public sealed class ArlaEmployeePageViewModel : NavigationViewModelBase
 {
-    private readonly ArlaEmployeeAssignNatureCheckViewModel _assignNatureCheckViewModel;
-
-    public ArlaEmployeeAssignNatureCheckViewModel AssignNatureCheckViewModel => _assignNatureCheckViewModel;
+    public ArlaEmployeeAssignNatureCheckViewModel AssignNatureCheckViewModel { get; }
 
     public ArlaEmployeePageViewModel(
-        NavigationHandler navigationHandler,
+        INavigationHandler navigationHandler,
         ArlaEmployeeAssignNatureCheckViewModel assignNatureCheckViewModel)
         : base(navigationHandler)
     {
-        _assignNatureCheckViewModel = assignNatureCheckViewModel ?? throw new ArgumentNullException(nameof(assignNatureCheckViewModel));
+        AssignNatureCheckViewModel = assignNatureCheckViewModel ?? throw new ArgumentNullException(nameof(assignNatureCheckViewModel));
 
         SideMenuControlType = typeof(ArlaEmployeePageSideMenuUC);
         SideMenuViewModelType = typeof(ArlaEmployeePageSideMenuUCViewModel);
@@ -35,14 +33,14 @@ public sealed class ArlaEmployeePageViewModel : NavigationViewModelBase
         NavigateToView(new Func<UserControl?>(() =>
         {
             UserControl control = new ArlaEmployeeAssignNatureCheck();
-            control.DataContext = _assignNatureCheckViewModel;
+            control.DataContext = AssignNatureCheckViewModel;
             return control;
         }));
     }
 
     public override async Task InitializeAsync(Role? role)
     {
-        await _assignNatureCheckViewModel.InitializeAsync();
+        await AssignNatureCheckViewModel.InitializeAsync();
     }
 
     /// <summary>
@@ -60,7 +58,7 @@ public sealed class ArlaEmployeePageViewModel : NavigationViewModelBase
                 {
                     // Set DataContext to AssignNatureCheckViewModel for Farms view, otherwise use this
                     ctrl.DataContext = ctrl is ArlaEmployeeAssignNatureCheck
-                        ? _assignNatureCheckViewModel
+                        ? AssignNatureCheckViewModel
                         : this;
                     CurrentContent = ctrl;
                 }
@@ -78,6 +76,6 @@ public sealed class ArlaEmployeePageViewModel : NavigationViewModelBase
 
     private void OnEmployeeSelected(Person? person)
     {
-        _assignNatureCheckViewModel.AssignedByPersonId = person?.Id;
+        AssignNatureCheckViewModel.AssignedByPersonId = person?.Id;
     }
 }

@@ -24,6 +24,10 @@ public class NatureCheckCase
     public virtual Farm Farm { get; set; } = null!;
     public virtual Person Consultant { get; set; } = null!;
     public virtual Person AssignedByPerson { get; set; } = null!;
+
+    public static implicit operator Task<object>(NatureCheckCase? v)
+    {
+        throw new NotImplementedException();
+    }
+
 }
-
-
