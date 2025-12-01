@@ -25,5 +25,8 @@ public partial class AppDbContext : DbContext
         modelBuilder.Entity<Person>().Navigation(e => e.Role).AutoInclude();
         modelBuilder.Entity<Person>().Navigation(e => e.Address).AutoInclude();
         modelBuilder.Entity<Person>().Navigation(e => e.Farms).AutoInclude();
+
+        modelBuilder.Entity<Farm>().Navigation(e => e.Address).AutoInclude();
+        modelBuilder.Entity<Farm>().Navigation(e => e.Person).AutoInclude();
     }
 }
