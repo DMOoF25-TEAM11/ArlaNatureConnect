@@ -57,14 +57,13 @@ public abstract partial class SideMenuViewModelBase : ListViewModelBase<IPersonR
         public string Label { get; }
         public ICommand? Command { get; }
 
-        private bool _isSelected;
         public bool IsSelected
         {
-            get => _isSelected;
+            get;
             set
             {
-                if (_isSelected == value) return;
-                _isSelected = value;
+                if (field == value) return;
+                field = value;
                 OnPropertyChanged();
             }
         }
@@ -76,11 +75,9 @@ public abstract partial class SideMenuViewModelBase : ListViewModelBase<IPersonR
 
 
     #region Fields
-    private Person? _selectedPerson;
-    private bool _isLoading;
     protected INavigationViewModelBase? _navigationViewModel;
-    private IPersonRepository _repository;
-    private INavigationHandler _navigationHandler;
+    private readonly IPersonRepository _repository;
+    private readonly INavigationHandler _navigationHandler;
     #endregion
 
     #region Constructors
@@ -115,10 +112,10 @@ public abstract partial class SideMenuViewModelBase : ListViewModelBase<IPersonR
     /// </summary>
     public Person? SelectedPerson
     {
-        get => _selectedPerson;
+        get;
         set
         {
-            _selectedPerson = value;
+            field = value;
             OnPropertyChanged();
             if (value != null)
             {
@@ -133,10 +130,10 @@ public abstract partial class SideMenuViewModelBase : ListViewModelBase<IPersonR
 
     public bool IsLoading
     {
-        get => _isLoading;
+        get;
         set
         {
-            _isLoading = value;
+            field = value;
             OnPropertyChanged();
         }
     }
@@ -206,7 +203,7 @@ public abstract partial class SideMenuViewModelBase : ListViewModelBase<IPersonR
             // Otherwise try forwarding to host navigation command if available
             if (_navigationViewModel is NavigationViewModelBase hostVm3)
             {
-                ICommand? hostCmd = hostVm3.NavigationCommand as ICommand;
+                ICommand? hostCmd = hostVm3.NavigationCommand;
                 if (hostCmd != null && hostCmd.CanExecute(parameter))
                 {
                     hostCmd.Execute(parameter);
@@ -238,7 +235,7 @@ public abstract partial class SideMenuViewModelBase : ListViewModelBase<IPersonR
             SelectedPerson = null;
 
             // Try to resolve the NavigationHandler from the host DI container and navigate to LoginPage
-            NavigationHandler? navigationHandler = App.HostInstance?.Services.GetService<NavigationHandler>();
+            INavigationHandler? navigationHandler = App.HostInstance?.Services.GetService<INavigationHandler>();
             if (navigationHandler != null)
             {
                 navigationHandler.Navigate(typeof(LoginPage));
@@ -248,7 +245,7 @@ public abstract partial class SideMenuViewModelBase : ListViewModelBase<IPersonR
             // Fallback: attempt to get NavigationHandler via GetRequiredService (throws if missing)
             try
             {
-                NavigationHandler? required = App.HostInstance?.Services.GetRequiredService<NavigationHandler>();
+                INavigationHandler? required = App.HostInstance?.Services.GetRequiredService<INavigationHandler>();
                 required?.Navigate(typeof(LoginPage));
             }
             catch
