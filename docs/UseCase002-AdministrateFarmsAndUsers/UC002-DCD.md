@@ -1,3 +1,4 @@
+```mermaid
 ---
 title: "UC002: Domain Class Diagram for Person and Farm Management"
 crossreferencer: UC002-DomainModel.mmd, UC002-SSD.mmd
@@ -122,3 +123,4 @@ classDiagram
     AddressRepository ..|> Repository  : inheritance
 
     %% note right of ArlaNatureConnect.Core.IPersonService: Service enforces authorization, validation and mapping
+    ```

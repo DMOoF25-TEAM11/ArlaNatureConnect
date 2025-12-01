@@ -1,3 +1,4 @@
+```mermaid
 ---
 title: UC002 - System Sequence Diagram
 ---
@@ -30,3 +31,4 @@ sequenceDiagram
         Admin->>System: DeleteUser(userId)
         System-->>Admin: Confirmation / Refresh list
     end
+```

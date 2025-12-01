@@ -1,3 +1,4 @@
+```mermaid
 ---
 title: Use Case 002 - Domain Model
 ---
@@ -28,3 +29,4 @@ classDiagram
 
     User "1" -- "*" Role : has >
     Farmer "0..1" -- "1" User : has >
+    ```
