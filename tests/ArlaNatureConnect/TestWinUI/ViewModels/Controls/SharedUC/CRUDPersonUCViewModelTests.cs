@@ -6,6 +6,8 @@ using ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC;
 using Moq;
 
 using System.Runtime.Versioning;
+using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace TestWinUI.ViewModels.Controls.SharedUC;
 
@@ -27,6 +29,9 @@ public sealed class CRUDPersonUCViewModelTests
         public new Task OnLoadFormAsync(Person entity) => base.OnLoadFormAsync(entity);
         public new Task OnResetFormAsync() => base.OnResetFormAsync();
         public new Task OnSaveFormAsync() => base.OnSaveFormAsync();
+
+        // Expose protected refresh helper so tests can exercise exception handling and concurrency
+        public void CallRefreshCommandStates() => base.RefreshCommandStates();
     }
 
     [TestMethod]
@@ -155,5 +160,66 @@ public sealed class CRUDPersonUCViewModelTests
                                p.LastName == "UpdatedL" &&
                                p.Email == "u@x"),
             It.IsAny<CancellationToken>()), Times.Once);
+    }
+
+    [TestMethod]
+    public void RefreshCommandStates_Swallows_COMException_And_Continues()
+    {
+        Mock<IStatusInfoServices> mockStatus = new Mock<IStatusInfoServices>();
+        mockStatus.Setup(s => s.BeginLoading()).Returns(new DisposableAction(() => { }));
+        Mock<IAppMessageService> mockMsg = new Mock<IAppMessageService>();
+        Mock<IPersonRepository> mockRepo = new Mock<IPersonRepository>();
+
+        TestVM vm = new TestVM(mockStatus.Object, mockMsg.Object, mockRepo.Object);
+
+        bool saveInvoked = false;
+
+        // Add handler that throws COMException
+        vm.AddCommand.CanExecuteChanged += (s, e) => throw new COMException();
+        // Save handler should still be invoked
+        vm.SaveCommand.CanExecuteChanged += (s, e) => saveInvoked = true;
+
+        // Should not throw even if one handler throws COMException
+        vm.CallRefreshCommandStates();
+
+        Assert.IsTrue(saveInvoked, "Save command's CanExecuteChanged handler should be invoked even when another handler throws COMException.");
+    }
+
+    [TestMethod]
+    public void RefreshCommandStates_Is_ThreadSafe_Under_Concurrent_Calls()
+    {
+        Mock<IStatusInfoServices> mockStatus = new Mock<IStatusInfoServices>();
+        mockStatus.Setup(s => s.BeginLoading()).Returns(new DisposableAction(() => { }));
+        Mock<IAppMessageService> mockMsg = new Mock<IAppMessageService>();
+        Mock<IPersonRepository> mockRepo = new Mock<IPersonRepository>();
+
+        TestVM vm = new TestVM(mockStatus.Object, mockMsg.Object, mockRepo.Object);
+
+        int invokeCount = 0;
+        vm.AddCommand.CanExecuteChanged += (s, e) => Interlocked.Increment(ref invokeCount);
+        vm.SaveCommand.CanExecuteChanged += (s, e) => Interlocked.Increment(ref invokeCount);
+        vm.DeleteCommand.CanExecuteChanged += (s, e) => Interlocked.Increment(ref invokeCount);
+        vm.CancelCommand.CanExecuteChanged += (s, e) => Interlocked.Increment(ref invokeCount);
+        vm.RefreshCommand.CanExecuteChanged += (s, e) => Interlocked.Increment(ref invokeCount);
+
+        // Run multiple concurrent callers to stress potential race conditions
+        const int threads = 8;
+        const int iterations = 50;
+        var tasks = new List<Task>();
+        for (int t = 0; t < threads; t++)
+        {
+            tasks.Add(Task.Run(() =>
+            {
+                for (int i = 0; i < iterations; i++)
+                {
+                    vm.CallRefreshCommandStates();
+                }
+            }));
+        }
+
+        Task.WaitAll(tasks.ToArray());
+
+        // Expect that handlers have been invoked at least once
+        Assert.IsTrue(invokeCount > 0, "Handlers should have been invoked during concurrent RefreshCommandStates calls.");
     }
 }

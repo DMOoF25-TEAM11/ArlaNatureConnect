@@ -21,12 +21,12 @@ namespace ArlaNatureConnect.WinUI;
 /// </summary>
 public sealed partial class MainWindow : Window
 {
-    private readonly NavigationHandler _navigationHandler;
+    private readonly INavigationHandler _navigationHandler;
 
     public MainWindow(INavigationHandler navigationHandler)
     {
         InitializeComponent();
-        _navigationHandler = (NavigationHandler?)(navigationHandler ?? throw new ArgumentNullException(nameof(navigationHandler)));
+        _navigationHandler = navigationHandler ?? throw new ArgumentNullException(nameof(navigationHandler));
 
         // Set window size after window is activated
         Activated += MainWindow_Activated;

@@ -4,7 +4,6 @@ using ArlaNatureConnect.Domain.Enums;
 using ArlaNatureConnect.Infrastructure.Persistence;
 
 using Microsoft.EntityFrameworkCore;
-
 using System.Runtime.InteropServices;
 
 namespace ArlaNatureConnect.Infrastructure.Repositories;

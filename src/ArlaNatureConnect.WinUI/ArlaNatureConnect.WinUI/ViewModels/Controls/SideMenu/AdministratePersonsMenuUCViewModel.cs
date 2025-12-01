@@ -5,7 +5,7 @@ using System.Windows.Input;
 
 namespace ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu;
 
-public class AdministratePersonsMenuUCViewModel : ViewModelBase
+public sealed partial class AdministratePersonsMenuUCViewModel : ViewModelBase
 {
     #region Fields
     #endregion

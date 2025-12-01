@@ -23,7 +23,7 @@ public sealed partial class AdministratorPageSideMenuUCViewModel : SideMenuViewM
     private const string _labelAdministratePersons = "Administrere personer";
     #endregion
     #region Properties
-    public ObservableCollection<NavItem> NavItems { get; } = new();
+    public ObservableCollection<NavItem> NavItems { get; } = [];
     #endregion
     #region Properties Commands
     public ICommand DashboardsCommand { get; }

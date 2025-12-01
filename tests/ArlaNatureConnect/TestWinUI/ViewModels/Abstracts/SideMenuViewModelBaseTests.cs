@@ -6,7 +6,9 @@ using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 
 using Moq;
 
+using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
+using System.Windows.Input;
 
 namespace TestWinUI.ViewModels.Abstracts;
 
@@ -34,6 +36,52 @@ public sealed class SideMenuViewModelBaseTests
                 .GetField("_repository", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!
                 .GetValue(this)!;
         }
+    }
+
+    // New tests for NavItem
+    private sealed class TestCommand : ICommand
+    {
+        public bool CanExecute(object? parameter) => true;
+        public void Execute(object? parameter) { }
+        public event System.EventHandler? CanExecuteChanged;
+    }
+
+    [TestMethod]
+    public void NavItem_Constructor_Sets_Label_And_Command_And_Defaults()
+    {
+        TestCommand cmd = new TestCommand();
+        SideMenuViewModelBase.NavItem nav = new SideMenuViewModelBase.NavItem("Label1", cmd);
+
+        Assert.AreEqual("Label1", nav.Label);
+        Assert.AreEqual(cmd, nav.Command);
+        Assert.IsFalse(nav.IsSelected, "Default IsSelected should be false.");
+    }
+
+    [TestMethod]
+    public void NavItem_IsSelected_Raises_PropertyChanged_Only_On_Actual_Change()
+    {
+        SideMenuViewModelBase.NavItem nav = new SideMenuViewModelBase.NavItem("L", null);
+        string? receivedName = null;
+        int callCount = 0;
+
+        nav.PropertyChanged += (sender, e) =>
+        {
+            receivedName = e.PropertyName;
+            callCount++;
+        };
+
+        // change from default false to true -> should raise
+        nav.IsSelected = true;
+        Assert.AreEqual(1, callCount, "PropertyChanged should have been raised once after changing value.");
+        Assert.AreEqual("IsSelected", receivedName);
+
+        // setting same value again -> should not raise
+        nav.IsSelected = true;
+        Assert.AreEqual(1, callCount, "PropertyChanged should not be raised when setting same value.");
+
+        // change back to false -> should raise again
+        nav.IsSelected = false;
+        Assert.AreEqual(2, callCount, "PropertyChanged should be raised when changing value back.");
     }
 
     [TestMethod]
@@ -142,5 +190,54 @@ public sealed class SideMenuViewModelBaseTests
 
         Assert.IsTrue(vm.LogoutCommand!.CanExecute(null));
         await Task.CompletedTask;
+    }
+    [TestMethod]
+    public async Task LoadAvailablePersonsAsync_Propagates_COMException_From_Repository()
+    {
+        Mock<IPersonRepository> repoMock = new Mock<IPersonRepository>();
+        repoMock.Setup(r => r.GetPersonsByRoleAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .Throws(new COMException("COM error"));
+
+        Mock<IStatusInfoServices> statusMock = new Mock<IStatusInfoServices>();
+        Mock<IAppMessageService> appMsgMock = new Mock<IAppMessageService>();
+        Mock<INavigationHandler> navMock = new Mock<INavigationHandler>();
+
+        TestSideMenuViewModel vm = new TestSideMenuViewModel(statusMock.Object, appMsgMock.Object, repoMock.Object, navMock.Object);
+
+        try
+        {
+            await vm.LoadAvailablePersonsAsync("Farmer");
+            Assert.Fail("Expected COMException to be thrown");
+        }
+        catch (COMException)
+        {
+            // expected
+        }
+    }
+    [TestMethod]
+    public async Task LoadAvailablePersonsAsync_Is_ThreadSafe_When_Called_Concurrently()
+    {
+        List<Person> persons = Enumerable.Range(0, 10).Select(i => new Person { Id = Guid.NewGuid(), FirstName = $"F{i}", LastName = "L", Email = $"p{i}@x.com", IsActive = true }).ToList();
+
+        Mock<IPersonRepository> repoMock = new Mock<IPersonRepository>();
+        repoMock.Setup(r => r.GetPersonsByRoleAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync((string role, CancellationToken ct) => persons as IEnumerable<Person>);
+
+        Mock<IStatusInfoServices> statusMock = new Mock<IStatusInfoServices>();
+        Mock<IAppMessageService> appMsgMock = new Mock<IAppMessageService>();
+        Mock<INavigationHandler> navMock = new Mock<INavigationHandler>();
+
+        TestSideMenuViewModel vm = new TestSideMenuViewModel(statusMock.Object, appMsgMock.Object, repoMock.Object, navMock.Object);
+
+        // call concurrently
+        Task[] tasks = Enumerable.Range(0, 8).Select(_ => Task.Run(async () =>
+        {
+            await vm.LoadAvailablePersonsAsync("Farmer");
+        })).ToArray();
+
+        await Task.WhenAll(tasks);
+
+        // final collection should contain all items
+        Assert.AreEqual(10, vm.AvailablePersons.Count);
     }
 }

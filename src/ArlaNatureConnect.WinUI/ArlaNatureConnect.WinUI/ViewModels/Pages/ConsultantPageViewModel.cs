@@ -54,7 +54,7 @@ public sealed class ConsultantPageViewModel : NavigationViewModelBase
         }
     } = "Dashboards";
 
-    public ConsultantPageViewModel(INavigationHandler navigationHandler)
+    public ConsultantPageViewModel(NavigationHandler navigationHandler)
         : base(navigationHandler)
     {
         SideMenuControlType = typeof(ConsultantPageSideMenuUC);
@@ -67,12 +67,19 @@ public sealed class ConsultantPageViewModel : NavigationViewModelBase
     }
 
     public ConsultantPageViewModel(INavigationHandler navigationHandler, INatureCheckCaseService natureCheckCaseService)
-        : this(navigationHandler)
+        : base(navigationHandler)
     {
         _natureCheckCaseService = natureCheckCaseService ?? throw new ArgumentNullException(nameof(natureCheckCaseService));
+        SideMenuControlType = typeof(ConsultantPageSideMenuUC);
+        SideMenuViewModelType = typeof(ConsultantPageSideMenuUCViewModel);
 
         // Initialize nature check view model
         NatureCheckViewModel = new ConsultantNatureCheckViewModel(_natureCheckCaseService);
+
+        NavigationCommand = new RelayCommand<object>(OnNavigate, CanNavigate);
+        ChooseUserCommand = new RelayCommand<Person>(OnConsultantSelected);
+
+        SetContent("Dashboards");
     }
 
     public override Task InitializeAsync(Role? role) => Task.CompletedTask;

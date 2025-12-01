@@ -85,6 +85,5 @@
                 Command="{Binding LogoutCommand}"
                 Style="{StaticResource ArlaNavButton}"/>
     </StackPanel>
-
   </Grid>
 </abstracts:SideMenuBaseUC>

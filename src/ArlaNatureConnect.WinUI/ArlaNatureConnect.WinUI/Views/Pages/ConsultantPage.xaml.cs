@@ -1,9 +1,7 @@
-using ArlaNatureConnect.WinUI.Services;
 using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 using ArlaNatureConnect.WinUI.ViewModels.Pages;
 using ArlaNatureConnect.WinUI.Views.Pages.Abstracts;
 
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 
 namespace ArlaNatureConnect.WinUI.Views.Pages;
@@ -19,12 +17,8 @@ public sealed partial class ConsultantPage : NavPage
     {
         InitializeComponent();
 
-        // Resolve dependencies
-        INavigationHandler navigationHandler = App.HostInstance.Services.GetRequiredService<INavigationHandler>();
-        Core.Services.INatureCheckCaseService natureCheckCaseService = App.HostInstance.Services.GetRequiredService<Core.Services.INatureCheckCaseService>();
-
         // Create view model with dependencies
-        ConsultantPageViewModel vm = new ConsultantPageViewModel(navigationHandler, natureCheckCaseService);
+        ConsultantPageViewModel vm = App.HostInstance?.Services.GetService(typeof(ConsultantPageViewModel)) as ConsultantPageViewModel ?? throw new InvalidOperationException("Failed to resolve ConsultantPageViewModel");
 
         ViewModel = vm;      // required by NavPage
         DataContext = vm;    // bindings in XAML

@@ -74,15 +74,15 @@ namespace ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 /// for the build so the inherited comments are available to consuming projects and IntelliSense.
 /// </remarks>
 /// </summary>
-public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewModelBase
+public abstract class NavigationViewModelBase(INavigationHandler navigationHandler) : ViewModelBase, INavigationViewModelBase
 {
     #region Fields
-    private readonly INavigationHandler? _navigationHandler; // original
+    private readonly INavigationHandler? _navigationHandler = (NavigationHandler?)(navigationHandler ?? throw new ArgumentNullException(nameof(navigationHandler)));
 
     // Side menu handling fields moved from view
     private UIElement[]? _previousSideMenuChildren;
     private UIElement? _addedSideMenuControl;
-    private IServiceScope? _sideMenuScope; // NEW: scope for resolved side-menu VM
+    private IServiceScope? _sideMenuScope;
 
     // NEW: type of the side menu control to attach (set by derived VMs)
     protected Type? SideMenuControlType { get; set; }
@@ -93,25 +93,6 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
 
     public RelayCommand<Person>? ChooseUserCommand { get; protected set; }
     #endregion
-
-    /// <summary>
-    /// Parameterless constructor used for design-time and tests. Derived classes that need repositories should use
-    /// the constructor that accepts dependencies.
-    /// </summary>
-    //public NavigationViewModelBase() : base()
-    //{
-    //}
-
-    /// <summary>
-    /// Construct a navigation view-model with required services.
-    /// </summary>
-    /// <param name="navigationHandler">Navigation handler used for frame navigation.</param>
-    /// <param name="personRepository">Items used to load persons for the active role.</param>
-    /// <param name="roleRepository">Items used to resolve roles if needed.</param>
-    protected NavigationViewModelBase(INavigationHandler navigationHandler) : base()
-    {
-        _navigationHandler = (INavigationHandler?)(navigationHandler ?? throw new ArgumentNullException(nameof(navigationHandler)));
-    }
 
     #region Properties
     /// <summary>
@@ -184,7 +165,7 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
     /// </summary>
     /// <param name="parameter">Navigation parameter (string or delegate).</param>
     /// <returns><c>true</c> when navigation can proceed.</returns>
-    private bool CanNavigate(object? parameter)
+    private static bool CanNavigate(object? parameter)
     {
         if (parameter == null) return false;
         if (parameter is string s) return !string.IsNullOrWhiteSpace(s);
@@ -278,7 +259,7 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
             //    return;
             //}
 
-            _previousSideMenuChildren = sideMenuPanel.Children.Cast<UIElement>().ToArray();
+            _previousSideMenuChildren = [.. sideMenuPanel.Children.Cast<UIElement>()];
             sideMenuPanel.Children.Clear();
 
             object? resolvedVm = null;
@@ -370,8 +351,8 @@ public abstract class NavigationViewModelBase : ViewModelBase, INavigationViewMo
                 else
                 {
                     // Fallback: try to call a SetHostPageViewModel method if present
-                    MethodInfo? method = resolvedVm.GetType().GetMethod("SetHostPageViewModel", new[] { typeof(object) });
-                    method?.Invoke(resolvedVm, new object[] { this });
+                    MethodInfo? method = resolvedVm.GetType().GetMethod("SetHostPageViewModel", [typeof(object)]);
+                    method?.Invoke(resolvedVm, [this]);
                 }
             }
 
