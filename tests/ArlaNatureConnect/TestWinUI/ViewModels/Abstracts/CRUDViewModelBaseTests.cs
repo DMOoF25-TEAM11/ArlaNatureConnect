@@ -1,5 +1,6 @@
 using ArlaNatureConnect.Core.Abstract;
 using ArlaNatureConnect.Core.Services;
+using ArlaNatureConnect.Domain.Abstract; // Add this using
 using ArlaNatureConnect.WinUI.Commands;
 using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 
@@ -13,7 +14,10 @@ namespace TestWinUI.ViewModels.Abstracts;
 [SupportedOSPlatform("windows10.0.22621.0")]
 public sealed partial class CRUDViewModelBaseTests
 {
-    private sealed class TestEntity { public Guid Id { get; set; } }
+    private sealed class TestEntity : IEntity // Implement IEntity
+    {
+        public Guid Id { get; set; }
+    }
 
     private sealed class FakeRepo : IRepository<TestEntity>
     {

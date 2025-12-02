@@ -1,6 +1,8 @@
+using ArlaNatureConnect.Domain.Abstract;
+
 namespace ArlaNatureConnect.Domain.Entities;
 
-public class Person
+public class Person : IEntity
 {
     public Guid Id { get; set; }
     public Guid RoleId { get; set; }

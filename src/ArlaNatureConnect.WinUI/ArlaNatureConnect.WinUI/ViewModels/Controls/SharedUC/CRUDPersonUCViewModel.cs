@@ -70,6 +70,7 @@ public partial class CRUDPersonUCViewModel
     #endregion
     #region Fields
     // Repository for data access
+    private readonly IRoleRepository? _roleRepository;
 
     // Sorting state
     private string? _lastSortProp;
@@ -176,17 +177,21 @@ public partial class CRUDPersonUCViewModel
         }
     }
 
-    // New display properties for Role (name) and Address (postal + street)
-    public string RoleDisplay
+    // Replace RoleDisplay string with a selectable Role combo box backing properties
+    public ObservableCollection<Role> Roles { get; } = new ObservableCollection<Role>();
+
+    public Role? SelectedRole
     {
         get;
         set
         {
             if (field == value) return;
-            field = value ?? string.Empty;
+            field = value;
+            RoleId = value?.Id ?? Guid.Empty;
+            // Inline comment: synchronize RoleId and RoleDisplay when selection changes
             OnPropertyChanged();
         }
-    } = string.Empty;
+    }
 
     public string AddressDisplay
     {
@@ -210,18 +215,26 @@ public partial class CRUDPersonUCViewModel
     /// <param name="statusInfoServices">Service used for status updates in the UI.</param>
     /// <param name="appMessageService">Service used to show messages to the user.</param>
     /// <param name="repository">Repository used to persist <see cref="Person"/> entities.</param>
+    /// <param name="roleRepository">Repository used to load available roles for the dropdown. Optional for tests or callers that don't need roles.</param>
     public CRUDPersonUCViewModel(IStatusInfoServices statusInfoServices,
                                  IAppMessageService appMessageService,
-                                 IPersonRepository repository)
+                                 IPersonRepository repository,
+                                 IRoleRepository? roleRepository = null)
         : base(statusInfoServices, appMessageService, repository, false) // disable base auto-load
     {
         Repository = repository;
+        _roleRepository = roleRepository;
         //_personQueryService = personQueryService;
 
         SortCommand = new RelayCommand<string>(OnSortExecuted);
 
         // Load with navigation properties immediately
         _ = GetAllAsync();
+        // Load roles only when a role repository is available (preserves testability)
+        if (_roleRepository != null)
+        {
+            _ = LoadRolesAsync();
+        }
         SelectedEntityChanged += CRUDPersonUCViewModel_SelectedEntityChanged;
     }
 
@@ -231,35 +244,35 @@ public partial class CRUDPersonUCViewModel
     }
 
     #region Load Handlers
-    /// <summary>
-    /// Loads all persons including related role/navigation properties.
-    /// </summary>
-    /// <remarks>
-    /// Implementation note: this method is left asynchronous so it can be awaited from the UI layer.
-    /// It should populate the base <see cref="CRUDViewModelBase{TRepository,TEntity}.Items"/> collection.
-    /// </remarks>
-    private async Task GetAllAsync(CancellationToken ct = default)
-    {
-        // Load directly from Repository so derived loader can surface a repository-specific error message
-        try
-        {
-            using (_statusInfoServices.BeginLoadingOrSaving())
-            {
-                IEnumerable<Person> all = await Repository.GetAllAsync(ct);
-                Items.Clear();
-                foreach (Person p in all ?? Array.Empty<Person>())
-                {
-                    Items.Add(p);
-                }
-                SelectedItem = null;
-            }
-        }
-        catch (Exception ex)
-        {
-            // Surface error to UI via AppMessageService if available
-            try { _appMessageService?.AddErrorMessage("Failed to reload persons: " + ex.Message); } catch { }
-        }
-    }
+    ///// <summary>
+    ///// Loads all persons including related role/navigation properties.
+    ///// </summary>
+    ///// <remarks>
+    ///// Implementation note: this method is left asynchronous so it can be awaited from the UI layer.
+    ///// It should populate the base <see cref="CRUDViewModelBase{TRepository,TEntity}.Items"/> collection.
+    ///// </remarks>
+    //private async Task GetAllAsync(CancellationToken ct = default)
+    //{
+    //    // Load directly from Repository so derived loader can surface a repository-specific error message
+    //    try
+    //    {
+    //        using (_statusInfoServices.BeginLoadingOrSaving())
+    //        {
+    //            IEnumerable<Person> all = await Repository.GetAllAsync(ct);
+    //            Items.Clear();
+    //            foreach (Person p in all ?? Array.Empty<Person>())
+    //            {
+    //                Items.Add(p);
+    //            }
+    //            SelectedItem = null;
+    //        }
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        // Surface error to UI via AppMessageService if available
+    //        try { _appMessageService?.AddErrorMessage("Failed to reload persons: " + ex.Message); } catch { }
+    //    }
+    //}
     #endregion
     #region Commands
 
@@ -343,10 +356,10 @@ public partial class CRUDPersonUCViewModel
         IsActive = false;
 
         // Clear display fields
-        RoleDisplay = string.Empty;
         AddressDisplay = string.Empty;
 
         SelectedItem = null!;
+        SelectedRole = null;
 
         return Task.CompletedTask;
     }
@@ -381,7 +394,7 @@ public partial class CRUDPersonUCViewModel
                         return;
                     }
 
-                    existing.RoleId = RoleId;
+                    existing.RoleId = SelectedRole!.Id;
                     existing.AddressId = AddressId;
                     existing.FirstName = FirstName ?? string.Empty;
                     existing.LastName = LastName ?? string.Empty;
@@ -398,38 +411,7 @@ public partial class CRUDPersonUCViewModel
             }
             // Reload the list so the ListView is refreshed with the latest data and
             // ensure the reload runs to completion before leaving the save operation.
-            await ReloadAsync();
-
-            // Ensure selection persists after reload: restore the saved item instance if present.
-            // This prevents the reload from clearing SelectedItem and makes the post-save state
-            // consistent for callers (including unit tests) that expect SelectedItem to reference
-            // the saved entity.
-            //if (savedItem != null)
-            //{
-            //    // Try to find an existing instance in the refreshed Items collection
-            //    Person? match = Items.FirstOrDefault(p => p.Id == savedItem.Id);
-            //    if (match != null)
-            //    {
-            //        // Replace the collection element so the UI receives a Replace notification
-            //        int idx = Items.IndexOf(match);
-            //        if (idx >= 0)
-            //        {
-            //            Items[idx] = savedItem;
-            //            SelectedItem = savedItem;
-            //        }
-            //        else
-            //        {
-            //            // fallback: select the found instance
-            //            SelectedItem = match;
-            //        }
-            //    }
-            //    else
-            //    {
-            //        // Not present in refreshed list - add and select so UI shows the item
-            //        Items.Add(savedItem);
-            //        SelectedItem = savedItem;
-            //    }
-            //}
+            await GetAllAsync();
         }
     }
 
@@ -454,10 +436,49 @@ public partial class CRUDPersonUCViewModel
         IsActive = person.IsActive;
 
         // Map role and address to display strings used by the form
-        RoleDisplay = person.Role?.Name ?? string.Empty;
         AddressDisplay = person.Address != null
             ? string.Concat(person.Address.PostalCode ?? string.Empty, ", ", person.Address.Street ?? string.Empty)
             : string.Empty;
+
+        // Select matching Role in Roles collection when available
+        if (person.Role != null)
+        {
+            SelectedRole = Roles.FirstOrDefault(r => r.Id == person.Role.Id) ?? person.Role;
+        }
+        else
+        {
+            SelectedRole = null;
+        }
+    }
+
+    /// <summary>
+    /// Loads available roles into the Roles collection for the UI dropdown.
+    /// </summary>
+    private async Task LoadRolesAsync(CancellationToken ct = default)
+    {
+        // Guard: if no role repository was provided (for example in unit tests), skip loading
+        if (_roleRepository == null)
+            return;
+
+        try
+        {
+            IEnumerable<Role> all = await _roleRepository.GetAllAsync(ct);
+            Roles.Clear();
+            foreach (Role r in all ?? Array.Empty<Role>())
+            {
+                Roles.Add(r);
+            }
+
+            // Ensure SelectedRole reflects RoleId if already set
+            if (RoleId != Guid.Empty)
+            {
+                SelectedRole = Roles.FirstOrDefault(r => r.Id == RoleId);
+            }
+        }
+        catch (Exception)
+        {
+            // Ignore load errors for now; UI will show empty dropdown
+        }
     }
 
     /// <summary>

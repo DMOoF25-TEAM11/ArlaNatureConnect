@@ -1,6 +1,8 @@
+using ArlaNatureConnect.Domain.Abstract;
+
 namespace ArlaNatureConnect.Domain.Entities;
 
-public class Address
+public class Address : IEntity
 {
     public Guid Id { get; set; }
     public string Street { get; set; } = null!;

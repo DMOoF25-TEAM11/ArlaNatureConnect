@@ -1,5 +1,6 @@
 using ArlaNatureConnect.Core.Abstract;
 using ArlaNatureConnect.Core.Services;
+using ArlaNatureConnect.Domain.Abstract; // Add this using
 using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 
 using System.Diagnostics;
@@ -9,7 +10,7 @@ namespace TestWinUI.ViewModels.Abstracts;
 [TestClass]
 public class ListViewModelBaseTests
 {
-    private sealed class DummyEntity
+    private sealed class DummyEntity : IEntity // Implement IEntity
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         public string? Name { get; set; }

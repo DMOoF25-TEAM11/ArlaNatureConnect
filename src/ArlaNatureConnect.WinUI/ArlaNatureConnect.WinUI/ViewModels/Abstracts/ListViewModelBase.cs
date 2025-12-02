@@ -1,5 +1,7 @@
 using ArlaNatureConnect.Core.Abstract;
 using ArlaNatureConnect.Core.Services;
+using ArlaNatureConnect.Domain.Abstract;
+
 // Add dispatcher support
 using Microsoft.UI.Dispatching;
 
@@ -20,8 +22,8 @@ namespace ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 /// status and messaging services, and a standard asynchronous <see cref="LoadAsync(Guid)"/> pattern.
 /// </remarks>
 public abstract class ListViewModelBase<TRepos, TEntity> : ViewModelBase
-    where TRepos : notnull, IRepository<TEntity>
-    where TEntity : class
+    where TRepos : IRepository<TEntity>
+    where TEntity : IEntity
 {
     #region Fields
 
@@ -126,7 +128,7 @@ public abstract class ListViewModelBase<TRepos, TEntity> : ViewModelBase
         get => _selectedItem;
         set
         {
-            if (_selectedItem == value) return;
+            if (object.Equals(_selectedItem, value)) return;
             _selectedItem = value;
             OnPropertyChanged();
 
@@ -177,7 +179,7 @@ public abstract class ListViewModelBase<TRepos, TEntity> : ViewModelBase
                 {
                     Items.Add(it);
                 }
-                SelectedItem = null;
+                SelectedItem = default;
             }
             catch (Exception ex)
             {

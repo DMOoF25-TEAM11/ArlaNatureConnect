@@ -1,5 +1,6 @@
 using ArlaNatureConnect.Core.Abstract;
 using ArlaNatureConnect.Core.Services;
+using ArlaNatureConnect.Domain.Abstract;
 using ArlaNatureConnect.WinUI.Commands;
 
 using System.Windows.Input;
@@ -14,7 +15,7 @@ namespace ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 public abstract class CRUDViewModelBase<TRepos, TEntity>
     : ListViewModelBase<TRepos, TEntity>
     where TRepos : notnull, IRepository<TEntity>
-    where TEntity : class
+    where TEntity : IEntity
 {
     #region Fields
     protected bool _isSaving;
@@ -106,6 +107,38 @@ public abstract class CRUDViewModelBase<TRepos, TEntity>
         CancelCommand = new RelayCommand(async () => await OnCancelAsync(), CanCancel);
         RefreshCommand = new RelayCommand(() => RefreshCommandStates());
     }
+
+    #region Load handler
+    /// <summary>
+    /// Loads all persons including related role/navigation properties.
+    /// </summary>
+    /// <remarks>
+    /// Implementation note: this method is left asynchronous so it can be awaited from the UI layer.
+    /// It should populate the base <see cref="CRUDViewModelBase{TRepository,TEntity}.Items"/> collection.
+    /// </remarks>
+    protected async Task GetAllAsync(CancellationToken ct = default)
+    {
+        // Load directly from Repository so derived loader can surface a repository-specific error message
+        try
+        {
+            using (_statusInfoServices.BeginLoadingOrSaving())
+            {
+                IEnumerable<TEntity> all = await Repository.GetAllAsync(ct);
+                Items.Clear();
+                foreach (TEntity p in all ?? Array.Empty<TEntity>())
+                {
+                    Items.Add(p);
+                }
+                SelectedItem = default;
+            }
+        }
+        catch (Exception ex)
+        {
+            // Surface error to UI via AppMessageService if available
+            try { _appMessageService?.AddErrorMessage("Failed to reload persons: " + ex.Message); } catch { }
+        }
+    }
+    #endregion
 
     //protected CRUDViewModelBase(IStatusInfoServices statusInfoServices, IAppMessageService appMessageService, TRepos repository)
     //    : this(statusInfoServices, appMessageService, repository, true)
@@ -242,7 +275,20 @@ public abstract class CRUDViewModelBase<TRepos, TEntity>
     /// </summary>
     protected async virtual Task OnDeleteAsync()
     {
-        await Task.CompletedTask;
+        using (_statusInfoServices?.BeginLoadingOrSaving())
+        {
+            if (!CanDelete()) return;
+            IsSaving = true;
+            try
+            {
+                await Repository.DeleteAsync(SelectedItem!.Id);
+            }
+            finally
+            {
+                IsSaving = false;
+            }
+            await GetAllAsync();
+        }
     }
 
     /// <summary>
@@ -257,7 +303,7 @@ public abstract class CRUDViewModelBase<TRepos, TEntity>
     protected async Task OnResetAsync()
     {
         _appMessageService.ClearErrorMessages();
-        SelectedItem = null!;
+        SelectedItem = default!;
         await OnResetFormAsync();
         IsEditMode = false;
         await Task.CompletedTask;
