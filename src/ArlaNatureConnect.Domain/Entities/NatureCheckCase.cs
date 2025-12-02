@@ -1,10 +1,11 @@
+using ArlaNatureConnect.Domain.Abstract;
 using ArlaNatureConnect.Domain.Enums;
 
 namespace ArlaNatureConnect.Domain.Entities;
 
 // Purpose: Represents the assignment of a consultant to perform a Nature Check on a specific farm.
 // Notes: Stores key audit data so flows can reason about duplicates, ownership and notification state.
-public class NatureCheckCase
+public class NatureCheckCase : IEntity
 {
     public Guid Id { get; set; }
     public Guid FarmId { get; set; }
@@ -13,7 +14,7 @@ public class NatureCheckCase
     public NatureCheckCaseStatus Status { get; set; }
     public string? Notes { get; set; }
     public string? Priority { get; set; }
-    
+
     // Audit property - tracks when the record was created in the database.
     // Should not be confused with AssignedAt which represents the actual assignment time.
     public DateTimeOffset CreatedAt { get; set; }

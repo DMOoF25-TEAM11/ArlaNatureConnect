@@ -1,3 +1,5 @@
+using ArlaNatureConnect.Domain.Abstract;
+
 namespace ArlaNatureConnect.Core.Abstract;
 
 /// <summary>
@@ -11,9 +13,47 @@ namespace ArlaNatureConnect.Core.Abstract;
 /// - Simplify unit testing by providing lightweight in-memory or mocked implementations.
 /// - Centralize common data access behaviours (e.g., error handling, transactions) behind a single contract.
 /// Implementations should preserve asynchronous semantics and honor cancellation via <see cref="System.Threading.CancellationToken"/>.
+/// 
+/// Inheriting XML Documentation with <c>&lt;inheritdoc/&gt;</c>:
+/// <para>
+/// Implementations of this interface can inherit the XML documentation from the interface members by using
+/// the <c>&lt;inheritdoc/&gt;</c> tag on classes or members. This keeps implementation comments consistent with
+/// the contract and reduces duplication. It also helps tooling (IntelliSense, documentation generators) show
+/// the same guidance to callers of concrete implementations.
+/// </para>
+/// <para>
+/// How to use:
+/// - Place <c>&lt;inheritdoc/&gt;</c> on an implementing class or member to inherit comments from the interface.
+/// - Optionally add a short summary or additional remarks on the implementation; the inherited text will be merged
+///   by most documentation tools, with the explicit text supplementing the inherited content.
+/// </para>
+/// <para>
+/// Why we have it:
+/// - Reduces duplication of documentation across multiple implementations.
+/// - Ensures behaviour described by the interface stays in sync with implementations.
+/// - Improves discoverability for consumers of the concrete types.
+/// </para>
+/// <example>
+/// Example showing how an implementation can inherit the documentation:
+/// <code>
+/// // interface (this file)
+/// public interface IRepository<TEntity> where TEntity : IEntity { /* ... */ }
+/// 
+/// // implementation
+/// /// <inheritdoc/>
+/// public class EfRepository : IRepository<MyEntity>
+/// {
+///     /// <inheritdoc/>
+///     public Task AddAsync(MyEntity entity, CancellationToken cancellationToken = default) =>
+///         // implement add using EF Core
+///         Task.CompletedTask;
+/// }
+/// </code>
+/// </example>
 /// </remarks>
+// Inline: Implementations should prefer using <inheritdoc/> to inherit documentation from this contract.
 public interface IRepository<TEntity>
-    where TEntity : class
+    where TEntity : IEntity
 {
     #region Create operations
     /// <summary>
