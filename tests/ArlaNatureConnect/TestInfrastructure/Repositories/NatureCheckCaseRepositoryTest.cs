@@ -25,7 +25,7 @@ public class NatureCheckCaseRepositoryTest
 
         // seed data: 30 active, 20 non-active
         int activeCount = 30;
-        using (var seed = new AppDbContext(options))
+        using (AppDbContext seed = new AppDbContext(options))
         {
             for (int i = 0; i < activeCount; i++)
             {
@@ -54,10 +54,10 @@ public class NatureCheckCaseRepositoryTest
             await seed.SaveChangesAsync();
         }
 
-        var factoryMock = new Mock<IDbContextFactory<AppDbContext>>();
+        Mock<IDbContextFactory<AppDbContext>> factoryMock = new Mock<IDbContextFactory<AppDbContext>>();
         factoryMock.Setup(f => f.CreateDbContext()).Returns(() => new AppDbContext(options));
 
-        var repo = new NatureCheckCaseRepository(factoryMock.Object);
+        NatureCheckCaseRepository repo = new NatureCheckCaseRepository(factoryMock.Object);
 
         const int threads = 8;
         Task<IReadOnlyList<NatureCheckCase>>[] tasks = new Task<IReadOnlyList<NatureCheckCase>>[threads];
@@ -68,9 +68,9 @@ public class NatureCheckCaseRepositoryTest
 
         IReadOnlyList<NatureCheckCase>[] results = await Task.WhenAll(tasks);
 
-        foreach (var r in results)
+        foreach (IReadOnlyList<NatureCheckCase> r in results)
         {
-            Assert.AreEqual(activeCount, r.Count);
+            Assert.HasCount(activeCount, r);
         }
     }
 
@@ -80,7 +80,7 @@ public class NatureCheckCaseRepositoryTest
         DbContextOptions<AppDbContext> options = CreateOptions();
         Guid farmId = Guid.NewGuid();
 
-        using (var seed = new AppDbContext(options))
+        using (AppDbContext seed = new AppDbContext(options))
         {
             seed.NatureCheckCases.Add(new NatureCheckCase
             {
@@ -94,10 +94,10 @@ public class NatureCheckCaseRepositoryTest
             await seed.SaveChangesAsync();
         }
 
-        var factoryMock = new Mock<IDbContextFactory<AppDbContext>>();
+        Mock<IDbContextFactory<AppDbContext>> factoryMock = new Mock<IDbContextFactory<AppDbContext>>();
         factoryMock.Setup(f => f.CreateDbContext()).Returns(() => new AppDbContext(options));
 
-        var repo = new NatureCheckCaseRepository(factoryMock.Object);
+        NatureCheckCaseRepository repo = new NatureCheckCaseRepository(factoryMock.Object);
 
         const int calls = 50;
         Task<bool>[] tasks = Enumerable.Range(0, calls).Select(_ => Task.Run(() => repo.FarmHasActiveCaseAsync(farmId))).ToArray();
@@ -117,7 +117,7 @@ public class NatureCheckCaseRepositoryTest
         Guid consultantId = Guid.NewGuid();
         int assignedCount = 12;
 
-        using (var seed = new AppDbContext(options))
+        using (AppDbContext seed = new AppDbContext(options))
         {
             for (int i = 0; i < assignedCount; i++)
             {
@@ -135,10 +135,10 @@ public class NatureCheckCaseRepositoryTest
             await seed.SaveChangesAsync();
         }
 
-        var factoryMock = new Mock<IDbContextFactory<AppDbContext>>();
+        Mock<IDbContextFactory<AppDbContext>> factoryMock = new Mock<IDbContextFactory<AppDbContext>>();
         factoryMock.Setup(f => f.CreateDbContext()).Returns(() => new AppDbContext(options));
 
-        var repo = new NatureCheckCaseRepository(factoryMock.Object);
+        NatureCheckCaseRepository repo = new NatureCheckCaseRepository(factoryMock.Object);
 
         const int threads = 6;
         Task<IReadOnlyList<NatureCheckCase>>[] tasks = new Task<IReadOnlyList<NatureCheckCase>>[threads];
@@ -149,9 +149,9 @@ public class NatureCheckCaseRepositoryTest
 
         IReadOnlyList<NatureCheckCase>[] results = await Task.WhenAll(tasks);
 
-        foreach (var r in results)
+        foreach (IReadOnlyList<NatureCheckCase> r in results)
         {
-            Assert.AreEqual(assignedCount, r.Count);
+            Assert.HasCount(assignedCount, r);
         }
     }
 
@@ -164,15 +164,15 @@ public class NatureCheckCaseRepositoryTest
 
         var repo = new NatureCheckCaseRepository(factoryMock.Object);
 
-        var active = await repo.GetActiveCasesAsync();
+        IReadOnlyList<NatureCheckCase> active = await repo.GetActiveCasesAsync();
         Assert.IsNotNull(active);
-        Assert.AreEqual(0, active.Count);
+        Assert.IsEmpty(active);
 
         bool has = await repo.FarmHasActiveCaseAsync(Guid.NewGuid());
         Assert.IsFalse(has);
 
-        var assigned = await repo.GetAssignedCasesForConsultantAsync(Guid.NewGuid());
+        IReadOnlyList<NatureCheckCase> assigned = await repo.GetAssignedCasesForConsultantAsync(Guid.NewGuid());
         Assert.IsNotNull(assigned);
-        Assert.AreEqual(0, assigned.Count);
+        Assert.IsEmpty(assigned);
     }
 }

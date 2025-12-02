@@ -24,13 +24,32 @@ public class FarmRepositoryTest
     {
         DbContextOptions<AppDbContext> options = CreateOptions();
 
+        // Create required Person and Address entities first (due to AutoInclude and foreign key constraints)
+        var personId = Guid.NewGuid();
+        var addressId = Guid.NewGuid();
+        var roleId = Guid.NewGuid();
+
+        using (AppDbContext ctx = new AppDbContext(options))
+        {
+            // Create Role first
+            ctx.Roles.Add(new Role { Id = roleId, Name = "Farmer" });
+            
+            // Create Address
+            ctx.Addresses.Add(new Address { Id = addressId, Street = "Test Street", City = "Test City", PostalCode = "1234", Country = "DK" });
+            
+            // Create Person
+            ctx.Persons.Add(new Person { Id = personId, FirstName = "Test", LastName = "Owner", Email = "test@test.com", RoleId = roleId, AddressId = addressId, IsActive = true });
+            
+            await ctx.SaveChangesAsync();
+        }
+
         Farm farm = new Farm
         {
             Id = Guid.NewGuid(),
             Name = "TestFarm",
             CVR = "12345678",
-            PersonId = Guid.Empty,
-            AddressId = Guid.Empty
+            PersonId = personId,
+            AddressId = addressId
         };
 
         using (AppDbContext ctx = new AppDbContext(options))
@@ -54,10 +73,33 @@ public class FarmRepositoryTest
     {
         DbContextOptions<AppDbContext> options = CreateOptions();
 
+        // Create required Person and Address entities first (due to AutoInclude and foreign key constraints)
+        var personId1 = Guid.NewGuid();
+        var addressId1 = Guid.NewGuid();
+        var personId2 = Guid.NewGuid();
+        var addressId2 = Guid.NewGuid();
+        var roleId = Guid.NewGuid();
+
+        using (AppDbContext ctx = new(options))
+        {
+            // Create Role first
+            ctx.Roles.Add(new Role { Id = roleId, Name = "Farmer" });
+            
+            // Create Addresses
+            ctx.Addresses.Add(new Address { Id = addressId1, Street = "Street1", City = "City1", PostalCode = "1234", Country = "DK" });
+            ctx.Addresses.Add(new Address { Id = addressId2, Street = "Street2", City = "City2", PostalCode = "5678", Country = "DK" });
+            
+            // Create Persons
+            ctx.Persons.Add(new Person { Id = personId1, FirstName = "Owner1", LastName = "Test", Email = "owner1@test.com", RoleId = roleId, AddressId = addressId1, IsActive = true });
+            ctx.Persons.Add(new Person { Id = personId2, FirstName = "Owner2", LastName = "Test", Email = "owner2@test.com", RoleId = roleId, AddressId = addressId2, IsActive = true });
+            
+            await ctx.SaveChangesAsync();
+        }
+
         Farm[] farms = new[]
         {
-            new Farm { Id = Guid.NewGuid(), Name = "F1", CVR = "111", PersonId = Guid.Empty, AddressId = Guid.Empty },
-            new Farm { Id = Guid.NewGuid(), Name = "F2", CVR = "222", PersonId = Guid.Empty, AddressId = Guid.Empty }
+            new Farm { Id = Guid.NewGuid(), Name = "F1", CVR = "111", PersonId = personId1, AddressId = addressId1 },
+            new Farm { Id = Guid.NewGuid(), Name = "F2", CVR = "222", PersonId = personId2, AddressId = addressId2 }
         };
 
         using (AppDbContext ctx = new(options))
@@ -80,7 +122,26 @@ public class FarmRepositoryTest
     {
         DbContextOptions<AppDbContext> options = CreateOptions();
 
-        Farm farm = new Farm { Id = Guid.NewGuid(), Name = "Before", CVR = "000", PersonId = Guid.Empty, AddressId = Guid.Empty };
+        // Create required Person and Address entities first (due to AutoInclude and foreign key constraints)
+        var personId = Guid.NewGuid();
+        var addressId = Guid.NewGuid();
+        var roleId = Guid.NewGuid();
+
+        using (AppDbContext ctx = new AppDbContext(options))
+        {
+            // Create Role first
+            ctx.Roles.Add(new Role { Id = roleId, Name = "Farmer" });
+            
+            // Create Address
+            ctx.Addresses.Add(new Address { Id = addressId, Street = "Test Street", City = "Test City", PostalCode = "1234", Country = "DK" });
+            
+            // Create Person
+            ctx.Persons.Add(new Person { Id = personId, FirstName = "Test", LastName = "Owner", Email = "test@test.com", RoleId = roleId, AddressId = addressId, IsActive = true });
+            
+            await ctx.SaveChangesAsync();
+        }
+
+        Farm farm = new Farm { Id = Guid.NewGuid(), Name = "Before", CVR = "000", PersonId = personId, AddressId = addressId };
         using (AppDbContext ctx = new AppDbContext(options))
         {
             await ctx.Farms.AddAsync(farm);
@@ -107,7 +168,26 @@ public class FarmRepositoryTest
     {
         DbContextOptions<AppDbContext> options = CreateOptions();
 
-        Farm farm = new() { Id = Guid.NewGuid(), Name = "ToDelete", CVR = "X", PersonId = Guid.Empty, AddressId = Guid.Empty };
+        // Create required Person and Address entities first (due to AutoInclude and foreign key constraints)
+        var personId = Guid.NewGuid();
+        var addressId = Guid.NewGuid();
+        var roleId = Guid.NewGuid();
+
+        using (AppDbContext ctx = new(options))
+        {
+            // Create Role first
+            ctx.Roles.Add(new Role { Id = roleId, Name = "Farmer" });
+            
+            // Create Address
+            ctx.Addresses.Add(new Address { Id = addressId, Street = "Test Street", City = "Test City", PostalCode = "1234", Country = "DK" });
+            
+            // Create Person
+            ctx.Persons.Add(new Person { Id = personId, FirstName = "Test", LastName = "Owner", Email = "test@test.com", RoleId = roleId, AddressId = addressId, IsActive = true });
+            
+            await ctx.SaveChangesAsync();
+        }
+
+        Farm farm = new() { Id = Guid.NewGuid(), Name = "ToDelete", CVR = "X", PersonId = personId, AddressId = addressId };
         using (AppDbContext ctx = new(options))
         {
             await ctx.Farms.AddAsync(farm);
@@ -134,12 +214,37 @@ public class FarmRepositoryTest
     {
         DbContextOptions<AppDbContext> options = CreateOptions();
 
+        // Create required Person and Address entities first (due to AutoInclude and foreign key constraints)
+        var roleId = Guid.NewGuid();
+        var personIds = new List<Guid>();
+        var addressIds = new List<Guid>();
+
+        using (var seed = new AppDbContext(options))
+        {
+            // Create Role first
+            seed.Roles.Add(new Role { Id = roleId, Name = "Farmer" });
+            
+            // Create Addresses and Persons
+            for (int i = 0; i < 10; i++)
+            {
+                var addressId = Guid.NewGuid();
+                var personId = Guid.NewGuid();
+                addressIds.Add(addressId);
+                personIds.Add(personId);
+                
+                seed.Addresses.Add(new Address { Id = addressId, Street = $"Street{i}", City = $"City{i}", PostalCode = $"{i}000", Country = "DK" });
+                seed.Persons.Add(new Person { Id = personId, FirstName = $"Owner{i}", LastName = "Test", Email = $"owner{i}@test.com", RoleId = roleId, AddressId = addressId, IsActive = true });
+            }
+            
+            await seed.SaveChangesAsync();
+        }
+
         // seed
         using (var seed = new AppDbContext(options))
         {
             for (int i = 0; i < 10; i++)
             {
-                seed.Farms.Add(new Farm { Id = Guid.NewGuid(), Name = $"F{i}", CVR = i.ToString(), PersonId = Guid.Empty, AddressId = Guid.Empty });
+                seed.Farms.Add(new Farm { Id = Guid.NewGuid(), Name = $"F{i}", CVR = i.ToString(), PersonId = personIds[i], AddressId = addressIds[i] });
             }
             await seed.SaveChangesAsync();
         }
@@ -154,7 +259,7 @@ public class FarmRepositoryTest
 
         foreach (List<Farm>? r in results)
         {
-            Assert.AreEqual(10, r.Count);
+            Assert.HasCount(10, r);
         }
     }
 
