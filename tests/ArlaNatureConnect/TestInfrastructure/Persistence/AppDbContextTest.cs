@@ -70,8 +70,65 @@ public class AppDbContextTest
         Assert.IsNotNull(fAddress, "Farm.Address navigation should exist");
         Assert.IsNotNull(fPerson, "Farm.Person navigation should exist");
 
-        Assert.IsTrue(fAddress!.IsEagerLoaded, "Farm.Address should be configured for AutoInclude");
-        Assert.IsTrue(fPerson!.IsEagerLoaded, "Farm.Person should be configured for AutoInclude");
+        Assert.IsFalse(fAddress!.IsEagerLoaded, "Farm.Address should require explicit Include to avoid null FK lookups");
+        Assert.IsFalse(fPerson!.IsEagerLoaded, "Farm.Person should require explicit Include to avoid null FK lookups");
+    }
+
+    [TestMethod]
+    public async Task CanAddAndRetrieveFarm()
+    {
+        DbContextOptions<AppDbContext> options = CreateOptions();
+
+        Guid personId = Guid.NewGuid();
+        Guid addressId = Guid.NewGuid();
+        Guid roleId = Guid.NewGuid();
+
+        using (AppDbContext ctx = new(options))
+        {
+            ctx.Roles.Add(new Role { Id = roleId, Name = "Farmer" });
+            ctx.Addresses.Add(new Address
+            {
+                Id = addressId,
+                Street = "Test Street",
+                City = "Test City",
+                PostalCode = "1234",
+                Country = "DK"
+            });
+            ctx.Persons.Add(new Person
+            {
+                Id = personId,
+                FirstName = "Test",
+                LastName = "Owner",
+                Email = "test@test.com",
+                RoleId = roleId,
+                AddressId = addressId,
+                IsActive = true
+            });
+            await ctx.SaveChangesAsync();
+        }
+
+        Farm farm = new()
+        {
+            Id = Guid.NewGuid(),
+            Name = "TestFarm",
+            CVR = "12345678",
+            PersonId = personId,
+            AddressId = addressId
+        };
+
+        using (AppDbContext ctx = new(options))
+        {
+            ctx.Farms.Add(farm);
+            await ctx.SaveChangesAsync();
+        }
+
+        using (AppDbContext ctx = new(options))
+        {
+            Farm? dbFarm = await ctx.Farms.FirstOrDefaultAsync(f => f.Id == farm.Id);
+            Assert.IsNotNull(dbFarm);
+            Assert.AreEqual(farm.Name, dbFarm!.Name);
+            Assert.AreEqual(farm.CVR, dbFarm.CVR);
+        }
     }
 
     [TestMethod]

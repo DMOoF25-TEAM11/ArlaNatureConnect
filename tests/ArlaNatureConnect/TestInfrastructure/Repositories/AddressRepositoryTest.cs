@@ -12,7 +12,7 @@ namespace TestInfrastructure.Repositories;
 [TestClass]
 public class AddressRepositoryTest
 {
-    private IDbContextFactory<AppDbContext> CreateFactory()
+    private IDbContextFactory<AppDbContext> GetCreateFactory()
     {
         DbContextOptions<AppDbContext> options = new DbContextOptionsBuilder<AppDbContext>()
             .UseInMemoryDatabase(Guid.NewGuid().ToString())
@@ -23,7 +23,7 @@ public class AddressRepositoryTest
     [TestMethod]
     public async Task Add_And_Get_Address_Async()
     {
-        IDbContextFactory<AppDbContext> factory = CreateFactory();
+        IDbContextFactory<AppDbContext> factory = GetCreateFactory();
 
         Address addr = new Address
         {
@@ -57,7 +57,7 @@ public class AddressRepositoryTest
     [TestMethod]
     public async Task GetAll_Returns_All_Addresses()
     {
-        IDbContextFactory<AppDbContext> factory = CreateFactory();
+        IDbContextFactory<AppDbContext> factory = GetCreateFactory();
 
         Address[] addresses = new[]
         {
@@ -85,7 +85,7 @@ public class AddressRepositoryTest
     [TestMethod]
     public async Task Update_Address_Persists_Changes()
     {
-        IDbContextFactory<AppDbContext> factory = CreateFactory();
+        IDbContextFactory<AppDbContext> factory = GetCreateFactory();
 
         Address addr = new Address { Id = Guid.NewGuid(), Street = "Before", City = "City", PostalCode = "000", Country = "DK" };
         using (AppDbContext ctx = factory.CreateDbContext())
@@ -115,7 +115,7 @@ public class AddressRepositoryTest
     [TestMethod]
     public async Task Delete_Address_Removes_Entity()
     {
-        IDbContextFactory<AppDbContext> factory = CreateFactory();
+        IDbContextFactory<AppDbContext> factory = GetCreateFactory();
 
         Address addr = new Address { Id = Guid.NewGuid(), Street = "ToDelete", City = "City", PostalCode = "X", Country = "DK" };
         using (AppDbContext ctx = factory.CreateDbContext())
@@ -146,11 +146,11 @@ public class AddressRepositoryTest
     public async Task GetAllAsync_Is_ThreadSafe_When_Called_Concurrently()
     {
         // use explicit in-memory options so multiple contexts share the same in-memory DB
-        var options = new DbContextOptionsBuilder<AppDbContext>()
+        DbContextOptions<AppDbContext> options = new DbContextOptionsBuilder<AppDbContext>()
             .UseInMemoryDatabase(Guid.NewGuid().ToString())
             .Options;
 
-        using (var seed = new AppDbContext(options))
+        using (AppDbContext seed = new AppDbContext(options))
         {
             for (int i = 0; i < 10; i++)
             {
@@ -159,27 +159,27 @@ public class AddressRepositoryTest
             await seed.SaveChangesAsync();
         }
 
-        var factoryMock = new Mock<IDbContextFactory<AppDbContext>>();
+        Mock<IDbContextFactory<AppDbContext>> factoryMock = new Mock<IDbContextFactory<AppDbContext>>();
         factoryMock.Setup(f => f.CreateDbContext()).Returns(() => new AppDbContext(options));
 
-        var repo = new AddressRepository(factoryMock.Object);
+        AddressRepository repo = new AddressRepository(factoryMock.Object);
 
         IEnumerable<Task<List<Address>>> tasks = Enumerable.Range(0, 8).Select(_ => Task.Run(async () => (await repo.GetAllAsync()).ToList()));
         List<Address>[] results = await Task.WhenAll(tasks);
 
         foreach (List<Address>? r in results)
         {
-            Assert.AreEqual(10, r.Count);
+            Assert.HasCount(10, r);
         }
     }
 
     [TestMethod]
     public async Task Repository_Methods_Throw_On_COMException_From_Factory()
     {
-        var factoryMock = new Mock<IDbContextFactory<AppDbContext>>();
+        Mock<IDbContextFactory<AppDbContext>> factoryMock = new Mock<IDbContextFactory<AppDbContext>>();
         factoryMock.Setup(f => f.CreateDbContext()).Throws(new COMException("COM error"));
 
-        var repo = new AddressRepository(factoryMock.Object);
+        AddressRepository repo = new AddressRepository(factoryMock.Object);
 
         try
         {
