@@ -116,8 +116,13 @@ public sealed class CRUDPersonUCViewModelTests
         mockStatus.Setup(s => s.BeginLoadingOrSaving()).Returns(new DisposableAction(() => { }));
         Mock<IAppMessageService> mockMsg = new Mock<IAppMessageService>();
         Mock<IPersonRepository> mockRepo = new Mock<IPersonRepository>();
-        mockRepo.Setup(r => r.AddAsync(It.IsAny<Person>(), It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
+        Person? added = null;
+        mockRepo.Setup(r => r.AddAsync(It.IsAny<Person>(), It.IsAny<CancellationToken>()))
+                .Callback<Person, CancellationToken>((p, ct) => added = p)
+                .Returns(Task.CompletedTask);
         mockRepo.Setup(r => r.UpdateAsync(It.IsAny<Person>(), It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
+        // Ensure GetAllAsync is stubbed so ReloadAsync does not attempt to await a null Task and so Items is predictable
+        mockRepo.Setup(r => r.GetAllAsync(It.IsAny<CancellationToken>())).ReturnsAsync(new List<Person>());
 
         TestVM vm = new TestVM(mockStatus.Object, mockMsg.Object, mockRepo.Object);
 
@@ -132,7 +137,13 @@ public sealed class CRUDPersonUCViewModelTests
         await vm.OnSaveFormAsync();
 
         mockRepo.Verify(r => r.AddAsync(It.IsAny<Person>(), It.IsAny<CancellationToken>()), Times.Once);
-        Assert.IsNotNull(vm.SelectedItem);
+        Assert.IsNotNull(added);
+        Assert.AreEqual("New", added!.FirstName);
+        // Repository should receive populated role/address ids, we don't rely on VM fields after reload
+        Assert.AreNotEqual(Guid.Empty, added.RoleId);
+        Assert.AreNotEqual(Guid.Empty, added.AddressId);
+        Assert.IsTrue(added.IsActive);
+        Assert.AreNotEqual(Guid.Empty, added.Id);
 
         // --- Update mode
         mockRepo.Invocations.Clear();
