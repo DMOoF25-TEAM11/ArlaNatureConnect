@@ -1,3 +1,4 @@
+```mermaid
 ---
 title: UC002 - Entity Relationship Diagram (Users & Farms)
 crossref: UC002-DCD.mmd, UC002-SD.mmd
@@ -37,3 +38,4 @@ erDiagram
     ROLE ||--o{ USERS : "has"
     USERS }o--|| ADDRESS : "has"
     USERS }o--o{ FARMS : "may_manage / belongs_to"
+```

@@ -1,6 +1,6 @@
 # UC002B – Entity Relationship Diagram
 
-## ER Diagram for Nature Check Case Assignment
+ER Diagram for Nature Check Case Assignment, following Larmann's UML conventions and database schema.
 
 ```mermaid
 erDiagram
@@ -8,8 +8,8 @@ erDiagram
         uniqueidentifier Id PK
         nvarchar Name
         nvarchar CVR
-        uniqueidentifier PersonId FK
-        uniqueidentifier AddressId FK
+        uniqueidentifier PersonId FK "NOT NULL"
+        uniqueidentifier AddressId FK "NOT NULL"
     }
 
     PERSONS {
@@ -49,11 +49,12 @@ erDiagram
 
     %% Relationships
     FARMS ||--o{ NATURE_CHECK_CASES : "has"
-    PERSONS ||--o{ NATURE_CHECK_CASES : "assignedTo"
-    PERSONS ||--o{ NATURE_CHECK_CASES : "assignedBy"
+    PERSONS ||--o{ NATURE_CHECK_CASES : "assignedTo (ConsultantId)"
+    PERSONS ||--o{ NATURE_CHECK_CASES : "assignedBy (AssignedByPersonId)"
     PERSONS }o--|| ROLES : "has"
-    PERSONS }o--o| ADDRESS : "has"
-    FARMS }o--o| ADDRESS : "has"
+    PERSONS }o--o| ADDRESS : "residence"
+    FARMS }o--|| ADDRESS : "location"
+    FARMS }o--|| PERSONS : "owner"
 ```
 
 ## Relationship Details
@@ -65,15 +66,21 @@ erDiagram
 | `PERSONS` → `NATURE_CHECK_CASES` (AssignedByPersonId) | **1 : 0..*** | One Arla employee can assign zero or more Nature Check Cases |
 | `PERSONS` → `ROLES` | **N : 1** | Many persons can have the same role |
 | `PERSONS` → `ADDRESS` | **N : 1** | Many persons can share an address (nullable) |
-| `FARMS` → `ADDRESS` | **N : 1** | Many farms can share an address (nullable) |
+| `FARMS` → `ADDRESS` | **N : 1** | Many farms can share an address (NOT NULL per domain model) |
+| `FARMS` → `PERSONS` | **N : 1** | Many farms can have the same owner (NOT NULL per domain model) |
 
-## Notes
+## Field Details
 
-- `NATURE_CHECK_CASES.FarmId` references `FARMS.Id` - Each case is associated with one farm
-- `NATURE_CHECK_CASES.ConsultantId` references `PERSONS.Id` - Each case is assigned to one consultant (person with Consultant role)
-- `NATURE_CHECK_CASES.AssignedByPersonId` references `PERSONS.Id` - Each case is assigned by one Arla employee (person with Employee role)
-- `Status` field stores the case status (e.g., "Assigned", "InProgress", "Completed", "Cancelled")
-- `Notes` and `Priority` are optional fields for additional case information
-- `CreatedAt` is set when the case is created
+### NATURE_CHECK_CASES
+- `Status` field stores the case status as NVARCHAR (e.g., "Assigned", "InProgress", "Completed", "Cancelled")
+- `Priority` field stores priority as NVARCHAR in English format ("Low", "Medium", "High", "Urgent")
+- `Notes` is optional (nullable) for additional case information
+- `CreatedAt` is set when the case is created (audit property)
 - `AssignedAt` is set when the case is assigned to a consultant (can be null if not yet assigned)
+
+### FARMS
+- `PersonId` is NOT NULL per domain model (a farm must have an owner)
+- `AddressId` is NOT NULL per domain model (a farm must have an address)
+- In the domain model, these use `Guid.Empty` as default if not set, but database schema enforces NOT NULL
+
 
