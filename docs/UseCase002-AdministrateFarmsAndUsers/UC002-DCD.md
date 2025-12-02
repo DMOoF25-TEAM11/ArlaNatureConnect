@@ -1,6 +1,6 @@
+```mermaid
 ---
 title: "UC002: Domain Class Diagram for Person and Farm Management"
-crossreferencer: UC002-DomainModel.mmd, UC002-SSD.mmd
 ---
 classDiagram
     direction TB
@@ -65,6 +65,10 @@ classDiagram
         class IFarmRepository {
             <<interface>>
         }
+
+        class IPersonService {
+            <<interface>>
+        }
     }
 
     namespace ArlaNatureConnect.Infrastructure.Repositories {
@@ -91,6 +95,20 @@ classDiagram
         }
     }
 
+    namespace ArlaNatureConnect.WinUI.ViewModels {
+        class AdministratorPageViewModel {
+            +AdministratorPageViewModel()
+            +LoadCommand()
+        }
+
+        class CRUDPersonUCViewModel {
+            +CRUDPersonUCViewModel()
+            +CreatePerson()
+            +UpdatePerson()
+            +DeletePerson()
+        }
+    }
+
     %% Associations
     Role --* RoleRepository : manages
     Person --* PersonRepository : manages
@@ -103,6 +121,11 @@ classDiagram
     Person --o Address : has
     Person --o Farm : may have
     Farm --o Address : has
+
+    %% ViewModel relationships
+    AdministratorPageViewModel --o CRUDPersonUCViewModel : includes
+    AdministratorPageViewModel ..> IPersonService : depends
+    CRUDPersonUCViewModel ..> IPersonService : depends
 
     %% Inheritance and Implementation
     Repository --|> IRepository : implements
@@ -122,3 +145,4 @@ classDiagram
     AddressRepository ..|> Repository  : inheritance
 
     %% note right of ArlaNatureConnect.Core.IPersonService: Service enforces authorization, validation and mapping
+```
