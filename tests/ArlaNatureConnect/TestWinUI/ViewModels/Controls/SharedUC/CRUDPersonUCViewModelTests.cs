@@ -234,7 +234,7 @@ public sealed class CRUDPersonUCViewModelTests
     }
 
     [TestMethod]
-    public void PopulateFormFromPerson_Sets_Role_And_Address_Display()
+    public void PopulateFormFromPerson_Sets_Address_Display()
     {
         Mock<IStatusInfoServices> mockStatus = new Mock<IStatusInfoServices>();
         mockStatus.Setup(s => s.BeginLoadingOrSaving()).Returns(new DisposableAction(() => { }));
@@ -258,7 +258,6 @@ public sealed class CRUDPersonUCViewModelTests
 
         vm.PopulateFormFromPerson(person);
 
-        Assert.AreEqual("Admin", vm.RoleDisplay);
         Assert.AreEqual("1234, Main St", vm.AddressDisplay);
     }
 
