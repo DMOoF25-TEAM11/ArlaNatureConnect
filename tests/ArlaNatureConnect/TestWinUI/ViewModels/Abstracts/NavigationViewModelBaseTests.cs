@@ -64,7 +64,7 @@ public sealed partial class NavigationViewModelBaseTests
             vm.PropertyChanged += (s, e) => System.Threading.Interlocked.Increment(ref totalCalls);
         }
 
-        // Fire property changed from multiple threads concurrently by toggling IsLoading
+        // Fire property changed from multiple threads concurrently by toggling IsLoadingOrSaving
         Task[] tasks = new Task[threads];
         for (int t = 0; t < threads; t++)
         {

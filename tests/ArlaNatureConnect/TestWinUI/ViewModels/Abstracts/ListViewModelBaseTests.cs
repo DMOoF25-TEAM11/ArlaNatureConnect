@@ -1,7 +1,8 @@
-using ArlaNatureConnect.Core.Services;
 using ArlaNatureConnect.Core.Abstract;
+using ArlaNatureConnect.Core.Services;
 using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using System.Diagnostics;
 
 namespace TestWinUI.ViewModels.Abstracts;
 
@@ -70,16 +71,16 @@ public class ListViewModelBaseTests
     [TestMethod]
     public async Task LoadAllAsync_Populates_Items()
     {
-        var items = new[] { new DummyEntity { Name = "a" }, new DummyEntity { Name = "b" } };
-        var repo = new InMemoryRepository(items);
-        var status = new StatusInfoService();
-        var appMsg = new ArlaNatureConnect.Core.Services.AppMessageService();
+        DummyEntity[] items = new[] { new DummyEntity { Name = "a" }, new DummyEntity { Name = "b" } };
+        InMemoryRepository repo = new InMemoryRepository(items);
+        StatusInfoService status = new StatusInfoService();
+        AppMessageService appMsg = new ArlaNatureConnect.Core.Services.AppMessageService();
 
-        var vm = new ConcreteListViewModel(status, appMsg, repo, autoLoad: false);
+        ConcreteListViewModel vm = new ConcreteListViewModel(status, appMsg, repo, autoLoad: false);
 
         await vm.LoadAllAsync();
 
-        Assert.AreEqual(2, vm.Items.Count);
+        Assert.HasCount(2, vm.Items);
         Assert.IsTrue(vm.Items.Any(i => i.Name == "a"));
         Assert.IsTrue(vm.Items.Any(i => i.Name == "b"));
     }
@@ -87,11 +88,11 @@ public class ListViewModelBaseTests
     [TestMethod]
     public async Task LoadAllAsync_WhenRepositoryThrows_ReportsErrorAndDoesNotThrow()
     {
-        var repo = new ThrowingRepository();
-        var status = new StatusInfoService();
-        var appMsg = new ArlaNatureConnect.Core.Services.AppMessageService();
+        ThrowingRepository repo = new ThrowingRepository();
+        StatusInfoService status = new StatusInfoService();
+        AppMessageService appMsg = new ArlaNatureConnect.Core.Services.AppMessageService();
 
-        var vm = new ConcreteListViewModel(status, appMsg, repo, autoLoad: false);
+        ConcreteListViewModel vm = new ConcreteListViewModel(status, appMsg, repo, autoLoad: false);
 
         // Should not throw despite repository throwing; error is reported to AppMessageService
         await vm.LoadAllAsync();
@@ -103,28 +104,28 @@ public class ListViewModelBaseTests
     [TestMethod]
     public async Task LoadAllAsync_Sets_IsLoading_While_Loading_And_IsThreadSafe()
     {
-        var items = new[] { new DummyEntity { Name = "delayed" } };
-        var repo = new DelayedRepository(items, 200);
-        var status = new StatusInfoService();
-        var appMsg = new ArlaNatureConnect.Core.Services.AppMessageService();
+        DummyEntity[] items = new[] { new DummyEntity { Name = "delayed" } };
+        DelayedRepository repo = new DelayedRepository(items, 200);
+        StatusInfoService status = new StatusInfoService();
+        AppMessageService appMsg = new ArlaNatureConnect.Core.Services.AppMessageService();
 
-        var vm = new ConcreteListViewModel(status, appMsg, repo, autoLoad: false);
+        ConcreteListViewModel vm = new ConcreteListViewModel(status, appMsg, repo, autoLoad: false);
 
         Task loadTask = vm.LoadAllAsync();
 
-        // Wait until the load has started and BeginLoading has set IsLoading = true
-        var sw = System.Diagnostics.Stopwatch.StartNew();
-        while (!status.IsLoading && sw.ElapsedMilliseconds < 1000)
+        // Wait until the load has started and BeginLoadingOrSaving has set IsLoadingOrSaving = true
+        Stopwatch sw = System.Diagnostics.Stopwatch.StartNew();
+        while (!status.IsLoadingOrSaving && sw.ElapsedMilliseconds < 1000)
         {
             await Task.Delay(5);
         }
 
-        Assert.IsTrue(status.IsLoading, "StatusInfoService.IsLoading should be true while the load operation is in progress.");
+        Assert.IsTrue(status.IsLoadingOrSaving, "StatusInfoService.IsLoadingOrSaving should be true while the load operation is in progress.");
 
         await loadTask;
 
-        Assert.IsFalse(status.IsLoading, "StatusInfoService.IsLoading should be false after the load operation completes.");
-        Assert.AreEqual(1, vm.Items.Count);
+        Assert.IsFalse(status.IsLoadingOrSaving, "StatusInfoService.IsLoadingOrSaving should be false after the load operation completes.");
+        Assert.HasCount(1, vm.Items);
         Assert.AreEqual("delayed", vm.Items.First().Name);
     }
 }

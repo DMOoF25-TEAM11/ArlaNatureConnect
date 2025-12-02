@@ -1,10 +1,10 @@
-using System.Windows.Input;
-
 using ArlaNatureConnect.WinUI.Commands;
 using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 using ArlaNatureConnect.WinUI.Views.Dialogs;
 
 using Microsoft.UI.Xaml;
+
+using System.Windows.Input;
 
 namespace ArlaNatureConnect.WinUI.ViewModels.Controls;
 
@@ -41,7 +41,19 @@ public class MenuBarUCViewModel : ViewModelBase
     #region OnXXX Command
     private void OnExit()
     {
-        App.Current.Exit();
+        try
+        { // Prefer to close the DI-registered main window if available var main = App.HostInstance?.Services.GetService<MainWindow>(); if (main != null) { main.Close(); return; }
+          // Fallback to Application.Current.Exit with null guard
+            App? app = Microsoft.UI.Xaml.Application.Current as App;
+            app?.Exit();
+
+            // Last resort: force process exit (avoid unless necessary)
+            // System.Environment.Exit(0);
+        }
+        catch
+        {
+            // swallow/log as appropriate; avoid throwing from ViewModel command
+        }
     }
 
     private async void OnAbout()

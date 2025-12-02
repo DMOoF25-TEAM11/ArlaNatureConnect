@@ -21,7 +21,7 @@ public sealed partial class ConsultantPageSideMenuUCViewModel : SideMenuViewMode
 
     public async Task InitializeAsync()
     {
-        using (_statusInfoServices!.BeginLoading())
+        using (_statusInfoServices!.BeginLoadingOrSaving())
         {
 
             IsLoading = true;

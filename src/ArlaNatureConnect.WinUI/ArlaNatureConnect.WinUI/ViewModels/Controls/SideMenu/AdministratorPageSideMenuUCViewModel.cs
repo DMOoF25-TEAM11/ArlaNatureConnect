@@ -38,7 +38,7 @@ public sealed partial class AdministratorPageSideMenuUCViewModel : SideMenuViewM
         INavigationHandler navigationHandler)
         : base(statusInfoServices, appMessageService, personRepository, navigationHandler)
     {
-        using (_statusInfoServices!.BeginLoading())
+        using (_statusInfoServices!.BeginLoadingOrSaving())
         {
             // Fire-and-forget initialization; exceptions handled inside InitializeAsync
             _ = InitializeAsync();
@@ -51,7 +51,7 @@ public sealed partial class AdministratorPageSideMenuUCViewModel : SideMenuViewM
             NavItems.Add(new NavItem(_labelDashboards, DashboardsCommand));
             NavItems.Add(new NavItem(_labelAdministratePersons, AdministratePersonsCommand));
 
-            // Ensure command raises CanExecuteChanged when IsLoading changes
+            // Ensure command raises CanExecuteChanged when IsLoadingOrSaving changes
             PropertyChanged += (s, e) =>
             {
                 if (e.PropertyName == nameof(IsLoading))
@@ -69,7 +69,7 @@ public sealed partial class AdministratorPageSideMenuUCViewModel : SideMenuViewM
     /// </summary>
     public async Task InitializeAsync()
     {
-        using (_statusInfoServices!.BeginLoading())
+        using (_statusInfoServices!.BeginLoadingOrSaving())
         {
             IsLoading = true;
             try

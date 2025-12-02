@@ -45,7 +45,7 @@ namespace ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 ///     public ICommand? NavigationCommand { get; }
 ///
 ///     /// &lt;inheritdoc/&gt;
-///     public bool IsLoading { get; private set; }
+///     public bool IsLoadingOrSaving { get; private set; }
 ///
 ///     /// &lt;inheritdoc/&gt;
 ///     public UserControl? CurrentContent { get; private set; }

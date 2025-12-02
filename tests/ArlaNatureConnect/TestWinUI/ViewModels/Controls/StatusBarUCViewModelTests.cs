@@ -17,7 +17,7 @@ public class StatusBarUCViewModelTests
     {
         // Arrange
         Mock<IStatusInfoServices> statusMock = new Mock<IStatusInfoServices>();
-        statusMock.SetupGet(s => s.IsLoading).Returns(true);
+        statusMock.SetupGet(s => s.IsLoadingOrSaving).Returns(true);
         statusMock.SetupGet(s => s.HasDbConnection).Returns(true);
 
         StatusBarUCViewModel vm = new StatusBarUCViewModel(statusMock.Object);
@@ -37,7 +37,7 @@ public class StatusBarUCViewModelTests
     {
         // Arrange
         Mock<IStatusInfoServices> statusMock = new Mock<IStatusInfoServices>();
-        statusMock.SetupGet(s => s.IsLoading).Returns(false);
+        statusMock.SetupGet(s => s.IsLoadingOrSaving).Returns(false);
         statusMock.SetupGet(s => s.HasDbConnection).Returns(true);
 
         StatusBarUCViewModel vm = new StatusBarUCViewModel(statusMock.Object);
@@ -57,7 +57,7 @@ public class StatusBarUCViewModelTests
     {
         bool hasDb = false;
         Mock<IStatusInfoServices> statusMock = new Mock<IStatusInfoServices>();
-        statusMock.SetupGet(s => s.IsLoading).Returns(false);
+        statusMock.SetupGet(s => s.IsLoadingOrSaving).Returns(false);
         statusMock.SetupGet(s => s.HasDbConnection).Returns(() => hasDb);
 
         StatusBarUCViewModel vm = new StatusBarUCViewModel(statusMock.Object);
@@ -81,7 +81,7 @@ public class StatusBarUCViewModelTests
     {
         // Arrange: mock that throws COMException when getters accessed
         Mock<IStatusInfoServices> statusMock = new Mock<IStatusInfoServices>();
-        statusMock.SetupGet(s => s.IsLoading).Throws(new COMException("COM failure"));
+        statusMock.SetupGet(s => s.IsLoadingOrSaving).Throws(new COMException("COM failure"));
         statusMock.SetupGet(s => s.HasDbConnection).Throws(new COMException("COM failure"));
 
         StatusBarUCViewModel vm = new StatusBarUCViewModel(statusMock.Object);

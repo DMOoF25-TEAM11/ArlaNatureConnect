@@ -338,7 +338,7 @@ public class ArlaEmployeeAssignNatureCheckViewModel : ViewModelBase
 
         try
         {
-            using IDisposable loading = _statusInfoServices.BeginLoading();
+            using IDisposable loading = _statusInfoServices.BeginLoadingOrSaving();
 
             NatureCheckCaseAssignmentContext context = await _natureCheckCaseService.LoadAssignmentContextAsync();
             UpdateFarms(context.Farms);
@@ -463,7 +463,7 @@ public class ArlaEmployeeAssignNatureCheckViewModel : ViewModelBase
 
     private async Task ExecuteWithBusyStateAsync(Func<Task> operation)
     {
-        using IDisposable loading = _statusInfoServices.BeginLoading();
+        using IDisposable loading = _statusInfoServices.BeginLoadingOrSaving();
 
         try
         {
