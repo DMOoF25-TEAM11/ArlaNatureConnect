@@ -1,0 +1,32 @@
+```mermaid
+---
+title: Use Case 002 - Domain Model
+---
+classDiagram
+    direction TB
+
+    class person {
+        firstName
+        lastName
+        email
+        address
+        aktiveStatus
+    }
+
+    class Farmer {
+        farmName
+        location
+        cvr
+    }
+
+    class Role {
+        roleName
+    }
+
+    note for Person "Represents a user personal entity with personal details and active status."
+    note for Role "Defines a role that can be assigned to users for access control."
+    note for Farmer "Extends User with additional attributes specific to farmers."
+
+    User "1" -- "*" Role : has >
+    Farmer "0..1" -- "1" User : has >
+    ```

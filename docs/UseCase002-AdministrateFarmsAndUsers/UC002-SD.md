@@ -1,3 +1,4 @@
+```mermaid
 ---
 title: UC002 - Sequence Diagram (MVVM)
 ---
@@ -81,3 +82,4 @@ sequenceDiagram
     end
 
     note over Admin,View: UI remains responsive. ViewModel uses async commands and CancellationToken
+```
