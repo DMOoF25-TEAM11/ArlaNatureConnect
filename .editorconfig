@@ -153,3 +153,21 @@ dotnet_naming_style.private_field_underscore.capitalization = camel_case
 dotnet_naming_rule.private_fields_should_start_with_underscore.symbols = private_fields
 dotnet_naming_rule.private_fields_should_start_with_underscore.style = private_field_underscore
 dotnet_naming_rule.private_fields_should_start_with_underscore.severity = warning
+
+# Naming rule: private const fields should start with an underscore and then use ALL_UPPER
+# with words separated by underscores, e.g. `_MY_CONST_VALUE`.
+
+# Symbol group: private const fields
+dotnet_naming_symbols.private_const_members.applicable_kinds = field
+dotnet_naming_symbols.private_const_members.applicable_accessibilities = private
+dotnet_naming_symbols.private_const_members.required_modifiers = const
+
+# Naming style: prefix underscore + ALL_UPPER with underscore as separator
+dotnet_naming_style.private_const_underscore_all_upper.required_prefix = _
+dotnet_naming_style.private_const_underscore_all_upper.capitalization = all_upper
+dotnet_naming_style.private_const_underscore_all_upper.word_separator = _
+
+# Rule linking the symbol group and the style
+dotnet_naming_rule.private_const_members_should_start_with_underscore.symbols = private_const_members
+dotnet_naming_rule.private_const_members_should_start_with_underscore.style = private_const_underscore_all_upper
+dotnet_naming_rule.private_const_members_should_start_with_underscore.severity = warning

@@ -1,88 +1,89 @@
 <Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <OutputType>WinExe</OutputType>
-        <TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
-        <TargetPlatformMinVersion>10.0.22621.0</TargetPlatformMinVersion>
-        <RootNamespace>ArlaNatureConnect.WinUI</RootNamespace>
-        <Platforms>x86;x64;ARM64</Platforms>
-        <RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
-        <UseWinUI>true</UseWinUI>
-        <Nullable>enable</Nullable>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Copyright>Arla Nature Connect</Copyright>
-        <PublishProfile>win-$(Platform).pubxml</PublishProfile>
-        <PlatformTarget>x64</PlatformTarget>
-        <RuntimeIdentifier>win-x64</RuntimeIdentifier>
-    </PropertyGroup>
-    <ItemGroup>
-      <Compile Remove="ViewModels\template.cs" />
-      <None Remove="Views\Controls\SideMenu\AdministratorPageSideMenuUC.xaml" />
-			<None Include="ViewModels\template.cs" />
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
+		<TargetPlatformMinVersion>10.0.22621.0</TargetPlatformMinVersion>
+		<RootNamespace>ArlaNatureConnect.WinUI</RootNamespace>
+		<Platforms>x86;x64;ARM64</Platforms>
+		<RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
+		<UseWinUI>true</UseWinUI>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Copyright>Arla Nature Connect</Copyright>
+		<PublishProfile>win-$(Platform).pubxml</PublishProfile>
+		<PlatformTarget>x64</PlatformTarget>
+		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+	</PropertyGroup>
+	<ItemGroup>
+		<Compile Remove="ViewModels\template.cs" />
+		<None Remove="Views\Controls\SideMenu\AdministratorPageSideMenuUC.xaml" />
+		<None Include="ViewModels\template.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Manifest Include="$(ApplicationManifest)" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.0" />
+		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.7175" />
+		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.251106002" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\ArlaNatureConnect.Infrastructure\ArlaNatureConnect.Infrastructure.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Page Update="Views\Controls\SideMenu\AdministratorPageSideMenuUC.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Page Update="View\Controls\StatusBarUC.xaml">
+			<SubType>Designer</SubType>
+		</Page>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="ViewModels\Abstracts\NewFolder\" />
+		<Folder Include="ViewModels\Controls\PageContents\Administrator\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Page Update="Views\Controls\PageContents\Administrator\AdministratePersonUC.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Page Update="Views\Controls\SharedUC\CRUDPersonUC.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+
+	<!-- Publish Properties -->
+	<PropertyGroup>
+		<PublishReadyToRun Condition="'$(Configuration)' == 'Debug'">False</PublishReadyToRun>
+		<PublishReadyToRun Condition="'$(Configuration)' != 'Debug'">True</PublishReadyToRun>
+		<PublishTrimmed Condition="'$(Configuration)' == 'Debug'">False</PublishTrimmed>
+		<PublishTrimmed Condition="'$(Configuration)' != 'Debug'">True</PublishTrimmed>
+		<EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+	</PropertyGroup>
+	<PropertyGroup>
+		<DebugSymbols>true</DebugSymbols>
+		<DebugType>portable</DebugType>
+		<Optimize>false</Optimize>
+		<IncludeSymbolsInPackage>true</IncludeSymbolsInPackage>
+	</PropertyGroup>
+
+	<!-- Ensure WinAppRuntime native files are copied app-local when WindowsAppSdkSelfContained is enabled -->
+	<Target Name="CopyWinAppRuntime" AfterTargets="Build;Publish" Condition="'$(WindowsAppSdkSelfContained)' == 'true'">
+		<ItemGroup>
+			<_WinAppRuntimeFiles Include="$(NuGetPackageRoot)microsoft.windowsappruntime\**\runtimes\win-**\native\**\*.*" />
 		</ItemGroup>
-
-    <ItemGroup>
-        <Manifest Include="$(ApplicationManifest)" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.0" />
-        <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.7175" />
-        <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.251106002" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\..\ArlaNatureConnect.Infrastructure\ArlaNatureConnect.Infrastructure.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Page Update="Views\Controls\SideMenu\AdministratorPageSideMenuUC.xaml">
-        <Generator>MSBuild:Compile</Generator>
-      </Page>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Page Update="View\Controls\StatusBarUC.xaml">
-        <SubType>Designer</SubType>
-      </Page>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="ViewModels\Controls\PageContents\Administrator\" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Page Update="Views\Controls\PageContents\Administrator\AdministratePersonUC.xaml">
-        <Generator>MSBuild:Compile</Generator>
-      </Page>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Page Update="Views\Controls\SharedUC\CRUDPersonUC.xaml">
-        <Generator>MSBuild:Compile</Generator>
-      </Page>
-    </ItemGroup>
-
-    <!-- Publish Properties -->
-    <PropertyGroup>
-        <PublishReadyToRun Condition="'$(Configuration)' == 'Debug'">False</PublishReadyToRun>
-        <PublishReadyToRun Condition="'$(Configuration)' != 'Debug'">True</PublishReadyToRun>
-        <PublishTrimmed Condition="'$(Configuration)' == 'Debug'">False</PublishTrimmed>
-        <PublishTrimmed Condition="'$(Configuration)' != 'Debug'">True</PublishTrimmed>
-        <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
-    </PropertyGroup>
-    <PropertyGroup>
-        <DebugSymbols>true</DebugSymbols>
-        <DebugType>portable</DebugType>
-        <Optimize>false</Optimize>
-        <IncludeSymbolsInPackage>true</IncludeSymbolsInPackage>
-    </PropertyGroup>
-
-    <!-- Ensure WinAppRuntime native files are copied app-local when WindowsAppSdkSelfContained is enabled -->
-    <Target Name="CopyWinAppRuntime" AfterTargets="Build;Publish" Condition="'$(WindowsAppSdkSelfContained)' == 'true'">
-      <ItemGroup>
-        <_WinAppRuntimeFiles Include="$(NuGetPackageRoot)microsoft.windowsappruntime\**\runtimes\win-**\native\**\*.*" />
-      </ItemGroup>
-      <Copy SourceFiles="@(_WinAppRuntimeFiles)" DestinationFolder="$(OutputPath)WinAppRuntime\%(RecursiveDir)" SkipUnchangedFiles="true" />
-    </Target>
+		<Copy SourceFiles="@(_WinAppRuntimeFiles)" DestinationFolder="$(OutputPath)WinAppRuntime\%(RecursiveDir)" SkipUnchangedFiles="true" />
+	</Target>
 </Project>

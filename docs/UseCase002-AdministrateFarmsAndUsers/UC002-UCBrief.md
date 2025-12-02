@@ -9,7 +9,7 @@
 ## Brief
 Administrator can create, view, update and delete user accounts. This use case assumes the administrator is already authenticated and has appropriate permissions.
 
-## Preconditions
+### Preconditions
 - The Administrator is authenticated and authorized (already logged in).
 - Administrator is on the administration screen (Users management section).
 

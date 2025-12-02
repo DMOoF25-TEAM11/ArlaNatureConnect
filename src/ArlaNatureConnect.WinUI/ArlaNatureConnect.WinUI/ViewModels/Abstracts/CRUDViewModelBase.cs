@@ -17,7 +17,6 @@ public abstract class CRUDViewModelBase<TRepos, TEntity>
     where TEntity : class
 {
     #region Fields
-    protected TRepos _repository;
     protected bool _isSaving;
     protected bool _isEditMode;
     #endregion
@@ -47,16 +46,8 @@ public abstract class CRUDViewModelBase<TRepos, TEntity>
     /// </summary>
     public ICommand RefreshCommand { get; }
     #endregion
-    #region Event handlers
-    /// <summary>
-    /// Raised after an entity has been successfully saved by the view-model.
-    /// Listeners can use this event to react to persistence operations (for example navigate or refresh lists).
-    /// </summary>
-    //public event EventHandler<TEntity?>? EntitySaved;
-
-    #endregion
     #region Properties
-    protected TRepos Repository => _repository;
+    protected TRepos Repository { get; set; }
 
     /// <summary>
     /// Gets a value indicating whether a save/delete operation is in progress.
@@ -99,13 +90,16 @@ public abstract class CRUDViewModelBase<TRepos, TEntity>
     /// Initializes a new instance of the <see cref="CRUDViewModelBase{TRepos, TEntity}"/> class.
     /// </summary>
     /// <param name="statusInfoServices">Service used to report loading state and connection information.</param>
-    /// <param name="appMessageService">Service used to surface messages and errors to the UI.</param>
+    /// <param name="appMessageService">Service used to show messages and errors to the UI.</param>
     /// <param name="repository">Items used to load and persist <typeparamref name="TEntity"/> instances.</param>
-    protected CRUDViewModelBase(IStatusInfoServices statusInfoServices, IAppMessageService appMessageService, TRepos repository, bool autoLoad)
+    protected CRUDViewModelBase(IStatusInfoServices statusInfoServices, IAppMessageService appMessageService, TRepos repository, bool autoLoad = true)
         : base(statusInfoServices, appMessageService, repository, autoLoad)
     {
-        // copy repository reference into this class's backing field so both _items (base) and _repository (derived) are usable
-        _repository = repository;
+        // copy repository reference into this class's backing field so both _items (base) and Repository (derived) are usable
+        Repository = repository;
+
+        SelectedEntityChanged += CRUDViewModelBase_SelectedEntityChanged;
+
         AddCommand = new RelayCommand(async () => await OnAddAsync(), CanAdd);
         SaveCommand = new RelayCommand(async () => await OnSaveAsync(), CanSave);
         DeleteCommand = new RelayCommand(async () => await OnDeleteAsync(), CanDelete);
@@ -113,10 +107,16 @@ public abstract class CRUDViewModelBase<TRepos, TEntity>
         RefreshCommand = new RelayCommand(() => RefreshCommandStates());
     }
 
-    protected CRUDViewModelBase(IStatusInfoServices statusInfoServices, IAppMessageService appMessageService, TRepos repository)
-        : this(statusInfoServices, appMessageService, repository, true)
-    { }
+    //protected CRUDViewModelBase(IStatusInfoServices statusInfoServices, IAppMessageService appMessageService, TRepos repository)
+    //    : this(statusInfoServices, appMessageService, repository, true)
+    //{
+    //    SelectedEntityChanged += CRUDViewModelBase_SelectedEntityChanged;
+    //}
 
+
+
+
+    #region Load handler
     /// <summary>
     /// Loads an entity by id and prepares the view-model for edit mode if the entity exists.
     /// This method hides the base implementation to augment loading with form hooks and edit-mode state.
@@ -124,20 +124,20 @@ public abstract class CRUDViewModelBase<TRepos, TEntity>
     /// <param name="id">Identifier of the entity to load.</param>
     /// <returns>A task that represents the asynchronous load operation.</returns>
     /// <remarks>
-    /// The implementation uses <see cref="IStatusInfoServices.BeginLoading"/> to report loading state and
+    /// The implementation uses <see cref="IStatusInfoServices.BeginLoadingOrSaving"/> to report loading state and
     /// calls <see cref="OnLoadFormAsync(TEntity)"/> when an entity is found. Exceptions are swallowed intentionally
     /// to keep UI flows predictable; derived implementations should surface errors via <see cref="IAppMessageService"/> when appropriate.
     /// </remarks>
     public async Task LoadAsync(Guid id)
     {
-        // report loading status (BeginLoading should return an IDisposable that clears the loading flag)
-        using (_statusInfoServices.BeginLoading())
+        // report loading status (BeginLoadingOrSaving should return an IDisposable that clears the loading flag)
+        using (_statusInfoServices.BeginLoadingOrSaving())
         {
 
             try
             {
                 // Call repository inside try so synchronous exceptions are caught here
-                Task<TEntity?> loadTask = _repository.GetByIdAsync(id);
+                Task<TEntity?> loadTask = Repository.GetByIdAsync(id);
                 TEntity? entity = await loadTask;
 
                 // Set the backing Entity and invoke load hook if found
@@ -170,7 +170,6 @@ public abstract class CRUDViewModelBase<TRepos, TEntity>
         }
     }
 
-    #region Load handler
     #endregion
     #region Commands
 
@@ -223,7 +222,19 @@ public abstract class CRUDViewModelBase<TRepos, TEntity>
     /// </summary>
     protected async virtual Task OnSaveAsync()
     {
-        await Task.CompletedTask;
+        if (!CanSave()) return;
+        IsSaving = true;
+        try
+        {
+            // Call the derived implementation that performs the actual form save logic
+            // Do not use ConfigureAwait(false) here so continuations (reload/collection updates)
+            // run on the captured synchronization context (UI thread).
+            await OnSaveFormAsync();
+        }
+        finally
+        {
+            IsSaving = false;
+        }
     }
 
     /// <summary>
@@ -276,6 +287,12 @@ public abstract class CRUDViewModelBase<TRepos, TEntity>
     protected abstract Task OnLoadFormAsync(TEntity entity);
 
     #endregion
+    #region Events and Handlersprotected
+    private void CRUDViewModelBase_SelectedEntityChanged(object? sender, TEntity? e)
+    {
+        _ = HandleSelectedItemChangeAsync(e);
+    }
+    #endregion
     #region Helpers
     /// <summary>
     /// Raises <see cref="ICommand.CanExecuteChanged"/> on internal commands to re-evaluate availability.
@@ -292,6 +309,24 @@ public abstract class CRUDViewModelBase<TRepos, TEntity>
         try { (DeleteCommand as RelayCommand)?.RaiseCanExecuteChanged(); } catch (System.Runtime.InteropServices.COMException) { } catch { }
         try { (CancelCommand as RelayCommand)?.RaiseCanExecuteChanged(); } catch (System.Runtime.InteropServices.COMException) { } catch { }
         try { (RefreshCommand as RelayCommand)?.RaiseCanExecuteChanged(); } catch (System.Runtime.InteropServices.COMException) { } catch { }
+    }
+
+    private async Task HandleSelectedItemChangeAsync(TEntity? item)
+    {
+        try
+        {
+            if (item == null)
+            {
+                await OnResetFormAsync().ConfigureAwait(true);
+                IsEditMode = false;
+            }
+            else
+            {
+                await OnLoadFormAsync(item).ConfigureAwait(true);
+                IsEditMode = true;
+            }
+        }
+        catch { }
     }
     #endregion
 }

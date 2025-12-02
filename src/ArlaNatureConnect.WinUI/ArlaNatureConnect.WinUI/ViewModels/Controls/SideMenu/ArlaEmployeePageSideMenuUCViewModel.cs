@@ -48,7 +48,7 @@ public sealed partial class ArlaEmployeePageSideMenuUCViewModel : SideMenuViewMo
         INavigationHandler navigationHandler)
         : base(statusInfoServices, appMessageService, personRepository, navigationHandler)
     {
-        using (_statusInfoServices!.BeginLoading())
+        using (_statusInfoServices!.BeginLoadingOrSaving())
         {
             // Fire-and-forget initialization; exceptions handled inside InitializeAsync
             _ = InitializeAsync();
@@ -63,7 +63,7 @@ public sealed partial class ArlaEmployeePageSideMenuUCViewModel : SideMenuViewMo
             NavItems.Add(new NavItem(_labelFarms, FarmsCommand));
             NavItems.Add(new NavItem(_labelUsers, UsersCommand));
 
-            // Ensure command raises CanExecuteChanged when IsLoading changes
+            // Ensure command raises CanExecuteChanged when IsLoadingOrSaving changes
             PropertyChanged += (s, e) =>
             {
                 if (e.PropertyName == nameof(IsLoading))
@@ -79,7 +79,7 @@ public sealed partial class ArlaEmployeePageSideMenuUCViewModel : SideMenuViewMo
     #region Command Handlers
     private void OnDashboardsExecuted()
     {
-        using (_statusInfoServices!.BeginLoading())
+        using (_statusInfoServices!.BeginLoadingOrSaving())
         {
             SetSelectedByLabel(_labelDashboards);
             NavigationCommand?.Execute(new Func<UserControl?>(() => new ArlaEmployeeDashboards()));

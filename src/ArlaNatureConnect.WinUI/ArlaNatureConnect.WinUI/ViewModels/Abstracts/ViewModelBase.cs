@@ -57,16 +57,18 @@ public abstract class ViewModelBase : INotifyPropertyChanged
 
         // Invoke each subscriber individually so exceptions from one do not stop others
         // and so we can selectively swallow COMExceptions thrown by UI handlers.
-        foreach (PropertyChangedEventHandler single in handler.GetInvocationList())
+        foreach (PropertyChangedEventHandler single in handler.GetInvocationList().Cast<PropertyChangedEventHandler>())
         {
             try
             {
                 single.Invoke(this, new PropertyChangedEventArgs(name));
             }
-            catch (System.Runtime.InteropServices.COMException)
+            catch (System.Runtime.InteropServices.COMException ex)
             {
-                // UI-layer COM exceptions are swallowed to avoid propagating UI-thread interop errors
-                // back into ViewModel logic. This matches expected behavior in unit tests.
+                // Swallow UI-layer COM exceptions to avoid propagating UI-thread interop errors
+                // back into ViewModel logic. Optionally log for diagnostics:
+                System.Diagnostics.Debug.WriteLine($"Swallowed COMException in PropertyChanged handler: {ex}");
+                // continue to next subscriber
             }
         }
     }

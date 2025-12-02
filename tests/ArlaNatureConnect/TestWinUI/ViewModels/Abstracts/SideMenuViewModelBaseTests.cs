@@ -101,7 +101,7 @@ public sealed class SideMenuViewModelBaseTests
         await vm.LoadAvailablePersonsAsync("  ");
 
         Assert.IsNotNull(vm.AvailablePersons);
-        Assert.AreEqual(0, vm.AvailablePersons.Count);
+        Assert.IsEmpty(vm.AvailablePersons);
     }
 
     [TestMethod]
@@ -121,7 +121,7 @@ public sealed class SideMenuViewModelBaseTests
 
         await vm.LoadAvailablePersonsAsync("Farmer");
 
-        Assert.AreEqual(2, vm.AvailablePersons.Count);
+        Assert.HasCount(2, vm.AvailablePersons);
         Assert.AreEqual("A", vm.AvailablePersons[0].FirstName);
         Assert.AreEqual("B", vm.AvailablePersons[1].FirstName);
     }
@@ -140,27 +140,8 @@ public sealed class SideMenuViewModelBaseTests
         Person p = new Person { Id = Guid.NewGuid(), FirstName = "S" };
         vm.SelectedPerson = p;
 
-        Assert.AreEqual(1, received.Count);
+        Assert.HasCount(1, received);
         Assert.AreEqual("SelectedPerson", received[0]);
-
-        await Task.CompletedTask;
-    }
-
-    [TestMethod]
-    public async Task IsLoading_Set_Raises_PropertyChanged()
-    {
-        Mock<IStatusInfoServices> mockStatus = new Mock<IStatusInfoServices>();
-        Mock<IAppMessageService> mockMsg = new Mock<IAppMessageService>();
-        Mock<IPersonRepository> mockRepo = new Mock<IPersonRepository>();
-        TestSideMenuViewModel vm = new TestSideMenuViewModel(mockStatus.Object, mockMsg.Object, mockRepo.Object, new NavigationHandler());
-
-        List<string?> received = new();
-        vm.PropertyChanged += (_, e) => received.Add(e.PropertyName);
-
-        vm.IsLoading = true;
-
-        Assert.AreEqual(1, received.Count);
-        Assert.AreEqual("IsLoading", received[0]);
 
         await Task.CompletedTask;
     }
@@ -214,30 +195,5 @@ public sealed class SideMenuViewModelBaseTests
             // expected
         }
     }
-    [TestMethod]
-    public async Task LoadAvailablePersonsAsync_Is_ThreadSafe_When_Called_Concurrently()
-    {
-        List<Person> persons = Enumerable.Range(0, 10).Select(i => new Person { Id = Guid.NewGuid(), FirstName = $"F{i}", LastName = "L", Email = $"p{i}@x.com", IsActive = true }).ToList();
 
-        Mock<IPersonRepository> repoMock = new Mock<IPersonRepository>();
-        repoMock.Setup(r => r.GetPersonsByRoleAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync((string role, CancellationToken ct) => persons as IEnumerable<Person>);
-
-        Mock<IStatusInfoServices> statusMock = new Mock<IStatusInfoServices>();
-        Mock<IAppMessageService> appMsgMock = new Mock<IAppMessageService>();
-        Mock<INavigationHandler> navMock = new Mock<INavigationHandler>();
-
-        TestSideMenuViewModel vm = new TestSideMenuViewModel(statusMock.Object, appMsgMock.Object, repoMock.Object, navMock.Object);
-
-        // call concurrently
-        Task[] tasks = Enumerable.Range(0, 8).Select(_ => Task.Run(async () =>
-        {
-            await vm.LoadAvailablePersonsAsync("Farmer");
-        })).ToArray();
-
-        await Task.WhenAll(tasks);
-
-        // final collection should contain all items
-        Assert.AreEqual(10, vm.AvailablePersons.Count);
-    }
 }

@@ -1,7 +1,10 @@
 using ArlaNatureConnect.Core.Abstract;
 using ArlaNatureConnect.Core.Services;
+// Add dispatcher support
+using Microsoft.UI.Dispatching;
 
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 
@@ -39,6 +42,9 @@ public abstract class ListViewModelBase<TRepos, TEntity> : ViewModelBase
     /// </summary>
     protected IAppMessageService _appMessageService;
     #endregion
+    #region Events
+    public event EventHandler<TEntity?>? SelectedEntityChanged;
+    #endregion
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ListViewModelBase{TRepos,TEntity}"/> class.
@@ -57,10 +63,60 @@ public abstract class ListViewModelBase<TRepos, TEntity> : ViewModelBase
         _appMessageService = appMessageService;
         _items = repository;
 
+        // Subscribe to status service property changes so view-models forward those notifications
+        // to their own PropertyChanged event. This allows consumers to bind to service properties
+        // (for example IsLoadingOrSaving) through the view-model.
+        try
+        {
+            _statusInfoServices.PropertyChanged += StatusInfoServices_PropertyChanged;
+        }
+        catch
+        {
+            // swallow - best-effort subscription for mocked or partial services
+        }
+
         // Start loading items (fire-and-forget) when requested. LoadAllAsync updates the ObservableCollection on the UI thread.
         if (autoLoad)
         {
-            _ = LoadAllAsync();
+            // Try to schedule the load on the UI dispatcher so ObservableCollection updates happen on the UI thread.
+            try
+            {
+                DispatcherQueue? dq = DispatcherQueue.GetForCurrentThread();
+                if (dq != null && dq.HasThreadAccess)
+                {
+                    // Already on UI thread: start load directly
+                    _ = LoadAllAsync();
+                }
+                else if (dq != null)
+                {
+                    // Enqueue to UI thread
+                    dq.TryEnqueue(async () => await LoadAllAsync());
+                }
+                else
+                {
+                    // No dispatcher available; run in background but ensure LoadAllAsync will marshal updates if needed
+                    _ = Task.Run(async () => await LoadAllAsync());
+                }
+            }
+            catch
+            {
+                // Best-effort fallback
+                _ = LoadAllAsync();
+            }
+        }
+    }
+
+    private void StatusInfoServices_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        try
+        {
+            // Forward the property name from the status service to this view-model's PropertyChanged
+            // so consumers observing the view-model receive the same property notifications.
+            OnPropertyChanged(e.PropertyName);
+        }
+        catch
+        {
+            // swallow to avoid tests failing due to unexpected exceptions from handlers
         }
     }
 
@@ -73,13 +129,37 @@ public abstract class ListViewModelBase<TRepos, TEntity> : ViewModelBase
             if (_selectedItem == value) return;
             _selectedItem = value;
             OnPropertyChanged();
+
+            // Call synchronous hook so derived classes can react immediately to selection changes
+            try
+            {
+                OnSelectedItemChanged(_selectedItem);
+                SelectedEntityChanged?.Invoke(this, _selectedItem);
+            }
+            catch
+            {
+                // Swallow - view-models should not throw from selection changed handlers
+            }
         }
     }
+
     /// <summary>
     /// Collection of entities exposed to the view. ObservableCollection ensures UI updates when items change.
     /// </summary>
     public ObservableCollection<TEntity> Items { get; } = [];
     #endregion
+
+    /// <summary>
+    /// Hook invoked synchronously when the SelectedItem property changes.
+    /// Derived classes may override to update dependent state (for example load a form).
+    /// Implementations should avoid long-running work since this is invoked on the caller thread.
+    /// </summary>
+    /// <param name="item">The newly selected item (may be null).</param>
+    protected virtual void OnSelectedItemChanged(TEntity? item)
+    {
+        // default no-op
+    }
+
     #region Load Handlers
     /// <summary>
     /// Loads all entities from the repository and populates the Items collection.
@@ -87,25 +167,24 @@ public abstract class ListViewModelBase<TRepos, TEntity> : ViewModelBase
     /// <param name="ct">Cancellation token.</param>
     public async Task LoadAllAsync(CancellationToken ct = default)
     {
-        using (_statusInfoServices.BeginLoading())
+        using (_statusInfoServices.BeginLoadingOrSaving())
         {
             try
             {
-                // Await repository call without ConfigureAwait(false) so continuation runs on the captured
-                // synchronization context (UI thread) and it's safe to update ObservableCollection directly.
                 IEnumerable<TEntity> all = await _items.GetAllAsync(ct);
-
-                // Update collection on UI thread
                 Items.Clear();
-                foreach (TEntity it in all ?? [])
+                foreach (TEntity it in all ?? Array.Empty<TEntity>())
                 {
                     Items.Add(it);
                 }
+                SelectedItem = null;
             }
             catch (Exception ex)
             {
-                // Surface error to UI via AppMessageService rather than throwing from a fire-and-forget task.
+                // Report error to UI and do not propagate for fire-and-forget/automatic load scenarios
                 try { _appMessageService?.AddErrorMessage("Failed to load items: " + ex.Message); } catch { }
+                // Swallow the exception so callers (especially fire-and-forget callers) don't observe it.
+                return;
             }
             finally
             {

@@ -9,8 +9,8 @@ namespace ArlaNatureConnect.Core.Services;
 /// This interface abstracts global status such as whether the application is currently performing
 /// a long-running operation and whether a database connection is available. Consumers (views,
 /// view-models, and services) use this interface to observe changes via <see cref="StatusInfoChanged"/>
-/// and to enter a loading scope via <see cref="BeginLoading"/>. The scoped loader returned by
-/// <see cref="BeginLoading"/> ensures <see cref="IsLoading"/> is set while an operation runs and
+/// and to enter a loading scope via <see cref="BeginLoadingOrSaving"/>. The scoped loader returned by
+/// <see cref="BeginLoadingOrSaving"/> ensures <see cref="IsLoadingOrSaving"/> is set while an operation runs and
 /// automatically resets when the scope is disposed. Abstracting this behavior enables easier
 /// testing and decouples UI concerns from concrete implementations.
 /// </remarks>
@@ -22,7 +22,7 @@ public interface IStatusInfoServices : IDisposable, INotifyPropertyChanged
     /// <remarks>
     /// Implementations should raise <see cref="StatusInfoChanged"/> when this value changes.
     /// </remarks>
-    bool IsLoading { get; }
+    bool IsLoadingOrSaving { get; }
 
     /// <summary>
     /// Gets or sets a value indicating whether a database connection is currently available.
@@ -46,14 +46,14 @@ public interface IStatusInfoServices : IDisposable, INotifyPropertyChanged
     /// Begins a loading scope and returns an <see cref="IDisposable"/> that ends the scope when disposed.
     /// </summary>
     /// <returns>
-    /// An <see cref="IDisposable"/> which, when disposed, will end the loading scope (typically by setting <see cref="IsLoading"/> to false).
+    /// An <see cref="IDisposable"/> which, when disposed, will end the loading scope (typically by setting <see cref="IsLoadingOrSaving"/> to false).
     /// </returns>
     /// <remarks>
-    /// Use this method to ensure the <see cref="IsLoading"/> flag is set for the duration of an operation.
+    /// Use this method to ensure the <see cref="IsLoadingOrSaving"/> flag is set for the duration of an operation.
     /// Typical usage:
     /// <code>
-    /// using (status.BeginLoading()) { await DoWorkAsync(); }
+    /// using (status.BeginLoadingOrSaving()) { await DoWorkAsync(); }
     /// </code>
     /// </remarks>
-    IDisposable BeginLoading();
+    IDisposable BeginLoadingOrSaving();
 }

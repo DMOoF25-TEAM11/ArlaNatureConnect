@@ -6,13 +6,13 @@ namespace ArlaNatureConnect.Core.Services;
 /// <summary>
 /// Centralizes app-wide status reporting so multiple components can signal loading and
 /// database-connection state in a consistent way. This prevents UI flicker and race conditions
-/// by keeping <c>IsLoading</c> true until every independent caller finishes (reference-counted
+/// by keeping <c>IsLoadingOrSaving</c> true until every independent caller finishes (reference-counted
 /// tokens), so the UI and other consumers observe reliable state.
 ///
 /// How to use:
-/// - Call <see cref="BeginLoading"/> when a component starts an operation that should
+/// - Call <see cref="BeginLoadingOrSaving"/> when a component starts an operation that should
 ///   mark the app as loading. Dispose the returned token when the operation completes.
-/// - Read <see cref="IsLoading"/> to know whether any active loading callers remain.
+/// - Read <see cref="IsLoadingOrSaving"/> to know whether any active loading callers remain.
 /// - Set or read <see cref="HasDbConnection"/> to indicate whether a database connection
 ///   is available.
 ///
@@ -33,7 +33,7 @@ public partial class StatusInfoService : IStatusInfoServices
     private int _hasDbConnection;
     // disposed guard (0 = false, 1 = true)
     private int _disposed;
-    // sync object for lock-based atomicity
+    // Use System.Threading.Lock for synchronization
     private readonly object _syncLock = new();
     #endregion
 
@@ -46,43 +46,41 @@ public partial class StatusInfoService : IStatusInfoServices
     {
     }
 
-
     #region Properties
 
     /// <summary>
-    /// True while one or more callers have an active loading token from <see cref="BeginLoading"/>.
+    /// True while one or more callers have an active loading token from <see cref="BeginLoadingOrSaving"/>.
     /// Setting this property directly will replace the internal reference-count with 0/1.
     ///
     /// How to use:
-    /// - Prefer <see cref="BeginLoading"/> to participate in reference-counted loading.
+    /// - Prefer <see cref="BeginLoadingOrSaving"/> to participate in reference-counted loading.
     /// - Read this property to drive UI indicators (e.g. spinners).
     ///
     /// Why we have it:
     /// - Ensures UI shows loading only while there are active operations, preventing flicker
     ///   caused by short-lived operations starting and stopping rapidly.
     /// </summary>
-    public bool IsLoading
+    public bool IsLoadingOrSaving
     {
         get
         {
-            // Lock to ensure a consistent, thread-safe read of the reference-count.
             lock (_syncLock)
             {
                 return _loadingCount > 0;
             }
         }
-        set
-        {
-            bool notify = false;
-            lock (_syncLock)
-            {
-                bool currently = _loadingCount > 0;
-                if (currently == value) return;
-                _loadingCount = value ? 1 : 0;
-                notify = true;
-            }
-            if (notify) NotifyStatusChanged(nameof(IsLoading));
-        }
+        //set
+        //{
+        //    bool notify = false;
+        //    lock (_syncLock)
+        //    {
+        //        bool currently = _loadingCount > 0;
+        //        if (currently == value) return;
+        //        _loadingCount = value ? 1 : 0;
+        //        notify = true;
+        //    }
+        //    if (notify) NotifyStatusChanged(nameof(IsLoadingOrSaving));
+        //}
     }
 
     /// <summary>
@@ -96,7 +94,6 @@ public partial class StatusInfoService : IStatusInfoServices
     {
         get
         {
-            // Lock to ensure a consistent read of the connectivity flag.
             lock (_syncLock)
             {
                 return _hasDbConnection != 0;
@@ -127,11 +124,9 @@ public partial class StatusInfoService : IStatusInfoServices
 
     private void NotifyStatusChanged([CallerMemberName] string? propertyName = null)
     {
-        // Invoke handlers directly. UI subscribers must marshal to UI thread.
-        PropertyChangedEventHandler? propHandler = PropertyChanged;
+        OnPropertyChanged(propertyName);
         EventHandler? statusHandler = StatusInfoChanged;
 
-        try { propHandler?.Invoke(this, new PropertyChangedEventArgs(propertyName)); } catch { }
         try { statusHandler?.Invoke(this, EventArgs.Empty); } catch { }
     }
 
@@ -139,18 +134,18 @@ public partial class StatusInfoService : IStatusInfoServices
     /// <summary>
     /// Acquire a loading token. When the returned <see cref="IDisposable"/> is disposed the
     /// internal loading count is decremented. Use this when multiple independent callers need
-    /// to indicate "loading" and you want <see cref="IsLoading"/> to be true until every caller
+    /// to indicate "loading" and you want <see cref="IsLoadingOrSaving"/> to be true until every caller
     /// has finished (disposed their token).
     ///
     /// Typical usage:
     /// <code>
-    /// using (statusService.BeginLoading())
+    /// using (statusService.BeginLoadingOrSaving())
     /// {
     ///     await SomeWorkAsync();
     /// }
     /// </code>
     /// </summary>
-    public IDisposable BeginLoading()
+    public IDisposable BeginLoadingOrSaving()
     {
         int newVal;
         lock (_syncLock)
@@ -158,7 +153,7 @@ public partial class StatusInfoService : IStatusInfoServices
             _loadingCount++;
             newVal = _loadingCount;
         }
-        if (newVal == 1) NotifyStatusChanged(nameof(IsLoading));
+        if (newVal == 1) NotifyStatusChanged(nameof(IsLoadingOrSaving));
 
         // Return a disposable token that decrements the counter when disposed.
         return new ActionOnDispose(() =>
@@ -172,10 +167,9 @@ public partial class StatusInfoService : IStatusInfoServices
                     if (_loadingCount == 0) raise = true;
                 }
             }
-            if (raise) NotifyStatusChanged(nameof(IsLoading));
+            if (raise) NotifyStatusChanged(nameof(IsLoadingOrSaving));
         });
     }
-
 
     /// <summary>
     /// Disposes the StatusInfoService, releasing any resources. This is idempotent.
@@ -187,6 +181,7 @@ public partial class StatusInfoService : IStatusInfoServices
             if (_disposed == 1) return;
             _disposed = 1;
         }
+        GC.SuppressFinalize(this);
     }
 
     /// <summary>
@@ -197,15 +192,11 @@ public partial class StatusInfoService : IStatusInfoServices
     /// such as releasing resources or performing cleanup logic. The action is guaranteed to be invoked
     /// at most once, even if <see cref="Dispose"/> is called multiple times. This class is thread-safe.
     /// </remarks>
-    private sealed partial class ActionOnDispose : IDisposable
+    private sealed partial class ActionOnDispose(Action onDispose) : IDisposable
     {
-        private readonly Action _onDispose;
+        private readonly Action _onDispose = onDispose
+            ?? throw new ArgumentNullException(nameof(onDispose));
         private int _disposed;
-
-        public ActionOnDispose(Action onDispose)
-        {
-            _onDispose = onDispose ?? throw new ArgumentNullException(nameof(onDispose));
-        }
 
         // Inline comment: Ensure the action only runs once even if Dispose is called repeatedly.
         public void Dispose()

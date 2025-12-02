@@ -1,11 +1,14 @@
 using ArlaNatureConnect.Core.Services;
 using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
+
+using Microsoft.UI.Dispatching;
+
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace ArlaNatureConnect.WinUI.ViewModels.Controls;
 
-public class StatusBarUCViewModel : ViewModelBase
+public partial class StatusBarUCViewModel : ViewModelBase
 {
     #region Fields
     private readonly IStatusInfoServices? _statusInfoServices;
@@ -14,6 +17,9 @@ public class StatusBarUCViewModel : ViewModelBase
 
     private readonly object _statusInfoLock = new();
     private bool _isInitializedForUi;
+
+    // Dispatcher captured when InitializeForUi is called from the UI thread
+    private DispatcherQueue? _uiDispatcher;
     #endregion
 
     public StatusBarUCViewModel(IStatusInfoServices statusInfoServices)
@@ -22,7 +28,7 @@ public class StatusBarUCViewModel : ViewModelBase
 
         // initialize observable properties from the service (read-only, safe to read)
         // Use the safe wrapper which catches COMException instead of accessing the service property directly
-        _hasDbConnection = _statusInfo_services_HasDb();
+        _hasDbConnection = StatusInfo_services_HasDb();
     }
 
     #region Observables Properties
@@ -45,7 +51,7 @@ public class StatusBarUCViewModel : ViewModelBase
     {
         // Prefer reading directly from the service when available so tests using Moq setups that return a closure value
         // will reflect changes immediately. Fall back to cached field if service is null.
-        get => _statusInfoServices != null ? _statusInfo_services_HasDb() : _hasDbConnection;
+        get => _statusInfoServices != null ? StatusInfo_services_HasDb() : _hasDbConnection;
         private set
         {
             if (_hasDbConnection == value) return;
@@ -66,7 +72,6 @@ public class StatusBarUCViewModel : ViewModelBase
     public string DbConnectionSymbol => HasDbConnection ? "✅" : "❌";
     #endregion
 
-
     #region Helpers
     /// <summary>
     /// Initialize the viewmodel for UI usage. Tests call this to subscribe to the status service event.
@@ -74,6 +79,16 @@ public class StatusBarUCViewModel : ViewModelBase
     public void InitializeForUi(object? _ = null)
     {
         if (_isInitializedForUi) return;
+
+        // Capture the UI dispatcher for marshaling updates to the UI thread
+        try
+        {
+            _uiDispatcher = DispatcherQueue.GetForCurrentThread();
+        }
+        catch
+        {
+            _uiDispatcher = null;
+        }
 
         _statusInfoServices!.StatusInfoChanged += StatusInfoServices_StatusInfoChanged;
 
@@ -88,11 +103,11 @@ public class StatusBarUCViewModel : ViewModelBase
         lock (_statusInfoLock)
         {
             if (_statusInfoServices == null) throw new InvalidOperationException("_statusInfo_services is not initialized.");
-            bool isLoading = _statusInfo_services_IsLoading();
-            bool hasDb = _statusInfo_services_HasDb();
+            bool isLoading = StatusInfo_services_IsLoading();
+            bool hasDb = StatusInfo_services_HasDb();
 
             // Debug logging to help investigate unit test failures
-            Debug.WriteLine($"[StatusBarUCViewModel] UpdateFromService: service.IsLoading={isLoading}, service.HasDbConnection={hasDb}, field_hasDb={_hasDbConnection}");
+            Debug.WriteLine($"[StatusBarUCViewModel] UpdateFromService: service.IsLoadingOrSaving={isLoading}, service.HasDbConnection={hasDb}, field_hasDb={_hasDbConnection}");
 
             // Always assign internal fields and always raise notifications so consumers receive updates
             _isBusy = isLoading;
@@ -112,7 +127,18 @@ public class StatusBarUCViewModel : ViewModelBase
     {
         try
         {
-            UpdateFromService();
+            // If we have a UI dispatcher and are not on the UI thread, enqueue UpdateFromService there
+            if (_uiDispatcher != null && !_uiDispatcher.HasThreadAccess)
+            {
+                _uiDispatcher.TryEnqueue(() =>
+                {
+                    try { UpdateFromService(); } catch (COMException) { }
+                });
+            }
+            else
+            {
+                UpdateFromService();
+            }
         }
         catch (COMException)
         {
@@ -121,11 +147,11 @@ public class StatusBarUCViewModel : ViewModelBase
     }
 
     // Helper wrappers to call service properties and allow catching exceptions in a controlled place
-    private bool _statusInfo_services_IsLoading()
+    private bool StatusInfo_services_IsLoading()
     {
-        try { return _statusInfoServices!.IsLoading; } catch (COMException) { return false; }
+        try { return _statusInfoServices!.IsLoadingOrSaving; } catch (COMException) { return false; }
     }
-    private bool _statusInfo_services_HasDb()
+    private bool StatusInfo_services_HasDb()
     {
         try { return _statusInfoServices!.HasDbConnection; } catch (COMException) { return false; }
     }

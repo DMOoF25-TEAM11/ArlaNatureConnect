@@ -24,10 +24,10 @@ public class PersonRepositoryTest
         DbContextOptions<AppDbContext> options = CreateOptions();
 
         // seed data
-        var roleId = Guid.NewGuid();
-        var addrId = Guid.NewGuid();
+        Guid roleId = Guid.NewGuid();
+        Guid addrId = Guid.NewGuid();
 
-        using (var seed = new AppDbContext(options))
+        using (AppDbContext seed = new AppDbContext(options))
         {
             seed.Roles.Add(new Role { Id = roleId, Name = "Farmer" });
             seed.Addresses.Add(new Address { Id = addrId, Street = "S", City = "C", PostalCode = "P", Country = "DK" });
@@ -36,15 +36,15 @@ public class PersonRepositoryTest
         }
 
         // use IDbContextFactory but backed by in-memory options
-        var factoryMock = new Mock<IDbContextFactory<AppDbContext>>();
+        Mock<IDbContextFactory<AppDbContext>> factoryMock = new Mock<IDbContextFactory<AppDbContext>>();
         factoryMock.Setup(f => f.CreateDbContext()).Returns(() => new AppDbContext(options));
 
-        var repo = new PersonRepository(factoryMock.Object);
+        PersonRepository repo = new PersonRepository(factoryMock.Object);
 
-        var result = (await repo.GetPersonsByRoleAsync("Farmer")).ToList();
+        List<Person> result = (await repo.GetPersonsByRoleAsync("Farmer")).ToList();
 
         Assert.IsNotNull(result);
-        Assert.AreEqual(1, result.Count);
+        Assert.HasCount(1, result);
         Assert.AreEqual("p1@x.com", result[0].Email);
     }
 
@@ -53,31 +53,31 @@ public class PersonRepositoryTest
     {
         DbContextOptions<AppDbContext> options = CreateOptions();
 
-        using (var seed = new AppDbContext(options))
+        using (AppDbContext seed = new AppDbContext(options))
         {
             seed.Roles.Add(new Role { Id = Guid.NewGuid(), Name = "Admin" });
             await seed.SaveChangesAsync();
         }
 
-        var factoryMock = new Mock<IDbContextFactory<AppDbContext>>();
+        Mock<IDbContextFactory<AppDbContext>> factoryMock = new Mock<IDbContextFactory<AppDbContext>>();
         factoryMock.Setup(f => f.CreateDbContext()).Returns(() => new AppDbContext(options));
 
-        var repo = new PersonRepository(factoryMock.Object);
+        PersonRepository repo = new PersonRepository(factoryMock.Object);
 
-        var result = (await repo.GetPersonsByRoleAsync("Farmer")).ToList();
+        List<Person> result = (await repo.GetPersonsByRoleAsync("Farmer")).ToList();
 
         Assert.IsNotNull(result);
-        Assert.AreEqual(0, result.Count);
+        Assert.IsEmpty(result);
     }
 
     [TestMethod]
     public async Task GetPersonsByRoleAsync_Is_ThreadSafe_When_Called_Concurrently()
     {
         DbContextOptions<AppDbContext> options = CreateOptions();
-        var roleId = Guid.NewGuid();
-        var addrId = Guid.NewGuid();
+        Guid roleId = Guid.NewGuid();
+        Guid addrId = Guid.NewGuid();
 
-        using (var seed = new AppDbContext(options))
+        using (AppDbContext seed = new AppDbContext(options))
         {
             seed.Roles.Add(new Role { Id = roleId, Name = "Farmer" });
             seed.Addresses.Add(new Address { Id = addrId, Street = "S", City = "C", PostalCode = "P", Country = "DK" });
@@ -86,10 +86,10 @@ public class PersonRepositoryTest
             await seed.SaveChangesAsync();
         }
 
-        var factoryMock = new Mock<IDbContextFactory<AppDbContext>>();
+        Mock<IDbContextFactory<AppDbContext>> factoryMock = new Mock<IDbContextFactory<AppDbContext>>();
         factoryMock.Setup(f => f.CreateDbContext()).Returns(() => new AppDbContext(options));
 
-        var repo = new PersonRepository(factoryMock.Object);
+        PersonRepository repo = new PersonRepository(factoryMock.Object);
 
         // call concurrently
         IEnumerable<Task<List<Person>>> tasks = Enumerable.Range(0, 8).Select(_ => Task.Run(async () => (await repo.GetPersonsByRoleAsync("Farmer")).ToList()));
@@ -98,7 +98,7 @@ public class PersonRepositoryTest
         // all should return 10 items
         foreach (List<Person>? r in results)
         {
-            Assert.AreEqual(10, r.Count);
+            Assert.HasCount(10, r);
         }
     }
 
@@ -106,10 +106,10 @@ public class PersonRepositoryTest
     public async Task GetPersonsByRoleAsync_Returns_Empty_On_Exception()
     {
         // Create factory that throws when creating context to simulate COM/WinRT error or other errors
-        var factoryMock = new Mock<IDbContextFactory<AppDbContext>>();
+        Mock<IDbContextFactory<AppDbContext>> factoryMock = new Mock<IDbContextFactory<AppDbContext>>();
         factoryMock.Setup(f => f.CreateDbContext()).Throws(new System.Runtime.InteropServices.COMException("COM error"));
 
-        var repo = new PersonRepository(factoryMock.Object);
+        PersonRepository repo = new PersonRepository(factoryMock.Object);
 
         IEnumerable<Person> result = await repo.GetPersonsByRoleAsync("Farmer");
 
