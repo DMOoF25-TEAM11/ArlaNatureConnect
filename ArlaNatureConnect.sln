@@ -60,6 +60,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Pages", "Pages", "{35461FFC
 		docs\wiki\Winui\Views\Pages\Abstract\NavPage.md = docs\wiki\Winui\Views\Pages\Abstract\NavPage.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sql", "sql", "{E730371B-D1F5-45B6-87BF-897ED515BDC3}"
+	ProjectSection(SolutionItems) = preProject
+		docs\sql\DDL.sql = docs\sql\DDL.sql
+		docs\sql\DML.sql = docs\sql\DML.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM64 = Debug|ARM64
@@ -190,6 +196,7 @@ Global
 		{F3DB8AE3-929A-480B-B00E-529C37627F47} = {BB7D5AD7-DFCB-4B00-B0A6-55B33E03155F}
 		{A9D8A719-E4E0-4921-BF47-134E9490701C} = {BB7D5AD7-DFCB-4B00-B0A6-55B33E03155F}
 		{35461FFC-251D-442C-A019-591C50C46FF7} = {A9D8A719-E4E0-4921-BF47-134E9490701C}
+		{E730371B-D1F5-45B6-87BF-897ED515BDC3} = {11064DD0-6EF3-4589-BFD4-DC537E9DABED}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F95CF33A-83CB-4D7C-9A56-85E9E545E990}

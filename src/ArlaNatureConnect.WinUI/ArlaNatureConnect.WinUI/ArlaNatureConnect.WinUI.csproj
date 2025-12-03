@@ -64,6 +64,8 @@
 		</Page>
 	</ItemGroup>
 
+	<PropertyGroup Label="Globals" />
+
 	<!-- Publish Properties -->
 	<PropertyGroup>
 		<PublishReadyToRun Condition="'$(Configuration)' == 'Debug'">False</PublishReadyToRun>
