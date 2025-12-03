@@ -4,6 +4,7 @@ using ArlaNatureConnect.Domain.Entities;
 using ArlaNatureConnect.WinUI.Commands;
 using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 
+using System;
 using System.Collections.ObjectModel;
 using System.Reflection;
 
@@ -203,6 +204,40 @@ public partial class CRUDPersonUCViewModel
             OnPropertyChanged();
         }
     } = string.Empty;
+    /// <summary>
+    /// a search text to filter the persons list by first name, last name, email or full name.
+    /// </summary>
+    private string _searchText = string.Empty;
+    public string SearchText
+    {
+        get => _searchText;
+        set
+        {
+            if (_searchText == value) return;
+            _searchText = value ?? string.Empty;
+            OnPropertyChanged();
+            ApplySearchFilter();
+        }
+    }
+
+    /// <summary>
+    /// a filtered collection of persons based on the search text.
+    /// </summary>
+    private ObservableCollection<Person> _filteredItems = new();
+    public ObservableCollection<Person> FilteredItems
+    {
+        get => _filteredItems;
+        private set
+        {
+            if (_filteredItems == value) return;
+            _filteredItems = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ObservableCollection<Farm> SelectedPersonFarms { get; } = new();
+
+    public bool IsFarmer => SelectedItem?.Role?.Name?.Equals("Farmer", StringComparison.OrdinalIgnoreCase) == true;
 
     #endregion
     #region Commands
@@ -236,11 +271,66 @@ public partial class CRUDPersonUCViewModel
             _ = LoadRolesAsync();
         }
         SelectedEntityChanged += CRUDPersonUCViewModel_SelectedEntityChanged;
+        Items.CollectionChanged += (s, e) => // Update filtered items and counter when the main collection changes
+        {
+            ApplySearchFilter();
+            OnPropertyChanged(nameof(ItemCounter));
+        };
     }
 
     private void CRUDPersonUCViewModel_SelectedEntityChanged(object? sender, Person? e)
     {
         PopulateFormFromPerson(e!);
+        UpdateSelectedPersonFarms(); // Refresh farms when selected person changes
+        OnPropertyChanged(nameof(IsFarmer)); // Notify that IsFarmer may have changed
+    }
+
+    // Updates the SelectedPersonFarms collection based on the currently selected person
+    private void UpdateSelectedPersonFarms()
+    {
+        SelectedPersonFarms.Clear();
+        if (SelectedItem?.Farms != null)
+        {
+            foreach (Farm farm in SelectedItem.Farms)
+            {
+                SelectedPersonFarms.Add(farm);
+            }
+        }
+    }
+
+    /// <summary>
+    /// applies the search filter to the Items collection and updates the FilteredItems collection.
+    /// </summary>
+    private void ApplySearchFilter()
+    {
+        FilteredItems.Clear();
+        if (string.IsNullOrWhiteSpace(SearchText))
+        {
+            foreach (Person person in Items)
+            {
+                FilteredItems.Add(person);
+            }
+        }
+        else
+        {
+            string search = SearchText.Trim().ToLowerInvariant();
+            foreach (Person person in Items)
+            {
+                string firstName = person.FirstName?.ToLowerInvariant() ?? string.Empty;
+                string lastName = person.LastName?.ToLowerInvariant() ?? string.Empty;
+                string email = person.Email?.ToLowerInvariant() ?? string.Empty;
+                string fullName = $"{firstName} {lastName}".Trim();
+                
+                if (firstName.Contains(search) ||
+                    lastName.Contains(search) ||
+                    email.Contains(search) ||
+                    fullName.Contains(search))
+                {
+                    FilteredItems.Add(person);
+                }
+            }
+        }
+        OnPropertyChanged(nameof(FilteredItems));
     }
 
     #region Load Handlers
@@ -412,6 +502,7 @@ public partial class CRUDPersonUCViewModel
             // Reload the list so the ListView is refreshed with the latest data and
             // ensure the reload runs to completion before leaving the save operation.
             await GetAllAsync();
+            ApplySearchFilter();
         }
     }
 
@@ -512,8 +603,9 @@ public partial class CRUDPersonUCViewModel
     /// the Items collection is refreshed from the repository (fixes cases where navigation returns to a view
     /// with stale/empty items).
     /// </summary>
-    public Task ReloadAsync(CancellationToken ct = default)
+    public async Task ReloadAsync(CancellationToken ct = default)
     {
-        return GetAllAsync(ct);
+        await GetAllAsync(ct); //await reload from repository
+        ApplySearchFilter(); // Refresh filtered items after reload
     }
 }
