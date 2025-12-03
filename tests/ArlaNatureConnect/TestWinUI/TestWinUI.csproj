@@ -9,7 +9,7 @@
         <SupportedOSPlatformVersion>10.0.22621.1</SupportedOSPlatformVersion>
         <IsTestProject>true</IsTestProject>
         <!-- Keep OutputType if you need WinExe behavior for UI tests, otherwise default is library -->
-        <!-- <OutputType>WinExe</OutputType> -->
+        <OutputType>WinExe</OutputType>
         
         <!-- Self-contained and RID removed to avoid NETSDK1150 when referencing executables -->
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>

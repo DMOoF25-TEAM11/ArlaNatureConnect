@@ -394,7 +394,8 @@ public partial class CRUDPersonUCViewModel
                         return;
                     }
 
-                    existing.RoleId = SelectedRole!.Id;
+                    // Use RoleId as the authoritative source when SelectedRole is not available
+                    existing.RoleId = SelectedRole?.Id ?? RoleId;
                     existing.AddressId = AddressId;
                     existing.FirstName = FirstName ?? string.Empty;
                     existing.LastName = LastName ?? string.Empty;

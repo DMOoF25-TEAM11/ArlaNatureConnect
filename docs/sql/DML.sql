@@ -9,8 +9,8 @@ Changes:
 */
 
 /***********************************************************************
--- Add data for UC002 - Administrate Farms and Persons
-***********************************************************************/
+ * Add data for UC002 - Administrate Farms and Persons
+ ***********************************************************************/
 
 SET NOCOUNT ON;
 
@@ -18,7 +18,9 @@ PRINT 'Using database [ArlaNatureConnect_Dev]...';
 USE [ArlaNatureConnect_Dev];
 GO
 
--- Clean target tables to ensure deterministic sample data (delete in FK-safe order)
+/***********************************************************************
+ * Clean existing data
+ ***********************************************************************/
 PRINT 'Cleaning target tables...';
 IF OBJECT_ID(N'[dbo].[UserFarms]', N'U') IS NOT NULL
     DELETE FROM [dbo].[UserFarms];
@@ -32,12 +34,13 @@ IF OBJECT_ID(N'[dbo].[Persons]', N'U') IS NOT NULL
 IF OBJECT_ID(N'[dbo].[Addresses]', N'U') IS NOT NULL
     DELETE FROM [dbo].[Addresses];
 
--- Only remove the sample roles we will re-create to avoid removing other role records
 IF OBJECT_ID(N'[dbo].[Roles]', N'U') IS NOT NULL
     DELETE FROM [dbo].[Roles] WHERE [Name] IN (N'Admin', N'Farmer', N'Consultant', N'Employee');
 
--- Continue with script
--- Ensure roles exist and capture ids
+/***********************************************************************
+ * Insert sample data
+ ***********************************************************************/
+
 DECLARE @Role_Admin UNIQUEIDENTIFIER = NEWID();
 DECLARE @Role_Farmer UNIQUEIDENTIFIER = NEWID();
 DECLARE @Role_Consultant UNIQUEIDENTIFIER = NEWID();
@@ -55,17 +58,7 @@ IF NOT EXISTS (SELECT 1 FROM [dbo].[Roles] WHERE [Name] = N'Consultant')
 IF NOT EXISTS (SELECT 1 FROM [dbo].[Roles] WHERE [Name] = N'Employee')
     INSERT INTO [dbo].[Roles] ([Id], [Name]) VALUES (@Role_Employee, N'Employee');
 
--- Create UserFarms mapping table if it doesn't exist (to represent many-to-many user<->farm)
-IF OBJECT_ID(N'[dbo].[UserFarms]', N'U') IS NULL
-BEGIN
-    CREATE TABLE [dbo].[UserFarms](
-        [PersonId] UNIQUEIDENTIFIER NOT NULL,
-        [FarmId] UNIQUEIDENTIFIER NOT NULL,
-        CONSTRAINT [PK_UserFarms] PRIMARY KEY ([PersonId],[FarmId]),
-        CONSTRAINT [FK_UserFarms_Persons] FOREIGN KEY ([PersonId]) REFERENCES [dbo].[Persons]([Id]) ON DELETE CASCADE,
-        CONSTRAINT [FK_UserFarms_Farms] FOREIGN KEY ([FarmId]) REFERENCES [dbo].[Farms]([Id]) ON DELETE CASCADE
-    );
-END
+PRINT 'Intsered roles.';
 
 -- Insert farm addresses & farms (all near Varde, Jutland, Denmark)
 DECLARE
@@ -132,6 +125,8 @@ VALUES
 (@F17, N'Vindmark Farm', @FA17, N'77889900'),
 (@F18, N'Markholm Farm', @FA18, N'88990011');
 
+PRINT 'Inserted Farms and Addresses.';
+
 -- Insert persons addresses (Danish addresses)
 DECLARE
     @A1 UNIQUEIDENTIFIER = NEWID(),  @A2 UNIQUEIDENTIFIER = NEWID(),
@@ -179,6 +174,8 @@ VALUES
 (@A26, N'Havnevænget 2',    N'Varde',       N'6800', N'Denmark'),
 (@A27, N'Søndermarken 5',   N'Esbjerg',     N'6700', N'Denmark');
 
+PRINT 'Inserted Addresses for Persons.';
+
 -- Insert 15 farmers (15 Persons with farms)
 DECLARE
     @U1 UNIQUEIDENTIFIER = NEWID(),  @U2 UNIQUEIDENTIFIER = NEWID(),
@@ -207,17 +204,6 @@ VALUES
 (@U13, N'Bo', N'Karlsen', N'bo.karlsen@example.dk', @Role_Farmer, @A13,1),
 (@U14, N'Niels', N'Eriksen', N'niels.eriksen@example.dk', @Role_Farmer, @A14,1),
 (@U15, N'Rasmus', N'Poulsen', N'rasmus.poulsen@example.dk', @Role_Farmer, @A15,1);
-
--- Assign extra farms so3 farmers have2 farms each.
--- We'll give U1 -> F16, U2 -> F17, U3 -> F18 (in addition to their primary farm mapping below)
-INSERT INTO [dbo].[UserFarms] ([PersonId],[FarmId]) VALUES (@U1,@F1);
-INSERT INTO [dbo].[UserFarms] ([PersonId],[FarmId]) VALUES (@U1,@F16);
-
-INSERT INTO [dbo].[UserFarms] ([PersonId],[FarmId]) VALUES (@U2,@F2);
-INSERT INTO [dbo].[UserFarms] ([PersonId],[FarmId]) VALUES (@U2,@F17);
-
-INSERT INTO [dbo].[UserFarms] ([PersonId],[FarmId]) VALUES (@U3,@F3);
-INSERT INTO [dbo].[UserFarms] ([PersonId],[FarmId]) VALUES (@U3,@F18);
 
 -- Insert5 consultants (no primary farm)
 DECLARE
@@ -283,8 +269,6 @@ USE [ArlaNatureConnect_Dev];
 GO
 SELECT TOP 20 * FROM [dbo].[Persons];
 SELECT TOP 20 * FROM [dbo].[Farms];
-SELECT TOP 50 * FROM [dbo].[UserFarms] JOIN [dbo].[Persons] u ON UserFarms.PersonId = u.Id JOIN [dbo].[Farms] f ON UserFarms.FarmId = f.Id;
-
 
 PRINT 'Sample data insertion completed.';
 
