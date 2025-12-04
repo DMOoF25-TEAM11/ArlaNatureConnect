@@ -149,3 +149,10 @@ BEGIN
     CREATE INDEX [IX_AuditLog_Target] ON [dbo].[AuditLog]([TargetUserId]);
 END
 GO
+
+PRINT 'Database [ArlaNatureConnect_Dev] schema creation completed.';
+
+/*
+ Insert initial version info   
+ */
+ INSERT INTO [dbo].[VersionInfo] ([Id], [Version]) VALUES (1, '1.0.0');
