@@ -67,7 +67,7 @@ public interface IRepository<TEntity>
     /// for invalid states. This method does not return the entity; callers who need the updated instance
     /// (for example to read generated keys) should rely on their implementation's behaviour or use other APIs.
     /// </remarks>
-    Task AddAsync(TEntity entity, CancellationToken cancellationToken = default);
+    Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Adds a collection of <typeparamref name="TEntity"/> instances to the underlying store.
@@ -79,7 +79,7 @@ public interface IRepository<TEntity>
     /// This method is intended for batch inserts. Implementations can optimize for bulk operations
     /// (for example by using bulk insert APIs) to reduce round trips and improve throughput.
     /// </remarks>
-    Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default);
+    Task<IEnumerable<TEntity>> AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default);
     #endregion
     #region Read operations
     /// <summary>

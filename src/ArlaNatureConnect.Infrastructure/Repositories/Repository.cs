@@ -41,21 +41,26 @@ public abstract class Repository<TEntity>(IDbContextFactory<AppDbContext> factor
 
     #region CRUD Operations
     /// <inheritdoc/>
-    public async Task AddAsync(TEntity entity, CancellationToken cancellationToken = default)
+    public async Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
         await using AppDbContext ctx = _factory.CreateDbContext();
         DbSet<TEntity> dbSet = ctx.Set<TEntity>();
         await dbSet.AddAsync(entity, cancellationToken);
         await ctx.SaveChangesAsync(cancellationToken);
+
+        // Reload the persisted entity from the database so any DB-generated values (like Id) are populated.
+        TEntity? persisted = await dbSet.FindAsync(new object[] { entity.Id }, cancellationToken);
+        return persisted ?? entity;
     }
 
     /// <inheritdoc/>
-    public async Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<TEntity>> AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
     {
         await using AppDbContext ctx = _factory.CreateDbContext();
         DbSet<TEntity> dbSet = ctx.Set<TEntity>();
         await dbSet.AddRangeAsync(entities, cancellationToken);
         await ctx.SaveChangesAsync(cancellationToken);
+        return entities;
     }
 
     /// <inheritdoc/>
@@ -63,7 +68,7 @@ public abstract class Repository<TEntity>(IDbContextFactory<AppDbContext> factor
     {
         await using AppDbContext ctx = _factory.CreateDbContext();
         DbSet<TEntity> dbSet = ctx.Set<TEntity>();
-        TEntity? entity = await dbSet.FindAsync([id], cancellationToken);
+        TEntity? entity = await dbSet.FindAsync(new object[] { id }, cancellationToken);
         if (entity != null)
         {
             dbSet.Remove(entity);
@@ -82,7 +87,7 @@ public abstract class Repository<TEntity>(IDbContextFactory<AppDbContext> factor
     public async Task<TEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         await using AppDbContext ctx = _factory.CreateDbContext();
-        return await ctx.Set<TEntity>().FindAsync([id], cancellationToken);
+        return await ctx.Set<TEntity>().FindAsync(new object[] { id }, cancellationToken);
     }
 
     /// <inheritdoc/>
