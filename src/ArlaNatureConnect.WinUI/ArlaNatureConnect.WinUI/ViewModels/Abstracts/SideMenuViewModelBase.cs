@@ -73,7 +73,6 @@ public abstract partial class SideMenuViewModelBase : ListViewModelBase<IPersonR
     }
     #endregion
 
-
     #region Fields
     protected INavigationViewModelBase? _navigationViewModel;
     private readonly IPersonRepository _repository;
@@ -151,7 +150,7 @@ public abstract partial class SideMenuViewModelBase : ListViewModelBase<IPersonR
         if (string.IsNullOrWhiteSpace(role))
         {
             // Ensure property change happens on UI thread when possible
-            TrySetAvailablePersons(Enumerable.Empty<Person>());
+            TrySetAvailablePersons([]);
             return;
         }
 
@@ -273,7 +272,7 @@ public abstract partial class SideMenuViewModelBase : ListViewModelBase<IPersonR
         try
         {
             // Inline comment: materialize enumerable to avoid deferred execution and potential collection-modification issues
-            List<Person> availablePersons = persons.ToList();
+            List<Person> availablePersons = [.. persons];
             AvailablePersons.Clear();
             foreach (Person person in availablePersons)
             {
