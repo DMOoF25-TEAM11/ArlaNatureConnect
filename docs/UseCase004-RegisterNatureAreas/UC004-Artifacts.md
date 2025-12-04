@@ -40,3 +40,35 @@ The system will store this information and allow for future management and updat
 1. System confirms the successful registration of the nature area.
 1. Employee receives confirmation and can view the registered nature area.
 
+## Domain Model
+
+- ID: UC-004-DM
+- Cross references:
+	- See the User Story above: [User Story](#user-story)
+	- See the Use Case Brief above: [UC-004-BC](#user-case-brief)
+
+### Domain Model Diagram
+```mermaid
+---
+  title: "UC004: Domain Class Diagram for Registering Nature Areas"
+---
+classDiagram
+  direction TB
+  class NatureArea {
+    name
+    description
+    coordinates
+  }
+
+  class Farm {
+  }
+
+  Farm "*" -- "0..*" NatureArea : has >
+
+```
+
+### Domain Model Description
+- **NatureArea**: Represents a nature area with attributes such as name, coordinates, size
+- , and type. It includes methods to register and update details of the nature area.
+- **Employee**: The primary actor who registers nature areas. See UC-002-DM
+- **Farm**: Represents a farm that can contain multiple nature areas. See UC-002-DM
