@@ -357,7 +357,47 @@
         <Setter Property="Padding" Value="12,8"/>
     </Style>
 
-    <!--  POSITIVE BUTTON STYLE -->
+    <!--  GENERIC COMMAND BUTTON STYLE - shared settings for command buttons (Add/Save/Delete etc.) -->
+    <Style x:Key="ArlaCommandButton" TargetType="Button" BasedOn="{StaticResource ArlaPrimaryButton}">
+        <Setter Property="BorderThickness" Value="1.5" />
+        <Setter Property="Padding" Value="16,8" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="MinWidth" Value="100" />
+        <Setter Property="MinHeight" Value="40" />
+        <Setter Property="CornerRadius" Value="6" />
+    </Style>
+
+    <!--  ADD BUTTON STYLE - uses command button base and sets brand colours -->
+    <Style x:Key="ArlaAddButton" TargetType="Button" BasedOn="{StaticResource ArlaCommandButton}">
+        <Setter Property="Background" Value="{StaticResource ArlaPrimaryBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource ArlaNeutralLightBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource ArlaPrimaryDarkBrush}" />
+    </Style>
+
+  <!--  SAVE BUTTON STYLE - uses command button base and sets brand colours -->
+    <Style x:Key="ArlaSaveButton" TargetType="Button" BasedOn="{StaticResource ArlaCommandButton}">
+      <Setter Property="Background" Value="{StaticResource ArlaAccentBrush}" />
+      <Setter Property="Foreground" Value="{StaticResource ArlaNeutralDarkBrush}" />
+      <Setter Property="BorderBrush" Value="{StaticResource ArlaPrimaryDarkBrush}" />
+    </Style>
+
+  <!--  DELETE BUTTON STYLE - uses command button base and sets brand colours -->
+  <Style x:Key="ArlaDeleteButton" TargetType="Button" BasedOn="{StaticResource ArlaCommandButton}">
+    <Setter Property="Background" Value="{StaticResource ArlaErrorBrush}" />
+    <Setter Property="Foreground" Value="{StaticResource ArlaNeutralLightBrush}" />
+    <Setter Property="BorderBrush" Value="{StaticResource ArlaErrorBrush}" />
+  </Style>
+
+  <!-- CANCEL BUTTON STYLE - uses command button base and sets brand colours -->
+  <Style x:Key="ArlaCancelButton" TargetType="Button" BasedOn="{StaticResource ArlaCommandButton}">
+    <Setter Property="Background" Value="{StaticResource ArlaLightGreyBrush}" />
+    <Setter Property="Foreground" Value="{StaticResource ArlaNeutralDarkBrush}" />
+    <Setter Property="BorderBrush" Value="{StaticResource ArlaLightGreyBrush}" />
+  </Style>
+  
+
+  <!--  POSITIVE BUTTON STYLE -->
     <Style x:Key="ArlaPositiveButton" TargetType="Button" BasedOn="{StaticResource ArlaPrimaryButton}">
         <Setter Property="MinWidth" Value="140"/>
         <Setter Property="MinHeight" Value="40"/>
