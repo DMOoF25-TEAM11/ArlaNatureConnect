@@ -71,6 +71,7 @@ public abstract class ViewModelBase : INotifyPropertyChanged
                 // continue to next subscriber
             }
         }
+
     }
     #endregion
 }

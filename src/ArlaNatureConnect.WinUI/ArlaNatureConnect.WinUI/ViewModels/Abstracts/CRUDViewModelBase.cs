@@ -138,7 +138,6 @@ public abstract class CRUDViewModelBase<TRepos, TEntity>
             try { _appMessageService?.AddErrorMessage("Failed to reload persons: " + ex.Message); } catch { }
         }
     }
-    #endregion
 
     //protected CRUDViewModelBase(IStatusInfoServices statusInfoServices, IAppMessageService appMessageService, TRepos repository)
     //    : this(statusInfoServices, appMessageService, repository, true)
@@ -147,9 +146,6 @@ public abstract class CRUDViewModelBase<TRepos, TEntity>
     //}
 
 
-
-
-    #region Load handler
     /// <summary>
     /// Loads an entity by id and prepares the view-model for edit mode if the entity exists.
     /// This method hides the base implementation to augment loading with form hooks and edit-mode state.
@@ -246,8 +242,14 @@ public abstract class CRUDViewModelBase<TRepos, TEntity>
     {
         if (!CanAdd()) return;
         IsSaving = true;
-
-        await Task.CompletedTask;
+        try
+        {
+            await OnAddFormAsync();
+        }
+        finally
+        {
+            IsSaving = false;
+        }
     }
 
     /// <summary>
@@ -354,7 +356,6 @@ public abstract class CRUDViewModelBase<TRepos, TEntity>
         try { (SaveCommand as RelayCommand)?.RaiseCanExecuteChanged(); } catch (System.Runtime.InteropServices.COMException) { } catch { }
         try { (DeleteCommand as RelayCommand)?.RaiseCanExecuteChanged(); } catch (System.Runtime.InteropServices.COMException) { } catch { }
         try { (CancelCommand as RelayCommand)?.RaiseCanExecuteChanged(); } catch (System.Runtime.InteropServices.COMException) { } catch { }
-        try { (RefreshCommand as RelayCommand)?.RaiseCanExecuteChanged(); } catch (System.Runtime.InteropServices.COMException) { } catch { }
     }
 
     private async Task HandleSelectedItemChangeAsync(TEntity? item)

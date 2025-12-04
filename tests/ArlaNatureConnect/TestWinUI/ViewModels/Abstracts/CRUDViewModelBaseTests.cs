@@ -75,7 +75,7 @@ public sealed partial class CRUDViewModelBaseTests
         // Expose protected CanXXX methods for testing
         public bool ExposedCanSubmitCore() => CanSubmitCore();
         public bool ExposedCanAdd() => CanAdd();
-        public bool ExposedCanSave() => CanSave();
+        public bool ExposedCanSave() => CanSaveAsync();
         public bool ExposedCanDelete() => CanDelete();
 
         // Allow tests to set protected state

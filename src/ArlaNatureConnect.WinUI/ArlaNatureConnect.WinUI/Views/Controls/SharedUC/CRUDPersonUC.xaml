@@ -22,160 +22,136 @@
       <ColumnDefinition Width="*"/>
     </Grid.ColumnDefinitions>
 
-      <!-- Left: Person Details Form -->
-      <Border Grid.Column="0"
+    <!-- Left: Person Details Form -->
+    <Border Grid.Column="0"
               Style="{StaticResource ArlaCard}"
               Background="{StaticResource ArlaSurfaceBrush}"
               Margin="8,0,12,8"
               VerticalAlignment="Top">
-        <StackPanel Orientation="Vertical" Spacing="16">
-          <TextBlock Text="Person Detaljer"
+      <StackPanel Orientation="Vertical" Spacing="16">
+        <TextBlock Text="Person Detaljer"
                      Style="{StaticResource ArlaSubHeaderText}"
                      Margin="0,0,0,8"/>
 
-          <StackPanel Orientation="Vertical" Spacing="12">
-            <StackPanel Orientation="Vertical" Spacing="4">
-              <TextBlock Text="{Binding LabelFirstName, Mode=OneTime}" 
+        <StackPanel Orientation="Vertical" Spacing="12">
+          <StackPanel Orientation="Vertical" Spacing="4">
+            <TextBlock Text="{Binding LabelFirstName, Mode=OneTime}" 
                          Style="{StaticResource ArlaBodyText}"
                          FontWeight="SemiBold"/>
-              <TextBox Text="{Binding FirstName, Mode=TwoWay}" 
+            <TextBox Text="{Binding FirstName, Mode=TwoWay}" 
                        Style="{StaticResource ArlaTextBox}"/>
-            </StackPanel>
+          </StackPanel>
 
-            <StackPanel Orientation="Vertical" Spacing="4">
-              <TextBlock Text="{Binding LabelLastName, Mode=OneTime}" 
+          <StackPanel Orientation="Vertical" Spacing="4">
+            <TextBlock Text="{Binding LabelLastName, Mode=OneTime}" 
                          Style="{StaticResource ArlaBodyText}"
                          FontWeight="SemiBold"/>
-              <TextBox Text="{Binding LastName, Mode=TwoWay}" 
+            <TextBox Text="{Binding LastName, Mode=TwoWay}" 
                        Style="{StaticResource ArlaTextBox}"/>
-            </StackPanel>
+          </StackPanel>
 
-            <StackPanel Orientation="Vertical" Spacing="4">
-              <TextBlock Text="{Binding LabelAddress, Mode=OneTime}" 
+          <StackPanel Orientation="Vertical" Spacing="4">
+            <TextBlock Text="{Binding LabelAddressPostalCode, Mode=OneTime}" 
                          Style="{StaticResource ArlaBodyText}"
                          FontWeight="SemiBold"/>
-              <Border Background="{StaticResource ArlaNeutralLighterBrush}"
-                      BorderBrush="{StaticResource ArlaPrimaryBrush}"
-                      BorderThickness="2"
-                      CornerRadius="8"
-                      Padding="12,8">
-                <TextBlock Text="{Binding AddressDisplay, Mode=OneWay}" 
-                           Style="{StaticResource ArlaBodyText}"/>
-              </Border>
-            </StackPanel>
-
-            <StackPanel Orientation="Vertical" Spacing="4">
-              <TextBlock Text="{Binding LabelEmail, Mode=OneTime}" 
-                         Style="{StaticResource ArlaBodyText}"
-                         FontWeight="SemiBold"/>
-              <TextBox Text="{Binding Email, Mode=TwoWay}" 
+            <TextBox Text="{Binding AddressPostalCode, Mode=TwoWay}" 
                        Style="{StaticResource ArlaTextBox}"/>
-            </StackPanel>
+          </StackPanel>
 
-            <StackPanel Orientation="Vertical" Spacing="4">
-              <TextBlock Text="{Binding LabelIsActive, Mode=OneTime}" 
+          <StackPanel Orientation="Vertical" Spacing="4">
+            <TextBlock Text="{Binding LabelAddressCity, Mode=OneTime}" 
                          Style="{StaticResource ArlaBodyText}"
                          FontWeight="SemiBold"/>
-              <ToggleSwitch IsOn="{Binding IsActive, Mode=TwoWay}" 
+            <TextBox Text="{Binding AddressCity, Mode=TwoWay}" 
+                       Style="{StaticResource ArlaTextBox}"/>
+          </StackPanel>
+
+          <StackPanel Orientation="Vertical" Spacing="4">
+            <TextBlock Text="{Binding LabelAddressStreet, Mode=OneTime}" 
+                         Style="{StaticResource ArlaBodyText}"
+                         FontWeight="SemiBold"/>
+            <TextBox Text="{Binding AddressStreet, Mode=TwoWay}" 
+                       Style="{StaticResource ArlaTextBox}"/>
+          </StackPanel>
+
+          <!-- Is disabled as we for now only have one country and default value is Danmark -->
+          <StackPanel Orientation="Vertical" Spacing="4">
+            <TextBlock Text="{Binding LabelAddressCountry, Mode=OneTime}" 
+                       Style="{StaticResource ArlaBodyText}"
+                       FontWeight="SemiBold"/>
+            <TextBox Text="{Binding AddressCountry, Mode=OneWay}" 
+                     Style="{StaticResource ArlaTextBox}"
+                     IsEnabled="False"/>
+          </StackPanel>
+
+
+          <StackPanel Orientation="Vertical" Spacing="4">
+            <TextBlock Text="{Binding LabelEmail, Mode=OneTime}" 
+                         Style="{StaticResource ArlaBodyText}"
+                         FontWeight="SemiBold"/>
+            <TextBox Text="{Binding Email, Mode=TwoWay}" 
+                       Style="{StaticResource ArlaTextBox}"/>
+          </StackPanel>
+
+          <StackPanel Orientation="Vertical" Spacing="4">
+            <TextBlock Text="{Binding LabelIsActive, Mode=OneTime}" 
+                         Style="{StaticResource ArlaBodyText}"
+                         FontWeight="SemiBold"/>
+            <ToggleSwitch IsOn="{Binding IsActive, Mode=TwoWay}" 
                             OnContent="Aktiv"
                             OffContent="Inaktiv"/>
-            </StackPanel>
+          </StackPanel>
 
-            <StackPanel Orientation="Vertical" Spacing="4">
-              <TextBlock Text="{Binding LabelRole, Mode=OneTime}" 
+          <StackPanel Orientation="Vertical" Spacing="4">
+            <TextBlock Text="{Binding LabelRole, Mode=OneTime}" 
                          Style="{StaticResource ArlaBodyText}"
                          FontWeight="SemiBold"/>
-              <ComboBox ItemsSource="{Binding Roles}"
+            <ComboBox ItemsSource="{Binding Roles}"
                         SelectedItem="{Binding SelectedRole, Mode=TwoWay}"
                         DisplayMemberPath="Name"
                         Style="{StaticResource ArlaComboBox}"/>
-            </StackPanel>
           </StackPanel>
+        </StackPanel>
 
-          <!-- Action Buttons - 2 rows -->
-          <StackPanel Orientation="Vertical" 
+        <!-- Action Buttons - 2 rows -->
+        <StackPanel Orientation="Vertical" 
                      HorizontalAlignment="Center" 
                      Spacing="6" 
                      Margin="0,16,0,0">
-            <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Center">
-              <Button Content="Tilføj" 
+          <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Center">
+            <Button Content="Tilføj" 
                       Command="{Binding AddCommand}"
-                      Background="{StaticResource ArlaPrimaryBrush}"
-                      Foreground="{StaticResource ArlaNeutralLightBrush}"
-                      BorderBrush="{StaticResource ArlaPrimaryDarkBrush}"
-                      BorderThickness="1.5"
-                      Padding="16,8"
-                      FontWeight="Bold"
-                      FontSize="14"
-                      MinWidth="100"
-                      MinHeight="40"
-                      CornerRadius="6"/>
-              <Button Content="Gem" 
+                      Visibility="{Binding IsAddMode, Converter={StaticResource BoolToVis}}"
+                      Style="{StaticResource ArlaAddButton}"/>
+            <Button Content="Gem" 
                       Command="{Binding SaveCommand}"
-                      Background="{StaticResource ArlaPrimaryLightBrush}"
-                      Foreground="{StaticResource ArlaPrimaryDarkBrush}"
-                      BorderBrush="{StaticResource ArlaPrimaryDarkBrush}"
-                      BorderThickness="1.5"
-                      Padding="16,8"
-                      FontWeight="Bold"
-                      FontSize="14"
-                      MinWidth="100"
-                      MinHeight="40"
-                      CornerRadius="6"/>
-              <Button Content="Slet" 
+                      Visibility="{Binding IsEditMode, Converter={StaticResource BoolToVis}}"
+                      Style="{StaticResource ArlaSaveButton}"/>
+            <Button Content="Slet" 
                       Command="{Binding DeleteCommand}"
-                      Background="{StaticResource ArlaErrorBrush}"
-                      Foreground="{StaticResource ArlaNeutralLightBrush}"
-                      BorderBrush="{StaticResource ArlaErrorBrush}"
-                      BorderThickness="1.5"
-                      Padding="16,8"
-                      FontWeight="Bold"
-                      FontSize="14"
-                      MinWidth="100"
-                      MinHeight="40"
-                      CornerRadius="6"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Center">
-              <Button Content="Annuller" 
+                      Visibility="{Binding IsEditMode, Converter={StaticResource BoolToVis}}"
+                      Style="{StaticResource ArlaDeleteButton}"/>
+          </StackPanel>
+          <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Center">
+            <Button Content="Annuller" 
                       Command="{Binding CancelCommand}"
-                      Background="{StaticResource ArlaLightGreyBrush}"
-                      Foreground="{StaticResource ArlaNeutralDarkBrush}"
-                      BorderBrush="{StaticResource ArlaLightGreyBrush}"
-                      BorderThickness="1.5"
-                      Padding="16,8"
-                      FontWeight="Bold"
-                      FontSize="14"
-                      MinWidth="100"
-                      MinHeight="40"
-                      CornerRadius="6"/>
-              <Button Content="Opdater" 
-                      Command="{Binding RefreshCommand}"
-                      Background="{StaticResource ArlaSurfaceBrush}"
-                      Foreground="{StaticResource ArlaNeutralDarkBrush}"
-                      BorderBrush="{StaticResource ArlaNeutralDarkBrush}"
-                      BorderThickness="2"
-                      Padding="16,8"
-                      FontWeight="Bold"
-                      FontSize="14"
-                      MinWidth="100"
-                      MinHeight="40"
-                      CornerRadius="6"/>
-            </StackPanel>
+                      Style="{StaticResource ArlaCancelButton}"/>
           </StackPanel>
         </StackPanel>
-      </Border>
+      </StackPanel>
+    </Border>
 
-      <!-- Right: Search and Person List -->
-      <StackPanel Grid.Column="1" Orientation="Vertical" Spacing="12" VerticalAlignment="Top">
-        <Border Style="{StaticResource ArlaCard}"
+    <!-- Right: Search and Person List -->
+    <StackPanel Grid.Column="1" Orientation="Vertical" Spacing="12" VerticalAlignment="Top">
+      <Border Style="{StaticResource ArlaCard}"
                 Background="{StaticResource ArlaSurfaceBrush}"
                 Margin="8,0,8,8"
                 VerticalAlignment="Top">
-          <Grid>
-            <Grid.RowDefinitions>
-              <RowDefinition Height="Auto"/>
-              <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+        <Grid>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+          </Grid.RowDefinitions>
 
           <!-- Search Section -->
           <Border Grid.Row="0" 
@@ -282,130 +258,130 @@
                         SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
                         SelectionMode="Single"
                         Margin="0,-2,0,0">
-            <ListView.ItemContainerStyle>
-              <Style TargetType="ListViewItem">
-                <Setter Property="Padding" Value="0"/>
-                <Setter Property="Margin" Value="0,0,0,1"/>
-                <Setter Property="BorderThickness" Value="0"/>
-                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                <Setter Property="VerticalContentAlignment" Value="Stretch"/>
-                <Setter Property="MinHeight" Value="40"/>
-              </Style>
-            </ListView.ItemContainerStyle>
+                <ListView.ItemContainerStyle>
+                  <Style TargetType="ListViewItem">
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="Margin" Value="0,0,0,1"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                    <Setter Property="MinHeight" Value="40"/>
+                  </Style>
+                </ListView.ItemContainerStyle>
 
-            <ListView.ItemTemplate>
-              <DataTemplate>
-                <Border BorderBrush="{StaticResource ArlaPrimaryDarkBrush}" 
+                <ListView.ItemTemplate>
+                  <DataTemplate>
+                    <Border BorderBrush="{StaticResource ArlaPrimaryDarkBrush}" 
                         BorderThickness="0,0,0,1" 
                         Background="{Binding DataContext.ItemCounter, ElementName=Root, Converter={StaticResource AlternationToBrushConverter}}"
                         Padding="4,8">
-                  <Grid>
-                    <Grid.ColumnDefinitions>
-                      <ColumnDefinition Width="120"/>
-                      <ColumnDefinition Width="120"/>
-                      <ColumnDefinition Width="120"/>
-                      <ColumnDefinition Width="60"/>
-                      <ColumnDefinition Width="120"/>
-                      <ColumnDefinition Width="200"/>
-                      <ColumnDefinition Width="200"/>
-                    </Grid.ColumnDefinitions>
+                      <Grid>
+                        <Grid.ColumnDefinitions>
+                          <ColumnDefinition Width="120"/>
+                          <ColumnDefinition Width="120"/>
+                          <ColumnDefinition Width="120"/>
+                          <ColumnDefinition Width="60"/>
+                          <ColumnDefinition Width="120"/>
+                          <ColumnDefinition Width="200"/>
+                          <ColumnDefinition Width="200"/>
+                        </Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Column="0" 
+                        <TextBlock Grid.Column="0" 
                                Text="{Binding FirstName}" 
                                VerticalAlignment="Center"
                                Style="{StaticResource ArlaBodyText}"/>
 
-                    <TextBlock Grid.Column="1" 
+                        <TextBlock Grid.Column="1" 
                                Text="{Binding LastName}" 
                                VerticalAlignment="Center"
                                Style="{StaticResource ArlaBodyText}"/>
 
-                    <TextBlock Grid.Column="2" 
+                        <TextBlock Grid.Column="2" 
                                Text="{Binding Role.Name}" 
                                VerticalAlignment="Center"
                                Style="{StaticResource ArlaBodyText}"/>
 
-                    <Grid Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center">
-                      <TextBlock Text="✔" 
+                        <Grid Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center">
+                          <TextBlock Text="✔" 
                                  Foreground="{StaticResource ArlaPrimaryBrush}"
                                  FontSize="16"
                                  FontWeight="Bold"
                                  Visibility="{Binding IsActive, Converter={StaticResource BoolToVis}}"/>
-                    </Grid>
+                        </Grid>
 
-                    <Grid Grid.Column="4" VerticalAlignment="Center">
-                      <Ellipse Width="24" 
+                        <Grid Grid.Column="4" VerticalAlignment="Center">
+                          <Ellipse Width="24" 
                                Height="24" 
                                Fill="{StaticResource ArlaPrimaryBrush}"
                                Visibility="{Binding Farms.Count, Converter={StaticResource IntToVisibilityConverter}}"/>
-                      <TextBlock Text="{Binding Farms.Count}" 
+                          <TextBlock Text="{Binding Farms.Count}" 
                                  HorizontalAlignment="Center"
                                  VerticalAlignment="Center"
                                  Foreground="{StaticResource ArlaNeutralLightBrush}"
                                  FontWeight="Bold"
                                  FontSize="12"
                                  Visibility="{Binding Farms.Count, Converter={StaticResource IntToVisibilityConverter}}"/>
-                    </Grid>
+                        </Grid>
 
-                    <TextBlock Grid.Column="5" 
+                        <TextBlock Grid.Column="5" 
                                VerticalAlignment="Center"
                                Style="{StaticResource ArlaBodyText}">
                       <Run Text="{Binding Address.PostalCode}"/>
                       <Run Text=", "/>
                       <Run Text="{Binding Address.Street}"/>
-                    </TextBlock>
+                        </TextBlock>
 
-                    <TextBlock Grid.Column="6" 
+                        <TextBlock Grid.Column="6" 
                                Text="{Binding Email}" 
                                VerticalAlignment="Center"
                                Style="{StaticResource ArlaBodyText}"/>
-                  </Grid>
+                      </Grid>
+                    </Border>
+                  </DataTemplate>
+                </ListView.ItemTemplate>
+              </ListView>
+            </StackPanel>
+          </ScrollViewer>
+        </Grid>
+      </Border>
+
+      <!-- Farms List (only visible for Farmers) - Separate card under search and list -->
+      <Border Style="{StaticResource ArlaCard}"
+                Background="{StaticResource ArlaSurfaceBrush}"
+                Visibility="{Binding IsFarmer, Converter={StaticResource BoolToVis}}"
+                MaxHeight="300">
+        <StackPanel Orientation="Vertical" Spacing="8">
+          <TextBlock Text="Tilknyttede Gårde"
+                       Style="{StaticResource ArlaSubHeaderText}"
+                       Margin="0,0,0,8"/>
+          <ListView ItemsSource="{Binding SelectedPersonFarms, Mode=OneWay}"
+                      MaxHeight="200">
+            <ListView.ItemTemplate>
+              <DataTemplate>
+                <Border BorderBrush="{StaticResource ArlaLightGreyBrush}"
+                          BorderThickness="0,0,0,1"
+                          Padding="8,4">
+                  <StackPanel Orientation="Horizontal" Spacing="12">
+                    <TextBlock Text="{Binding Name}" 
+                                 Style="{StaticResource ArlaBodyText}"
+                                 FontWeight="SemiBold"
+                                 MinWidth="200"/>
+                    <TextBlock Style="{StaticResource ArlaBodyText}">
+                        <Run Text="CVR: "/>
+                        <Run Text="{Binding CVR}"/>
+                    </TextBlock>
+                    <TextBlock Style="{StaticResource ArlaBodyText}">
+                        <Run Text="{Binding Address.PostalCode}"/>
+                        <Run Text=" "/>
+                        <Run Text="{Binding Address.Street}"/>
+                    </TextBlock>
+                  </StackPanel>
                 </Border>
               </DataTemplate>
             </ListView.ItemTemplate>
           </ListView>
-            </StackPanel>
-          </ScrollViewer>
-          </Grid>
-        </Border>
-
-        <!-- Farms List (only visible for Farmers) - Separate card under search and list -->
-        <Border Style="{StaticResource ArlaCard}"
-                Background="{StaticResource ArlaSurfaceBrush}"
-                Visibility="{Binding IsFarmer, Converter={StaticResource BoolToVis}}"
-                MaxHeight="300">
-          <StackPanel Orientation="Vertical" Spacing="8">
-            <TextBlock Text="Tilknyttede Gårde"
-                       Style="{StaticResource ArlaSubHeaderText}"
-                       Margin="0,0,0,8"/>
-            <ListView ItemsSource="{Binding SelectedPersonFarms, Mode=OneWay}"
-                      MaxHeight="200">
-              <ListView.ItemTemplate>
-                <DataTemplate>
-                  <Border BorderBrush="{StaticResource ArlaLightGreyBrush}"
-                          BorderThickness="0,0,0,1"
-                          Padding="8,4">
-                    <StackPanel Orientation="Horizontal" Spacing="12">
-                      <TextBlock Text="{Binding Name}" 
-                                 Style="{StaticResource ArlaBodyText}"
-                                 FontWeight="SemiBold"
-                                 MinWidth="200"/>
-                      <TextBlock Style="{StaticResource ArlaBodyText}">
-                        <Run Text="CVR: "/>
-                        <Run Text="{Binding CVR}"/>
-                      </TextBlock>
-                      <TextBlock Style="{StaticResource ArlaBodyText}">
-                        <Run Text="{Binding Address.PostalCode}"/>
-                        <Run Text=" "/>
-                        <Run Text="{Binding Address.Street}"/>
-                      </TextBlock>
-                    </StackPanel>
-                  </Border>
-                </DataTemplate>
-              </ListView.ItemTemplate>
-            </ListView>
-          </StackPanel>
-        </Border>
-      </StackPanel>
-    </Grid>
-  </UserControl>
+        </StackPanel>
+      </Border>
+    </StackPanel>
+  </Grid>
+</UserControl>

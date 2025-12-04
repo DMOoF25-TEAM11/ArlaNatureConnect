@@ -4,8 +4,8 @@ using ArlaNatureConnect.Domain.Entities;
 using ArlaNatureConnect.WinUI.Commands;
 using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 
-using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Reflection;
 
 namespace ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC;
@@ -65,6 +65,10 @@ public partial class CRUDPersonUCViewModel
     public const string LABEL_EMAIL = "Email";
     public const string LABEL_ISACTIVE = "Aktiv";
     public const string LABEL_ROLE = "Rolle";
+    public const string LABEL_ADDRESS_POSTALCODE = "Postnummer";
+    public const string LABEL_ADDRESS_CITY = "By";
+    public const string LABEL_ADDRESS_STREET = "Vejnavn og nummer";
+    public const string LABEL_ADDRESS_COUNTRY = "Land";
     public const string LABEL_ADDRESS = "Adresse";
     public const string LABEL_FARMS = "Antal Gårde";
 
@@ -72,6 +76,7 @@ public partial class CRUDPersonUCViewModel
     #region Fields
     // Repository for data access
     private readonly IRoleRepository? _roleRepository;
+    private readonly IAddressRepository? _addressRepository;
 
     // Sorting state
     private string? _lastSortProp;
@@ -84,8 +89,45 @@ public partial class CRUDPersonUCViewModel
     public static string LabelEmail => LABEL_EMAIL;
     public static string LabelIsActive => LABEL_ISACTIVE;
     public static string LabelRole => LABEL_ROLE;
+    public static string LabelAddressPostalCode => LABEL_ADDRESS_POSTALCODE;
+    public static string LabelAddressCity => LABEL_ADDRESS_CITY;
+    public static string LabelAddressStreet => LABEL_ADDRESS_STREET;
+    public static string LabelAddressCountry => LABEL_ADDRESS_COUNTRY;
     public static string LabelAddress => LABEL_ADDRESS;
     public static string LabelFarms => LABEL_FARMS;
+
+    /// <summary>
+    /// Indicates whether the address-related fields have been changed compared to the selected entity.
+    /// Used to enable/disable the save functionality.
+    /// </summary>
+    public bool IsAddressEntityChanged
+    {
+        get
+        {
+            if (SelectedItem?.Address.PostalCode != AddressPostalCode) return true;
+            if (SelectedItem?.Address.City != AddressCity) return true;
+            if (SelectedItem?.Address.Street != AddressStreet) return true;
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Indicates whether the person-related fields have been changed compared to the selected entity.
+    /// Used to enable/disable the save functionality.
+    /// </summary>
+    public bool IsPersonEntityChanged
+    {
+        get
+        {
+            if (SelectedItem?.FirstName != FirstName) return true;
+            if (SelectedItem?.LastName != LastName) return true;
+            if (SelectedItem?.Email != Email) return true;
+            if (SelectedItem?.RoleId != RoleId) return true;
+            if (SelectedItem?.IsActive != IsActive) return true;
+            if (SelectedItem?.AddressId != AddressId) return true;
+            return false;
+        }
+    }
 
     public int ItemCounter
     {
@@ -142,6 +184,7 @@ public partial class CRUDPersonUCViewModel
             if (field == value) return;
             field = value ?? string.Empty;
             OnPropertyChanged();
+            RefreshCommandStates();
         }
     } = string.Empty;
 
@@ -153,6 +196,7 @@ public partial class CRUDPersonUCViewModel
             if (field == value) return;
             field = value ?? string.Empty;
             OnPropertyChanged();
+            RefreshCommandStates();
         }
     } = string.Empty;
 
@@ -164,6 +208,7 @@ public partial class CRUDPersonUCViewModel
             if (field == value) return;
             field = value ?? string.Empty;
             OnPropertyChanged();
+            RefreshCommandStates();
         }
     } = string.Empty;
 
@@ -175,11 +220,12 @@ public partial class CRUDPersonUCViewModel
             if (field == value) return;
             field = value;
             OnPropertyChanged();
+            RefreshCommandStates();
         }
     }
 
     // Replace RoleDisplay string with a selectable Role combo box backing properties
-    public ObservableCollection<Role> Roles { get; } = new ObservableCollection<Role>();
+    public ObservableCollection<Role> Roles { get; } = [];
 
     public Role? SelectedRole
     {
@@ -191,8 +237,57 @@ public partial class CRUDPersonUCViewModel
             RoleId = value?.Id ?? Guid.Empty;
             // Inline comment: synchronize RoleId and RoleDisplay when selection changes
             OnPropertyChanged();
+            RefreshCommandStates();
         }
     }
+
+    public string AddressPostalCode
+    {
+        get;
+        set
+        {
+            if (field == value) return;
+            field = value ?? string.Empty;
+            OnPropertyChanged();
+            RefreshCommandStates();
+        }
+    } = string.Empty;
+
+    public string AddressCity
+    {
+        get;
+        set
+        {
+            if (field == value) return;
+            field = value ?? string.Empty;
+            OnPropertyChanged();
+            RefreshCommandStates();
+        }
+    } = string.Empty;
+
+    public string AddressStreet
+    {
+        get;
+        set
+        {
+            if (field == value) return;
+            field = value ?? string.Empty;
+            OnPropertyChanged();
+            RefreshCommandStates();
+        }
+    } = string.Empty;
+
+    public string AddressCountry
+    {
+        get;
+        set
+        {
+            if (field == value) return;
+            field = value ?? string.Empty;
+            OnPropertyChanged();
+            RefreshCommandStates();
+        }
+    } = "Danmark";
 
     public string AddressDisplay
     {
@@ -202,40 +297,34 @@ public partial class CRUDPersonUCViewModel
             if (field == value) return;
             field = value ?? string.Empty;
             OnPropertyChanged();
+            RefreshCommandStates();
         }
     } = string.Empty;
-    /// <summary>
-    /// a search text to filter the persons list by first name, last name, email or full name.
-    /// </summary>
-    private string _searchText = string.Empty;
+
     public string SearchText
     {
-        get => _searchText;
+        get;
         set
         {
-            if (_searchText == value) return;
-            _searchText = value ?? string.Empty;
+            if (field == value) return;
+            field = value ?? string.Empty;
             OnPropertyChanged();
             ApplySearchFilter();
         }
-    }
+    } = string.Empty;
 
-    /// <summary>
-    /// a filtered collection of persons based on the search text.
-    /// </summary>
-    private ObservableCollection<Person> _filteredItems = new();
     public ObservableCollection<Person> FilteredItems
     {
-        get => _filteredItems;
+        get;
         private set
         {
-            if (_filteredItems == value) return;
-            _filteredItems = value;
+            if (field == value) return;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = [];
 
-    public ObservableCollection<Farm> SelectedPersonFarms { get; } = new();
+    public ObservableCollection<Farm> SelectedPersonFarms { get; } = [];
 
     public bool IsFarmer => SelectedItem?.Role?.Name?.Equals("Farmer", StringComparison.OrdinalIgnoreCase) == true;
 
@@ -254,12 +343,13 @@ public partial class CRUDPersonUCViewModel
     public CRUDPersonUCViewModel(IStatusInfoServices statusInfoServices,
                                  IAppMessageService appMessageService,
                                  IPersonRepository repository,
+                                 IAddressRepository addressRepository,
                                  IRoleRepository? roleRepository = null)
         : base(statusInfoServices, appMessageService, repository, false) // disable base auto-load
     {
         Repository = repository;
         _roleRepository = roleRepository;
-        //_personQueryService = personQueryService;
+        _addressRepository = addressRepository;
 
         SortCommand = new RelayCommand<string>(OnSortExecuted);
 
@@ -278,61 +368,14 @@ public partial class CRUDPersonUCViewModel
         };
     }
 
+    #region Events 
     private void CRUDPersonUCViewModel_SelectedEntityChanged(object? sender, Person? e)
     {
         PopulateFormFromPerson(e!);
         UpdateSelectedPersonFarms(); // Refresh farms when selected person changes
         OnPropertyChanged(nameof(IsFarmer)); // Notify that IsFarmer may have changed
     }
-
-    // Updates the SelectedPersonFarms collection based on the currently selected person
-    private void UpdateSelectedPersonFarms()
-    {
-        SelectedPersonFarms.Clear();
-        if (SelectedItem?.Farms != null)
-        {
-            foreach (Farm farm in SelectedItem.Farms)
-            {
-                SelectedPersonFarms.Add(farm);
-            }
-        }
-    }
-
-    /// <summary>
-    /// applies the search filter to the Items collection and updates the FilteredItems collection.
-    /// </summary>
-    private void ApplySearchFilter()
-    {
-        FilteredItems.Clear();
-        if (string.IsNullOrWhiteSpace(SearchText))
-        {
-            foreach (Person person in Items)
-            {
-                FilteredItems.Add(person);
-            }
-        }
-        else
-        {
-            string search = SearchText.Trim().ToLowerInvariant();
-            foreach (Person person in Items)
-            {
-                string firstName = person.FirstName?.ToLowerInvariant() ?? string.Empty;
-                string lastName = person.LastName?.ToLowerInvariant() ?? string.Empty;
-                string email = person.Email?.ToLowerInvariant() ?? string.Empty;
-                string fullName = $"{firstName} {lastName}".Trim();
-                
-                if (firstName.Contains(search) ||
-                    lastName.Contains(search) ||
-                    email.Contains(search) ||
-                    fullName.Contains(search))
-                {
-                    FilteredItems.Add(person);
-                }
-            }
-        }
-        OnPropertyChanged(nameof(FilteredItems));
-    }
-
+    #endregion
     #region Load Handlers
     ///// <summary>
     ///// Loads all persons including related role/navigation properties.
@@ -363,6 +406,48 @@ public partial class CRUDPersonUCViewModel
     //        try { _appMessageService?.AddErrorMessage("Failed to reload persons: " + ex.Message); } catch { }
     //    }
     //}
+
+    /// <summary>
+    /// Public helper to reload the person list. The view can call this when it becomes visible to ensure
+    /// the Items collection is refreshed from the repository (fixes cases where navigation returns to a view
+    /// with stale/empty items).
+    /// </summary>
+    public async Task ReloadAsync(CancellationToken ct = default)
+    {
+        await GetAllAsync(ct); //await reload from repository
+        ApplySearchFilter(); // Refresh filtered items after reload
+    }
+
+    /// <summary>
+    /// Loads available roles into the Roles collection for the UI dropdown.
+    /// </summary>
+    private async Task LoadRolesAsync(CancellationToken ct = default)
+    {
+        // Guard: if no role repository was provided (for example in unit tests), skip loading
+        if (_roleRepository == null)
+            return;
+
+        try
+        {
+            IEnumerable<Role> all = await _roleRepository.GetAllAsync(ct);
+            Roles.Clear();
+            foreach (Role r in all ?? [])
+            {
+                Roles.Add(r);
+            }
+
+            // Ensure SelectedRole reflects RoleId if already set
+            if (RoleId != Guid.Empty)
+            {
+                SelectedRole = Roles.FirstOrDefault(r => r.Id == RoleId);
+            }
+        }
+        catch (Exception)
+        {
+            // Ignore load errors for now; UI will show empty dropdown
+        }
+    }
+
     #endregion
     #region Commands
 
@@ -394,28 +479,62 @@ public partial class CRUDPersonUCViewModel
     /// <summary>
     /// Creates a <see cref="Person"/> instance from the current form fields.
     /// </summary>
-    protected override Task<Person> OnAddFormAsync()
+    protected override async Task<Person> OnAddFormAsync()
     {
-        // Create a new Person instance from view-model fields
-        Person p = new()
+        Person? savedPerson = null;
+        using (_statusInfoServices?.BeginLoadingOrSaving())
         {
-            Id = Id == Guid.Empty ? Guid.NewGuid() : Id,
-            RoleId = RoleId,
-            AddressId = AddressId,
-            FirstName = FirstName ?? string.Empty,
-            LastName = LastName ?? string.Empty,
-            Email = Email ?? string.Empty,
-            IsActive = IsActive
-        };
+            try
+            {
+                Address createdAddress = await OnAddAddressFormAsync();
+                Address savedAddress = await _addressRepository!.AddAsync(createdAddress);
+                AddressId = savedAddress.Id;
+                Debug.Assert(AddressId != Guid.Empty, "AddressId should not be empty after adding a new address.");
+                Debug.WriteLine("New AddressId: " + AddressId);
 
-        return Task.FromResult(p);
+                Person createdPerson = new()
+                {
+                    Id = Id == Guid.Empty ? Guid.NewGuid() : Id,
+                    RoleId = RoleId,
+                    AddressId = AddressId,
+                    FirstName = FirstName ?? string.Empty,
+                    LastName = LastName ?? string.Empty,
+                    Email = Email ?? string.Empty,
+                    IsActive = IsActive
+                };
+                savedPerson = await Repository.AddAsync(createdPerson);
+                Debug.Assert(savedPerson != null, "Saved person should not be null after adding.");
+                Debug.WriteLine("Created Person with Id: " + savedPerson.Id);
+
+                await GetAllAsync();
+                ApplySearchFilter();
+                await OnResetFormAsync();
+            }
+            finally
+            {
+                IsSaving = false;
+            }
+            return savedPerson!;
+        }
+    }
+
+    private async Task<Address> OnAddAddressFormAsync()
+    {
+        Address createdAddress = new()
+        {
+            PostalCode = AddressPostalCode,
+            Street = AddressStreet,
+            City = AddressCity,
+            Country = AddressCountry
+        };
+        return createdAddress;
     }
 
     /// <summary>
     /// Loads the provided entity into the form fields so the UI can edit it.
     /// </summary>
     /// <param name="entity">The entity to load into the form.</param>
-    protected override Task OnLoadFormAsync(Person entity)
+    protected override async Task OnLoadFormAsync(Person entity)
     {
         ArgumentNullException.ThrowIfNull(entity);
 
@@ -427,16 +546,14 @@ public partial class CRUDPersonUCViewModel
 
         // Ensure calling the protected hook directly switches to edit mode
         IsEditMode = true;
-
-        return Task.CompletedTask;
     }
 
     /// <summary>
     /// Resets the form fields to their default values.
     /// </summary>
-    protected override Task OnResetFormAsync()
+    protected override async Task OnResetFormAsync()
     {
-        // Reset form fields to defaults
+        // Person fields
         Id = Guid.Empty;
         RoleId = Guid.Empty;
         AddressId = Guid.Empty;
@@ -445,18 +562,38 @@ public partial class CRUDPersonUCViewModel
         Email = string.Empty;
         IsActive = false;
 
-        // Clear display fields
-        AddressDisplay = string.Empty;
+        // Address fields
+        AddressPostalCode = string.Empty;
+        AddressCity = string.Empty;
+        AddressStreet = string.Empty;
+        AddressCountry = "Danmark";
 
+        // Clear selections
         SelectedItem = null!;
         SelectedRole = null;
 
-        return Task.CompletedTask;
+        // Switch to add mode
+        IsEditMode = false;
     }
 
     /// <summary>
     /// Persists the current form either by adding a new entity or updating an existing one.
     /// </summary>
+
+    protected override bool CanAdd()
+    {
+        if (base.CanAdd() == false) return false;
+        if (FormFieldsAreValid() == false) return false;
+        return true;
+    }
+
+    protected override bool CanSave()
+    {
+        if (base.CanSave() == false) return false;
+        if (FormFieldsAreValid() == false) return false;
+        if (!IsPersonEntityChanged && !IsAddressEntityChanged) return false;
+        return true;
+    }
     protected override async Task OnSaveFormAsync()
     {
         using (_statusInfoServices?.BeginLoadingOrSaving())
@@ -468,6 +605,12 @@ public partial class CRUDPersonUCViewModel
 
                 if (IsAddMode)
                 {
+                    Address createdAddress = await OnAddAddressFormAsync();
+                    Address rs = await _addressRepository!.AddAsync(createdAddress);
+                    Debug.Assert(rs != null);
+                    Debug.WriteLine("Created Address with Id: " + rs.Id);
+                    AddressId = rs.Id;
+
                     Person toAdd = await OnAddFormAsync();
                     await Repository.AddAsync(toAdd);
                     // set base entity so callers can access it
@@ -519,6 +662,7 @@ public partial class CRUDPersonUCViewModel
     {
         ArgumentNullException.ThrowIfNull(person);
 
+        // Form for Person
         Id = person.Id;
         RoleId = person.RoleId;
         AddressId = person.AddressId;
@@ -526,12 +670,6 @@ public partial class CRUDPersonUCViewModel
         LastName = person.LastName ?? string.Empty;
         Email = person.Email ?? string.Empty;
         IsActive = person.IsActive;
-
-        // Map role and address to display strings used by the form
-        AddressDisplay = person.Address != null
-            ? string.Concat(person.Address.PostalCode ?? string.Empty, ", ", person.Address.Street ?? string.Empty)
-            : string.Empty;
-
         // Select matching Role in Roles collection when available
         if (person.Role != null)
         {
@@ -541,36 +679,13 @@ public partial class CRUDPersonUCViewModel
         {
             SelectedRole = null;
         }
-    }
 
-    /// <summary>
-    /// Loads available roles into the Roles collection for the UI dropdown.
-    /// </summary>
-    private async Task LoadRolesAsync(CancellationToken ct = default)
-    {
-        // Guard: if no role repository was provided (for example in unit tests), skip loading
-        if (_roleRepository == null)
-            return;
+        // Form for Address
+        AddressCity = person.Address?.City ?? string.Empty;
+        AddressCountry = person.Address?.Country ?? string.Empty;
+        AddressPostalCode = person.Address?.PostalCode ?? string.Empty;
+        AddressStreet = person.Address?.Street ?? string.Empty;
 
-        try
-        {
-            IEnumerable<Role> all = await _roleRepository.GetAllAsync(ct);
-            Roles.Clear();
-            foreach (Role r in all ?? Array.Empty<Role>())
-            {
-                Roles.Add(r);
-            }
-
-            // Ensure SelectedRole reflects RoleId if already set
-            if (RoleId != Guid.Empty)
-            {
-                SelectedRole = Roles.FirstOrDefault(r => r.Id == RoleId);
-            }
-        }
-        catch (Exception)
-        {
-            // Ignore load errors for now; UI will show empty dropdown
-        }
     }
 
     /// <summary>
@@ -597,16 +712,65 @@ public partial class CRUDPersonUCViewModel
         return current;
     }
 
-    #endregion
-
     /// <summary>
-    /// Public helper to reload the person list. The view can call this when it becomes visible to ensure
-    /// the Items collection is refreshed from the repository (fixes cases where navigation returns to a view
-    /// with stale/empty items).
+    /// applies the search filter to the Items collection and updates the FilteredItems collection.
     /// </summary>
-    public async Task ReloadAsync(CancellationToken ct = default)
+    private void ApplySearchFilter()
     {
-        await GetAllAsync(ct); //await reload from repository
-        ApplySearchFilter(); // Refresh filtered items after reload
+        FilteredItems.Clear();
+        if (string.IsNullOrWhiteSpace(SearchText))
+        {
+            foreach (Person person in Items)
+            {
+                FilteredItems.Add(person);
+            }
+        }
+        else
+        {
+            string search = SearchText.Trim().ToLowerInvariant();
+            foreach (Person person in Items)
+            {
+                string firstName = person.FirstName?.ToLowerInvariant() ?? string.Empty;
+                string lastName = person.LastName?.ToLowerInvariant() ?? string.Empty;
+                string email = person.Email?.ToLowerInvariant() ?? string.Empty;
+                string fullName = $"{firstName} {lastName}".Trim();
+
+                if (firstName.Contains(search) ||
+                    lastName.Contains(search) ||
+                    email.Contains(search) ||
+                    fullName.Contains(search))
+                {
+                    FilteredItems.Add(person);
+                }
+            }
+        }
+        OnPropertyChanged(nameof(FilteredItems));
     }
+    // Updates the SelectedPersonFarms collection based on the currently selected person
+    private void UpdateSelectedPersonFarms()
+    {
+        SelectedPersonFarms.Clear();
+        if (SelectedItem?.Farms != null)
+        {
+            foreach (Farm farm in SelectedItem.Farms)
+            {
+                SelectedPersonFarms.Add(farm);
+            }
+        }
+    }
+
+    private bool FormFieldsAreValid()
+    {
+        // Example validation logic; expand as needed
+        if (string.IsNullOrWhiteSpace(FirstName)) return false;
+        if (string.IsNullOrWhiteSpace(LastName)) return false;
+        if (string.IsNullOrWhiteSpace(Email)) return false;
+        if (RoleId == Guid.Empty) return false;
+        if (IsEditMode && AddressId == Guid.Empty) return false;
+        if (string.IsNullOrWhiteSpace(AddressPostalCode)) return false;
+        if (string.IsNullOrWhiteSpace(AddressStreet)) return false;
+        if (string.IsNullOrWhiteSpace(AddressCity)) return false;
+        return true;
+    }
+    #endregion
 }
