@@ -46,16 +46,10 @@ public abstract partial class SideMenuViewModelBase : ListViewModelBase<IPersonR
 {
     #region Types
     // simple model for dynamic navigation buttons
-    public sealed class NavItem : INotifyPropertyChanged
+    public sealed partial class NavItem(string label, ICommand? command = null) : INotifyPropertyChanged
     {
-        public NavItem(string label, ICommand? command = null)
-        {
-            Label = label;
-            Command = command;
-        }
-
-        public string Label { get; }
-        public ICommand? Command { get; }
+        public string Label { get; } = label;
+        public ICommand? Command { get; } = command;
 
         public bool IsSelected
         {
@@ -103,7 +97,7 @@ public abstract partial class SideMenuViewModelBase : ListViewModelBase<IPersonR
     /// <summary>
     /// Persons available for selection in the side-menu.
     /// </summary>
-    public ObservableCollection<Person> AvailablePersons { get; set; } = new();
+    public ObservableCollection<Person> AvailablePersons { get; set; } = [];
 
 
     /// <summary>
@@ -118,6 +112,7 @@ public abstract partial class SideMenuViewModelBase : ListViewModelBase<IPersonR
             OnPropertyChanged();
             if (value != null)
             {
+                // TODO: Notify StatusInfoServices of selected person change?
                 RelayCommand<Person>? chooseCommand = _navigationViewModel?.ChooseUserCommand;
                 if (chooseCommand != null && chooseCommand.CanExecute(value))
                 {
@@ -202,7 +197,7 @@ public abstract partial class SideMenuViewModelBase : ListViewModelBase<IPersonR
             // Otherwise try forwarding to host navigation command if available
             if (_navigationViewModel is NavigationViewModelBase hostVm3)
             {
-                ICommand? hostCmd = hostVm3.NavigationCommand;
+                RelayCommand<object>? hostCmd = hostVm3.NavigationCommand;
                 if (hostCmd != null && hostCmd.CanExecute(parameter))
                 {
                     hostCmd.Execute(parameter);

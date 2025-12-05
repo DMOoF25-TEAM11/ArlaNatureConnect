@@ -9,7 +9,6 @@ sequenceDiagram
     Admin->>+System: Open Users management view
     System-->>-Admin: Display list of users
 
-
     alt Create user
         Admin->>+System: AddUser(User)
         System-->>Admin: Validation result / Confirmation
@@ -22,9 +21,9 @@ sequenceDiagram
     end
 
     alt Update user
-        Admin->>System: UpdateUser(userId, changes)
-        System-->>Admin: Validation result / Confirmation
-        System-->>Admin: Refresh list
+        Admin->>System: UpdateUser(User)
+        System-->>System: Validation(User)
+        System-->>Admin: New list of user
     end
 
     alt Delete user

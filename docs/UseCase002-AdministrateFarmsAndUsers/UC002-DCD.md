@@ -117,10 +117,10 @@ classDiagram
     Role --* IRoleRepository : manages
 
     %% Composition
-    Person --o Role : has
-    Person --o Address : has
-    Person --o Farm : may have
-    Farm --o Address : has
+    Person "*" --o "1" Role : has
+    Person "*" --o "1" Address : has
+    Person "*" --o "0..1" Farm : may have
+    Farm "1" --o "1" Address : has
 
     %% ViewModel relationships
     AdministratorPageViewModel --o CRUDPersonUCViewModel : includes
