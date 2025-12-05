@@ -199,5 +199,36 @@ classDiagram
   ### DCD Description
   See [DCD] for detailed descriptions of the entities, repositories, and their relationships involved in registering nature areas.
 
+  ## ER - Entity Relationship Diagram
+
+```mermaid
+---
+  title: "UC004: Entity Relationship Diagram for Registering Nature Areas (ERD)"
+---
+erDiagram
+  NatureArea {
+    Guid Id "PK"
+    Guid FarmId "FK"
+    string Name
+    string Description "nullable"
+    string Type
+  }
+
+  NatureAreaCoordinates {
+    Guid Id "PK"
+    Guid NatureAreaId "FK"
+    Decimal Latitude
+    Decimal Longitude
+  }
+
+  Farm {
+    Guid Id "PK"
+  }
+
+  Farm ||--o{ NatureArea : has
+  NatureArea ||--o{ NatureAreaCoordinates : has
+
+```
+
   <!-- Links to relevant code artifacts -->
   [DCD]: ../DCD.md

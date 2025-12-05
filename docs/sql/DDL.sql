@@ -79,23 +79,6 @@ BEGIN
 END
 
 /***************************************************************************************************
-    Table: Farms
-    Purpose: Stores farm information.
-    Note: `PersonId` added to represent primary owner. FK to Persons added after Persons table creation to avoid forward reference.
-***************************************************************************************************/
-IF OBJECT_ID(N'[dbo].[Farms]') IS NULL
-BEGIN
-    CREATE TABLE [dbo].[Farms] (
-        [Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY DEFAULT NEWID(),
-        [Name] NVARCHAR(200) NOT NULL,
-        [AddressId] UNIQUEIDENTIFIER NULL,
-        [PersonId] UNIQUEIDENTIFIER NULL,
-        [CVR] NVARCHAR(50) NULL,
-        CONSTRAINT [UQ_Farms_CVR] UNIQUE([CVR])
-    );
-END
-
-/***************************************************************************************************
     Table: Persons
     Purpose: Stores Person information.
     Note: `FarmId` removed from Persons. Use `Farms.PersonId` and/or mapping table `PersonFarms` for associations.
@@ -110,8 +93,6 @@ BEGIN
         [RoleId] UNIQUEIDENTIFIER NOT NULL,
         [AddressId] UNIQUEIDENTIFIER NULL,
         [IsActive] BIT NOT NULL DEFAULT (1),
-        [CreatedAt] DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
-        [UpdatedAt] DATETIME2 NULL,
         [RowVersion] ROWVERSION,
         CONSTRAINT [UQ_Persons_Email] UNIQUE([Email]),
         CONSTRAINT [FK_Persons_Roles] FOREIGN KEY ([RoleId]) REFERENCES [dbo].[Roles]([Id]),
@@ -119,6 +100,62 @@ BEGIN
     );
     CREATE INDEX [IX_Persons_RoleId] ON [dbo].[Persons]([RoleId]);
 END
+
+
+/***************************************************************************************************
+    Table: Farms
+    Purpose: Stores farm information.
+    Note: `PersonId` added to represent primary owner. FK to Persons added after Persons table creation to avoid forward reference.
+***************************************************************************************************/
+IF OBJECT_ID(N'[dbo].[Farms]') IS NULL
+BEGIN
+    CREATE TABLE [dbo].[Farms] (
+        [Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY DEFAULT NEWID(),
+        [Name] NVARCHAR(200) NOT NULL,
+        [AddressId] UNIQUEIDENTIFIER NULL,
+        [OwnerId] UNIQUEIDENTIFIER NULL,
+        [CVR] NVARCHAR(50) NULL,
+        CONSTRAINT [UQ_Farms_CVR] UNIQUE([CVR])
+    );
+END
+
+/***************************************************************************************************
+    Table: NatureArea
+    Purpose: Stores nature area information associated with farms.
+***************************************************************************************************/
+IF OBJECT_ID(N'[dbo].[NatureArea]') IS NULL
+BEGIN
+    CREATE TABLE [dbo].[NatureArea] (
+        [Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY DEFAULT NEWSEQUENTIALID(),
+        [FarmId] UNIQUEIDENTIFIER NOT NULL,
+        [Name] NVARCHAR(200) NOT NULL,
+        [Description] NVARCHAR(MAX) NULL,
+        [Type] NVARCHAR(100) NOT NULL,
+        CONSTRAINT [FK_NatureArea_Farm] FOREIGN KEY ([FarmId]) REFERENCES [dbo].[Farm]([Id]) ON DELETE CASCADE
+    );
+
+    CREATE INDEX [IX_NatureArea_FarmId] ON [dbo].[NatureArea]([FarmId]);
+END
+GO
+
+/***************************************************************************************************
+    Table: NatureAreaCoordinates
+    Purpose: Stores coordinates for nature areas.
+ ***************************************************************************************************/
+IF OBJECT_ID(N'[dbo].[NatureAreaCoordinates]') IS NULL
+BEGIN
+    CREATE TABLE [dbo].[NatureAreaCoordinates] (
+        [Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY DEFAULT NEWID(),
+        [NatureAreaId] UNIQUEIDENTIFIER NOT NULL,
+        [Latitude] DECIMAL(9,6) NOT NULL,
+        [Longitude] DECIMAL(9,6) NOT NULL,
+        [OrderIndex] INT NOT NULL DEFAULT(0),
+        CONSTRAINT [FK_NAC_NatureArea] FOREIGN KEY ([NatureAreaId]) REFERENCES [dbo].[NatureArea]([Id]) ON DELETE CASCADE
+    );
+    
+    CREATE INDEX [IX_NAC_NatureAreaId] ON [dbo].[NatureAreaCoordinates]([NatureAreaId]);
+END
+GO
 
 -- Add FK from Farms to Persons now that Persons table exists
 IF OBJECT_ID(N'[dbo].[Farms]') IS NOT NULL AND OBJECT_ID(N'[dbo].[Persons]') IS NOT NULL

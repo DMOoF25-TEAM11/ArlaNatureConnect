@@ -100,23 +100,10 @@ public class NatureCheckCaseService : INatureCheckCaseService
     /// if the farm already has an active case and duplicate active cases are not allowed.</exception>
     public async Task<NatureCheckCase> AssignCaseAsync(NatureCheckCaseAssignmentRequest request, CancellationToken cancellationToken = default)
     {
-        if (request == null)
-        {
-            throw new ArgumentNullException(nameof(request));
-        }
+        ArgumentNullException.ThrowIfNull(request);
 
-        Farm? farm = await _farmRepository.GetByIdAsync(request.FarmId, cancellationToken).ConfigureAwait(false);
-        if (farm == null)
-        {
-            throw new InvalidOperationException("Gården findes ikke længere. Opdater listen og prøv igen.");
-        }
-
-        Person? consultant = await _personRepository.GetByIdAsync(request.ConsultantId, cancellationToken).ConfigureAwait(false);
-        if (consultant == null)
-        {
-            throw new InvalidOperationException("Den valgte konsulent findes ikke længere.");
-        }
-
+        Farm? farm = await _farmRepository.GetByIdAsync(request.FarmId, cancellationToken).ConfigureAwait(false) ?? throw new InvalidOperationException("Gården findes ikke længere. Opdater listen og prøv igen.");
+        Person? consultant = await _personRepository.GetByIdAsync(request.ConsultantId, cancellationToken).ConfigureAwait(false) ?? throw new InvalidOperationException("Den valgte konsulent findes ikke længere.");
         ArlaNatureConnect.Domain.Entities.Role? consultantRole = await _roleRepository.GetByIdAsync(consultant.RoleId, cancellationToken).ConfigureAwait(false);
         if (!string.Equals(consultantRole?.Name, RoleName.Consultant.ToString(), StringComparison.OrdinalIgnoreCase))
         {
@@ -129,7 +116,7 @@ public class NatureCheckCaseService : INatureCheckCaseService
             throw new InvalidOperationException("Gården har allerede en aktiv Natur Check opgave.");
         }
 
-        NatureCheckCase entity = new NatureCheckCase
+        NatureCheckCase entity = new()
         {
             Id = Guid.NewGuid(),
             FarmId = farm.Id,
@@ -159,20 +146,13 @@ public class NatureCheckCaseService : INatureCheckCaseService
     /// <exception cref="InvalidOperationException">Thrown if the specified farm to update does not exist.</exception>
     public async Task<Farm> SaveFarmAsync(FarmRegistrationRequest request, CancellationToken cancellationToken = default)
     {
-        if (request == null)
-        {
-            throw new ArgumentNullException(nameof(request));
-        }
+        ArgumentNullException.ThrowIfNull(request);
+
         ValidateFarmRegistration(request);
 
         if (request.FarmId.HasValue)
         {
-            Farm? existingFarm = await _farmRepository.GetByIdAsync(request.FarmId.Value, cancellationToken).ConfigureAwait(false);
-            if (existingFarm == null)
-            {
-                throw new InvalidOperationException("Kunne ikke finde gården til redigering.");
-            }
-
+            Farm? existingFarm = await _farmRepository.GetByIdAsync(request.FarmId.Value, cancellationToken).ConfigureAwait(false) ?? throw new InvalidOperationException("Kunne ikke finde gården til redigering.");
             if (existingFarm.AddressId != Guid.Empty)
             {
                 Address? farmAddress = await _addressRepository.GetByIdAsync(existingFarm.AddressId, cancellationToken).ConfigureAwait(false);
@@ -186,9 +166,9 @@ public class NatureCheckCaseService : INatureCheckCaseService
                 }
             }
 
-            if (existingFarm.PersonId != Guid.Empty)
+            if (existingFarm.OwnerId != Guid.Empty)
             {
-                Person? farmer = await _personRepository.GetByIdAsync(existingFarm.PersonId, cancellationToken).ConfigureAwait(false);
+                Person? farmer = await _personRepository.GetByIdAsync(existingFarm.OwnerId, cancellationToken).ConfigureAwait(false);
                 if (farmer != null)
                 {
                     farmer.FirstName = request.OwnerFirstName;
@@ -206,7 +186,7 @@ public class NatureCheckCaseService : INatureCheckCaseService
         }
         else
         {
-            Address farmAddress = new Address
+            Address farmAddress = new()
             {
                 Id = Guid.NewGuid(),
                 Street = request.Street,
@@ -217,7 +197,7 @@ public class NatureCheckCaseService : INatureCheckCaseService
             await _addressRepository.AddAsync(farmAddress, cancellationToken).ConfigureAwait(false);
 
             ArlaNatureConnect.Domain.Entities.Role farmerRole = await EnsureRoleAsync(RoleName.Farmer.ToString(), cancellationToken).ConfigureAwait(false);
-            Person farmer = new Person
+            Person farmer = new()
             {
                 Id = Guid.NewGuid(),
                 RoleId = farmerRole.Id,
@@ -229,12 +209,12 @@ public class NatureCheckCaseService : INatureCheckCaseService
             };
             await _personRepository.AddAsync(farmer, cancellationToken).ConfigureAwait(false);
 
-            Farm farm = new Farm
+            Farm farm = new()
             {
                 Id = Guid.NewGuid(),
                 Name = request.FarmName,
                 CVR = request.Cvr,
-                PersonId = farmer.Id,
+                OwnerId = farmer.Id,
                 AddressId = farmAddress.Id
             };
             await _farmRepository.AddAsync(farm, cancellationToken).ConfigureAwait(false);
@@ -273,9 +253,7 @@ public class NatureCheckCaseService : INatureCheckCaseService
         HashSet<Guid> farmIds = assignedCases.Select(c => c.FarmId).ToHashSet();
 
         // Load all farms in one query
-        List<Farm> farms = (await _farmRepository.GetAllAsync(cancellationToken).ConfigureAwait(false))
-            .Where(f => farmIds.Contains(f.Id))
-            .ToList();
+        List<Farm> farms = (await _farmRepository.GetAllAsync(cancellationToken).ConfigureAwait(false)).Where(f => farmIds.Contains(f.Id)).ToList();
 
         Dictionary<Guid, Farm> farmsById = farms.ToDictionary(f => f.Id, f => f);
 
@@ -305,15 +283,15 @@ public class NatureCheckCaseService : INatureCheckCaseService
     #region Helpers
     private static FarmAssignmentOverviewDto CreateFarmOverview(
         Farm farm,
-        IDictionary<Guid, Person> personsById,
-        IDictionary<Guid, Address> addressesById,
+        Dictionary<Guid, Person> personsById,
+        Dictionary<Guid, Address> addressesById,
         bool hasActiveCase,
-        IDictionary<Guid, NatureCheckCase> activeCasesByFarm)
+        Dictionary<Guid, NatureCheckCase> activeCasesByFarm)
     {
         Person? owner = null;
-        if (farm.PersonId != Guid.Empty)
+        if (farm.OwnerId != Guid.Empty)
         {
-            personsById.TryGetValue(farm.PersonId, out owner);
+            personsById.TryGetValue(farm.OwnerId, out owner);
         }
 
         Address? address = null;
@@ -388,12 +366,7 @@ public class NatureCheckCaseService : INatureCheckCaseService
     private async Task<ArlaNatureConnect.Domain.Entities.Role> EnsureRoleAsync(string roleName, CancellationToken cancellationToken)
     {
         ArlaNatureConnect.Domain.Entities.Role? role = await _roleRepository.GetByNameAsync(roleName, cancellationToken).ConfigureAwait(false);
-        if (role == null)
-        {
-            throw new InvalidOperationException($"Rollen '{roleName}' findes ikke i databasen.");
-        }
-
-        return role;
+        return role ?? throw new InvalidOperationException($"Rollen '{roleName}' findes ikke i databasen.");
     }
     #endregion
 }

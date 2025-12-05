@@ -1,0 +1,58 @@
+# ER - Entity Relationship Diagram
+
+```mermaid
+---
+  title: "ER Diagram"
+---
+erDiagram
+
+  Roles {
+    Guid Id PK
+    string Name "unique"
+  }
+
+  Addresses {
+    Guid Id PK
+    string Street
+    string City
+    string PostalCode
+    string Country
+  }
+
+  Persons {
+    Guid Id PK
+    string FirstName
+    string LastName
+    string Email "unique"
+  }
+
+  Farms {
+    Guid Id PK
+    Guid AddressId FK
+    Guid OwnerId FK
+    string Name
+  }
+
+  NatureAreas {
+    Guid Id PK
+    Guid FarmId FK
+    string Name
+    string Description "nullable"
+    string Type
+  }
+
+  NatureAreaCoordinates {
+    Guid Id PK
+    Guid NatureAreaId FK
+    Decimal Latitude
+    Decimal Longitude
+    Int OrderIndex
+  }
+  
+  Farms ||--o{ NatureAreas : has
+  Farms ||--o{ Persons : owned_by
+  Farms ||--o{ Addresses : located_at
+  Persons ||--o{ Roles : assigned_to
+  Persons ||--o{ Addresses : resides_at
+  NatureAreas ||--o{ NatureAreaCoordinates : has
+```
