@@ -49,7 +49,7 @@ public abstract class Repository<TEntity>(IDbContextFactory<AppDbContext> factor
         await ctx.SaveChangesAsync(cancellationToken);
 
         // Reload the persisted entity from the database so any DB-generated values (like Id) are populated.
-        TEntity? persisted = await dbSet.FindAsync(new object[] { entity.Id }, cancellationToken);
+        TEntity? persisted = await dbSet.FindAsync([entity.Id], cancellationToken);
         return persisted ?? entity;
     }
 
@@ -68,7 +68,7 @@ public abstract class Repository<TEntity>(IDbContextFactory<AppDbContext> factor
     {
         await using AppDbContext ctx = _factory.CreateDbContext();
         DbSet<TEntity> dbSet = ctx.Set<TEntity>();
-        TEntity? entity = await dbSet.FindAsync(new object[] { id }, cancellationToken);
+        TEntity? entity = await dbSet.FindAsync([id], cancellationToken);
         if (entity != null)
         {
             dbSet.Remove(entity);
@@ -87,7 +87,7 @@ public abstract class Repository<TEntity>(IDbContextFactory<AppDbContext> factor
     public async Task<TEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         await using AppDbContext ctx = _factory.CreateDbContext();
-        return await ctx.Set<TEntity>().FindAsync(new object[] { id }, cancellationToken);
+        return await ctx.Set<TEntity>().FindAsync([id], cancellationToken);
     }
 
     /// <inheritdoc/>
@@ -96,7 +96,7 @@ public abstract class Repository<TEntity>(IDbContextFactory<AppDbContext> factor
         await using AppDbContext ctx = _factory.CreateDbContext();
         DbSet<TEntity> dbSet = ctx.Set<TEntity>();
 
-        TEntity? tracked = await dbSet.FindAsync(new object[] { entity.Id }, cancellationToken);
+        TEntity? tracked = await dbSet.FindAsync([entity.Id], cancellationToken);
         if (tracked == null)
         {
             // No tracked entity in this context — attach but avoid re-attaching navigation graph
