@@ -2,6 +2,6 @@ using ArlaNatureConnect.Domain.Entities;
 
 namespace ArlaNatureConnect.Core.Abstract;
 
-public interface IFarmRepository : IRepository<Farm>
+public interface INatureAreaImageRepository : IRepository<NatureAreaImage>
 {
 }
