@@ -15,7 +15,7 @@ classDiagram
 
     class Farmer {
         farmName
-        location
+        address
         cvr
     }
 
@@ -23,10 +23,10 @@ classDiagram
         roleName
     }
 
-    note for Person "Represents a user personal entity with personal details and active status."
-    note for Role "Defines a role that can be assigned to users for access control."
-    note for Farmer "Extends User with additional attributes specific to farmers."
+    note for Person "Represents a Person personal entity with personal details and active status."
+    note for Role "Defines a role that can be assigned to Persons for access control."
+    note for Farmer "Extends Person with additional attributes specific to farmers."
 
-    User "1" -- "*" Role : has >
-    Farmer "0..1" -- "1" User : has >
+    Person "1" -- "*" Role : has >
+    Farmer "0..1" -- "1" Person : has >
     ```
