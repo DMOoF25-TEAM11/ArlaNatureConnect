@@ -60,6 +60,22 @@ sequenceDiagram
   System->>System: ValidateAndSaveNatureArea(natureAreaDto)
   System-->>RegisterNatureAreaUC: RegistrationResult(success, id, errors)
 ```
+## OC - Operations Contracts
+- ID: UC-004-OC
+- Cross references:
+  - See the Use Case Brief above: [UC-004-BC](#user-case-brief)
+
+### Operation Contract: RegisterNatureArea
+
+**Operation**: RegisterNatureArea
+- **Description**: Registers a new nature area in the system with the provided details.
+- **Preconditions**:
+   - Employee is logged in.
+   - Employee is on the "Register Nature Area" page.
+
+**Postconditions**:
+   - A new nature area is created and stored in the system.
+   - The nature area is associated with the selected farm.
 
 ## Domain Model
 
