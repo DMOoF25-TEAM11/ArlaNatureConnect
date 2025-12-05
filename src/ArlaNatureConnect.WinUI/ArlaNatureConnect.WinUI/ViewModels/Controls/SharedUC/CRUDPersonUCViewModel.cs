@@ -391,9 +391,9 @@ public partial class CRUDPersonUCViewModel
     //    {
     //        using (_statusInfoServices.BeginLoadingOrSaving())
     //        {
-    //            IEnumerable<Person> all = await Repository.GetAllAsync(ct);
+    //            IEnumerable<Owner> all = await Repository.GetAllAsync(ct);
     //            Items.Clear();
-    //            foreach (Person p in all ?? Array.Empty<Person>())
+    //            foreach (Owner p in all ?? Array.Empty<Owner>())
     //            {
     //                Items.Add(p);
     //            }
@@ -504,7 +504,7 @@ public partial class CRUDPersonUCViewModel
                 };
                 savedPerson = await Repository.AddAsync(createdPerson);
                 Debug.Assert(savedPerson != null, "Saved person should not be null after adding.");
-                Debug.WriteLine("Created Person with Id: " + savedPerson.Id);
+                Debug.WriteLine("Created Owner with Id: " + savedPerson.Id);
 
                 await GetAllAsync();
                 ApplySearchFilter();
@@ -553,7 +553,7 @@ public partial class CRUDPersonUCViewModel
     /// </summary>
     protected override async Task OnResetFormAsync()
     {
-        // Person fields
+        // Owner fields
         Id = Guid.Empty;
         RoleId = Guid.Empty;
         AddressId = Guid.Empty;
@@ -653,16 +653,16 @@ public partial class CRUDPersonUCViewModel
     #endregion
     #region Helpers
     /// <summary>
-    /// Populates the form-bound fields from the provided Person instance.
+    /// Populates the form-bound fields from the provided Owner instance.
     /// RoleDisplay is set to the role's Name and AddressDisplay is set to "PostalCode, Street".
     /// This method is public so callers (for example tests or other view-models) can reuse the mapping.
     /// </summary>
-    /// <param name="person">Person to populate the form from.</param>
+    /// <param name="person">Owner to populate the form from.</param>
     public void PopulateFormFromPerson(Person person)
     {
         ArgumentNullException.ThrowIfNull(person);
 
-        // Form for Person
+        // Form for Owner
         Id = person.Id;
         RoleId = person.RoleId;
         AddressId = person.AddressId;

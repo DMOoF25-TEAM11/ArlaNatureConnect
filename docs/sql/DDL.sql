@@ -163,8 +163,8 @@ BEGIN
  IF NOT EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = N'FK_Farms_Persons')
  BEGIN
  ALTER TABLE [dbo].[Farms]
- ADD CONSTRAINT [FK_Farms_Persons] FOREIGN KEY ([PersonId]) REFERENCES [dbo].[Persons]([Id]);
- CREATE INDEX [IX_Farms_PersonId] ON [dbo].[Farms]([PersonId]);
+ ADD CONSTRAINT [FK_Farms_Owner] FOREIGN KEY ([OwnerId]) REFERENCES [dbo].[Persons]([Id]);
+ CREATE INDEX [IX_Farms_OwnerId] ON [dbo].[Farms]([OwnerId]);
  END
 END
 

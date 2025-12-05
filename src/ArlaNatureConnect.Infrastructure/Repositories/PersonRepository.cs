@@ -51,7 +51,7 @@ public class PersonRepository(IDbContextFactory<AppDbContext> factory) : Reposit
     ///
     /// This approach avoids directly comparing a textual role property on <see cref="Person"/>
     /// (which may not exist or be inconsistent) and enforces consistency via the domain
-    /// relationship between Person and Role entities.
+    /// relationship between Owner and Role entities.
     ///
     /// The method creates a short-lived <see cref="AppDbContext"/> from the injected
     /// <see cref="IDbContextFactory{AppDbContext}"/> for the duration of the operation. It is
