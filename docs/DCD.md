@@ -1,291 +1,319 @@
 # DCD
 
 - cross-references:
-  - DCD from: [UC-002-DCD]
-  - 
-    
+  - DCD from: 
+    - [UC-002-DCD]
+    - [UC-002B-DCD]
+    - [UC-004-DCD]
+
 ## Diagram
 
 ```mermaid
 ---
-title: "UC002: Domain Class Diagram for Person and Farm Management (expanded ViewModels & Services)"
+title: "Domain Class Diagram - Arla Nature Connect"
 ---
 classDiagram
-    direction TB
+  direction TB
 
-    namespace ArlaNatureConnect.Domain.Entities {
-        class Person {
-            +Guid Id
-            +Guid RoleId
-            +Guid AddressId
-            +string FirstName
-            +string LastName
-            +string Email
-            +bool IsActive
-        }
+namespace ArlaNatureConnect.Domain.Abstract {
+  class IEntity {
+    <<interface>>
+    +Guid Id
+  }
+}
 
-        class Role {
-            Guid Id
-            +string Name
-        }
+namespace ArlaNatureConnect.Domain.Entities {
+  class Person {
+    +Guid Id
+    +Guid RoleId
+    +Guid AddressId
+    +string FirstName
+    +string LastName
+    +string Email
+    +bool IsActive
+    +virtual Role Role
+    +virtual Address Address
+    +virtual ICollection<Farm> Farms
+  }
 
-        class Farm {
-            +Guid Id
-            +Guid AddressId
-            +Guid PersonId
-            +string Name
-            +string CVR
-        }
+  class Role {
+    +Guid Id
+    +string Name
+  }
 
-        class Address {
-            +Guid Id
-            +string Street
-            +string City
-            +string PostalCode
-            +string Country
-        }
+  class Farm {
+    +Guid Id
+    +Guid AddressId
+    +Guid PersonId
+    +string Name
+    +string CVR
+  }
 
-        class NatureCheckCase {
-            +Guid Id
-            +Guid FarmId
-            +Guid ConsultantId
-            +Guid AssignedByPersonId
-            +string Status
-            +string? Notes
-            +string? Priority
-            +DateTimeOffset CreatedAt
-            +DateTimeOffset? AssignedAt
-        }
-    }
+  class Address {
+    +Guid Id
+    +string Street
+    +string City
+    +string PostalCode
+    +string Country
+  }
 
-    namespace ArlaNatureConnect.Core.Abstract {
-        %% Repositories
+  class NatureCheckCase {
+    +Guid Id
+    +Guid FarmId
+    +Guid ConsultantId
+    +Guid AssignedByPersonId
+    +string Status
+    +string? Notes
+    +string? Priority
+    +DateTimeOffset CreatedAt
+    +DateTimeOffset? AssignedAt
+  }
 
-        class IRepository~TEntity~ {
-            <<interface>>
-            +GetByIdAsync(Guid id) Task~TEntity~
-            +GetAllAsync() Task~List__TEntity~
-            +AddAsync(TEntity entity) Task
-            +UpdateAsync(TEntity entity) Task
-            +DeleteAsync(Guid id) Task
-        }
+  class NatureArea {
+    +Guid Id
+    +Guid FarmId
+    +string Name
+    +string? Description
+    +string Coordinates
+    +string Type
+    +Farm Farm
+  }
+}
 
-        class IRoleRepository {
-            <<interface>>
-        }
+namespace ArlaNatureConnect.Core.Abstract {
+  %% Repositories
 
-        class IPersonRepository {
-            <<interface>>
-        }
+  class IRepository~TEntity~ {
+    <<interface>>
+    +GetByIdAsync(Guid id) Task~TEntity~
+    +GetAllAsync() Task~List__TEntity~
+    +AddAsync(TEntity entity) Task
+    +UpdateAsync(TEntity entity) Task
+    +DeleteAsync(Guid id) Task
+  }
 
-        class IAddressRepository {
-            <<interface>>
-        }
+  class IRoleRepository {
+    <<interface>>
+  }
 
-        class IFarmRepository {
-            <<interface>>
-        }
+  class IPersonRepository {
+    <<interface>>
+  }
 
-        class INatureCheckCaseRepository {
-            <<interface>>
-        }
+  class IAddressRepository {
+    <<interface>>
+  }
 
-        class IPrivilegeService {
-            <<interface>>
-        }
+  class IFarmRepository {
+    <<interface>>
+  }
 
-        class IStatusInfoServices {
-            <<interface>>
-        }
+  class INatureCheckCaseRepository {
+    <<interface>>
+  }
 
-        class IAppMessageService {
-            <<interface>>
-        }
+  class IPrivilegeService {
+    <<interface>>
+  }
 
-        class IConnectionStringService {
-            <<interface>>
-        }
+  class IStatusInfoServices {
+    <<interface>>
+  }
 
-        class INatureCheckCaseService {
-            <<interface>>
-        }
+  class IAppMessageService {
+    <<interface>>
+  }
 
-        class INavigationHandler {
-            <<interface>>
-        }
+  class IConnectionStringService {
+    <<interface>>
+  }
 
-        class IPersonService {
-            <<interface>>
-        }
-    }
+  class INatureCheckCaseService {
+    <<interface>>
+  }
 
-    namespace ArlaNatureConnect.Infrastructure.Repositories {
-        class Repository~TEntity~ {
-            #AppDbContect _context
-            +Repository() void
-            +SaveChangesAsync(AppDbContext context) Task
-        }
+  class INavigationHandler {
+    <<interface>>
+  }
 
-        class RoleRepository {
-            +RoleRepository() void
-        }
+  class IPersonService {
+    <<interface>>
+  }
+}
 
-        class PersonRepository {
-            +PersonRepository() void
-        }
+namespace ArlaNatureConnect.Infrastructure.Repositories {
+  class Repository~TEntity~ {
+    #AppDbContect _context
+    +Repository() void
+    +SaveChangesAsync(AppDbContext context) Task
+  }
 
-        class AddressRepository {
-            +AddressRepository() void
-        }
+  class RoleRepository {
+    +RoleRepository() void
+  }
 
-        class FarmRepository {
-            +FarmRepository() void
-        }
-    }
+  class PersonRepository {
+    +PersonRepository() void
+  }
 
-    namespace ArlaNatureConnect.Core.Services {
-        class NatureCheckCaseService {
-            +LoadAssignmentContextAsync() Task
-            +AssignCaseAsync() Task
-            +SaveFarmAsync() Task
-        }
+  class AddressRepository {
+    +AddressRepository() void
+  }
 
-        class ConnectionStringService {
-            +SaveAsync(string) Task
-            +ReadAsync() Task~string?~
-            +ExistsAsync() Task~bool~
-        }
+  class FarmRepository {
+    +FarmRepository() void
+  }
+}
 
-        class PrivilegeService {
-            +CurrentUser : Person?
-        }
+namespace ArlaNatureConnect.Core.Services {
+  class NatureCheckCaseService {
+    +LoadAssignmentContextAsync() Task
+    +AssignCaseAsync() Task
+    +SaveFarmAsync() Task
+  }
 
-        class AppMessageService {
-            +AddInfoMessage(string) void
-            +AddErrorMessage(string) void
-            +ClearErrorMessages() void
-        }
-    }
+  class ConnectionStringService {
+    +SaveAsync(string) Task
+    +ReadAsync() Task~string?~
+    +ExistsAsync() Task~bool~
+  }
 
-    namespace ArlaNatureConnect.WinUI.ViewModels {
-        %% Pages
-        class AdministratorPageViewModel {
-            +AdministratorPageViewModel()
-            +LoadCommand()
-        }
+  class PrivilegeService {
+    +CurrentUser : Person?
+  }
 
-        class CRUDPersonUCViewModel {
-            +CRUDPersonUCViewModel()
-            +CreatePerson()
-            +UpdatePerson()
-            +DeletePerson()
-        }
+  class AppMessageService {
+    +AddInfoMessage(string) void
+    +AddErrorMessage(string) void
+    +ClearErrorMessages() void
+  }
+}
 
-        class LoginPageViewModel {
-            +LoginPageViewModel()
-            +SelectRole(string) void
-        }
+namespace ArlaNatureConnect.WinUI.ViewModels {
+  %% Pages
+  class AdministratorPageViewModel {
+    +AdministratorPageViewModel()
+    +LoadCommand()
+  }
 
-        class ManageViewModel {
-            +ManageViewModel()
-        }
+  class CRUDPersonUCViewModel {
+    +CRUDPersonUCViewModel()
+    +CreatePerson()
+    +UpdatePerson()
+    +DeletePerson()
+  }
 
-        class ArlaEmployeePageViewModel {
-            +InitializeAsync(Role) Task
-            +AssignCaseAsync() Task
-        }
+  class LoginPageViewModel {
+    +LoginPageViewModel()
+    +SelectRole(string) void
+  }
 
-        class FarmerPageViewModel {
-            +InitializeAsync(Role) Task
-        }
+  class ManageViewModel {
+    +ManageViewModel()
+  }
 
-        class ConsultantPageViewModel {
-            +InitializeAsync(Role) Task
-        }
+  class ArlaEmployeePageViewModel {
+    +InitializeAsync(Role) Task
+    +AssignCaseAsync() Task
+  }
 
-        %% Controls / SideMenu
-        class AdministratorPageSideMenuUCViewModel {
-            +InitializeAsync() Task
-        }
+  class FarmerPageViewModel {
+    +InitializeAsync(Role) Task
+  }
 
-        %% Abstract viewmodels
-        class ViewModelBase {
-            <<abstract>>
-        }
+  class ConsultantPageViewModel {
+    +InitializeAsync(Role) Task
+  }
 
-        class NavigationViewModelBase {
-            <<abstract>>
-        }
+  %% Controls / SideMenu
+  class AdministratorPageSideMenuUCViewModel {
+    +InitializeAsync() Task
+  }
 
-        class CRUDViewModelBase~TRepos, TEntity~ {
-            <<abstract>>
-        }
-    }
+  %% Abstract viewmodels
+  class ViewModelBase {
+    <<abstract>>
+  }
 
-    %% Associations
-    Role --* RoleRepository : manages
-    Person --* PersonRepository : manages
-    Farm --* FarmRepository : manages
-    Address --* AddressRepository : manages
-    Role --* IRoleRepository : manages
+  class NavigationViewModelBase {
+    <<abstract>>
+  }
 
-    %% Composition
-    Person --o Role : has
-    Person --o Address : has
-    Person --o Farm : may have
-    Farm --o Address : has
+  class CRUDViewModelBase~TRepos, TEntity~ {
+    <<abstract>>
+  }
+}
 
-    %% ViewModel relationships
-    AdministratorPageViewModel --o CRUDPersonUCViewModel : includes
-    AdministratorPageViewModel ..> INavigationHandler : depends
-    CRUDPersonUCViewModel ..> IPersonRepository : depends
-    CRUDPersonUCViewModel ..> IStatusInfoServices : depends
-    CRUDPersonUCViewModel ..> IAppMessageService : depends
+%% Associations
+Role --* RoleRepository : manages
+Person --* PersonRepository : manages
+Farm --* FarmRepository : manages
+Address --* AddressRepository : manages
+Role --* IRoleRepository : manages
 
-    LoginPageViewModel ..> INavigationHandler : depends
-    ManageViewModel ..> INavigationHandler : depends
+%% Composition
+Person "0..*" --o "1" Role : has
+Person "0..*" --o "1" Address : has
+Person "1" --o "0..*" Farm : may have
+Farm "0..*" --o "1" Address : has
 
-    ArlaEmployeePageViewModel ..> INatureCheckCaseService : depends
-    ArlaEmployeePageViewModel ..> IAppMessageService : depends
-    ArlaEmployeePageViewModel ..> IStatusInfoServices : depends
+%% ViewModel relationships
+AdministratorPageViewModel --o CRUDPersonUCViewModel : includes
+AdministratorPageViewModel ..> INavigationHandler : depends
+CRUDPersonUCViewModel ..> IPersonRepository : depends
+CRUDPersonUCViewModel ..> IStatusInfoServices : depends
+CRUDPersonUCViewModel ..> IAppMessageService : depends
 
-    AdministratorPageSideMenuUCViewModel ..> IPersonRepository : depends
-    AdministratorPageSideMenuUCViewModel ..> IStatusInfoServices : depends
-    AdministratorPageSideMenuUCViewModel ..> IAppMessageService : depends
-    AdministratorPageSideMenuUCViewModel ..> INavigationHandler : depends
+LoginPageViewModel ..> INavigationHandler : depends
+ManageViewModel ..> INavigationHandler : depends
 
-    %% Service Implementation
-    NatureCheckCaseService ..|> INatureCheckCaseService : implements
-    ConnectionStringService ..|> IConnectionStringService : implements
-    PrivilegeService ..|> IPrivilegeService : implements
-    AppMessageService ..|> IAppMessageService : implements
-    NavigationHandler ..|> INavigationHandler : implements
+ArlaEmployeePageViewModel ..> INatureCheckCaseService : depends
+ArlaEmployeePageViewModel ..> IAppMessageService : depends
+ArlaEmployeePageViewModel ..> IStatusInfoServices : depends
 
-    %% Service Dependencies
-    NatureCheckCaseService --> INatureCheckCaseRepository : uses
-    NatureCheckCaseService --> IFarmRepository : uses
-    NatureCheckCaseService --> IPersonRepository : uses
-    NatureCheckCaseService --> IAddressRepository : uses
-    NatureCheckCaseService --> IRoleRepository : uses
+AdministratorPageSideMenuUCViewModel ..> IPersonRepository : depends
+AdministratorPageSideMenuUCViewModel ..> IStatusInfoServices : depends
+AdministratorPageSideMenuUCViewModel ..> IAppMessageService : depends
+AdministratorPageSideMenuUCViewModel ..> INavigationHandler : depends
 
-    %% Inheritance and Implementation
-    Repository --|> IRepository : implements
-    RoleRepository --|> IRoleRepository : implements
-    PersonRepository --|> IPersonRepository : implements
-    AddressRepository --|> IAddressRepository : implements
-    FarmRepository --|> IFarmRepository : implements
+%% Service Implementation
+NatureCheckCaseService ..|> INatureCheckCaseService : implements
+ConnectionStringService ..|> IConnectionStringService : implements
+PrivilegeService ..|> IPrivilegeService : implements
+AppMessageService ..|> IAppMessageService : implements
+NavigationHandler ..|> INavigationHandler : implements
 
-    IRoleRepository --|> IRepository : implements
-    IPersonRepository --|> IRepository : implements
-    IAddressRepository --|> IRepository : implements
-    IFarmRepository --|> IRepository : implements
+%% Service Dependencies
+NatureCheckCaseService --> INatureCheckCaseRepository : uses
+NatureCheckCaseService --> IFarmRepository : uses
+NatureCheckCaseService --> IPersonRepository : uses
+NatureCheckCaseService --> IAddressRepository : uses
+NatureCheckCaseService --> IRoleRepository : uses
 
-    RoleRepository ..|> Repository : inheritance
-    PersonRepository ..|> Repository : inheritance
-    FarmRepository ..|> Repository : inheritance
-    AddressRepository ..|> Repository  : inheritance
+%% Inheritance and Implementation
+Person --|> IEntity : implements
+Role --|> IEntity : implements
+Farm --|> IEntity : implements
+Address --|> IEntity : implements
+NatureCheckCase --|> IEntity : implements
+NatureArea --|> IEntity : implements
+Repository --|> IRepository : implements
+RoleRepository --|> IRoleRepository : implements
+PersonRepository --|> IPersonRepository : implements
+AddressRepository --|> IAddressRepository : implements
+FarmRepository --|> IFarmRepository : implements
 
-    %% note right of ArlaNatureConnect.Core.INatureCheckCaseService: Service enforces authorization, validation and mapping
+IRoleRepository --|> IRepository : implements
+IPersonRepository --|> IRepository : implements
+IAddressRepository --|> IRepository : implements
+IFarmRepository --|> IRepository : implements
+
+RoleRepository ..|> Repository : inheritance
+PersonRepository ..|> Repository : inheritance
+FarmRepository ..|> Repository : inheritance
+AddressRepository ..|> Repository  : inheritance
+
+%% note right of ArlaNatureConnect.Core.INatureCheckCaseService: Service enforces authorization, validation and mapping
 ```
    
 ### Class Descriptions
@@ -293,7 +321,9 @@ classDiagram
 - **User**: Inherits from Person and represents a system user who can have multiple roles.
 - **Role**: Defines a role that can be assigned to users for access control,
 with an attribute for the role name.
-- **Farmer**: Inherits from User and represents a farmer with additional attributes such as farm name, location, and CVR number.
+- **Farmer**: Inherits from User and represents a farmer with additional attributes such as farm name, address, and CVR number.
+- **Address**: Represents the address details associated with a person or farm, including street, city, postal code, and country.
+- **NatureCheckCase**: Represents a nature check case associated with a farm,
 ### Relationships
 - A **User** can have multiple **Roles**, establishing a many-to-many relationship.
 - A **Farmer** is a specialized type of **User**, indicating that every farmer
@@ -305,11 +335,7 @@ required for managing users and farmers within the system.
 - Additional attributes and methods can be added to each class as needed
 to support further functionalities.
 
-## DCD
-Metadata:
-- ID: UC-002-DCD
-
-
-
 <!-- Links -->
-[UC-002-DCD]: ./UseCase002-AdministrateFarmsAndUsers/UC002-Artifacts.md
+[UC-002-DCD]:     ./UseCase002-AdministrateFarmsAndUsers/UC002-Artifacts.md
+[UC-002B-DCD]:    ./UseCase002B-AssignNatureCheckCase/UC002B-Artifacts.md
+[UC-004-DCD]:     ./UseCase004-RegisterNatureAreas/UC004-Artifacts.md

@@ -15,5 +15,5 @@ public class Person : IEntity
     // Navigation properties
     public virtual Role Role { get; set; } = null!;
     public virtual Address Address { get; set; } = null!;
-    public virtual ICollection<Farm> Farms { get; set; } = new List<Farm>();
+    public virtual ICollection<Farm> Farms { get; set; } = [];
 }

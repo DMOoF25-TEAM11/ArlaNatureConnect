@@ -19,7 +19,7 @@ classDiagram
 
   class Farm {
     farmName
-    location
+    address
     cvr
   }
 

@@ -175,7 +175,7 @@ public abstract class ListViewModelBase<TRepos, TEntity> : ViewModelBase
             {
                 IEnumerable<TEntity> all = await _items.GetAllAsync(ct);
                 Items.Clear();
-                foreach (TEntity it in all ?? Array.Empty<TEntity>())
+                foreach (TEntity it in all ?? [])
                 {
                     Items.Add(it);
                 }

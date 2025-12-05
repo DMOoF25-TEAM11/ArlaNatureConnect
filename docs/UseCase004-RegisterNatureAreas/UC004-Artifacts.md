@@ -140,3 +140,64 @@ classDiagram
 - , and type. It includes methods to register and update details of the nature area.
 - **Employee**: The primary actor who registers nature areas. See UC-002-DM
 - **Farm**: Represents a farm that can contain multiple nature areas. See UC-002-DM
+
+### DCD Diagram
+```mermaid
+---
+  title: "UC004: Domain Class Diagram for Registering Nature Areas (DCD)"
+---
+classDiagram
+  direction TB
+
+  namespace ArlaNatureConnect.Domain.Entities {
+    class NatureArea {
+      +Guid Id
+      +Guid FarmId
+      +string Name
+      +string? Description
+      +string Coordinates
+      +string Type
+      +virtual Farm Farm
+    }
+
+    class Farm {
+    }
+  }
+
+  namespace ArlaNatureConnect.Core.Abstract {
+    class IRepository~TEntity~ {
+      <<interface>>
+    }
+
+    class INatureAreaRepository {
+      <<interface>>
+    }
+  }
+
+  namespace ArlaNatureConnect.Infrastructure.Repositories {
+    class Repository~TEntity~ {
+    }
+
+    class NatureAreaRepository {
+    }
+  }
+
+  %% Associations
+  Farm "*" -- "0..*" NatureArea : has >
+
+  %% Interface implementations
+  INatureAreaRepository --> NatureArea : manages
+
+  %% Inheritances and implementations
+  NatureAreaRepository --|> INatureAreaRepository : implements
+  Repository ..|> IRepository~TEntity~ : implements
+
+  %% Generic Repository inheritance
+  NatureAreaRepository ..|> Repository~TEntity~ : inheritance
+  ```
+
+  ### DCD Description
+  See [DCD] for detailed descriptions of the entities, repositories, and their relationships involved in registering nature areas.
+
+  <!-- Links to relevant code artifacts -->
+  [DCD]: ../DCD.md
