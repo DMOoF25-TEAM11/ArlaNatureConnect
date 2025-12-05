@@ -33,7 +33,6 @@ public partial class AppDbContext(DbContextOptions<AppDbContext> options) : DbCo
         // Please keep navigation auto-includes here in sync with Repository.cs to ensure
         // consistent behavior across the application.
         modelBuilder.Entity<Farm>().Navigation(e => e.Owner).AutoInclude();
-        //modelBuilder.Entity<Farm>().Navigation(e => e.Owner).AutoInclude();
         modelBuilder.Entity<Farm>().Navigation(e => e.Address).AutoInclude();
     }
 }

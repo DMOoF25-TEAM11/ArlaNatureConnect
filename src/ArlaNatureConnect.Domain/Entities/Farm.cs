@@ -14,6 +14,5 @@ public class Farm : IEntity
 
     // Navigation properties
     public virtual Person Owner { get; set; } = null!;
-    //public virtual Owner Owner { get; set; } = null!;
     public virtual Address Address { get; set; } = null!;
 }
