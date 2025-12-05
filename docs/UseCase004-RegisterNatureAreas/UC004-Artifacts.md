@@ -77,6 +77,37 @@ sequenceDiagram
    - A new nature area is created and stored in the system.
    - The nature area is associated with the selected farm.
 
+## Sequence Diagram
+
+```mermaid
+---
+  title: "OC004: Sequence Diagram for RegisterNatureArea Operation"
+---
+sequenceDiagram
+  participant View as RegisterNatureAreaUC
+  participant VM as RegisterNatureAreaUCViewModel
+  participant Repository as NatureAreaRepository
+  participant Store as DataStore\n(MSSQL Database)
+
+  View->>VM: Initialize(selectedFarmId)
+  VM->>Repository: GetFarmDetailsAsync(farmId)
+  Repository->>Store: QueryAsync(sqlGetFarm, farmId)
+  Store-->>Repository: QueryResult(farm)
+  Repository-->>VM: GetFarmDetailsResult(farm)
+
+  View->>VM: SubmitRegisterNatureArea(natureAreaDto)
+  VM->>VM: Validate(natureAreaDto)
+  alt validation passes
+    VM->>Repository: AddAsync(natureAreaDto)
+    Repository->>Store: AddAsync(natureAreaDto)
+    Store-->>Repository: InsertResult(newId)
+    Repository-->>VM: CreateResult(newId)
+    VM-->>View: RegistrationSucceeded(newId)
+  else validation fails
+    VM-->>View: RegistrationFailed(validationErrors)
+  end
+```
+
 ## Domain Model
 
 - ID: UC-004-DM
