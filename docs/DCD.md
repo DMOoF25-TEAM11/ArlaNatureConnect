@@ -78,7 +78,22 @@ namespace ArlaNatureConnect.Domain.Entities {
     +string Type
     +Farm Farm
   }
+
+  class NatureAreaImage {
+    +Guid Id
+    +Guid NatureAreaId
+    +string ImageUrl
+  }
+
+  class Coordinate {
+    +Guid Id
+    +double Latitude
+    +double Longitude
+    +int OrderIndex
+  }
 }
+
+
 
 namespace ArlaNatureConnect.Core.Abstract {
   %% Repositories
@@ -111,6 +126,20 @@ namespace ArlaNatureConnect.Core.Abstract {
   class INatureCheckCaseRepository {
     <<interface>>
   }
+
+  class INatureAreaRepository {
+    <<interface>>
+  }
+
+  class INatureAreaImageRepository {
+    <<interface>>
+  }
+
+  class INatureAreaCoordinateRepository {
+    <<interface>>
+  }
+
+  %% Services
 
   class IPrivilegeService {
     <<interface>>

@@ -12,7 +12,7 @@ using Microsoft.UI.Xaml.Controls;
 namespace ArlaNatureConnect.WinUI.ViewModels.Pages;
 
 /// <summary>
-/// Coordinates consultant navigation and listens to side-menu user selections.
+/// NatureAreaCoordinate consultant navigation and listens to side-menu user selections.
 /// </summary>
 public sealed class ConsultantPageViewModel : NavigationViewModelBase
 {

@@ -347,7 +347,6 @@ public partial class CRUDPersonUCViewModel
                                  IRoleRepository? roleRepository = null)
         : base(statusInfoServices, appMessageService, repository, false) // disable base auto-load
     {
-        Repository = repository;
         _roleRepository = roleRepository;
         _addressRepository = addressRepository;
 
@@ -449,7 +448,7 @@ public partial class CRUDPersonUCViewModel
     }
 
     #endregion
-    #region Commands
+    #region Command Handlers
 
     /// <summary>
     /// Sorts the bound collection by a specified property path.

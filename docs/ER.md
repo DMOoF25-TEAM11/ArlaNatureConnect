@@ -48,6 +48,13 @@ erDiagram
     Decimal Longitude
     Int OrderIndex
   }
+
+  NatureAreaImages {
+    Guid Id PK
+    Guid NatureAreaId FK
+    string ImageUrl
+    Int OrderIndex
+  }
   
   Farms ||--o{ NatureAreas : has
   Farms ||--o{ Persons : owned_by
@@ -55,4 +62,5 @@ erDiagram
   Persons ||--o{ Roles : assigned_to
   Persons ||--o{ Addresses : resides_at
   NatureAreas ||--o{ NatureAreaCoordinates : has
+  NatureAreas ||--o{ NatureAreaImages : has
 ```

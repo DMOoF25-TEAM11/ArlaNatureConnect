@@ -27,6 +27,8 @@ classDiagram
     name
     description
     coordinates
+    type
+    images
   }
 
   note for Role "Defines a role that can be assigned to Persons for access control."

@@ -4,6 +4,7 @@ using ArlaNatureConnect.Domain.Enums;
 using ArlaNatureConnect.WinUI.Commands;
 using ArlaNatureConnect.WinUI.Services;
 using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
+using ArlaNatureConnect.WinUI.Views.Controls.PageContents;
 using ArlaNatureConnect.WinUI.Views.Controls.PageContents.ArlaEmployee;
 
 using Microsoft.UI.Xaml.Controls;
@@ -23,6 +24,7 @@ public sealed partial class ArlaEmployeePageSideMenuUCViewModel : SideMenuViewMo
     private const string _LABEL_DASHBOARDS = "Dashboards";
     private const string _LABEL_FARMS = "Gårde";
     private const string _LABEL_USERS = "Brugere";
+    private const string _LABEL_NATURE_AREA = "Naturarealer";
     #endregion
 
     #region Fields
@@ -39,6 +41,7 @@ public sealed partial class ArlaEmployeePageSideMenuUCViewModel : SideMenuViewMo
     public ICommand DashboardsCommand { get; }
     public ICommand FarmsCommand { get; }
     public ICommand UsersCommand { get; }
+    public ICommand NatureAreasCommand { get; }
     #endregion
 
     public ArlaEmployeePageSideMenuUCViewModel(
@@ -57,11 +60,13 @@ public sealed partial class ArlaEmployeePageSideMenuUCViewModel : SideMenuViewMo
             DashboardsCommand = new RelayCommand(OnDashboardsExecuted, CanDashboardsExecute);
             FarmsCommand = new RelayCommand(OnFarmsExecuted, CanFarmsExecute);
             UsersCommand = new RelayCommand(OnUsersExecuted, CanUsersExecute);
+            NatureAreasCommand = new RelayCommand(OnNatureAreasExecuted, CanNatureAreasExecute);
 
             // Register navigation factories used by the base to create page contents, include per-item command so buttons can bind directly
             NavItems.Add(new NavItem(_LABEL_DASHBOARDS, DashboardsCommand));
             NavItems.Add(new NavItem(_LABEL_FARMS, FarmsCommand));
             NavItems.Add(new NavItem(_LABEL_USERS, UsersCommand));
+            NavItems.Add(new NavItem(_LABEL_NATURE_AREA, NatureAreasCommand));
 
             // Ensure command raises CanExecuteChanged when IsLoadingOrSaving changes
             PropertyChanged += (s, e) =>
@@ -71,6 +76,7 @@ public sealed partial class ArlaEmployeePageSideMenuUCViewModel : SideMenuViewMo
                     (DashboardsCommand as RelayCommand)?.RaiseCanExecuteChanged();
                     (FarmsCommand as RelayCommand)?.RaiseCanExecuteChanged();
                     (UsersCommand as RelayCommand)?.RaiseCanExecuteChanged();
+                    (NatureAreasCommand as RelayCommand)?.RaiseCanExecuteChanged();
                 }
             };
         }
@@ -102,6 +108,14 @@ public sealed partial class ArlaEmployeePageSideMenuUCViewModel : SideMenuViewMo
         NavigationCommand?.Execute(new Func<UserControl?>(() => new ArlaEmployeeUsers()));
     }
     private bool CanUsersExecute() => !IsLoading;
+
+    private void OnNatureAreasExecuted()
+    {
+        SetSelectedByLabel(_LABEL_NATURE_AREA);
+        NavigationCommand?.Execute(new Func<UserControl?>(() => new AdministrateNatureAreaUC()));
+    }
+
+    private bool CanNatureAreasExecute() => !IsLoading;
     #endregion
 
     private void SetSelectedByLabel(string label)
