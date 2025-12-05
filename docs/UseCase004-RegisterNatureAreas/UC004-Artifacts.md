@@ -40,6 +40,27 @@ The system will store this information and allow for future management and updat
 1. System confirms the successful registration of the nature area.
 1. Employee receives confirmation and can view the registered nature area.
 
+## System Sequence Diagram
+- ID: UC-004-SSD
+- Cross references:
+  - See the Use Case Brief above: [UC-004-BC](#user-case-brief)
+
+```mermaid
+---
+  title: "UC004: System Sequence Diagram for Registering Nature Areas"
+---
+sequenceDiagram
+  participant RegisterNatureAreaUC
+  participant System
+
+  RegisterNatureAreaUC->>System: OpenRegisterNatureAreaPage(selectedFarmId)
+  RegisterNatureAreaUC->>System: PopulateRegisterForm()
+  RegisterNatureAreaUC->>System: SubmitRegisterNatureArea(natureAreaDto)
+  Note over System: Internal services and repositories are black-boxed
+  System->>System: ValidateAndSaveNatureArea(natureAreaDto)
+  System-->>RegisterNatureAreaUC: RegistrationResult(success, id, errors)
+```
+
 ## Domain Model
 
 - ID: UC-004-DM
