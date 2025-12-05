@@ -20,9 +20,9 @@ namespace ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu;
 public sealed partial class ArlaEmployeePageSideMenuUCViewModel : SideMenuViewModelBase
 {
     #region Constants
-    private const string _labelDashboards = "Dashboards";
-    private const string _labelFarms = "Gårde";
-    private const string _labelUsers = "Brugere";
+    private const string _LABEL_DASHBOARDS = "Dashboards";
+    private const string _LABEL_FARMS = "Gårde";
+    private const string _LABEL_USERS = "Brugere";
     #endregion
 
     #region Fields
@@ -59,9 +59,9 @@ public sealed partial class ArlaEmployeePageSideMenuUCViewModel : SideMenuViewMo
             UsersCommand = new RelayCommand(OnUsersExecuted, CanUsersExecute);
 
             // Register navigation factories used by the base to create page contents, include per-item command so buttons can bind directly
-            NavItems.Add(new NavItem(_labelDashboards, DashboardsCommand));
-            NavItems.Add(new NavItem(_labelFarms, FarmsCommand));
-            NavItems.Add(new NavItem(_labelUsers, UsersCommand));
+            NavItems.Add(new NavItem(_LABEL_DASHBOARDS, DashboardsCommand));
+            NavItems.Add(new NavItem(_LABEL_FARMS, FarmsCommand));
+            NavItems.Add(new NavItem(_LABEL_USERS, UsersCommand));
 
             // Ensure command raises CanExecuteChanged when IsLoadingOrSaving changes
             PropertyChanged += (s, e) =>
@@ -81,7 +81,7 @@ public sealed partial class ArlaEmployeePageSideMenuUCViewModel : SideMenuViewMo
     {
         using (_statusInfoServices!.BeginLoadingOrSaving())
         {
-            SetSelectedByLabel(_labelDashboards);
+            SetSelectedByLabel(_LABEL_DASHBOARDS);
             NavigationCommand?.Execute(new Func<UserControl?>(() => new ArlaEmployeeDashboards()));
         }
     }
@@ -89,7 +89,7 @@ public sealed partial class ArlaEmployeePageSideMenuUCViewModel : SideMenuViewMo
 
     private void OnFarmsExecuted()
     {
-        SetSelectedByLabel(_labelFarms);
+        SetSelectedByLabel(_LABEL_FARMS);
         // For Farms view, we need to set DataContext to AssignNatureCheckViewModel
         // We'll handle this directly in OnNavigate override
         NavigationCommand?.Execute(new Func<UserControl?>(() => new ArlaEmployeeAssignNatureCheck()));
@@ -98,7 +98,7 @@ public sealed partial class ArlaEmployeePageSideMenuUCViewModel : SideMenuViewMo
 
     private void OnUsersExecuted()
     {
-        SetSelectedByLabel(_labelUsers);
+        SetSelectedByLabel(_LABEL_USERS);
         NavigationCommand?.Execute(new Func<UserControl?>(() => new ArlaEmployeeUsers()));
     }
     private bool CanUsersExecute() => !IsLoading;

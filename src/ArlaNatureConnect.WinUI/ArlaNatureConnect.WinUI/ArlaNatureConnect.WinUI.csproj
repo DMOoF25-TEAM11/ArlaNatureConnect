@@ -16,6 +16,8 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<Compile Remove="ViewModels\template.cs" />
+		<None Remove="Views\Controls\PageContents\AdministrateNatureAreaUC.xaml" />
+		<None Remove="Views\Controls\SharedUC\CRUDNatureAreaUC.xaml" />
 		<None Remove="Views\Controls\SideMenu\AdministratorPageSideMenuUC.xaml" />
 		<None Include="ViewModels\template.cs" />
 	</ItemGroup>
@@ -50,6 +52,18 @@
 	<ItemGroup>
 		<Folder Include="ViewModels\Abstracts\NewFolder\" />
 		<Folder Include="ViewModels\Controls\PageContents\Administrator\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Page Update="Views\Controls\PageContents\AdministrateNatureAreaUC.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Page Update="Views\Controls\SharedUC\CRUDNatureAreaUC.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
 	</ItemGroup>
 
 	<ItemGroup>
