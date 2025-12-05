@@ -77,7 +77,9 @@ namespace ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 public abstract class NavigationViewModelBase(INavigationHandler navigationHandler) : ViewModelBase, INavigationViewModelBase
 {
     #region Fields
-    private readonly INavigationHandler? _navigationHandler = (NavigationHandler?)(navigationHandler ?? throw new ArgumentNullException(nameof(navigationHandler)));
+    // Keep the handler as the interface type. Casting to a concrete NavigationHandler
+    // breaks tests that supply a mocked INavigationHandler (Castle proxy).
+    private readonly INavigationHandler _navigationHandler = navigationHandler ?? throw new ArgumentNullException(nameof(navigationHandler));
 
     // Side menu handling fields moved from view
     private UIElement[]? _previousSideMenuChildren;
@@ -93,7 +95,6 @@ public abstract class NavigationViewModelBase(INavigationHandler navigationHandl
 
     public RelayCommand<Person>? ChooseUserCommand { get; protected set; }
     #endregion
-
     #region Properties
     /// <summary>
     /// Command to navigate between different content views.

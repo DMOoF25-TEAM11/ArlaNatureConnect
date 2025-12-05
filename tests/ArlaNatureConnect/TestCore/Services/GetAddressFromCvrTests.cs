@@ -102,6 +102,27 @@ public class GetAddressFromCvrTests
     [TestMethod]
     public void GetCompanyInfo_Online_Search_Cvr_25313763()
     {
+        // Only run this test when the test host's public IP is located in Denmark (country code: DK).
+        try
+        {
+            using (var wc = new WebClient())
+            {
+                wc.Headers.Add("User-Agent", "unit-test");
+                wc.Encoding = System.Text.Encoding.UTF8;
+                wc.Proxy = null; // avoid proxy interference
+                string country = wc.DownloadString("https://ipapi.co/country/").Trim();
+                if (!string.Equals(country, "DK", StringComparison.OrdinalIgnoreCase))
+                {
+                    Assert.Inconclusive($"Skipping online CVR lookup because host country is '{country}' (requires 'DK').");
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            // If we cannot determine the public IP/country, skip the test to avoid false failures in CI.
+            Assert.Inconclusive("Skipping online CVR lookup because host country could not be determined: " + ex.Message);
+        }
+
         // This test performs a real lookup against the CVR API for CVR 25313763.
         GetAddressFromCvr.ApiResult? res = GetAddressFromCvr.GetCompanyInfo("25313763");
 

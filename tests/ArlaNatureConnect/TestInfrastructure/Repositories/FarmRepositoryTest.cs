@@ -5,6 +5,7 @@ using ArlaNatureConnect.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 using Moq;
+
 using System.Runtime.InteropServices;
 
 namespace TestInfrastructure.Repositories;
@@ -25,21 +26,21 @@ public class FarmRepositoryTest
         DbContextOptions<AppDbContext> options = CreateOptions();
 
         // Create required Owner and Address entities first (due to AutoInclude and foreign key constraints)
-        var personId = Guid.NewGuid();
-        var addressId = Guid.NewGuid();
-        var roleId = Guid.NewGuid();
+        Guid OwnerId = Guid.NewGuid();
+        Guid addressId = Guid.NewGuid();
+        Guid roleId = Guid.NewGuid();
 
         using (AppDbContext ctx = new AppDbContext(options))
         {
             // Create Role first
             ctx.Roles.Add(new Role { Id = roleId, Name = "Farmer" });
-            
+
             // Create Address
             ctx.Addresses.Add(new Address { Id = addressId, Street = "Test Street", City = "Test City", PostalCode = "1234", Country = "DK" });
-            
+
             // Create Owner
-            ctx.Persons.Add(new Person { Id = personId, FirstName = "Test", LastName = "Owner", Email = "test@test.com", RoleId = roleId, AddressId = addressId, IsActive = true });
-            
+            ctx.Persons.Add(new Person { Id = OwnerId, FirstName = "Test", LastName = "Owner", Email = "test@test.com", RoleId = roleId, AddressId = addressId, IsActive = true });
+
             await ctx.SaveChangesAsync();
         }
 
@@ -48,7 +49,7 @@ public class FarmRepositoryTest
             Id = Guid.NewGuid(),
             Name = "TestFarm",
             CVR = "12345678",
-            PersonId = personId,
+            OwnerId = OwnerId,
             AddressId = addressId
         };
 
@@ -74,32 +75,32 @@ public class FarmRepositoryTest
         DbContextOptions<AppDbContext> options = CreateOptions();
 
         // Create required Owner and Address entities first (due to AutoInclude and foreign key constraints)
-        var personId1 = Guid.NewGuid();
-        var addressId1 = Guid.NewGuid();
-        var personId2 = Guid.NewGuid();
-        var addressId2 = Guid.NewGuid();
-        var roleId = Guid.NewGuid();
+        Guid OwnerId1 = Guid.NewGuid();
+        Guid addressId1 = Guid.NewGuid();
+        Guid OwnerId2 = Guid.NewGuid();
+        Guid addressId2 = Guid.NewGuid();
+        Guid roleId = Guid.NewGuid();
 
         using (AppDbContext ctx = new(options))
         {
             // Create Role first
             ctx.Roles.Add(new Role { Id = roleId, Name = "Farmer" });
-            
+
             // Create Addresses
             ctx.Addresses.Add(new Address { Id = addressId1, Street = "Street1", City = "City1", PostalCode = "1234", Country = "DK" });
             ctx.Addresses.Add(new Address { Id = addressId2, Street = "Street2", City = "City2", PostalCode = "5678", Country = "DK" });
-            
+
             // Create Persons
-            ctx.Persons.Add(new Person { Id = personId1, FirstName = "Owner1", LastName = "Test", Email = "owner1@test.com", RoleId = roleId, AddressId = addressId1, IsActive = true });
-            ctx.Persons.Add(new Person { Id = personId2, FirstName = "Owner2", LastName = "Test", Email = "owner2@test.com", RoleId = roleId, AddressId = addressId2, IsActive = true });
-            
+            ctx.Persons.Add(new Person { Id = OwnerId1, FirstName = "Owner1", LastName = "Test", Email = "owner1@test.com", RoleId = roleId, AddressId = addressId1, IsActive = true });
+            ctx.Persons.Add(new Person { Id = OwnerId2, FirstName = "Owner2", LastName = "Test", Email = "owner2@test.com", RoleId = roleId, AddressId = addressId2, IsActive = true });
+
             await ctx.SaveChangesAsync();
         }
 
         Farm[] farms = new[]
         {
-            new Farm { Id = Guid.NewGuid(), Name = "F1", CVR = "111", PersonId = personId1, AddressId = addressId1 },
-            new Farm { Id = Guid.NewGuid(), Name = "F2", CVR = "222", PersonId = personId2, AddressId = addressId2 }
+            new Farm { Id = Guid.NewGuid(), Name = "F1", CVR = "111", OwnerId = OwnerId1, AddressId = addressId1 },
+            new Farm { Id = Guid.NewGuid(), Name = "F2", CVR = "222", OwnerId = OwnerId2, AddressId = addressId2 }
         };
 
         using (AppDbContext ctx = new(options))
@@ -123,25 +124,25 @@ public class FarmRepositoryTest
         DbContextOptions<AppDbContext> options = CreateOptions();
 
         // Create required Owner and Address entities first (due to AutoInclude and foreign key constraints)
-        var personId = Guid.NewGuid();
-        var addressId = Guid.NewGuid();
-        var roleId = Guid.NewGuid();
+        Guid OwnerId = Guid.NewGuid();
+        Guid addressId = Guid.NewGuid();
+        Guid roleId = Guid.NewGuid();
 
         using (AppDbContext ctx = new AppDbContext(options))
         {
             // Create Role first
             ctx.Roles.Add(new Role { Id = roleId, Name = "Farmer" });
-            
+
             // Create Address
             ctx.Addresses.Add(new Address { Id = addressId, Street = "Test Street", City = "Test City", PostalCode = "1234", Country = "DK" });
-            
+
             // Create Owner
-            ctx.Persons.Add(new Person { Id = personId, FirstName = "Test", LastName = "Owner", Email = "test@test.com", RoleId = roleId, AddressId = addressId, IsActive = true });
-            
+            ctx.Persons.Add(new Person { Id = OwnerId, FirstName = "Test", LastName = "Owner", Email = "test@test.com", RoleId = roleId, AddressId = addressId, IsActive = true });
+
             await ctx.SaveChangesAsync();
         }
 
-        Farm farm = new Farm { Id = Guid.NewGuid(), Name = "Before", CVR = "000", PersonId = personId, AddressId = addressId };
+        Farm farm = new Farm { Id = Guid.NewGuid(), Name = "Before", CVR = "000", OwnerId = OwnerId, AddressId = addressId };
         using (AppDbContext ctx = new AppDbContext(options))
         {
             await ctx.Farms.AddAsync(farm);
@@ -169,25 +170,25 @@ public class FarmRepositoryTest
         DbContextOptions<AppDbContext> options = CreateOptions();
 
         // Create required Owner and Address entities first (due to AutoInclude and foreign key constraints)
-        var personId = Guid.NewGuid();
-        var addressId = Guid.NewGuid();
-        var roleId = Guid.NewGuid();
+        Guid OwnerId = Guid.NewGuid();
+        Guid addressId = Guid.NewGuid();
+        Guid roleId = Guid.NewGuid();
 
         using (AppDbContext ctx = new(options))
         {
             // Create Role first
             ctx.Roles.Add(new Role { Id = roleId, Name = "Farmer" });
-            
+
             // Create Address
             ctx.Addresses.Add(new Address { Id = addressId, Street = "Test Street", City = "Test City", PostalCode = "1234", Country = "DK" });
-            
+
             // Create Owner
-            ctx.Persons.Add(new Person { Id = personId, FirstName = "Test", LastName = "Owner", Email = "test@test.com", RoleId = roleId, AddressId = addressId, IsActive = true });
-            
+            ctx.Persons.Add(new Person { Id = OwnerId, FirstName = "Test", LastName = "Owner", Email = "test@test.com", RoleId = roleId, AddressId = addressId, IsActive = true });
+
             await ctx.SaveChangesAsync();
         }
 
-        Farm farm = new() { Id = Guid.NewGuid(), Name = "ToDelete", CVR = "X", PersonId = personId, AddressId = addressId };
+        Farm farm = new() { Id = Guid.NewGuid(), Name = "ToDelete", CVR = "X", OwnerId = OwnerId, AddressId = addressId };
         using (AppDbContext ctx = new(options))
         {
             await ctx.Farms.AddAsync(farm);
@@ -215,44 +216,44 @@ public class FarmRepositoryTest
         DbContextOptions<AppDbContext> options = CreateOptions();
 
         // Create required Owner and Address entities first (due to AutoInclude and foreign key constraints)
-        var roleId = Guid.NewGuid();
-        var personIds = new List<Guid>();
-        var addressIds = new List<Guid>();
+        Guid roleId = Guid.NewGuid();
+        List<Guid> OwnerIds = new List<Guid>();
+        List<Guid> addressIds = new List<Guid>();
 
-        using (var seed = new AppDbContext(options))
+        using (AppDbContext seed = new AppDbContext(options))
         {
             // Create Role first
             seed.Roles.Add(new Role { Id = roleId, Name = "Farmer" });
-            
+
             // Create Addresses and Persons
             for (int i = 0; i < 10; i++)
             {
-                var addressId = Guid.NewGuid();
-                var personId = Guid.NewGuid();
+                Guid addressId = Guid.NewGuid();
+                Guid OwnerId = Guid.NewGuid();
                 addressIds.Add(addressId);
-                personIds.Add(personId);
-                
+                OwnerIds.Add(OwnerId);
+
                 seed.Addresses.Add(new Address { Id = addressId, Street = $"Street{i}", City = $"City{i}", PostalCode = $"{i}000", Country = "DK" });
-                seed.Persons.Add(new Person { Id = personId, FirstName = $"Owner{i}", LastName = "Test", Email = $"owner{i}@test.com", RoleId = roleId, AddressId = addressId, IsActive = true });
+                seed.Persons.Add(new Person { Id = OwnerId, FirstName = $"Owner{i}", LastName = "Test", Email = $"owner{i}@test.com", RoleId = roleId, AddressId = addressId, IsActive = true });
             }
-            
+
             await seed.SaveChangesAsync();
         }
 
         // seed
-        using (var seed = new AppDbContext(options))
+        using (AppDbContext seed = new AppDbContext(options))
         {
             for (int i = 0; i < 10; i++)
             {
-                seed.Farms.Add(new Farm { Id = Guid.NewGuid(), Name = $"F{i}", CVR = i.ToString(), PersonId = personIds[i], AddressId = addressIds[i] });
+                seed.Farms.Add(new Farm { Id = Guid.NewGuid(), Name = $"F{i}", CVR = i.ToString(), OwnerId = OwnerIds[i], AddressId = addressIds[i] });
             }
             await seed.SaveChangesAsync();
         }
 
-        var factoryMock = new Mock<IDbContextFactory<AppDbContext>>();
+        Mock<IDbContextFactory<AppDbContext>> factoryMock = new Mock<IDbContextFactory<AppDbContext>>();
         factoryMock.Setup(f => f.CreateDbContext()).Returns(() => new AppDbContext(options));
 
-        var repo = new FarmRepository(factoryMock.Object);
+        FarmRepository repo = new FarmRepository(factoryMock.Object);
 
         IEnumerable<Task<List<Farm>>> tasks = Enumerable.Range(0, 8).Select(_ => Task.Run(async () => (await repo.GetAllAsync()).ToList()));
         List<Farm>[] results = await Task.WhenAll(tasks);
@@ -266,10 +267,10 @@ public class FarmRepositoryTest
     [TestMethod]
     public async Task Repository_Methods_Throw_On_COMException_From_Factory()
     {
-        var factoryMock = new Mock<IDbContextFactory<AppDbContext>>();
+        Mock<IDbContextFactory<AppDbContext>> factoryMock = new Mock<IDbContextFactory<AppDbContext>>();
         factoryMock.Setup(f => f.CreateDbContext()).Throws(new COMException("COM error"));
 
-        var repo = new FarmRepository(factoryMock.Object);
+        FarmRepository repo = new FarmRepository(factoryMock.Object);
 
         try
         {

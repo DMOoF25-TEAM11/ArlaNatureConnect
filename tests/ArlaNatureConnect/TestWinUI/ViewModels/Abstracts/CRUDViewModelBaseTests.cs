@@ -21,8 +21,12 @@ public sealed partial class CRUDViewModelBaseTests
 
     private sealed class FakeRepo : IRepository<TestEntity>
     {
-        public Task AddAsync(TestEntity entity, CancellationToken cancellationToken = default) => Task.CompletedTask;
-        public Task AddRangeAsync(IEnumerable<TestEntity> entities, CancellationToken cancellationToken = default) => Task.CompletedTask;
+        public Task<TestEntity> AddAsync(TestEntity entity, CancellationToken cancellationToken = default)
+            => Task.FromResult(entity);
+
+        public Task<IEnumerable<TestEntity>> AddRangeAsync(IEnumerable<TestEntity> entities, CancellationToken cancellationToken = default)
+            => Task.FromResult(entities);
+
         public Task DeleteAsync(Guid id, CancellationToken cancellationToken = default) => Task.CompletedTask;
         public Task<IEnumerable<TestEntity>> GetAllAsync(CancellationToken cancellationToken = default) => Task.FromResult<IEnumerable<TestEntity>>([]);
         public Task<TestEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) => Task.FromResult<TestEntity?>(null);
@@ -46,7 +50,13 @@ public sealed partial class CRUDViewModelBaseTests
             ResetFormInvoked = true;
             return Task.CompletedTask;
         }
-        protected override Task<TestEntity> OnAddFormAsync() => Task.FromResult(new TestEntity());
+        protected override Task<TestEntity> OnAddFormAsync()
+        {
+            // mark that add form creation started while IsSaving should be true
+            AddInvoked = true;
+            // simulate async work so IsSaving remains true during test check
+            return Task.Delay(50).ContinueWith(_ => new TestEntity());
+        }
         protected override Task OnSaveFormAsync() => Task.CompletedTask;
         protected override Task OnLoadFormAsync(TestEntity entity) => Task.CompletedTask;
 
@@ -75,7 +85,7 @@ public sealed partial class CRUDViewModelBaseTests
         // Expose protected CanXXX methods for testing
         public bool ExposedCanSubmitCore() => CanSubmitCore();
         public bool ExposedCanAdd() => CanAdd();
-        public bool ExposedCanSave() => CanSaveAsync();
+        public bool ExposedCanSave() => CanSave();
         public bool ExposedCanDelete() => CanDelete();
 
         // Allow tests to set protected state
