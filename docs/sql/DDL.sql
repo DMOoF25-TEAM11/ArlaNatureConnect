@@ -14,10 +14,8 @@
 
 SET QUOTED_IDENTIFIER ON;
 SET ANSI_NULLS ON;
-GO
 
 USE master;
-GO
 
 -- Drop existing database if exists
 IF DB_ID(N'ArlaNatureConnect_Dev') IS NOT NULL
@@ -34,7 +32,6 @@ GO
 
 PRINT 'Using database [ArlaNatureConnect_Dev]...';
 USE [ArlaNatureConnect_Dev];
-GO
 
 /***************************************************************************************************
  Table: VERSIONINFO
@@ -48,7 +45,7 @@ BEGIN
         [AppliedAt] DATETIME NOT NULL DEFAULT GETDATE()
     );
 END
-GO
+
 
 /***************************************************************************************************
  Table: ROLES
@@ -61,7 +58,7 @@ BEGIN
         [Name] NVARCHAR(100) NOT NULL UNIQUE
     );
 END
-GO
+
 
 /***************************************************************************************************
     Table: Addresses
@@ -120,23 +117,22 @@ BEGIN
 END
 
 /***************************************************************************************************
-    Table: NatureArea
+    Table: NatureAreas
     Purpose: Stores nature area information associated with farms.
 ***************************************************************************************************/
-IF OBJECT_ID(N'[dbo].[NatureArea]') IS NULL
+IF OBJECT_ID(N'[dbo].[NatureAreas]') IS NULL
 BEGIN
-    CREATE TABLE [dbo].[NatureArea] (
+    CREATE TABLE [dbo].[NatureAreas] (
         [Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY DEFAULT NEWSEQUENTIALID(),
         [FarmId] UNIQUEIDENTIFIER NOT NULL,
         [Name] NVARCHAR(200) NOT NULL,
         [Description] NVARCHAR(MAX) NULL,
         [Type] NVARCHAR(100) NOT NULL,
-        CONSTRAINT [FK_NatureArea_Farm] FOREIGN KEY ([FarmId]) REFERENCES [dbo].[Farm]([Id]) ON DELETE CASCADE
+        CONSTRAINT [FK_NatureArea_Farm] FOREIGN KEY ([FarmId]) REFERENCES [dbo].[Farms]([Id]) ON DELETE CASCADE
     );
 
-    CREATE INDEX [IX_NatureArea_FarmId] ON [dbo].[NatureArea]([FarmId]);
+    CREATE INDEX [IX_NatureArea_FarmId] ON [dbo].[NatureAreas]([FarmId]);
 END
-GO
 
 /***************************************************************************************************
     Table: NatureAreaCoordinates
@@ -150,12 +146,27 @@ BEGIN
         [Latitude] DECIMAL(9,6) NOT NULL,
         [Longitude] DECIMAL(9,6) NOT NULL,
         [OrderIndex] INT NOT NULL DEFAULT(0),
-        CONSTRAINT [FK_NAC_NatureArea] FOREIGN KEY ([NatureAreaId]) REFERENCES [dbo].[NatureArea]([Id]) ON DELETE CASCADE
+        CONSTRAINT [FK_NAC_NatureArea] FOREIGN KEY ([NatureAreaId]) REFERENCES [dbo].[NatureAreas]([Id]) ON DELETE CASCADE
     );
     
     CREATE INDEX [IX_NAC_NatureAreaId] ON [dbo].[NatureAreaCoordinates]([NatureAreaId]);
 END
-GO
+
+/***************************************************************************************************
+    Table: NatureAreaImages
+    Purpose: Stores images for nature areas.
+ ***************************************************************************************************/
+IF OBJECT_ID(N'[dbo].[NatureAreaImages]') IS NULL
+BEGIN
+    CREATE TABLE [dbo].[NatureAreaImages] (
+        [Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY DEFAULT NEWID(),
+        [NatureAreaId] UNIQUEIDENTIFIER NOT NULL,
+        [ImageUrl] NVARCHAR(500) NOT NULL,
+        CONSTRAINT [FK_NAI_NatureArea] FOREIGN KEY ([NatureAreaId]) REFERENCES [dbo].[NatureAreas]([Id]) ON DELETE CASCADE
+    );
+
+    CREATE INDEX [IX_NAI_NatureAreaId] ON [dbo].[NatureAreaImages]([NatureAreaId]);
+END
 
 -- Add FK from Farms to Persons now that Persons table exists
 IF OBJECT_ID(N'[dbo].[Farms]') IS NOT NULL AND OBJECT_ID(N'[dbo].[Persons]') IS NOT NULL
@@ -172,7 +183,7 @@ END
     Table: AuditLog
     Purpose: Stores audit log entries.
 ***************************************************************************************************/
-IF OBJECT_ID(N'dbo.[AuditLog]') IS NULL
+IF OBJECT_ID(N'[dbo].[AuditLog]') IS NULL
 BEGIN
     CREATE TABLE [dbo].[AuditLog] (
         [Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY DEFAULT NEWID(),
@@ -185,11 +196,11 @@ BEGIN
     CREATE INDEX [IX_AuditLog_Actor] ON [dbo].[AuditLog]([ActorUserId]);
     CREATE INDEX [IX_AuditLog_Target] ON [dbo].[AuditLog]([TargetUserId]);
 END
-GO
 
 PRINT 'Database [ArlaNatureConnect_Dev] schema creation completed.';
 
 /*
  Insert initial version info   
  */
- INSERT INTO [dbo].[VersionInfo] ([Id], [Version]) VALUES (1, '1.0.0');
+INSERT INTO [dbo].[VersionInfo] ([Id], [Version]) VALUES (1, '1.0.0');
+GO
