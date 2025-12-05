@@ -49,7 +49,7 @@
 //        {
 //            seedCtx.Roles.Add(new Role { Id = roleId, Name = "Farmer" });
 //            seedCtx.Roles.Add(new Role { Id = roleId2, Name = "Admin" });
-//            seedCtx.Addresses.Add(new Address
+//            seedCtx.Address.Add(new Address
 //            {
 //                Id = addrId,
 //                Street = "Main",
@@ -57,7 +57,7 @@
 //                PostalCode = "12345",
 //                Country = "Denmark"
 //            });
-//            seedCtx.Addresses.Add(new Address
+//            seedCtx.Address.Add(new Address
 //            {
 //                Id = addrId2,
 //                Street = "SideRoad",

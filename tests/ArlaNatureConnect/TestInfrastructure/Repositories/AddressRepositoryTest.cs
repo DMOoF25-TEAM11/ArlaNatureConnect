@@ -154,7 +154,7 @@ public class AddressRepositoryTest
         {
             for (int i = 0; i < 10; i++)
             {
-                seed.Addresses.Add(new Address { Id = Guid.NewGuid(), Street = $"S{i}", City = "C", PostalCode = "P", Country = "DK" });
+                seed.Address.Add(new Address { Id = Guid.NewGuid(), Street = $"S{i}", City = "C", PostalCode = "P", Country = "DK" });
             }
             await seed.SaveChangesAsync();
         }

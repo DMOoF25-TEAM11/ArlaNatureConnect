@@ -9,7 +9,7 @@ public partial class AppDbContext(DbContextOptions<AppDbContext> options) : DbCo
     public DbSet<Farm> Farms { get; set; } = null!;
     public DbSet<Person> Persons { get; set; } = null!;
     public DbSet<Role> Roles { get; set; } = null!;
-    public DbSet<Address> Addresses { get; set; } = null!;
+    public DbSet<Address> Address { get; set; } = null!;
     public DbSet<NatureCheckCase> NatureCheckCases { get; set; } = null!;
     public DbSet<NatureArea> NatureAreas { get; set; } = null!;
     public DbSet<NatureAreaCoordinate> NatureAreaCoordinates { get; set; } = null!;

@@ -30,7 +30,7 @@ public class PersonRepositoryTest
         using (AppDbContext seed = new AppDbContext(options))
         {
             seed.Roles.Add(new Role { Id = roleId, Name = "Farmer" });
-            seed.Addresses.Add(new Address { Id = addrId, Street = "S", City = "C", PostalCode = "P", Country = "DK" });
+            seed.Address.Add(new Address { Id = addrId, Street = "S", City = "C", PostalCode = "P", Country = "DK" });
             seed.Persons.Add(new Person { Id = Guid.NewGuid(), FirstName = "P1", LastName = "L1", Email = "p1@x.com", RoleId = roleId, AddressId = addrId, IsActive = true });
             await seed.SaveChangesAsync();
         }
@@ -80,7 +80,7 @@ public class PersonRepositoryTest
         using (AppDbContext seed = new AppDbContext(options))
         {
             seed.Roles.Add(new Role { Id = roleId, Name = "Farmer" });
-            seed.Addresses.Add(new Address { Id = addrId, Street = "S", City = "C", PostalCode = "P", Country = "DK" });
+            seed.Address.Add(new Address { Id = addrId, Street = "S", City = "C", PostalCode = "P", Country = "DK" });
             for (int i = 0; i < 10; i++)
                 seed.Persons.Add(new Person { Id = Guid.NewGuid(), FirstName = $"P{i}", LastName = "L", Email = $"p{i}@x.com", RoleId = roleId, AddressId = addrId, IsActive = true });
             await seed.SaveChangesAsync();

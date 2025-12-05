@@ -36,7 +36,7 @@ public class FarmRepositoryTest
             ctx.Roles.Add(new Role { Id = roleId, Name = "Farmer" });
 
             // Create Address
-            ctx.Addresses.Add(new Address { Id = addressId, Street = "Test Street", City = "Test City", PostalCode = "1234", Country = "DK" });
+            ctx.Address.Add(new Address { Id = addressId, Street = "Test Street", City = "Test City", PostalCode = "1234", Country = "DK" });
 
             // Create Owner
             ctx.Persons.Add(new Person { Id = OwnerId, FirstName = "Test", LastName = "Owner", Email = "test@test.com", RoleId = roleId, AddressId = addressId, IsActive = true });
@@ -87,8 +87,8 @@ public class FarmRepositoryTest
             ctx.Roles.Add(new Role { Id = roleId, Name = "Farmer" });
 
             // Create Addresses
-            ctx.Addresses.Add(new Address { Id = addressId1, Street = "Street1", City = "City1", PostalCode = "1234", Country = "DK" });
-            ctx.Addresses.Add(new Address { Id = addressId2, Street = "Street2", City = "City2", PostalCode = "5678", Country = "DK" });
+            ctx.Address.Add(new Address { Id = addressId1, Street = "Street1", City = "City1", PostalCode = "1234", Country = "DK" });
+            ctx.Address.Add(new Address { Id = addressId2, Street = "Street2", City = "City2", PostalCode = "5678", Country = "DK" });
 
             // Create Persons
             ctx.Persons.Add(new Person { Id = OwnerId1, FirstName = "Owner1", LastName = "Test", Email = "owner1@test.com", RoleId = roleId, AddressId = addressId1, IsActive = true });
@@ -134,7 +134,7 @@ public class FarmRepositoryTest
             ctx.Roles.Add(new Role { Id = roleId, Name = "Farmer" });
 
             // Create Address
-            ctx.Addresses.Add(new Address { Id = addressId, Street = "Test Street", City = "Test City", PostalCode = "1234", Country = "DK" });
+            ctx.Address.Add(new Address { Id = addressId, Street = "Test Street", City = "Test City", PostalCode = "1234", Country = "DK" });
 
             // Create Owner
             ctx.Persons.Add(new Person { Id = OwnerId, FirstName = "Test", LastName = "Owner", Email = "test@test.com", RoleId = roleId, AddressId = addressId, IsActive = true });
@@ -180,7 +180,7 @@ public class FarmRepositoryTest
             ctx.Roles.Add(new Role { Id = roleId, Name = "Farmer" });
 
             // Create Address
-            ctx.Addresses.Add(new Address { Id = addressId, Street = "Test Street", City = "Test City", PostalCode = "1234", Country = "DK" });
+            ctx.Address.Add(new Address { Id = addressId, Street = "Test Street", City = "Test City", PostalCode = "1234", Country = "DK" });
 
             // Create Owner
             ctx.Persons.Add(new Person { Id = OwnerId, FirstName = "Test", LastName = "Owner", Email = "test@test.com", RoleId = roleId, AddressId = addressId, IsActive = true });
@@ -233,7 +233,7 @@ public class FarmRepositoryTest
                 addressIds.Add(addressId);
                 OwnerIds.Add(OwnerId);
 
-                seed.Addresses.Add(new Address { Id = addressId, Street = $"Street{i}", City = $"City{i}", PostalCode = $"{i}000", Country = "DK" });
+                seed.Address.Add(new Address { Id = addressId, Street = $"Street{i}", City = $"City{i}", PostalCode = $"{i}000", Country = "DK" });
                 seed.Persons.Add(new Person { Id = OwnerId, FirstName = $"Owner{i}", LastName = "Test", Email = $"owner{i}@test.com", RoleId = roleId, AddressId = addressId, IsActive = true });
             }
 
