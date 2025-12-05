@@ -3,7 +3,9 @@ using ArlaNatureConnect.Core.DTOs;
 using ArlaNatureConnect.Core.Services;
 using ArlaNatureConnect.Domain.Entities;
 using ArlaNatureConnect.Domain.Enums;
+
 using Moq;
+
 using System.Runtime.InteropServices;
 
 namespace TestCore.Services;
@@ -184,7 +186,7 @@ public class NatureCheckCaseServiceTests
         // Arrange
         List<Farm> farms =
         [
-            new() { Id = Guid.NewGuid(), Name = "Farm1", CVR = "123", PersonId = Guid.NewGuid(), AddressId = Guid.NewGuid() }
+            new() { Id = Guid.NewGuid(), Name = "Farm1", CVR = "123", OwnerId = Guid.NewGuid(), AddressId = Guid.NewGuid() }
         ];
         List<Person> persons =
         [
@@ -252,7 +254,7 @@ public class NatureCheckCaseServiceTests
         CancellationToken cancellationToken = TestContext.CancellationToken;
 
         // Arrange
-        List<Farm> farms = [new() { Id = Guid.NewGuid(), Name = "Farm1", CVR = "123", PersonId = Guid.NewGuid(), AddressId = Guid.NewGuid() }];
+        List<Farm> farms = [new() { Id = Guid.NewGuid(), Name = "Farm1", CVR = "123", OwnerId = Guid.NewGuid(), AddressId = Guid.NewGuid() }];
         List<Person> persons = [];
         List<Person> consultants = [];
         List<Address> addresses = [];
@@ -322,10 +324,10 @@ public class NatureCheckCaseServiceTests
         // Arrange
         Guid farmId = Guid.NewGuid();
         Guid consultantId = Guid.NewGuid();
-        Guid assignedByPersonId = Guid.NewGuid();
+        Guid assignedByOwnerId = Guid.NewGuid();
         Guid roleId = Guid.NewGuid();
 
-        Farm farm = new() { Id = farmId, Name = "Farm1", CVR = "123", PersonId = Guid.NewGuid(), AddressId = Guid.NewGuid() };
+        Farm farm = new() { Id = farmId, Name = "Farm1", CVR = "123", OwnerId = Guid.NewGuid(), AddressId = Guid.NewGuid() };
         Person consultant = new() { Id = consultantId, FirstName = "Jane", LastName = "Smith", RoleId = roleId };
         Role role = new() { Id = roleId, Name = "Consultant" };
 
@@ -333,7 +335,7 @@ public class NatureCheckCaseServiceTests
         {
             FarmId = farmId,
             ConsultantId = consultantId,
-            AssignedByPersonId = assignedByPersonId,
+            AssignedByPersonId = assignedByOwnerId, // <-- changed property name
             Notes = "Test notes",
             Priority = "High",
             AllowDuplicateActiveCase = false
@@ -348,7 +350,7 @@ public class NatureCheckCaseServiceTests
         _natureCheckCaseRepositoryMock.Setup(r => r.FarmHasActiveCaseAsync(farmId, cancellationToken))
             .ReturnsAsync(false);
         _natureCheckCaseRepositoryMock.Setup(r => r.AddAsync(It.IsAny<NatureCheckCase>(), cancellationToken))
-            .Returns(Task.CompletedTask);
+            .Returns((Task<NatureCheckCase>)Task.CompletedTask);
 
         // Act
         NatureCheckCase result = await _service.AssignCaseAsync(request, cancellationToken);
@@ -405,7 +407,7 @@ public class NatureCheckCaseServiceTests
         // Arrange
         // Arrange
         Guid farmId = Guid.NewGuid();
-        Farm farm = new() { Id = farmId, Name = "Farm1", CVR = "123", PersonId = Guid.NewGuid(), AddressId = Guid.NewGuid() };
+        Farm farm = new() { Id = farmId, Name = "Farm1", CVR = "123", OwnerId = Guid.NewGuid(), AddressId = Guid.NewGuid() };
 
         NatureCheckCaseAssignmentRequest request = new()
         {
@@ -445,7 +447,7 @@ public class NatureCheckCaseServiceTests
         Guid consultantId = Guid.NewGuid();
         Guid roleId = Guid.NewGuid();
 
-        Farm farm = new() { Id = farmId, Name = "Farm1", CVR = "123", PersonId = Guid.NewGuid(), AddressId = Guid.NewGuid() };
+        Farm farm = new() { Id = farmId, Name = "Farm1", CVR = "123", OwnerId = Guid.NewGuid(), AddressId = Guid.NewGuid() };
         Person consultant = new() { Id = consultantId, FirstName = "Jane", LastName = "Smith", RoleId = roleId };
         Role role = new() { Id = roleId, Name = "Employee" }; // Wrong role
 
@@ -489,7 +491,7 @@ public class NatureCheckCaseServiceTests
         Guid consultantId = Guid.NewGuid();
         Guid roleId = Guid.NewGuid();
 
-        Farm farm = new() { Id = farmId, Name = "Farm1", CVR = "123", PersonId = Guid.NewGuid(), AddressId = Guid.NewGuid() };
+        Farm farm = new() { Id = farmId, Name = "Farm1", CVR = "123", OwnerId = Guid.NewGuid(), AddressId = Guid.NewGuid() };
         Person consultant = new() { Id = consultantId, FirstName = "Jane", LastName = "Smith", RoleId = roleId };
         Role role = new() { Id = roleId, Name = "Consultant" };
 
@@ -566,10 +568,10 @@ public class NatureCheckCaseServiceTests
         // Arrange
         Guid farmId = Guid.NewGuid();
         Guid consultantId = Guid.NewGuid();
-        Guid assignedByPersonId = Guid.NewGuid();
+        Guid assignedByOwnerId = Guid.NewGuid();
         Guid roleId = Guid.NewGuid();
 
-        Farm farm = new() { Id = farmId, Name = "Farm1", CVR = "123", PersonId = Guid.NewGuid(), AddressId = Guid.NewGuid() };
+        Farm farm = new() { Id = farmId, Name = "Farm1", CVR = "123", OwnerId = Guid.NewGuid(), AddressId = Guid.NewGuid() };
         Person consultant = new Person { Id = consultantId, FirstName = "Jane", LastName = "Smith", RoleId = roleId };
         Role role = new Role { Id = roleId, Name = "Consultant" };
 
@@ -582,13 +584,13 @@ public class NatureCheckCaseServiceTests
         _natureCheckCaseRepositoryMock.Setup(r => r.FarmHasActiveCaseAsync(farmId, cancellationToken))
             .ReturnsAsync(false);
         _natureCheckCaseRepositoryMock.Setup(r => r.AddAsync(It.IsAny<NatureCheckCase>(), cancellationToken))
-            .Returns(Task.CompletedTask);
+            .Returns((Task<NatureCheckCase>)Task.CompletedTask);
 
         NatureCheckCaseAssignmentRequest request = new()
         {
             FarmId = farmId,
             ConsultantId = consultantId,
-            AssignedByPersonId = assignedByPersonId,
+            AssignedByPersonId = assignedByOwnerId,
             AllowDuplicateActiveCase = true // Allow duplicates for concurrent test
         };
 
@@ -666,11 +668,11 @@ public class NatureCheckCaseServiceTests
         _roleRepositoryMock.Setup(r => r.GetByNameAsync("Farmer", cancellationToken))
             .ReturnsAsync(role);
         _addressRepositoryMock.Setup(r => r.AddAsync(It.IsAny<Address>(), cancellationToken))
-            .Returns(Task.CompletedTask);
+            .Returns((Task<Address>)Task.CompletedTask);
         _personRepositoryMock.Setup(r => r.AddAsync(It.IsAny<Person>(), cancellationToken))
-            .Returns(Task.CompletedTask);
+            .Returns((Task<Person>)Task.CompletedTask);
         _farmRepositoryMock.Setup(r => r.AddAsync(It.IsAny<Farm>(), cancellationToken))
-            .Returns(Task.CompletedTask);
+            .Returns((Task<Farm>)Task.CompletedTask);
 
         // Act
         Farm result = await _service.SaveFarmAsync(request, cancellationToken);
@@ -762,11 +764,11 @@ public class NatureCheckCaseServiceTests
         _roleRepositoryMock.Setup(r => r.GetByNameAsync("Farmer", cancellationToken))
             .ReturnsAsync(role);
         _addressRepositoryMock.Setup(r => r.AddAsync(It.IsAny<Address>(), cancellationToken))
-            .Returns(Task.CompletedTask);
+            .Returns((Task<Address>)Task.CompletedTask);
         _personRepositoryMock.Setup(r => r.AddAsync(It.IsAny<Person>(), cancellationToken))
-            .Returns(Task.CompletedTask);
+            .Returns((Task<Person>)Task.CompletedTask);
         _farmRepositoryMock.Setup(r => r.AddAsync(It.IsAny<Farm>(), cancellationToken))
-            .Returns(Task.CompletedTask);
+            .Returns((Task<Farm>)Task.CompletedTask);
 
         FarmRegistrationRequest request = new()
         {
@@ -814,7 +816,7 @@ public class NatureCheckCaseServiceTests
 
         // Arrange
         Guid farmId = Guid.NewGuid();
-        Farm farm = new() { Id = farmId, Name = "Farm1", CVR = "123", PersonId = Guid.NewGuid(), AddressId = Guid.NewGuid() };
+        Farm farm = new() { Id = farmId, Name = "Farm1", CVR = "123", OwnerId = Guid.NewGuid(), AddressId = Guid.NewGuid() };
 
         _farmRepositoryMock.Setup(r => r.GetByIdAsync(farmId, cancellationToken))
             .ReturnsAsync(farm);
@@ -861,7 +863,7 @@ public class NatureCheckCaseServiceTests
 
         // Arrange
         Guid farmId = Guid.NewGuid();
-        Farm farm = new() { Id = farmId, Name = "Farm1", CVR = "123", PersonId = Guid.NewGuid(), AddressId = Guid.NewGuid() };
+        Farm farm = new() { Id = farmId, Name = "Farm1", CVR = "123", OwnerId = Guid.NewGuid(), AddressId = Guid.NewGuid() };
 
         _farmRepositoryMock.Setup(r => r.GetByIdAsync(farmId, cancellationToken))
             .ReturnsAsync(farm);
@@ -916,7 +918,7 @@ public class NatureCheckCaseServiceTests
 
         // Arrange
         Guid farmId = Guid.NewGuid();
-        Farm farm = new() { Id = farmId, Name = "Farm1", CVR = "123", PersonId = Guid.NewGuid(), AddressId = Guid.NewGuid() };
+        Farm farm = new() { Id = farmId, Name = "Farm1", CVR = "123", OwnerId = Guid.NewGuid(), AddressId = Guid.NewGuid() };
 
         _farmRepositoryMock.Setup(r => r.GetByIdAsync(farmId, cancellationToken))
             .ReturnsAsync(farm);
@@ -970,7 +972,7 @@ public class NatureCheckCaseServiceTests
             }
         ];
 
-        Farm farm = new() { Id = farmId, Name = "Farm1", CVR = "123", PersonId = Guid.NewGuid(), AddressId = Guid.NewGuid() };
+        Farm farm = new() { Id = farmId, Name = "Farm1", CVR = "123", OwnerId = Guid.NewGuid(), AddressId = Guid.NewGuid() };
 
         _natureCheckCaseRepositoryMock.Setup(r => r.GetAssignedCasesForConsultantAsync(consultantId, cancellationToken))
             .ReturnsAsync(cases);
@@ -1059,7 +1061,7 @@ public class NatureCheckCaseServiceTests
             }
         ];
 
-        Farm farm = new() { Id = farmId, Name = "Farm1", CVR = "123", PersonId = Guid.NewGuid(), AddressId = Guid.NewGuid() };
+        Farm farm = new() { Id = farmId, Name = "Farm1", CVR = "123", OwnerId = Guid.NewGuid(), AddressId = Guid.NewGuid() };
 
         _natureCheckCaseRepositoryMock.Setup(r => r.GetAssignedCasesForConsultantAsync(consultantId, cancellationToken))
             .ReturnsAsync(cases);

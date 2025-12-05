@@ -21,8 +21,8 @@ public class ListViewModelBaseTests
         private readonly IEnumerable<DummyEntity> _items;
         public InMemoryRepository(IEnumerable<DummyEntity> items) => _items = items;
 
-        public Task AddAsync(DummyEntity entity, CancellationToken cancellationToken = default) => Task.CompletedTask;
-        public Task AddRangeAsync(IEnumerable<DummyEntity> entities, CancellationToken cancellationToken = default) => Task.CompletedTask;
+        public Task<DummyEntity> AddAsync(DummyEntity entity, CancellationToken cancellationToken = default) => Task.FromResult(entity);
+        public Task<IEnumerable<DummyEntity>> AddRangeAsync(IEnumerable<DummyEntity> entities, CancellationToken cancellationToken = default) => Task.FromResult(entities);
         public Task DeleteAsync(Guid id, CancellationToken cancellationToken = default) => Task.CompletedTask;
         public Task<IEnumerable<DummyEntity>> GetAllAsync(CancellationToken cancellationToken = default) => Task.FromResult(_items);
         public Task<DummyEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) => Task.FromResult(_items.FirstOrDefault(i => i.Id == id));
@@ -31,8 +31,8 @@ public class ListViewModelBaseTests
 
     private sealed class ThrowingRepository : IRepository<DummyEntity>
     {
-        public Task AddAsync(DummyEntity entity, CancellationToken cancellationToken = default) => Task.CompletedTask;
-        public Task AddRangeAsync(IEnumerable<DummyEntity> entities, CancellationToken cancellationToken = default) => Task.CompletedTask;
+        public Task<DummyEntity> AddAsync(DummyEntity entity, CancellationToken cancellationToken = default) => Task.FromResult(entity);
+        public Task<IEnumerable<DummyEntity>> AddRangeAsync(IEnumerable<DummyEntity> entities, CancellationToken cancellationToken = default) => Task.FromResult(entities);
         public Task DeleteAsync(Guid id, CancellationToken cancellationToken = default) => Task.CompletedTask;
         public Task<IEnumerable<DummyEntity>> GetAllAsync(CancellationToken cancellationToken = default) => throw new InvalidOperationException("repo-failure");
         public Task<DummyEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) => Task.FromResult<DummyEntity?>(null);
@@ -49,8 +49,8 @@ public class ListViewModelBaseTests
             _delayMs = delayMs;
         }
 
-        public Task AddAsync(DummyEntity entity, CancellationToken cancellationToken = default) => Task.CompletedTask;
-        public Task AddRangeAsync(IEnumerable<DummyEntity> entities, CancellationToken cancellationToken = default) => Task.CompletedTask;
+        public Task<DummyEntity> AddAsync(DummyEntity entity, CancellationToken cancellationToken = default) => Task.FromResult(entity);
+        public Task<IEnumerable<DummyEntity>> AddRangeAsync(IEnumerable<DummyEntity> entities, CancellationToken cancellationToken = default) => Task.FromResult(entities);
         public Task DeleteAsync(Guid id, CancellationToken cancellationToken = default) => Task.CompletedTask;
         public async Task<IEnumerable<DummyEntity>> GetAllAsync(CancellationToken cancellationToken = default)
         {

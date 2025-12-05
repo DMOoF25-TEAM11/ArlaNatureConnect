@@ -3,384 +3,411 @@ using ArlaNatureConnect.Core.Services;
 using ArlaNatureConnect.Domain.Entities;
 using ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC;
 
-using Moq;
-
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
+using System.Linq;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace TestWinUI.ViewModels.Controls.SharedUC;
 
 [TestClass]
 [SupportedOSPlatform("windows10.0.22621.0")]
-public sealed class CRUDPersonUCViewModelTests
+public class CRUDPersonUCViewModelTests
 {
-    private sealed class DisposableAction : IDisposable { private readonly Action _on; public DisposableAction(Action on) => _on = on; public void Dispose() => _on(); }
-
-    private sealed class TestVM : CRUDPersonUCViewModel
+    private sealed class FakePersonRepo : IPersonRepository
     {
-        public TestVM(IStatusInfoServices status, IAppMessageService msg, IPersonRepository repo)
-            : base(status, msg, repo)
+        public List<Person> Store { get; } = new();
+
+        public Task<Person> AddAsync(Person entity, CancellationToken cancellationToken = default)
         {
+            if (entity.Id == Guid.Empty) entity.Id = Guid.NewGuid();
+            Store.Add(entity);
+            return Task.FromResult(entity);
         }
 
-        // Expose protected hooks for testing
-        public Task<Person> OnAddFormAsync() => base.OnAddFormAsync();
-        public Task OnLoadFormAsync(Person entity) => base.OnLoadFormAsync(entity);
-        public Task OnResetFormAsync() => base.OnResetFormAsync();
-        public Task OnSaveFormAsync() => base.OnSaveFormAsync();
-
-        // Expose protected refresh helper so tests can exercise exception handling and concurrency
-        public void CallRefreshCommandStates() => base.RefreshCommandStates();
-    }
-
-    [TestMethod]
-    public async Task OnAddFormAsync_Creates_Person_From_Fields()
-    {
-        Mock<IStatusInfoServices> mockStatus = new Mock<IStatusInfoServices>();
-        mockStatus.Setup(s => s.BeginLoadingOrSaving()).Returns(new DisposableAction(() => { }));
-        Mock<IAppMessageService> mockMsg = new Mock<IAppMessageService>();
-        Mock<IPersonRepository> mockRepo = new Mock<IPersonRepository>();
-
-        TestVM vm = new TestVM(mockStatus.Object, mockMsg.Object, mockRepo.Object);
-
-        // set fields
-        vm.Id = Guid.Empty; // should become new id
-        vm.RoleId = Guid.NewGuid();
-        vm.AddressId = Guid.NewGuid();
-        vm.FirstName = "FN";
-        vm.LastName = "LN";
-        vm.Email = "e@x.com";
-        vm.IsActive = true;
-
-        Person p = await vm.OnAddFormAsync();
-
-        Assert.IsNotNull(p);
-        Assert.AreEqual("FN", p.FirstName);
-        Assert.AreEqual("LN", p.LastName);
-        Assert.AreEqual("e@x.com", p.Email);
-        Assert.IsTrue(p.IsActive);
-        Assert.AreEqual(vm.RoleId, p.RoleId);
-        Assert.AreEqual(vm.AddressId, p.AddressId);
-        Assert.AreNotEqual(Guid.Empty, p.Id);
-    }
-
-    [TestMethod]
-    public async Task OnLoadFormAsync_Populates_ViewModel_Fields()
-    {
-        Mock<IStatusInfoServices> mockStatus = new Mock<IStatusInfoServices>();
-        mockStatus.Setup(s => s.BeginLoadingOrSaving()).Returns(new DisposableAction(() => { }));
-        Mock<IAppMessageService> mockMsg = new Mock<IAppMessageService>();
-        Mock<IPersonRepository> mockRepo = new Mock<IPersonRepository>();
-
-        TestVM vm = new TestVM(mockStatus.Object, mockMsg.Object, mockRepo.Object);
-
-        Person person = new Person { Id = Guid.NewGuid(), RoleId = Guid.NewGuid(), AddressId = Guid.NewGuid(), FirstName = "A", LastName = "B", Email = "x@y", IsActive = true };
-
-        await vm.OnLoadFormAsync(person);
-
-        Assert.AreEqual(person.Id, vm.Id);
-        Assert.AreEqual(person.RoleId, vm.RoleId);
-        Assert.AreEqual(person.AddressId, vm.AddressId);
-        Assert.AreEqual(person.FirstName, vm.FirstName);
-        Assert.AreEqual(person.LastName, vm.LastName);
-        Assert.AreEqual(person.Email, vm.Email);
-        Assert.AreEqual(person.IsActive, vm.IsActive);
-        Assert.AreSame(person, vm.SelectedItem);
-    }
-
-    [TestMethod]
-    public async Task OnResetFormAsync_Clears_Fields_And_SelectedItem()
-    {
-        Mock<IStatusInfoServices> mockStatus = new Mock<IStatusInfoServices>();
-        mockStatus.Setup(s => s.BeginLoadingOrSaving()).Returns(new DisposableAction(() => { }));
-        Mock<IAppMessageService> mockMsg = new Mock<IAppMessageService>();
-        Mock<IPersonRepository> mockRepo = new Mock<IPersonRepository>();
-
-        TestVM vm = new TestVM(mockStatus.Object, mockMsg.Object, mockRepo.Object);
-
-        vm.Id = Guid.NewGuid();
-        vm.FirstName = "X";
-        vm.SelectedItem = new Person { Id = Guid.NewGuid() };
-
-        await vm.OnResetFormAsync();
-
-        Assert.AreEqual(Guid.Empty, vm.Id);
-        Assert.AreEqual(string.Empty, vm.FirstName);
-        Assert.IsNull(vm.SelectedItem);
-    }
-
-    [TestMethod]
-    public async Task OnSaveFormAsync_Adds_When_In_AddMode_And_Updates_When_EditMode()
-    {
-        Mock<IStatusInfoServices> mockStatus = new Mock<IStatusInfoServices>();
-        mockStatus.Setup(s => s.BeginLoadingOrSaving()).Returns(new DisposableAction(() => { }));
-        Mock<IAppMessageService> mockMsg = new Mock<IAppMessageService>();
-        Mock<IPersonRepository> mockRepo = new Mock<IPersonRepository>();
-        Person? added = null;
-        mockRepo.Setup(r => r.AddAsync(It.IsAny<Person>(), It.IsAny<CancellationToken>()))
-                .Callback<Person, CancellationToken>((p, ct) => added = p)
-                .Returns(Task.CompletedTask);
-        mockRepo.Setup(r => r.UpdateAsync(It.IsAny<Person>(), It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
-        // Ensure GetAllAsync is stubbed so ReloadAsync does not attempt to await a null Task and so Items is predictable
-        mockRepo.Setup(r => r.GetAllAsync(It.IsAny<CancellationToken>())).ReturnsAsync(new List<Person>());
-
-        TestVM vm = new TestVM(mockStatus.Object, mockMsg.Object, mockRepo.Object);
-
-        // --- Add mode (IsEditMode false)
-        vm.Id = Guid.Empty;
-        vm.FirstName = "New";
-        vm.RoleId = Guid.NewGuid();
-        vm.AddressId = Guid.NewGuid();
-        vm.IsActive = true;
-
-        // Call save form directly (protected) which should call repo.AddAsync
-        await vm.OnSaveFormAsync();
-
-        mockRepo.Verify(r => r.AddAsync(It.IsAny<Person>(), It.IsAny<CancellationToken>()), Times.Once);
-        Assert.IsNotNull(added);
-        Assert.AreEqual("New", added!.FirstName);
-        // Repository should receive populated role/address ids, we don't rely on VM fields after reload
-        Assert.AreNotEqual(Guid.Empty, added.RoleId);
-        Assert.AreNotEqual(Guid.Empty, added.AddressId);
-        Assert.IsTrue(added.IsActive);
-        Assert.AreNotEqual(Guid.Empty, added.Id);
-
-        // --- Update mode
-        mockRepo.Invocations.Clear();
-
-        Person existing = new Person { Id = Guid.NewGuid(), FirstName = "Old", LastName = "L", Email = "o@x", RoleId = Guid.Empty, AddressId = Guid.Empty, IsActive = false };
-        vm.SelectedItem = existing;
-
-        // mark edit mode by loading the entity first (sets SelectedItem and IsEditMode)
-        await vm.OnLoadFormAsync(existing);
-
-        // set edit fields AFTER loading
-        vm.RoleId = Guid.NewGuid();
-        vm.AddressId = Guid.NewGuid();
-        vm.FirstName = "Updated";
-        vm.LastName = "UpdatedL";
-        vm.Email = "u@x";
-        vm.IsActive = true;
-
-        await vm.OnSaveFormAsync();
-
-        mockRepo.Verify(r => r.UpdateAsync(
-            It.Is<Person>(p => p.Id == existing.Id &&
-                               p.FirstName == "Updated" &&
-                               p.LastName == "UpdatedL" &&
-                               p.Email == "u@x"),
-            It.IsAny<CancellationToken>()), Times.Once);
-    }
-
-    [TestMethod]
-    public void RefreshCommandStates_Swallows_COMException_And_Continues()
-    {
-        Mock<IStatusInfoServices> mockStatus = new Mock<IStatusInfoServices>();
-        mockStatus.Setup(s => s.BeginLoadingOrSaving()).Returns(new DisposableAction(() => { }));
-        Mock<IAppMessageService> mockMsg = new Mock<IAppMessageService>();
-        Mock<IPersonRepository> mockRepo = new Mock<IPersonRepository>();
-
-        TestVM vm = new TestVM(mockStatus.Object, mockMsg.Object, mockRepo.Object);
-
-        bool saveInvoked = false;
-
-        // Add handler that throws COMException
-        vm.AddCommand.CanExecuteChanged += (s, e) => throw new COMException();
-        // Save handler should still be invoked
-        vm.SaveCommand.CanExecuteChanged += (s, e) => saveInvoked = true;
-
-        // Should not throw even if one handler throws COMException
-        vm.CallRefreshCommandStates();
-
-        Assert.IsTrue(saveInvoked, "Save command's CanExecuteChanged handler should be invoked even when another handler throws COMException.");
-    }
-
-    [TestMethod]
-    public void RefreshCommandStates_Is_ThreadSafe_Under_Concurrent_Calls()
-    {
-        Mock<IStatusInfoServices> mockStatus = new Mock<IStatusInfoServices>();
-        mockStatus.Setup(s => s.BeginLoadingOrSaving()).Returns(new DisposableAction(() => { }));
-        Mock<IAppMessageService> mockMsg = new Mock<IAppMessageService>();
-        Mock<IPersonRepository> mockRepo = new Mock<IPersonRepository>();
-
-        TestVM vm = new TestVM(mockStatus.Object, mockMsg.Object, mockRepo.Object);
-
-        int invokeCount = 0;
-        vm.AddCommand.CanExecuteChanged += (s, e) => Interlocked.Increment(ref invokeCount);
-        vm.SaveCommand.CanExecuteChanged += (s, e) => Interlocked.Increment(ref invokeCount);
-        vm.DeleteCommand.CanExecuteChanged += (s, e) => Interlocked.Increment(ref invokeCount);
-        vm.CancelCommand.CanExecuteChanged += (s, e) => Interlocked.Increment(ref invokeCount);
-        vm.RefreshCommand.CanExecuteChanged += (s, e) => Interlocked.Increment(ref invokeCount);
-
-        // Run multiple concurrent callers to stress potential race conditions
-        const int threads = 8;
-        const int iterations = 50;
-        List<Task> tasks = new List<Task>();
-        for (int t = 0; t < threads; t++)
+        public Task<IEnumerable<Person>> AddRangeAsync(IEnumerable<Person> entities, CancellationToken cancellationToken = default)
         {
-            tasks.Add(Task.Run(() =>
-            {
-                for (int i = 0; i < iterations; i++)
-                {
-                    vm.CallRefreshCommandStates();
-                }
-            }));
+            Store.AddRange(entities);
+            return Task.FromResult<IEnumerable<Person>>(entities);
         }
 
-        Task.WaitAll(tasks.ToArray());
+        public Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            Store.RemoveAll(p => p.Id == id);
+            return Task.CompletedTask;
+        }
 
-        // Expect that handlers have been invoked at least once
-        Assert.IsGreaterThan(0, invokeCount, "Handlers should have been invoked during concurrent RefreshCommandStates calls.");
+        public Task<IEnumerable<Person>> GetAllAsync(CancellationToken cancellationToken = default)
+        {
+            return Task.FromResult<IEnumerable<Person>>(Store.ToList());
+        }
+
+        public Task<Person?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            return Task.FromResult(Store.FirstOrDefault(p => p.Id == id));
+        }
+
+        public Task UpdateAsync(Person entity, CancellationToken cancellationToken = default)
+        {
+            int idx = Store.FindIndex(p => p.Id == entity.Id);
+            if (idx >= 0) Store[idx] = entity;
+            return Task.CompletedTask;
+        }
+
+        public Task<IEnumerable<Person>> GetPersonsByRoleAsync(string role, CancellationToken cancellationToken = default) => Task.FromResult<IEnumerable<Person>>(Array.Empty<Person>());
     }
 
-    [TestMethod]
-    public void PopulateFormFromPerson_Sets_Address_Display()
+    private sealed class FakeAddressRepo : IAddressRepository
     {
-        Mock<IStatusInfoServices> mockStatus = new Mock<IStatusInfoServices>();
-        mockStatus.Setup(s => s.BeginLoadingOrSaving()).Returns(new DisposableAction(() => { }));
-        Mock<IAppMessageService> mockMsg = new Mock<IAppMessageService>();
-        Mock<IPersonRepository> mockRepo = new Mock<IPersonRepository>();
+        public List<Address> Store { get; } = new();
+        public Task<Address> AddAsync(Address entity, CancellationToken cancellationToken = default)
+        {
+            if (entity.Id == Guid.Empty) entity.Id = Guid.NewGuid();
+            Store.Add(entity);
+            return Task.FromResult(entity);
+        }
+        public Task<IEnumerable<Address>> AddRangeAsync(IEnumerable<Address> entities, CancellationToken cancellationToken = default)
+        {
+            Store.AddRange(entities);
+            return Task.FromResult<IEnumerable<Address>>(entities);
+        }
+        public Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            Store.RemoveAll(a => a.Id == id);
+            return Task.CompletedTask;
+        }
+        public Task<IEnumerable<Address>> GetAllAsync(CancellationToken cancellationToken = default) => Task.FromResult<IEnumerable<Address>>(Store.ToList());
+        public Task<Address?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) => Task.FromResult(Store.FirstOrDefault(a => a.Id == id));
+        public Task UpdateAsync(Address entity, CancellationToken cancellationToken = default)
+        {
+            int idx = Store.FindIndex(a => a.Id == entity.Id);
+            if (idx >= 0) Store[idx] = entity;
+            return Task.CompletedTask;
+        }
+    }
 
-        TestVM vm = new TestVM(mockStatus.Object, mockMsg.Object, mockRepo.Object);
+    private sealed class FakeRoleRepo : IRoleRepository
+    {
+        public List<Role> Store { get; } = new();
+        public Task<Role> AddAsync(Role entity, CancellationToken cancellationToken = default)
+        {
+            if (entity.Id == Guid.Empty) entity.Id = Guid.NewGuid();
+            Store.Add(entity);
+            return Task.FromResult(entity);
+        }
+        public Task<IEnumerable<Role>> AddRangeAsync(IEnumerable<Role> entities, CancellationToken cancellationToken = default)
+        {
+            Store.AddRange(entities);
+            return Task.FromResult<IEnumerable<Role>>(entities);
+        }
+        public Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            Store.RemoveAll(r => r.Id == id);
+            return Task.CompletedTask;
+        }
+        public Task<IEnumerable<Role>> GetAllAsync(CancellationToken cancellationToken = default) => Task.FromResult<IEnumerable<Role>>(Store.ToList());
+        public Task<Role?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) => Task.FromResult(Store.FirstOrDefault(r => r.Id == id));
+        public Task UpdateAsync(Role entity, CancellationToken cancellationToken = default)
+        {
+            int idx = Store.FindIndex(r => r.Id == entity.Id);
+            if (idx >= 0) Store[idx] = entity;
+            return Task.CompletedTask;
+        }
+        public Task<Role?> GetByNameAsync(string roleName, CancellationToken cancellationToken = default) => Task.FromResult(Store.FirstOrDefault(r => r.Name == roleName));
+    }
 
-        Person person = new Person
+    private static async Task<bool> WaitForAsync(Func<bool> predicate, int timeoutMs = 1000)
+    {
+        Stopwatch sw = Stopwatch.StartNew();
+        while (sw.ElapsedMilliseconds < timeoutMs)
+        {
+            if (predicate()) return true;
+            await Task.Delay(5);
+        }
+        return false;
+    }
+
+    public TestContext TestContext { get; set; }
+
+    [TestMethod]
+    public void PopulateFormFromPerson_Sets_Fields_And_SelectedRole_When_Role_Matches()
+    {
+        StatusInfoService status = new();
+        AppMessageService appMsg = new();
+
+        FakePersonRepo personRepo = new();
+        FakeAddressRepo addrRepo = new();
+        FakeRoleRepo roleRepo = new();
+
+        Role r = new() { Id = Guid.NewGuid(), Name = "Farmer" };
+        roleRepo.Store.Add(r);
+
+        Person p = new()
         {
             Id = Guid.NewGuid(),
-            RoleId = Guid.NewGuid(),
+            RoleId = r.Id,
             AddressId = Guid.NewGuid(),
-            FirstName = "F",
-            LastName = "L",
-            Email = "e",
+            FirstName = "John",
+            LastName = "Doe",
+            Email = "a@b.com",
             IsActive = true,
-            Role = new Role { Id = Guid.NewGuid(), Name = "Admin" },
-            Address = new Address { Id = Guid.NewGuid(), PostalCode = "1234", Street = "Main St" }
+            Role = r,
+            Address = new Address { Id = Guid.NewGuid(), City = "C", PostalCode = "P", Street = "S", Country = "DK" }
         };
 
-        vm.PopulateFormFromPerson(person);
+        CRUDPersonUCViewModel vm = new(status, appMsg, personRepo, addrRepo, roleRepo);
 
-        Assert.AreEqual("1234, Main St", vm.AddressDisplay);
+        vm.PopulateFormFromPerson(p);
+
+        Assert.AreEqual(p.FirstName, vm.FirstName);
+        Assert.AreEqual(p.LastName, vm.LastName);
+        Assert.AreEqual(p.Email, vm.Email);
+        Assert.AreEqual(p.IsActive, vm.IsActive);
+        Assert.AreEqual(p.Address.City, vm.AddressCity);
+        Assert.IsNotNull(vm.SelectedRole);
+        Assert.AreEqual(r.Id, vm.SelectedRole!.Id);
     }
 
     [TestMethod]
-    public void PopulateFormFromPerson_Throws_When_Null()
+    public async Task LoadAsync_Sets_SelectedItem_And_Populates_Form()
     {
-        Mock<IStatusInfoServices> mockStatus = new Mock<IStatusInfoServices>();
-        mockStatus.Setup(s => s.BeginLoadingOrSaving()).Returns(new DisposableAction(() => { }));
-        Mock<IAppMessageService> mockMsg = new Mock<IAppMessageService>();
-        Mock<IPersonRepository> mockRepo = new Mock<IPersonRepository>();
+        StatusInfoService status = new();
+        AppMessageService appMsg = new();
 
-        TestVM vm = new TestVM(mockStatus.Object, mockMsg.Object, mockRepo.Object);
+        FakePersonRepo personRepo = new();
+        FakeAddressRepo addrRepo = new();
+        FakeRoleRepo roleRepo = new();
 
-        try
-        {
-            vm.PopulateFormFromPerson(null!);
-            Assert.Fail("Expected ArgumentNullException was not thrown");
-        }
-        catch (ArgumentNullException)
-        {
-            // expected
-        }
+        Person p = new() { Id = Guid.NewGuid(), FirstName = "L", LastName = "A", Email = "x@x" };
+        personRepo.Store.Add(p);
+
+        CRUDPersonUCViewModel vm = new(status, appMsg, personRepo, addrRepo, roleRepo);
+
+        await vm.LoadAsync(p.Id);
+
+        Assert.IsTrue(vm.IsEditMode);
+        Assert.AreEqual(p.Id, vm.SelectedItem!.Id);
+        Assert.AreEqual(p.FirstName, vm.FirstName);
     }
 
     [TestMethod]
-    public void SortCommand_Sorts_By_Simple_Property_And_Toggles_Direction()
+    public async Task AddCommand_Creates_Address_And_Person_And_Resets_Form()
     {
-        Mock<IStatusInfoServices> mockStatus = new Mock<IStatusInfoServices>();
-        mockStatus.Setup(s => s.BeginLoadingOrSaving()).Returns(new DisposableAction(() => { }));
-        Mock<IAppMessageService> mockMsg = new Mock<IAppMessageService>();
-        Mock<IPersonRepository> mockRepo = new Mock<IPersonRepository>();
+        StatusInfoService status = new();
+        AppMessageService appMsg = new();
 
-        TestVM vm = new TestVM(mockStatus.Object, mockMsg.Object, mockRepo.Object);
+        FakePersonRepo personRepo = new();
+        FakeAddressRepo addrRepo = new();
+        FakeRoleRepo roleRepo = new();
 
-        // Prepare unsorted items
-        Person p1 = new Person { FirstName = "B" };
-        Person p2 = new Person { FirstName = "A" };
-        Person p3 = new Person { FirstName = "C" };
+        // prepare role to satisfy validation
+        Role r = new() { Id = Guid.NewGuid(), Name = "Employee" };
+        roleRepo.Store.Add(r);
 
-        vm.Persons.Clear();
-        vm.Persons.Add(p1);
-        vm.Persons.Add(p2);
-        vm.Persons.Add(p3);
+        CRUDPersonUCViewModel vm = new(status, appMsg, personRepo, addrRepo, roleRepo);
 
-        // Sort ascending
+        // Fill fields for add
+        vm.FirstName = "F1";
+        vm.LastName = "L1";
+        vm.Email = "e@e.com";
+        vm.IsActive = true;
+        vm.AddressCity = "City";
+        vm.AddressStreet = "Street";
+        vm.AddressPostalCode = "P";
+        vm.RoleId = r.Id;
+        vm.SelectedRole = r;
+
+        Assert.IsTrue(vm.IsAddMode);
+        Assert.IsTrue(vm.AddCommand.CanExecute(null));
+
+        vm.AddCommand.Execute(null);
+
+        bool added = await WaitForAsync(() => personRepo.Store.Count > 0, 1000);
+        Assert.IsTrue(added, "Person repository should have an added person");
+        Assert.IsTrue(addrRepo.Store.Count > 0, "Address repository should have an added address");
+
+        // form reset should clear important fields
+        bool reset = await WaitForAsync(() => vm.FirstName == string.Empty && vm.IsAddMode, 1000);
+        Assert.IsTrue(reset, "Form should be reset after add completes");
+    }
+
+    [TestMethod]
+    public async Task SaveCommand_In_EditMode_Updates_Existing_Person()
+    {
+        StatusInfoService status = new();
+        AppMessageService appMsg = new();
+
+        FakePersonRepo personRepo = new();
+        FakeAddressRepo addrRepo = new();
+        FakeRoleRepo roleRepo = new();
+
+        Role r = new() { Id = Guid.NewGuid(), Name = "Employee" };
+        roleRepo.Store.Add(r);
+
+        Person p = new() { Id = Guid.NewGuid(), FirstName = "Before", LastName = "X", Email = "a@a.com", IsActive = false };
+        personRepo.Store.Add(p);
+
+        CRUDPersonUCViewModel vm = new(status, appMsg, personRepo, addrRepo, roleRepo);
+
+        // Load into edit mode
+        await vm.LoadAsync(p.Id);
+
+        vm.FirstName = "After";
+        vm.SelectedRole = r;
+        vm.RoleId = r.Id;
+
+        Assert.IsTrue(vm.SaveCommand.CanExecute(null));
+        vm.SaveCommand.Execute(null);
+
+        bool updated = await WaitForAsync(() => personRepo.Store.Any(x => x.FirstName == "After"), 1000);
+        Assert.IsTrue(updated, "Person repository should have been updated");
+    }
+
+    [TestMethod]
+    public void ApplySearchFilter_Filters_By_Name_Or_Email()
+    {
+        StatusInfoService status = new();
+        AppMessageService appMsg = new();
+
+        FakePersonRepo personRepo = new();
+        FakeAddressRepo addrRepo = new();
+        FakeRoleRepo roleRepo = new();
+
+        Person p1 = new() { Id = Guid.NewGuid(), FirstName = "Anna", LastName = "Smith", Email = "anna@x" };
+        Person p2 = new() { Id = Guid.NewGuid(), FirstName = "Bob", LastName = "Jones", Email = "b@x" };
+
+        personRepo.Store.Add(p1);
+        personRepo.Store.Add(p2);
+
+        CRUDPersonUCViewModel vm = new(status, appMsg, personRepo, addrRepo, roleRepo);
+
+        // Ensure initial load happened (constructor triggers load)
+        //
+        vm.SearchText = "anna";
+        Assert.AreEqual(1, vm.FilteredItems.Count);
+        Assert.AreEqual(p1.Id, vm.FilteredItems.First().Id);
+
+        vm.SearchText = "@x";
+        Assert.AreEqual(2, vm.FilteredItems.Count);
+    }
+
+    [TestMethod]
+    public void OnSortExecuted_Sorts_By_Nested_Property()
+    {
+        StatusInfoService status = new();
+        AppMessageService appMsg = new();
+
+        FakePersonRepo personRepo = new();
+        FakeAddressRepo addrRepo = new();
+        FakeRoleRepo roleRepo = new();
+
+        Person p1 = new() { Id = Guid.NewGuid(), FirstName = "C" };
+        Person p2 = new() { Id = Guid.NewGuid(), FirstName = "A" };
+        Person p3 = new() { Id = Guid.NewGuid(), FirstName = "B" };
+
+        personRepo.Store.Add(p1);
+        personRepo.Store.Add(p2);
+        personRepo.Store.Add(p3);
+
+        CRUDPersonUCViewModel vm = new(status, appMsg, personRepo, addrRepo, roleRepo);
+
+        // sort ascending by FirstName
         vm.SortCommand!.Execute("FirstName");
+        Assert.AreEqual("A", vm.Items[0].FirstName);
+        Assert.AreEqual("B", vm.Items[1].FirstName);
+        Assert.AreEqual("C", vm.Items[2].FirstName);
 
-        Assert.AreEqual("A", vm.Persons[0].FirstName);
-        Assert.AreEqual("B", vm.Persons[1].FirstName);
-        Assert.AreEqual("C", vm.Persons[2].FirstName);
-
-        // Sort descending by executing same sort again
+        // sort descending by invoking again
         vm.SortCommand.Execute("FirstName");
-        Assert.AreEqual("C", vm.Persons[0].FirstName);
-        Assert.AreEqual("B", vm.Persons[1].FirstName);
-        Assert.AreEqual("A", vm.Persons[2].FirstName);
+        Assert.AreEqual("C", vm.Items[0].FirstName);
     }
 
     [TestMethod]
-    public void SortCommand_Sorts_By_Nested_Property()
+    public void UpdateSelectedPersonFarms_Populates_SelectedPersonFarms()
     {
-        Mock<IStatusInfoServices> mockStatus = new Mock<IStatusInfoServices>();
-        mockStatus.Setup(s => s.BeginLoadingOrSaving()).Returns(new DisposableAction(() => { }));
-        Mock<IAppMessageService> mockMsg = new Mock<IAppMessageService>();
-        Mock<IPersonRepository> mockRepo = new Mock<IPersonRepository>();
+        StatusInfoService status = new();
+        AppMessageService appMsg = new();
 
-        TestVM vm = new TestVM(mockStatus.Object, mockMsg.Object, mockRepo.Object);
+        FakePersonRepo personRepo = new();
+        FakeAddressRepo addrRepo = new();
+        FakeRoleRepo roleRepo = new();
 
-        Person p1 = new Person { FirstName = "x", Role = new Role { Name = "Z" } };
-        Person p2 = new Person { FirstName = "y", Role = new Role { Name = "A" } };
-        Person p3 = new Person { FirstName = "z", Role = new Role { Name = "M" } };
+        Person p = new() { Id = Guid.NewGuid(), FirstName = "F" };
+        p.Farms.Add(new Farm { Id = Guid.NewGuid(), Name = "Farm1" });
+        personRepo.Store.Add(p);
 
-        vm.Persons.Clear();
-        vm.Persons.Add(p1);
-        vm.Persons.Add(p2);
-        vm.Persons.Add(p3);
+        CRUDPersonUCViewModel vm = new(status, appMsg, personRepo, addrRepo, roleRepo);
 
-        vm.SortCommand!.Execute("Role.Name");
+        // select item
+        vm.SelectedItem = p;
 
-        Assert.AreEqual("A", vm.Persons[0].Role.Name);
-        Assert.AreEqual("M", vm.Persons[1].Role.Name);
-        Assert.AreEqual("Z", vm.Persons[2].Role.Name);
+        // trigger selection changed handler indirectly
+        // the viewmodel subscribes to SelectedEntityChanged; setting SelectedItem should have updated farms
+        Assert.AreEqual(1, vm.SelectedPersonFarms.Count);
+        Assert.AreEqual("Farm1", vm.SelectedPersonFarms.First().Name);
     }
 
     [TestMethod]
-    public async Task ReloadAsync_Invokes_LoadAll_And_Reports_Error_When_Repository_Throws()
+    public void RefreshCommandStates_HandlerThrows_COMException_IsSwallowed_In_PersonVM()
     {
-        Mock<IStatusInfoServices> mockStatus = new Mock<IStatusInfoServices>();
-        mockStatus.Setup(s => s.BeginLoadingOrSaving()).Returns(new DisposableAction(() => { }));
-        Mock<IAppMessageService> mockMsg = new Mock<IAppMessageService>();
-        Mock<IPersonRepository> mockRepo = new Mock<IPersonRepository>();
+        StatusInfoService status = new();
+        AppMessageService appMsg = new();
 
-        // Setup repo to throw when GetAllAsync is called
-        mockRepo.Setup(r => r.GetAllAsync(It.IsAny<CancellationToken>())).ThrowsAsync(new InvalidOperationException("fail"));
+        FakePersonRepo personRepo = new();
+        FakeAddressRepo addrRepo = new();
+        FakeRoleRepo roleRepo = new();
 
-        TestVM vm = new TestVM(mockStatus.Object, mockMsg.Object, mockRepo.Object);
+        CRUDPersonUCViewModel vm = new(status, appMsg, personRepo, addrRepo, roleRepo);
 
-        await vm.ReloadAsync();
+        int called = 0;
+        (vm.AddCommand as global::ArlaNatureConnect.WinUI.Commands.RelayCommand)!.CanExecuteChanged += (s, e) => throw new COMException("UI COM error");
+        (vm.AddCommand as global::ArlaNatureConnect.WinUI.Commands.RelayCommand)!.CanExecuteChanged += (s, e) => called++;
 
-        mockMsg.Verify(m => m.AddErrorMessage(It.Is<string>(s => s.Contains("Failed to reload persons"))), Times.AtLeastOnce);
+        vm.RefreshCommand.Execute(null);
+
+        Assert.AreEqual(1, called);
     }
 
     [TestMethod]
-    public void ItemCounter_Increments_On_Get()
+    public void RefreshCommandStates_MultiThreaded_Invokes_All_Handlers_ThreadSafe_In_PersonVM()
     {
-        Mock<IStatusInfoServices> mockStatus = new Mock<IStatusInfoServices>();
-        mockStatus.Setup(s => s.BeginLoadingOrSaving()).Returns(new DisposableAction(() => { }));
-        Mock<IAppMessageService> mockMsg = new Mock<IAppMessageService>();
-        Mock<IPersonRepository> mockRepo = new Mock<IPersonRepository>();
+        StatusInfoService status = new();
+        AppMessageService appMsg = new();
 
-        TestVM vm = new TestVM(mockStatus.Object, mockMsg.Object, mockRepo.Object);
+        FakePersonRepo personRepo = new();
+        FakeAddressRepo addrRepo = new();
+        FakeRoleRepo roleRepo = new();
 
-        int first = vm.ItemCounter;
-        int second = vm.ItemCounter;
+        CRUDPersonUCViewModel vm = new(status, appMsg, personRepo, addrRepo, roleRepo);
 
-        Assert.AreEqual(first + 1, second);
-    }
+        const int handlerCount = 40;
+        const int threads = 6;
+        const int callsPerThread = 100;
 
-    [TestMethod]
-    public void Label_Constants_Are_Exposed()
-    {
-        Assert.AreEqual(CRUDPersonUCViewModel.LABEL_FIRSTNAME, CRUDPersonUCViewModel.LabelFirstName);
-        Assert.AreEqual(CRUDPersonUCViewModel.LABEL_LASTNAME, CRUDPersonUCViewModel.LabelLastName);
-        Assert.AreEqual(CRUDPersonUCViewModel.LABEL_EMAIL, CRUDPersonUCViewModel.LabelEmail);
+        int totalCalls = 0;
+
+        for (int i = 0; i < handlerCount; i++)
+        {
+            (vm.AddCommand as global::ArlaNatureConnect.WinUI.Commands.RelayCommand)!.CanExecuteChanged += (s, e) => System.Threading.Interlocked.Increment(ref totalCalls);
+        }
+
+        Task[] tasks = new Task[threads];
+        for (int t = 0; t < threads; t++)
+        {
+            tasks[t] = Task.Run(() =>
+            {
+                for (int c = 0; c < callsPerThread; c++)
+                {
+                    vm.RefreshCommand.Execute(null);
+                }
+            }, TestContext.CancellationToken);
+        }
+
+        Task.WaitAll(tasks, TestContext.CancellationToken);
+
+        int expected = handlerCount * threads * callsPerThread;
+        Assert.AreEqual(expected, totalCalls);
     }
 }

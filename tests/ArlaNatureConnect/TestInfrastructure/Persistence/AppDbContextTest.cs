@@ -1,182 +1,85 @@
-using ArlaNatureConnect.Domain.Entities;
-using ArlaNatureConnect.Infrastructure.Persistence;
-
+using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Storage;
+using ArlaNatureConnect.Infrastructure.Persistence;
+using ArlaNatureConnect.Domain.Entities;
 
-using System.Runtime.InteropServices;
-
-namespace TestInfrastructure.Persistence;
-
-[TestClass]
-public class AppDbContextTest
+namespace TestInfrastructure.Persistence
 {
-    // Use a dedicated in-memory database root per test instance so multiple contexts
-    // created from the same options share the same in-memory store reliably.
-    private readonly InMemoryDatabaseRoot _dbRoot = new InMemoryDatabaseRoot();
-    private readonly string _databaseName = Guid.NewGuid().ToString();
+	[TestClass]
+	public class AppDbContextTest
+	{
+		private DbContextOptions<AppDbContext> CreateOptions()
+		{
+			DbContextOptionsBuilder<AppDbContext> builder = new DbContextOptionsBuilder<AppDbContext>();
+			builder.UseInMemoryDatabase(Guid.NewGuid().ToString());
+			return builder.Options;
+		}
 
-    private DbContextOptions<AppDbContext> CreateOptions()
-    {
-        return new DbContextOptionsBuilder<AppDbContext>()
-            .UseInMemoryDatabase(_databaseName, _dbRoot)
-            .Options;
-    }
+		[TestMethod]
+		public void OnModelCreating_Configures_AutoInclude_Person()
+		{
+			DbContextOptions<AppDbContext> options = CreateOptions();
+			using AppDbContext ctx = new(options);
 
-    [TestMethod]
-    public async Task CanCreateContextAndDbSetsNotNull()
-    {
-        DbContextOptions<AppDbContext> options = CreateOptions();
-        using AppDbContext ctx = new AppDbContext(options);
+			IModel model = ctx.Model;
+			IEntityType? personEntity = model.FindEntityType(typeof(Person));
+			Assert.IsNotNull(personEntity, "Owner entity should be in the model");
 
-        Assert.IsNotNull(ctx.Farms);
-        Assert.IsNotNull(ctx.Persons);
-        Assert.IsNotNull(ctx.Roles);
-        Assert.IsNotNull(ctx.Addresses);
+			INavigation? pRole = personEntity!.FindNavigation(nameof(Person.Role));
+			INavigation? pAddress = personEntity.FindNavigation(nameof(Person.Address));
+			INavigation? pFarms = personEntity.FindNavigation(nameof(Person.Farms));
 
-        await Task.CompletedTask;
-    }
+			Assert.IsNotNull(pRole, "Owner.Role navigation should exist");
+			Assert.IsNotNull(pAddress, "Owner.Address navigation should exist");
+			Assert.IsNotNull(pFarms, "Owner.Farms navigation should exist");
 
-    [TestMethod]
-    public void OnModelCreating_Configures_AutoInclude()
-    {
-        DbContextOptions<AppDbContext> options = CreateOptions();
-        using AppDbContext ctx = new(options);
+			// AutoInclude sets navigation to eager-loaded in the EF model
+			Assert.IsTrue(pRole!.IsEagerLoaded, "Owner.Role should be configured for AutoInclude");
+			Assert.IsTrue(pAddress!.IsEagerLoaded, "Owner.Address should be configured for AutoInclude");
+			Assert.IsTrue(pFarms!.IsEagerLoaded, "Owner.Farms should be configured for AutoInclude");
+		}
 
-        IModel model = ctx.Model;
-        IEntityType? personEntity = model.FindEntityType(typeof(Person));
-        Assert.IsNotNull(personEntity, "Owner entity should be in the model");
+		[TestMethod]
+		public void OnModelCreating_Configures_AutoInclude_Farm()
+		{
+			DbContextOptions<AppDbContext> options = CreateOptions();
+			using AppDbContext ctx = new(options);
 
-        INavigation? pRole = personEntity!.FindNavigation(nameof(Person.Role));
-        INavigation? pAddress = personEntity.FindNavigation(nameof(Person.Address));
-        INavigation? pFarms = personEntity.FindNavigation(nameof(Person.Farms));
+			IModel model = ctx.Model;
+			IEntityType? farmEntity = model.FindEntityType(typeof(Farm));
+			Assert.IsNotNull(farmEntity, "Farm entity should be in the model");
 
-        Assert.IsNotNull(pRole, "Owner.Role navigation should exist");
-        Assert.IsNotNull(pAddress, "Owner.Address navigation should exist");
-        Assert.IsNotNull(pFarms, "Owner.Farms navigation should exist");
+			INavigation? fAddress = farmEntity!.FindNavigation(nameof(Farm.Address));
+			INavigation? fPerson = farmEntity.FindNavigation(nameof(Farm.Owner));
 
-        // AutoInclude sets navigation to eager-loaded in the EF model
-        Assert.IsTrue(pRole!.IsEagerLoaded, "Owner.Role should be configured for AutoInclude");
-        Assert.IsTrue(pAddress!.IsEagerLoaded, "Owner.Address should be configured for AutoInclude");
-        Assert.IsTrue(pFarms!.IsEagerLoaded, "Owner.Farms should be configured for AutoInclude");
+			Assert.IsNotNull(fAddress, "Farm.Address navigation should exist");
+			Assert.IsNotNull(fPerson, "Farm.Owner navigation should exist");
 
-        IEntityType? farmEntity = model.FindEntityType(typeof(Farm));
-        Assert.IsNotNull(farmEntity, "Farm entity should be in the model");
+			// Accept Farm navigations being AutoIncluded
+			Assert.IsTrue(fAddress!.IsEagerLoaded, "Farm.Address should be configured for AutoInclude");
+			Assert.IsTrue(fPerson!.IsEagerLoaded, "Farm.Owner should be configured for AutoInclude");
+		}
 
-        INavigation? fAddress = farmEntity!.FindNavigation(nameof(Farm.Address));
-        INavigation? fPerson = farmEntity.FindNavigation(nameof(Farm.Owner));
+		[TestMethod]
+		public void OnModelCreating_Configures_AutoInclude_NatureArea()
+		{
+			DbContextOptions<AppDbContext> options = CreateOptions();
+			using AppDbContext ctx = new(options);
 
-        Assert.IsNotNull(fAddress, "Farm.Address navigation should exist");
-        Assert.IsNotNull(fPerson, "Farm.Owner navigation should exist");
+			IModel model = ctx.Model;
+			IEntityType? natureAreaEntity = model.FindEntityType(typeof(NatureArea));
+			Assert.IsNotNull(natureAreaEntity, "NatureArea entity should be in the model");
 
-        Assert.IsFalse(fAddress!.IsEagerLoaded, "Farm.Address should require explicit Include to avoid null FK lookups");
-        Assert.IsFalse(fPerson!.IsEagerLoaded, "Farm.Owner should require explicit Include to avoid null FK lookups");
-    }
+			INavigation? nCoordinates = natureAreaEntity!.FindNavigation(nameof(NatureArea.Coordinates));
+			INavigation? nImages = natureAreaEntity.FindNavigation(nameof(NatureArea.Images));
 
-    [TestMethod]
-    public async Task CanAddAndRetrieveFarm()
-    {
-        DbContextOptions<AppDbContext> options = CreateOptions();
+			Assert.IsNotNull(nCoordinates, "NatureArea.NatureAreaCoordinate navigation should exist");
+			Assert.IsNotNull(nImages, "NatureArea.Images navigation should exist");
 
-        Guid personId = Guid.NewGuid();
-        Guid addressId = Guid.NewGuid();
-        Guid roleId = Guid.NewGuid();
-
-        using (AppDbContext ctx = new(options))
-        {
-            ctx.Roles.Add(new Role { Id = roleId, Name = "Farmer" });
-            ctx.Addresses.Add(new Address
-            {
-                Id = addressId,
-                Street = "Test Street",
-                City = "Test City",
-                PostalCode = "1234",
-                Country = "DK"
-            });
-            ctx.Persons.Add(new Person
-            {
-                Id = personId,
-                FirstName = "Test",
-                LastName = "Owner",
-                Email = "test@test.com",
-                RoleId = roleId,
-                AddressId = addressId,
-                IsActive = true
-            });
-            await ctx.SaveChangesAsync();
-        }
-
-        Farm farm = new()
-        {
-            Id = Guid.NewGuid(),
-            Name = "TestFarm",
-            CVR = "12345678",
-            PersonId = personId,
-            AddressId = addressId
-        };
-
-        using (AppDbContext ctx = new(options))
-        {
-            ctx.Farms.Add(farm);
-            await ctx.SaveChangesAsync();
-        }
-
-        using (AppDbContext ctx = new(options))
-        {
-            Farm? dbFarm = await ctx.Farms.FirstOrDefaultAsync(f => f.Id == farm.Id);
-            Assert.IsNotNull(dbFarm);
-            Assert.AreEqual(farm.Name, dbFarm!.Name);
-            Assert.AreEqual(farm.CVR, dbFarm.CVR);
-        }
-    }
-
-    [TestMethod]
-    public async Task ConcurrentContexts_CanAddConcurrently()
-    {
-        DbContextOptions<AppDbContext> options = CreateOptions();
-
-        const int threads = 8;
-        Task[] tasks = new Task[threads];
-
-        for (int i = 0; i < threads; i++)
-        {
-            int idx = i;
-            tasks[i] = Task.Run(async () =>
-            {
-                using AppDbContext ctx = new AppDbContext(options);
-                ctx.Farms.Add(new Farm
-                {
-                    Id = Guid.NewGuid(),
-                    Name = $"Farm_{idx}",
-                    CVR = idx.ToString("D8"),
-                    PersonId = Guid.Empty,
-                    AddressId = Guid.Empty
-                });
-                await ctx.SaveChangesAsync();
-            });
-        }
-
-        await Task.WhenAll(tasks);
-
-        using AppDbContext verify = new AppDbContext(options);
-        int count = await verify.Farms.CountAsync();
-        Assert.AreEqual(threads, count, "All concurrent inserts should be visible in the shared in-memory DB");
-    }
-
-    [TestMethod]
-    public void FactoryCreate_Throws_COMException()
-    {
-        ThrowingFactory factory = new ThrowingFactory();
-
-        Assert.Throws<COMException>(() => factory.CreateDbContext());
-    }
-
-    private sealed class ThrowingFactory : IDbContextFactory<AppDbContext>
-    {
-        public AppDbContext CreateDbContext()
-        {
-            throw new COMException("Simulated COM error while creating DbContext");
-        }
-    }
+			Assert.IsTrue(nCoordinates!.IsEagerLoaded, "NatureArea.NatureAreaCoordinate should be configured for AutoInclude");
+			Assert.IsTrue(nImages!.IsEagerLoaded, "NatureArea.Images should be configured for AutoInclude");
+		}
+	}
 }

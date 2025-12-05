@@ -2,6 +2,6 @@ using ArlaNatureConnect.Domain.Entities;
 
 namespace ArlaNatureConnect.Core.Abstract;
 
-public interface INatureAreaCoordinateRepository : IRepository<NatureAreaCoordinate>
+public interface ICoordinatesRepository : IRepository<NatureAreaCoordinate>
 {
 }

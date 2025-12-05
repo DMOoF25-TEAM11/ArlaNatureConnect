@@ -104,9 +104,10 @@ public partial class CRUDPersonUCViewModel
     {
         get
         {
-            if (SelectedItem?.Address.PostalCode != AddressPostalCode) return true;
-            if (SelectedItem?.Address.City != AddressCity) return true;
-            if (SelectedItem?.Address.Street != AddressStreet) return true;
+            // Safely handle null Address on SelectedItem using null-conditional operator for each access
+            if (SelectedItem?.Address?.PostalCode != AddressPostalCode) return true;
+            if (SelectedItem?.Address?.City != AddressCity) return true;
+            if (SelectedItem?.Address?.Street != AddressStreet) return true;
             return false;
         }
     }
@@ -140,7 +141,7 @@ public partial class CRUDPersonUCViewModel
         }
     } = 0;
 
-    // Convenience strongly-typed collection (wraps base Items)
+    // Convenience strongly-formed collection (wraps base Items)
     public ObservableCollection<Person> Persons => Items;
 
     public Guid Id
@@ -765,10 +766,16 @@ public partial class CRUDPersonUCViewModel
         if (string.IsNullOrWhiteSpace(LastName)) return false;
         if (string.IsNullOrWhiteSpace(Email)) return false;
         if (RoleId == Guid.Empty) return false;
-        if (IsEditMode && AddressId == Guid.Empty) return false;
-        if (string.IsNullOrWhiteSpace(AddressPostalCode)) return false;
-        if (string.IsNullOrWhiteSpace(AddressStreet)) return false;
-        if (string.IsNullOrWhiteSpace(AddressCity)) return false;
+
+        // Only require address fields when adding a new person or when the address was modified
+        bool needAddressValidation = IsAddMode || IsAddressEntityChanged;
+        if (needAddressValidation)
+        {
+            if (string.IsNullOrWhiteSpace(AddressPostalCode)) return false;
+            if (string.IsNullOrWhiteSpace(AddressStreet)) return false;
+            if (string.IsNullOrWhiteSpace(AddressCity)) return false;
+        }
+
         return true;
     }
     #endregion
