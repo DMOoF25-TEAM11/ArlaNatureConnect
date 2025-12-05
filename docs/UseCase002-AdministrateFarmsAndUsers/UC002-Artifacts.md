@@ -96,15 +96,15 @@ At this point the Administrator chooses one of the following actions (each is an
 title: Use Case 002 - Domain Model
 ---
 classDiagram
-    direction TB
+  direction TB
 
-    class Person {
-        firstName
-        lastName
-        email
-        address
-        aktiveStatus
-    }
+  class Person {
+    firstName
+    lastName
+    email
+    address
+    aktiveStatus
+  }
 
     class Farm {
         farmName
