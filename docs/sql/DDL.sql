@@ -89,7 +89,7 @@ BEGIN
         [Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY DEFAULT NEWID(),
         [Name] NVARCHAR(200) NOT NULL,
         [AddressId] UNIQUEIDENTIFIER NULL,
-        [PersonId] UNIQUEIDENTIFIER NULL,
+        [OwnerId] UNIQUEIDENTIFIER NULL,
         [CVR] NVARCHAR(50) NULL,
         CONSTRAINT [UQ_Farms_CVR] UNIQUE([CVR])
     );
@@ -126,8 +126,8 @@ BEGIN
  IF NOT EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = N'FK_Farms_Persons')
  BEGIN
  ALTER TABLE [dbo].[Farms]
- ADD CONSTRAINT [FK_Farms_Persons] FOREIGN KEY ([PersonId]) REFERENCES [dbo].[Persons]([Id]);
- CREATE INDEX [IX_Farms_PersonId] ON [dbo].[Farms]([PersonId]);
+ ADD CONSTRAINT [FK_Farms_Owner] FOREIGN KEY ([OwnerId]) REFERENCES [dbo].[Persons]([Id]);
+ CREATE INDEX [IX_Farms_OwnerId] ON [dbo].[Farms]([OwnerId]);
  END
 END
 

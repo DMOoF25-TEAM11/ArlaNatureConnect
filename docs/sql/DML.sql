@@ -234,26 +234,26 @@ VALUES
 (@E5, N'Mathilde', N'Christoff',N'mathilde.christoff@example.dk', @Role_Employee, @A20,1);
 
 -- After Persons inserted: set primary owner on farms (F1..F15 -> U1..U15)
-UPDATE [dbo].[Farms] SET [PersonId] = @U1 WHERE [Id] = @F1;
-UPDATE [dbo].[Farms] SET [PersonId] = @U2 WHERE [Id] = @F2;
-UPDATE [dbo].[Farms] SET [PersonId] = @U3 WHERE [Id] = @F3;
-UPDATE [dbo].[Farms] SET [PersonId] = @U4 WHERE [Id] = @F4;
-UPDATE [dbo].[Farms] SET [PersonId] = @U5 WHERE [Id] = @F5;
-UPDATE [dbo].[Farms] SET [PersonId] = @U6 WHERE [Id] = @F6;
-UPDATE [dbo].[Farms] SET [PersonId] = @U7 WHERE [Id] = @F7;
-UPDATE [dbo].[Farms] SET [PersonId] = @U8 WHERE [Id] = @F8;
-UPDATE [dbo].[Farms] SET [PersonId] = @U9 WHERE [Id] = @F9;
-UPDATE [dbo].[Farms] SET [PersonId] = @U10 WHERE [Id] = @F10;
-UPDATE [dbo].[Farms] SET [PersonId] = @U11 WHERE [Id] = @F11;
-UPDATE [dbo].[Farms] SET [PersonId] = @U12 WHERE [Id] = @F12;
-UPDATE [dbo].[Farms] SET [PersonId] = @U13 WHERE [Id] = @F13;
-UPDATE [dbo].[Farms] SET [PersonId] = @U14 WHERE [Id] = @F14;
-UPDATE [dbo].[Farms] SET [PersonId] = @U15 WHERE [Id] = @F15;
+UPDATE [dbo].[Farms] SET [OwnerId] = @U1 WHERE [Id] = @F1;
+UPDATE [dbo].[Farms] SET [OwnerId] = @U2 WHERE [Id] = @F2;
+UPDATE [dbo].[Farms] SET [OwnerId] = @U3 WHERE [Id] = @F3;
+UPDATE [dbo].[Farms] SET [OwnerId] = @U4 WHERE [Id] = @F4;
+UPDATE [dbo].[Farms] SET [OwnerId] = @U5 WHERE [Id] = @F5;
+UPDATE [dbo].[Farms] SET [OwnerId] = @U6 WHERE [Id] = @F6;
+UPDATE [dbo].[Farms] SET [OwnerId] = @U7 WHERE [Id] = @F7;
+UPDATE [dbo].[Farms] SET [OwnerId] = @U8 WHERE [Id] = @F8;
+UPDATE [dbo].[Farms] SET [OwnerId] = @U9 WHERE [Id] = @F9;
+UPDATE [dbo].[Farms] SET [OwnerId] = @U10 WHERE [Id] = @F10;
+UPDATE [dbo].[Farms] SET [OwnerId] = @U11 WHERE [Id] = @F11;
+UPDATE [dbo].[Farms] SET [OwnerId] = @U12 WHERE [Id] = @F12;
+UPDATE [dbo].[Farms] SET [OwnerId] = @U13 WHERE [Id] = @F13;
+UPDATE [dbo].[Farms] SET [OwnerId] = @U14 WHERE [Id] = @F14;
+UPDATE [dbo].[Farms] SET [OwnerId] = @U15 WHERE [Id] = @F15;
 
 -- Also set owners for extra farms so three Persons own two farms each
-UPDATE [dbo].[Farms] SET [PersonId] = @U1 WHERE [Id] = @F16;
-UPDATE [dbo].[Farms] SET [PersonId] = @U2 WHERE [Id] = @F17;
-UPDATE [dbo].[Farms] SET [PersonId] = @U3 WHERE [Id] = @F18;
+UPDATE [dbo].[Farms] SET [OwnerId] = @U1 WHERE [Id] = @F16;
+UPDATE [dbo].[Farms] SET [OwnerId] = @U2 WHERE [Id] = @F17;
+UPDATE [dbo].[Farms] SET [OwnerId] = @U3 WHERE [Id] = @F18;
 
 -- Insert two new persons and assign the new addresses (Admin role)
 DECLARE @ADM3 UNIQUEIDENTIFIER = NEWID(), @ADM4 UNIQUEIDENTIFIER = NEWID();

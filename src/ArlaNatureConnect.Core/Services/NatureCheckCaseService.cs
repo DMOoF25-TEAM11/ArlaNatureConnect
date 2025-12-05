@@ -186,9 +186,9 @@ public class NatureCheckCaseService : INatureCheckCaseService
                 }
             }
 
-            if (existingFarm.PersonId != Guid.Empty)
+            if (existingFarm.OwnerId != Guid.Empty)
             {
-                Person? farmer = await _personRepository.GetByIdAsync(existingFarm.PersonId, cancellationToken).ConfigureAwait(false);
+                Person? farmer = await _personRepository.GetByIdAsync(existingFarm.OwnerId, cancellationToken).ConfigureAwait(false);
                 if (farmer != null)
                 {
                     farmer.FirstName = request.OwnerFirstName;
@@ -234,7 +234,7 @@ public class NatureCheckCaseService : INatureCheckCaseService
                 Id = Guid.NewGuid(),
                 Name = request.FarmName,
                 CVR = request.Cvr,
-                PersonId = farmer.Id,
+                OwnerId = farmer.Id,
                 AddressId = farmAddress.Id
             };
             await _farmRepository.AddAsync(farm, cancellationToken).ConfigureAwait(false);
@@ -311,9 +311,9 @@ public class NatureCheckCaseService : INatureCheckCaseService
         IDictionary<Guid, NatureCheckCase> activeCasesByFarm)
     {
         Person? owner = null;
-        if (farm.PersonId != Guid.Empty)
+        if (farm.OwnerId != Guid.Empty)
         {
-            personsById.TryGetValue(farm.PersonId, out owner);
+            personsById.TryGetValue(farm.OwnerId, out owner);
         }
 
         Address? address = null;

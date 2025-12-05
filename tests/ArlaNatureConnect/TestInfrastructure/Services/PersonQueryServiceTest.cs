@@ -66,8 +66,8 @@
 //                Country = "Denmark"
 //            });
 
-//            seedCtx.Persons.Add(new Person { Id = Guid.NewGuid(), FirstName = "P1", LastName = "One", Email = "p1@x.com", RoleId = roleId, AddressId = addrId, IsActive = true });
-//            seedCtx.Persons.Add(new Person { Id = Guid.NewGuid(), FirstName = "P2", LastName = "Two", Email = "p2@x.com", RoleId = roleId2, AddressId = addrId2, IsActive = true });
+//            seedCtx.Persons.Add(new Owner { Id = Guid.NewGuid(), FirstName = "P1", LastName = "One", Email = "p1@x.com", RoleId = roleId, AddressId = addrId, IsActive = true });
+//            seedCtx.Persons.Add(new Owner { Id = Guid.NewGuid(), FirstName = "P2", LastName = "Two", Email = "p2@x.com", RoleId = roleId2, AddressId = addrId2, IsActive = true });
 
 //            await seedCtx.SaveChangesAsync();
 //        }
@@ -75,22 +75,22 @@
 //        TestFactory factory = new TestFactory(options);
 //        PersonQueryService service = new PersonQueryService(factory);
 
-//        List<Person> result = (await service.GetAllWithRolesAsync()).ToList();
+//        List<Owner> result = (await service.GetAllWithRolesAsync()).ToList();
 
 //        Assert.IsNotNull(result);
 //        Assert.AreEqual(2, result.Count);
 
-//        foreach (Person p in result)
+//        foreach (Owner p in result)
 //        {
 //            Assert.IsNotNull(p.Role, "Role navigation should be populated");
 //            Assert.IsNotNull(p.Address, "Address navigation should be populated");
 //        }
 
-//        Person p1 = result.Single(p => p.Email == "p1@x.com");
+//        Owner p1 = result.Single(p => p.Email == "p1@x.com");
 //        Assert.AreEqual("Farmer", p1.Role.Name);
 //        Assert.AreEqual("Test", p1.Address.City);
 
-//        Person p2 = result.Single(p => p.Email == "p2@x.com");
+//        Owner p2 = result.Single(p => p.Email == "p2@x.com");
 //        Assert.AreEqual("Admin", p2.Role.Name);
 //        Assert.AreEqual("Downtown", p2.Address.City);
 //    }

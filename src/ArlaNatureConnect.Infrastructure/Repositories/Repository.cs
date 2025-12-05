@@ -25,9 +25,9 @@ namespace ArlaNatureConnect.Infrastructure.Repositories;
 /// <example>
 /// <code>
 /// /// &lt;summary&gt;
-/// /// Repository for <c>Person</c> entities.
+/// /// Repository for <c>Owner</c> entities.
 /// /// &lt;/summary&gt;
-/// public class PersonRepository : Repository<Person>
+/// public class PersonRepository : Repository<Owner>
 /// {
 ///     public PersonRepository(IDbContextFactory<AppDbContext> factory) : base(factory) { }
 /// }

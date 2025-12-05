@@ -46,32 +46,32 @@ public class AppDbContextTest
 
         IModel model = ctx.Model;
         IEntityType? personEntity = model.FindEntityType(typeof(Person));
-        Assert.IsNotNull(personEntity, "Person entity should be in the model");
+        Assert.IsNotNull(personEntity, "Owner entity should be in the model");
 
         INavigation? pRole = personEntity!.FindNavigation(nameof(Person.Role));
         INavigation? pAddress = personEntity.FindNavigation(nameof(Person.Address));
         INavigation? pFarms = personEntity.FindNavigation(nameof(Person.Farms));
 
-        Assert.IsNotNull(pRole, "Person.Role navigation should exist");
-        Assert.IsNotNull(pAddress, "Person.Address navigation should exist");
-        Assert.IsNotNull(pFarms, "Person.Farms navigation should exist");
+        Assert.IsNotNull(pRole, "Owner.Role navigation should exist");
+        Assert.IsNotNull(pAddress, "Owner.Address navigation should exist");
+        Assert.IsNotNull(pFarms, "Owner.Farms navigation should exist");
 
         // AutoInclude sets navigation to eager-loaded in the EF model
-        Assert.IsTrue(pRole!.IsEagerLoaded, "Person.Role should be configured for AutoInclude");
-        Assert.IsTrue(pAddress!.IsEagerLoaded, "Person.Address should be configured for AutoInclude");
-        Assert.IsTrue(pFarms!.IsEagerLoaded, "Person.Farms should be configured for AutoInclude");
+        Assert.IsTrue(pRole!.IsEagerLoaded, "Owner.Role should be configured for AutoInclude");
+        Assert.IsTrue(pAddress!.IsEagerLoaded, "Owner.Address should be configured for AutoInclude");
+        Assert.IsTrue(pFarms!.IsEagerLoaded, "Owner.Farms should be configured for AutoInclude");
 
         IEntityType? farmEntity = model.FindEntityType(typeof(Farm));
         Assert.IsNotNull(farmEntity, "Farm entity should be in the model");
 
         INavigation? fAddress = farmEntity!.FindNavigation(nameof(Farm.Address));
-        INavigation? fPerson = farmEntity.FindNavigation(nameof(Farm.Person));
+        INavigation? fPerson = farmEntity.FindNavigation(nameof(Farm.Owner));
 
         Assert.IsNotNull(fAddress, "Farm.Address navigation should exist");
-        Assert.IsNotNull(fPerson, "Farm.Person navigation should exist");
+        Assert.IsNotNull(fPerson, "Farm.Owner navigation should exist");
 
         Assert.IsFalse(fAddress!.IsEagerLoaded, "Farm.Address should require explicit Include to avoid null FK lookups");
-        Assert.IsFalse(fPerson!.IsEagerLoaded, "Farm.Person should require explicit Include to avoid null FK lookups");
+        Assert.IsFalse(fPerson!.IsEagerLoaded, "Farm.Owner should require explicit Include to avoid null FK lookups");
     }
 
     [TestMethod]

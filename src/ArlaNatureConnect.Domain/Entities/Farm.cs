@@ -9,10 +9,11 @@ public class Farm : IEntity
     public string CVR { get; set; } = string.Empty;
 
     // Non-nullable per domain model: A farm must have an owner and an address.
-    public Guid PersonId { get; set; } = Guid.Empty;
+    public Guid OwnerId { get; set; } = Guid.Empty;
     public Guid AddressId { get; set; } = Guid.Empty;
 
     // Navigation properties
-    public virtual Person Person { get; set; } = null!;
+    public virtual Person Owner { get; set; } = null!;
+    //public virtual Owner Owner { get; set; } = null!;
     public virtual Address Address { get; set; } = null!;
 }

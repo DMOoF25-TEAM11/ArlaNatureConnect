@@ -17,7 +17,7 @@ namespace ArlaNatureConnect.Domain.Abstract;
 /// }
 ///
 /// // Implementation can inherit the documentation for the Id property from IEntity
-/// public class Person : IEntity
+/// public class Owner : IEntity
 /// {
 ///     /// <inheritdoc/> // Inherits the summary and remarks from IEntity.Id
 ///     public Guid Id { get; init; }

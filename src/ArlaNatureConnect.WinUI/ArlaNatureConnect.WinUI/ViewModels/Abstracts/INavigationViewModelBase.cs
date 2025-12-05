@@ -39,7 +39,7 @@ namespace ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 /// {
 ///     // Inherit the property and command documentation from the interface
 ///     /// &lt;inheritdoc/&gt;
-///     public RelayCommand&lt;Person&gt;? ChooseUserCommand { get; }
+///     public RelayCommand&lt;Owner&gt;? ChooseUserCommand { get; }
 ///
 ///     /// &lt;inheritdoc/&gt;
 ///     public ICommand? NavigationCommand { get; }
