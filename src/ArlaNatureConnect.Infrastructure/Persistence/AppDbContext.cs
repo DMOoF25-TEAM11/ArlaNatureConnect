@@ -11,6 +11,9 @@ public partial class AppDbContext(DbContextOptions<AppDbContext> options) : DbCo
     public DbSet<Role> Roles { get; set; } = null!;
     public DbSet<Address> Addresses { get; set; } = null!;
     public DbSet<NatureCheckCase> NatureCheckCases { get; set; } = null!;
+    public DbSet<NatureArea> NatureAreas { get; set; } = null!;
+    public DbSet<NatureAreaCoordinate> NatureAreaCoordinates { get; set; } = null!;
+    public DbSet<NatureAreaImage> NatureAreaImages { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -34,5 +37,8 @@ public partial class AppDbContext(DbContextOptions<AppDbContext> options) : DbCo
         // consistent behavior across the application.
         modelBuilder.Entity<Farm>().Navigation(e => e.Owner).AutoInclude();
         modelBuilder.Entity<Farm>().Navigation(e => e.Address).AutoInclude();
+
+        modelBuilder.Entity<NatureArea>().Navigation(e => e.Coordinates).AutoInclude();
+        modelBuilder.Entity<NatureArea>().Navigation(e => e.Images).AutoInclude();
     }
 }
