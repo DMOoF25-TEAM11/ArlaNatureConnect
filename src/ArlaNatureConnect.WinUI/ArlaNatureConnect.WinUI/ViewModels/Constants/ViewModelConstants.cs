@@ -25,6 +25,9 @@ public static class ViewModelConstants
     public static string PERSON_ROLE => Translate("Rolle");
     public static string SELECT_A_FARM => Translate("Vælg en gård");
     public static string SELECT_FARM => Translate("Vælg Gård");
+    public static string NATURE_AREA_DESCRIPTION => Translate("Naturareal Beskrivelse");
+    public static string LONGITUDE => Translate("Længdegrad");
+    public static string LATITUDE => Translate("Breddegrad");
 
     private static string Translate(string text)
     {

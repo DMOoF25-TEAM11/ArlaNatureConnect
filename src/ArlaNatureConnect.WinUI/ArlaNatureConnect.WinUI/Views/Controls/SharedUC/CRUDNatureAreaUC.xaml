@@ -33,8 +33,42 @@
                          FontWeight="SemiBold"/>
             <TextBox Text="{Binding NatureAreaName, Mode=TwoWay}" 
                        Style="{StaticResource ArlaTextBox}"/>
-          </StackPanel>
 
+            <TextBlock Text="{Binding LabelNatureAreaDescription, Mode=OneTime}" 
+                       Style="{StaticResource ArlaBodyText}"
+                       FontWeight="SemiBold"/>
+            <TextBox Text="{Binding NatureAreaDescription, Mode=TwoWay}" 
+                       Style="{StaticResource ArlaTextBox}"
+                       AcceptsReturn="True"
+                       Height="100"
+                       TextWrapping="Wrap"/>
+
+            <!-- Editable list of Coordinates -->
+            <TextBlock Text="Coordinates" 
+                       Style="{StaticResource ArlaBodyText}" 
+                       FontWeight="SemiBold" 
+                       Margin="0,8,0,0"/>
+            <ListView ItemsSource="{Binding Coordinates, Mode=TwoWay}" 
+                      Margin="0,0,0,8"
+                      Height="120"
+                      SelectionMode="Single">
+              <ListView.ItemTemplate>
+                <DataTemplate>
+                  <StackPanel Orientation="Horizontal" Spacing="8">
+                    <TextBox Text="{Binding Latitude, Mode=TwoWay}" Width="80" PlaceholderText="Lat"/>
+                    <TextBox Text="{Binding Longitude, Mode=TwoWay}" Width="80" PlaceholderText="Lng"/>
+                    <!-- Add more fields if needed -->
+                  </StackPanel>
+                </DataTemplate>
+              </ListView.ItemTemplate>
+            </ListView>
+            <!-- Optionally, add buttons for add/remove -->
+            <StackPanel Orientation="Horizontal" Spacing="8">
+              <Button Content="Add Coordinate" Command="{Binding AddCoordinateCommand}" />
+              <Button Content="Remove Selected" Command="{Binding RemoveCoordinateCommand}" />
+            </StackPanel>
+
+          </StackPanel>
         </StackPanel>
       </StackPanel>
     </Border>

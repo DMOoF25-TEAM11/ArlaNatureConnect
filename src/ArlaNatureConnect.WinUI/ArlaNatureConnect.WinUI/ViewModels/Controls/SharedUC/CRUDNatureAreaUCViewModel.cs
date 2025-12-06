@@ -22,6 +22,9 @@ public partial class CRUDNatureAreaUCViewModel
     public static string LabelSelectFarm => SELECT_FARM;
     public static string LabelNatureAreaDetails => NATURE_AREA_DETAILS;
     public static string LabelNatureAreaName => NATURE_AREA_NAME;
+    public static string LabelNatureAreaDescription => NATURE_AREA_DESCRIPTION;
+    public static string LabelLongitude => LONGITUDE;
+    public static string LabelLatitude => LATITUDE;
 
     // form
     public string? NatureAreaName
@@ -34,6 +37,28 @@ public partial class CRUDNatureAreaUCViewModel
             OnPropertyChanged();
         }
     }
+
+    public string? NatureAreaDescription
+    {
+        get => field;
+        set
+        {
+            if (field == value) return;
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public IEnumerable<NatureAreaCoordinate> Coordinates
+    {
+        get => field;
+        set
+        {
+            if (field == value) return;
+            field = value;
+            OnPropertyChanged();
+        }
+    } = [];
 
     // Selected Farm for filtering Nature Areas
     public Farm? SelectedFarm
@@ -73,9 +98,14 @@ public partial class CRUDNatureAreaUCViewModel
         _farmRepository = farmRepository;
         _ = LoadFarmsAsync();
         _ = GetAllAsync();
+        SelectedEntityChanged += CRUDNatureAreaUCViewModel_SelectedEntityChanged;
     }
 
     #region Events and Event Handlers
+    private void CRUDNatureAreaUCViewModel_SelectedEntityChanged(object? sender, NatureArea? e)
+    {
+        PopulateFormFromSelectedItem();
+    }
     #endregion
     #region Load Handlers
     private async void ReloadItemsForSelectedFarm()
@@ -137,5 +167,20 @@ public partial class CRUDNatureAreaUCViewModel
     }
     #endregion
     #region Helpers
+    public void PopulateFormFromSelectedItem()
+    {
+        if (SelectedItem != null)
+        {
+            NatureAreaName = SelectedItem.Name;
+            NatureAreaDescription = SelectedItem.Description;
+            Coordinates = SelectedItem.Coordinates;
+        }
+        else
+        {
+            NatureAreaName = null;
+            NatureAreaDescription = null;
+            Coordinates = [];
+        }
+    }
     #endregion
 }
