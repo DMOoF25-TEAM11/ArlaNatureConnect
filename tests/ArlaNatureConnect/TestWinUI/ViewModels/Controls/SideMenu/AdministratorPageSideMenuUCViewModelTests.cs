@@ -22,8 +22,27 @@ public sealed class AdministratorPageSideMenuUCViewModelTests
 
     private sealed class TestNavigationHost : NavigationViewModelBase
     {
-        public TestNavigationHost() : base(null)
+        public TestNavigationHost(INavigationHandler navigationHandler) : base(navigationHandler)
         {
+        }
+
+        public void SetCurrentContent(UserControl content)
+        {
+            this.CurrentContent = content;
+        }
+
+        protected override void NavigateToView(object? parameter)
+        {
+            if (parameter is Func<UserControl?> contentFunc)
+            {
+                UserControl? ctrl = contentFunc();
+                if (ctrl != null)
+                    this.CurrentContent = ctrl;
+            }
+            else
+            {
+                base.NavigateToView(parameter);
+            }
         }
     }
 
@@ -79,11 +98,10 @@ public sealed class AdministratorPageSideMenuUCViewModelTests
         statusMock.Setup(s => s.BeginLoadingOrSaving()).Returns(new DummyDisposable());
         Mock<IAppMessageService> msgMock = new Mock<IAppMessageService>();
         Mock<IPersonRepository> repoMock = new Mock<IPersonRepository>();
-        Mock<INavigationHandler> navMock = new Mock<INavigationHandler>();
+        Mock<INavigationHandler> navMock = new();
 
+        TestNavigationHost host = new TestNavigationHost(navMock.Object);
         AdministratorPageSideMenuUCViewModel vm = new AdministratorPageSideMenuUCViewModel(statusMock.Object, msgMock.Object, repoMock.Object, navMock.Object);
-
-        TestNavigationHost host = new TestNavigationHost();
         vm.SetHostPageViewModel(host);
 
         // execute dashboards
@@ -94,7 +112,8 @@ public sealed class AdministratorPageSideMenuUCViewModelTests
         Assert.IsFalse(vm.NavItems[1].IsSelected);
 
         // CurrentContent on host should be set to a UserControl (AdministratorDashboardUC)
-        Assert.IsInstanceOfType(host.CurrentContent, typeof(UserControl));
+        // TODO fix this so host.CurrentContent is actually set to AdministratorDashboardUC
+        Assert.IsInstanceOfType<UserControl>(host.CurrentContent);
     }
 
     [TestMethod]
@@ -108,7 +127,7 @@ public sealed class AdministratorPageSideMenuUCViewModelTests
 
         AdministratorPageSideMenuUCViewModel vm = new AdministratorPageSideMenuUCViewModel(statusMock.Object, msgMock.Object, repoMock.Object, navMock.Object);
 
-        TestNavigationHost host = new TestNavigationHost();
+        TestNavigationHost host = new TestNavigationHost(navMock.Object);
         vm.SetHostPageViewModel(host);
 
         // execute administrate persons

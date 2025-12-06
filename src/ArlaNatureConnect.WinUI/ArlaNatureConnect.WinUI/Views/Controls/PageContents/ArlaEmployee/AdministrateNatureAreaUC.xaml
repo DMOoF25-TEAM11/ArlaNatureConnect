@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <UserControl
-  x:Class="ArlaNatureConnect.WinUI.Views.Controls.PageContents.AdministrateNatureAreaUC"
+  x:Class="ArlaNatureConnect.WinUI.Views.Controls.PageContents.ArlaEmployee.AdministrateNatureAreaUC"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-  xmlns:local="using:ArlaNatureConnect.WinUI.Views.Controls.PageContents"
+  xmlns:local="using:ArlaNatureConnect.WinUI.Views.Controls.PageContents.ArlaEmployee"
+  xmlns:shareduc="using:ArlaNatureConnect.WinUI.Views.Controls.SharedUC"
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
   xmlns:pagecontents="using:ArlaNatureConnect.WinUI.ViewModels.Controls.PageContents" 
@@ -11,6 +12,6 @@
   mc:Ignorable="d">
 
   <Grid>
-
+    <shareduc:CRUDNatureAreaUC/>
   </Grid>
 </UserControl>

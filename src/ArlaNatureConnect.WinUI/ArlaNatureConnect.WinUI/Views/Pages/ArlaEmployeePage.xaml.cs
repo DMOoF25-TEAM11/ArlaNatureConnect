@@ -9,7 +9,7 @@ namespace ArlaNatureConnect.WinUI.Views.Pages;
 /// <summary>
 /// Page for Arla Employee role users to view their dashboard directly.
 /// This page orchestrates the ArlaEmployeeSideMenuUC and switches between different content views
-/// (Dashboards, Farms, Users) based on navigation selection.
+/// (Dashboards, FarmsWhoHaveNatureArea, Users) based on navigation selection.
 /// </summary>
 public sealed partial class ArlaEmployeePage : NavPage
 {

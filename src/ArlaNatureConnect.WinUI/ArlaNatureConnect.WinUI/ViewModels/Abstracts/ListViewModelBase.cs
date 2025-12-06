@@ -148,7 +148,16 @@ public abstract class ListViewModelBase<TRepos, TEntity> : ViewModelBase
     /// <summary>
     /// Collection of entities exposed to the view. ObservableCollection ensures UI updates when items change.
     /// </summary>
-    public ObservableCollection<TEntity> Items { get; } = [];
+    public ObservableCollection<TEntity> Items
+    {
+        get;
+        set
+        {
+            if (object.Equals(field, value)) return;
+            field = value;
+            OnPropertyChanged();
+        }
+    } = [];
     #endregion
 
     /// <summary>

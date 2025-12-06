@@ -141,7 +141,7 @@ public abstract class SideMenuBaseUC : UserControl
         //            case "Dashboards":
         //                DashboardsButton.Style = activeStyleTyped;
         //                break;
-        //            case "Farms":
+        //            case "FarmsWhoHaveNatureArea":
         //                FarmsButton.Style = activeStyleTyped;
         //                break;
         //            case "Users":

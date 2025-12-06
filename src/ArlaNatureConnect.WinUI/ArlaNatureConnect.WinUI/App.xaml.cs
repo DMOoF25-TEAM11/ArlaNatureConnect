@@ -76,6 +76,7 @@ public partial class App : Application
 
                     // Shared Control ViewModels
                     .AddScoped<CRUDPersonUCViewModel>()
+                    .AddScoped<CRUDNatureAreaUCViewModel>()
 
                     // Pages
                     .AddScoped<LoginPage>()

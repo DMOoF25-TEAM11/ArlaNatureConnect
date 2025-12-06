@@ -143,8 +143,8 @@ BEGIN
     CREATE TABLE [dbo].[NatureAreaCoordinates] (
         [Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY DEFAULT NEWID(),
         [NatureAreaId] UNIQUEIDENTIFIER NOT NULL,
-        [Latitude] DECIMAL(9,6) NOT NULL,
-        [Longitude] DECIMAL(9,6) NOT NULL,
+        [Latitude] FLOAT(53) NOT NULL,
+        [Longitude] FLOAT(53) NOT NULL,
         [OrderIndex] INT NOT NULL DEFAULT(0),
         CONSTRAINT [FK_NAC_NatureArea] FOREIGN KEY ([NatureAreaId]) REFERENCES [dbo].[NatureAreas]([Id]) ON DELETE CASCADE
     );

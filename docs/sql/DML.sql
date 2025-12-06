@@ -263,6 +263,52 @@ VALUES
 (@ADM3, N'Louise', N'Møller', N'louise.moller@example.dk', @Role_Admin, @A26, 1),
 (@ADM4, N'Carsten', N'Birk', N'carsten.birk@example.dk', @Role_Admin, @A27, 1);
 
+-- Insert 6 marsh nature areas and their coordinates (polygon: 4 corners each)
+DECLARE @NA1 UNIQUEIDENTIFIER = NEWID(), @NA2 UNIQUEIDENTIFIER = NEWID(), @NA3 UNIQUEIDENTIFIER = NEWID(),
+        @NA4 UNIQUEIDENTIFIER = NEWID(), @NA5 UNIQUEIDENTIFIER = NEWID(), @NA6 UNIQUEIDENTIFIER = NEWID();
+
+-- NatureAreas
+INSERT INTO [dbo].[NatureAreas] ([Id], [FarmId], [Name], [Description], [Type])
+VALUES
+(@NA1, @F1, N'Varde Marsh', N'Small marsh near Varde', N'Marsh'),
+(@NA2, @F8, N'Lyng Marsh', N'Marsh area near Lyngvej', N'Marsh'),
+(@NA3, @F8, N'Blåvand Marsh', N'Marsh close to Blåvand', N'Marsh'),
+(@NA4, @F4, N'Henne Marsh', N'Marsh near Henne', N'Marsh'),
+(@NA5, @F3, N'Nørre Nebel Marsh', N'Marsh near Nørre Nebel', N'Marsh'),
+(@NA6, @F9, N'Esbjerg Marsh', N'Small marsh near Esbjerg', N'Marsh');
+
+-- NatureAreaCoordinates (rectangle polygons, OrderIndex 0-3)
+INSERT INTO [dbo].[NatureAreaCoordinates] ([Id], [NatureAreaId], [Latitude], [Longitude], [OrderIndex]) VALUES
+(NEWID(), @NA1, 55.6045, 8.4885, 0),
+(NEWID(), @NA1, 55.6045, 8.4895, 1),
+(NEWID(), @NA1, 55.6055, 8.4895, 2),
+(NEWID(), @NA1, 55.6055, 8.4885, 3),
+
+(NEWID(), @NA2, 55.5627, 8.1202, 0),
+(NEWID(), @NA2, 55.5627, 8.1212, 1),
+(NEWID(), @NA2, 55.5637, 8.1212, 2),
+(NEWID(), @NA2, 55.5637, 8.1202, 3),
+
+(NEWID(), @NA3, 55.5592, 8.1081, 0),
+(NEWID(), @NA3, 55.5592, 8.1091, 1),
+(NEWID(), @NA3, 55.5602, 8.1091, 2),
+(NEWID(), @NA3, 55.5602, 8.1081, 3),
+
+(NEWID(), @NA4, 55.7357, 8.2416, 0),
+(NEWID(), @NA4, 55.7357, 8.2426, 1),
+(NEWID(), @NA4, 55.7367, 8.2426, 2),
+(NEWID(), @NA4, 55.7367, 8.2416, 3),
+
+(NEWID(), @NA5, 55.8215, 8.3155, 0),
+(NEWID(), @NA5, 55.8215, 8.3165, 1),
+(NEWID(), @NA5, 55.8225, 8.3165, 2),
+(NEWID(), @NA5, 55.8225, 8.3155, 3),
+
+(NEWID(), @NA6, 55.4760, 8.4589, 0),
+(NEWID(), @NA6, 55.4760, 8.4599, 1),
+(NEWID(), @NA6, 55.4770, 8.4599, 2),
+(NEWID(), @NA6, 55.4770, 8.4589, 3);
+
 -- Simple verification queries (uncomment to run)
 PRINT 'Using database [ArlaNatureConnect_Dev]...';
 USE [ArlaNatureConnect_Dev];
