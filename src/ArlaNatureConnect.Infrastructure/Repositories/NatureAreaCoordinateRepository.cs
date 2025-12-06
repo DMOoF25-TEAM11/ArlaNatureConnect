@@ -6,6 +6,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ArlaNatureConnect.Infrastructure.Repositories;
 
-public class NatureAreaCoordinateRepository(IDbContextFactory<AppDbContext> factory) : Repository<NatureAreaCoordinate>(factory), ICoordinatesRepository
+public class NatureAreaCoordinateRepository(IDbContextFactory<AppDbContext> factory) : Repository<NatureAreaCoordinate>(factory), INatureAreaCoordinateRepository
 {
 }

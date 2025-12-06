@@ -6,11 +6,62 @@
   xmlns:local="using:ArlaNatureConnect.WinUI.Views.Controls.SharedUC"
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-  xmlns:shareduc="using:ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC" 
-  d:DataContext="{d:DesignInstance Type=shareduc:CRUDNatureAreaUCViewModel}"
+  xmlns:shareduc="using:ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC"
+  xmlns:vm="using:ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC"
+  d:DataContext="{d:DesignInstance Type=vm:CRUDNatureAreaUCViewModel}"
   mc:Ignorable="d">
 
-  <Grid>
+  <Grid Padding="24" Background="{StaticResource AppBackgroundBrush}">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="400"/>
+      <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
+    <Border Grid.Column="0"
+            Style="{StaticResource ArlaCard}"
+            Background="{StaticResource ArlaSurfaceBrush}"
+            Margin="8,0,12,8"
+            VerticalAlignment="Top">
+      <StackPanel Orientation="Vertical" Spacing="16">
+        <TextBlock Text="{Binding LabelNatureAreaDetails, Mode=OneTime}"
+                     Style="{StaticResource ArlaSubHeaderText}"
+                     Margin="0,0,0,8"/>
+
+        <StackPanel Orientation="Vertical" Spacing="12">
+          <StackPanel Orientation="Vertical" Spacing="4">
+            <TextBlock Text="{Binding LabelNatureAreaName, Mode=OneTime}" 
+                         Style="{StaticResource ArlaBodyText}"
+                         FontWeight="SemiBold"/>
+            <TextBox Text="{Binding NatureAreaName, Mode=TwoWay}" 
+                       Style="{StaticResource ArlaTextBox}"/>
+          </StackPanel>
+
+        </StackPanel>
+      </StackPanel>
+    </Border>
+    <StackPanel Grid.Column="1" 
+                Orientation="Vertical" 
+                Spacing="12" 
+                VerticalAlignment="Top">
+      <Border Style="{StaticResource ArlaCard}"
+                Background="{StaticResource ArlaSurfaceBrush}"
+                Margin="8,0,8,8"
+                VerticalAlignment="Top">
+        <StackPanel>
+          <ComboBox x:Name="FarmComboBox"
+          ItemsSource="{Binding FarmsWhoHaveNatureArea, Mode=OneWay}" 
+          SelectedItem="{Binding SelectedFarm, Mode=TwoWay}"
+          DisplayMemberPath="Name"
+          PlaceholderText="{Binding LabelSelectAFarm}"
+          Margin="0,0,0,12"/>
+
+          <ListView x:Name="NatureAreaListView"
+          ItemsSource="{Binding Items, Mode=OneWay}"
+          SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
+          DisplayMemberPath="Name"
+          Height="200"/>
+        </StackPanel>
+      </Border>
+    </StackPanel>
 
   </Grid>
 </UserControl>

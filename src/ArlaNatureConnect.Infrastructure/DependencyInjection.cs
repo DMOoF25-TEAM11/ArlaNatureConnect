@@ -27,6 +27,9 @@ public static class DependencyInjection
         services.AddScoped<IPersonRepository, PersonRepository>();
         services.AddScoped<IFarmRepository, FarmRepository>();
         services.AddScoped<INatureCheckCaseRepository, NatureCheckCaseRepository>();
+        services.AddScoped<INatureAreaRepository, NatureAreaRepository>();
+        services.AddScoped<INatureAreaImageRepository, NatureAreaImageRepository>();
+        services.AddScoped<INatureAreaCoordinateRepository, NatureAreaCoordinateRepository>();
 
         // Query services
         //services.AddScoped<IPersonQueryService, PersonQueryService>();

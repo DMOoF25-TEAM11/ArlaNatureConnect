@@ -103,7 +103,7 @@ public sealed class ConsultantPageViewModel : NavigationViewModelBase
         UserControl? newContent = tag switch
         {
             "Dashboards" => new ConsultantDashboards(),
-            "Farms" => new ConsultantNatureCheck(),
+            "FarmsWhoHaveNatureArea" => new ConsultantNatureCheck(),
             "Tasks" => new ConsultantTasks(),
             _ => new ConsultantDashboards(),
         };

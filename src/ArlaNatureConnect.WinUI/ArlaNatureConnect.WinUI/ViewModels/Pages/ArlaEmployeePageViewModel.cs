@@ -29,7 +29,7 @@ public sealed class ArlaEmployeePageViewModel : NavigationViewModelBase
 
         ChooseUserCommand = new RelayCommand<Person>(OnEmployeeSelected);
 
-        // Set default content to Farms view
+        // Set default content to FarmsWhoHaveNatureArea view
         NavigateToView(new Func<UserControl?>(() =>
         {
             UserControl control = new ArlaEmployeeAssignNatureCheck();
@@ -44,7 +44,7 @@ public sealed class ArlaEmployeePageViewModel : NavigationViewModelBase
     }
 
     /// <summary>
-    /// Override NavigateToView to handle DataContext assignment for Farms view.
+    /// Override NavigateToView to handle DataContext assignment for FarmsWhoHaveNatureArea view.
     /// This is primarily used for default content in constructor, as side menu ViewModel handles navigation.
     /// </summary>
     protected override void NavigateToView(object? parameter)
@@ -56,7 +56,7 @@ public sealed class ArlaEmployeePageViewModel : NavigationViewModelBase
                 UserControl? ctrl = contentFunc();
                 if (ctrl != null)
                 {
-                    // Set DataContext to AssignNatureCheckViewModel for Farms view, otherwise use this
+                    // Set DataContext to AssignNatureCheckViewModel for FarmsWhoHaveNatureArea view, otherwise use this
                     ctrl.DataContext = ctrl is ArlaEmployeeAssignNatureCheck
                         ? AssignNatureCheckViewModel
                         : this;

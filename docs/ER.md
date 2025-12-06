@@ -31,6 +31,7 @@ erDiagram
     Guid AddressId FK
     Guid OwnerId FK
     string Name
+    string CVR "unique"
   }
 
   NatureAreas {
@@ -44,8 +45,8 @@ erDiagram
   NatureAreaCoordinates {
     Guid Id PK
     Guid NatureAreaId FK
-    Decimal Latitude
-    Decimal Longitude
+    FLOAT(53) Latitude
+    FLOAT(53) Longitude
     Int OrderIndex
   }
 

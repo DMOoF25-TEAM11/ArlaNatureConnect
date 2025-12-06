@@ -8,6 +8,8 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Reflection;
 
+using static ArlaNatureConnect.WinUI.ViewModels.Constants.ViewModelConstants;
+
 namespace ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC;
 
 /// <summary>
@@ -59,20 +61,6 @@ namespace ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC;
 public partial class CRUDPersonUCViewModel
     : CRUDViewModelBase<IPersonRepository, Person>
 {
-    #region constants
-    public const string LABEL_FIRSTNAME = "Fornavn";
-    public const string LABEL_LASTNAME = "Efternavn";
-    public const string LABEL_EMAIL = "Email";
-    public const string LABEL_ISACTIVE = "Aktiv";
-    public const string LABEL_ROLE = "Rolle";
-    public const string LABEL_ADDRESS_POSTALCODE = "Postnummer";
-    public const string LABEL_ADDRESS_CITY = "By";
-    public const string LABEL_ADDRESS_STREET = "Vejnavn og nummer";
-    public const string LABEL_ADDRESS_COUNTRY = "Land";
-    public const string LABEL_ADDRESS = "Adresse";
-    public const string LABEL_FARMS = "Antal Gårde";
-
-    #endregion
     #region Fields
     // Repository for data access
     private readonly IRoleRepository? _roleRepository;
@@ -84,17 +72,17 @@ public partial class CRUDPersonUCViewModel
     #endregion
     #region Properties
     // Instance properties for XAML binding to label texts
-    public static string LabelFirstName => LABEL_FIRSTNAME;
-    public static string LabelLastName => LABEL_LASTNAME;
-    public static string LabelEmail => LABEL_EMAIL;
-    public static string LabelIsActive => LABEL_ISACTIVE;
-    public static string LabelRole => LABEL_ROLE;
-    public static string LabelAddressPostalCode => LABEL_ADDRESS_POSTALCODE;
-    public static string LabelAddressCity => LABEL_ADDRESS_CITY;
-    public static string LabelAddressStreet => LABEL_ADDRESS_STREET;
-    public static string LabelAddressCountry => LABEL_ADDRESS_COUNTRY;
-    public static string LabelAddress => LABEL_ADDRESS;
-    public static string LabelFarms => LABEL_FARMS;
+    public static string LabelFirstName => PERSON_FIRSTNAME;
+    public static string LabelLastName => PERSON_LASTNAME;
+    public static string LabelEmail => EMAIL;
+    public static string LabelIsActive => IS_ACTIVE;
+    public static string LabelRole => PERSON_ROLE;
+    public static string LabelAddressPostalCode => ADDRESS_POSTAL_CODE;
+    public static string LabelAddressCity => ADDRESS_CITY;
+    public static string LabelAddressStreet => ADDRESS_STREET;
+    public static string LabelAddressCountry => ADDRESS_COUNTRY;
+    public static string LabelAddress => ADDRESS;
+    public static string LabelFarms => FARMS_COUNT;
 
     /// <summary>
     /// Indicates whether the address-related fields have been changed compared to the selected entity.

@@ -55,7 +55,7 @@ public sealed partial class ConsultantPageSideMenuUC : SideMenuBaseUC
     //        switch (viewModel.CurrentNavigationTag)
     //        {
     //            case "Dashboards": DashboardsButton.Style = activeStyleTyped; break;
-    //            case "Farms": FarmsButton.Style = activeStyleTyped; break;
+    //            case "FarmsWhoHaveNatureArea": FarmsButton.Style = activeStyleTyped; break;
     //            case "Tasks": TasksButton.Style = activeStyleTyped; break;
     //        }
     //    }

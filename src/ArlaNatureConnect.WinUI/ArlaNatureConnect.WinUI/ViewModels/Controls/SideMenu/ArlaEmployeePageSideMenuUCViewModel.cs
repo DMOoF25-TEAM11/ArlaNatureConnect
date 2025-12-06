@@ -96,7 +96,7 @@ public sealed partial class ArlaEmployeePageSideMenuUCViewModel : SideMenuViewMo
     private void OnFarmsExecuted()
     {
         SetSelectedByLabel(_LABEL_FARMS);
-        // For Farms view, we need to set DataContext to AssignNatureCheckViewModel
+        // For FarmsWhoHaveNatureArea view, we need to set DataContext to AssignNatureCheckViewModel
         // We'll handle this directly in OnNavigate override
         NavigationCommand?.Execute(new Func<UserControl?>(() => new ArlaEmployeeAssignNatureCheck()));
     }
@@ -127,7 +127,7 @@ public sealed partial class ArlaEmployeePageSideMenuUCViewModel : SideMenuViewMo
     }
 
     /// <summary>
-    /// Override OnNavigate to handle DataContext assignment for Farms view.
+    /// Override OnNavigate to handle DataContext assignment for FarmsWhoHaveNatureArea view.
     /// This ensures DataContext is set correctly before binding evaluation, preventing binding failures.
     /// </summary>
     protected override void OnNavigate(object? parameter)
