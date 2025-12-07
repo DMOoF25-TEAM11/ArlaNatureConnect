@@ -59,7 +59,7 @@ BEGIN
             IF @Street IS NOT NULL OR @City IS NOT NULL OR @PostalCode IS NOT NULL OR @Country IS NOT NULL
             BEGIN
             SET @AddressId = NEWID();
-            INSERT INTO [dbo].[Address] ([Id], [Street], [City], [PostalCode], [Country])
+            INSERT INTO [dbo].[Addresses] ([Id], [Street], [City], [PostalCode], [Country])
             VALUES (@AddressId, @Street, @City, @PostalCode, @Country);
             END
 
@@ -68,7 +68,7 @@ BEGIN
             IF @FarmStreet IS NOT NULL OR @FarmCity IS NOT NULL OR @FarmPostalCode IS NOT NULL OR @FarmCountry IS NOT NULL
             BEGIN
             SET @FarmAddressId = NEWID();
-            INSERT INTO [dbo].[Address] ([Id], [Street], [City], [PostalCode], [Country])
+            INSERT INTO [dbo].[Addresses] ([Id], [Street], [City], [PostalCode], [Country])
             VALUES (@FarmAddressId, @FarmStreet, @FarmCity, @FarmPostalCode, @FarmCountry);
             END
 
@@ -77,7 +77,7 @@ BEGIN
             IF (@FarmName IS NOT NULL)
             BEGIN
             SET @FarmId = NEWID();
-            INSERT INTO [dbo].[Farms] ([Id], [Name], [AddressId], [PersonId], [CVR])
+            INSERT INTO [dbo].[Farms] ([Id], [Name], [AddressId], [OwnerId], [CVR])
             VALUES (@FarmId, @FarmName, @FarmAddressId, @CreatedPersonId, @FarmCVR);
             END
 

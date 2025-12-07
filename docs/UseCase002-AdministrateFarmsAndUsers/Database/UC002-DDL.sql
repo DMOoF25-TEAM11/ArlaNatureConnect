@@ -53,12 +53,12 @@ END
 GO
 
 /***************************************************************************************************
-    Table: Address
-    Purpose: Stores address information.
+    Table: Addresses
+    Purpose: Stores addresses information.
 ***************************************************************************************************/
-IF OBJECT_ID(N'[dbo].[Address]') IS NULL
+IF OBJECT_ID(N'[dbo].[Addresses]') IS NULL
 BEGIN
-    CREATE TABLE [dbo].[Address] (
+    CREATE TABLE [dbo].[Addresses] (
         [Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY DEFAULT NEWID(),
         [Street] NVARCHAR(200) NULL,
         [City] NVARCHAR(100) NULL,
@@ -78,7 +78,7 @@ BEGIN
         [Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY DEFAULT NEWID(),
         [Name] NVARCHAR(200) NOT NULL,
         [AddressId] UNIQUEIDENTIFIER NULL,
-        [PersonId] UNIQUEIDENTIFIER NULL,
+        [OwnerId] UNIQUEIDENTIFIER NULL,
         [CVR] NVARCHAR(50) NULL,
         CONSTRAINT [UQ_Farms_CVR] UNIQUE([CVR])
     );
@@ -99,25 +99,12 @@ BEGIN
         [RoleId] UNIQUEIDENTIFIER NOT NULL,
         [AddressId] UNIQUEIDENTIFIER NULL,
         [IsActive] BIT NOT NULL DEFAULT (1),
-        [CreatedAt] DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
-        [UpdatedAt] DATETIME2 NULL,
         [RowVersion] ROWVERSION,
         CONSTRAINT [UQ_Persons_Email] UNIQUE([Email]),
         CONSTRAINT [FK_Persons_Roles] FOREIGN KEY ([RoleId]) REFERENCES [dbo].[Roles]([Id]),
-        CONSTRAINT [FK_Persons_Address] FOREIGN KEY ([AddressId]) REFERENCES [dbo].[Address]([Id])
+        CONSTRAINT [FK_Persons_Addresses] FOREIGN KEY ([AddressId]) REFERENCES [dbo].[Addresses]([Id])
     );
     CREATE INDEX [IX_Persons_RoleId] ON [dbo].[Persons]([RoleId]);
-END
-
--- Add FK from Farms to Persons now that Persons table exists
-IF OBJECT_ID(N'[dbo].[Farms]') IS NOT NULL AND OBJECT_ID(N'[dbo].[Persons]') IS NOT NULL
-BEGIN
- IF NOT EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = N'FK_Farms_Persons')
- BEGIN
- ALTER TABLE [dbo].[Farms]
- ADD CONSTRAINT [FK_Farms_Persons] FOREIGN KEY ([PersonId]) REFERENCES [dbo].[Persons]([Id]);
- CREATE INDEX [IX_Farms_PersonId] ON [dbo].[Farms]([PersonId]);
- END
 END
 
 /***************************************************************************************************
@@ -139,6 +126,17 @@ BEGIN
 END
 GO
 
+-- Add FK from Farms to Persons now that Persons table exists
+IF OBJECT_ID(N'[dbo].[Farms]') IS NOT NULL AND OBJECT_ID(N'[dbo].[Persons]') IS NOT NULL
+BEGIN
+ IF NOT EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = N'FK_Farms_Owner')
+ BEGIN
+ ALTER TABLE [dbo].[Farms]
+ ADD CONSTRAINT [FK_Farms_Owner] FOREIGN KEY ([OwnerId]) REFERENCES [dbo].[Persons]([Id]);
+ CREATE INDEX [IX_Farms_OwnerId] ON [dbo].[Farms]([OwnerId]);
+ END
+END
+
 /***************************************************************************************************
     Table: AuditLog
     Purpose: Stores audit log entries.
@@ -156,4 +154,11 @@ BEGIN
     CREATE INDEX [IX_AuditLog_Actor] ON [dbo].[AuditLog]([ActorUserId]);
     CREATE INDEX [IX_AuditLog_Target] ON [dbo].[AuditLog]([TargetUserId]);
 END
+
+PRINT 'Database [ArlaNatureConnect_Dev] schema creation completed.';
+
+/*
+ Insert initial version info   
+ */
+INSERT INTO [dbo].[VersionInfo] ([Id], [Version]) VALUES (1, '1.0.0');
 GO

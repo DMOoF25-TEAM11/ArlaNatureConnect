@@ -22,8 +22,8 @@ IF OBJECT_ID(N'[dbo].[Farms]', N'U') IS NOT NULL
 IF OBJECT_ID(N'[dbo].[Persons]', N'U') IS NOT NULL
     DELETE FROM [dbo].[Persons];
 
-IF OBJECT_ID(N'[dbo].[Address]', N'U') IS NOT NULL
-    DELETE FROM [dbo].[Address];
+IF OBJECT_ID(N'[dbo].[Addresses]', N'U') IS NOT NULL
+    DELETE FROM [dbo].[Addresses];
 
 -- Only remove the sample roles we will re-create to avoid removing other role records
 IF OBJECT_ID(N'[dbo].[Roles]', N'U') IS NOT NULL
@@ -48,6 +48,8 @@ IF NOT EXISTS (SELECT 1 FROM [dbo].[Roles] WHERE [Name] = N'Consultant')
 IF NOT EXISTS (SELECT 1 FROM [dbo].[Roles] WHERE [Name] = N'Employee')
     INSERT INTO [dbo].[Roles] ([Id], [Name]) VALUES (@Role_Employee, N'Employee');
 
+PRINT 'Intsered roles.';
+
 -- Insert farm addresses & farms (all near Varde, Jutland, Denmark)
 DECLARE
     @F1 UNIQUEIDENTIFIER = NEWID(),  @FA1 UNIQUEIDENTIFIER = NEWID(),
@@ -70,7 +72,7 @@ DECLARE
     @F18 UNIQUEIDENTIFIER = NEWID(), @FA18 UNIQUEIDENTIFIER = NEWID();
 
 -- Addresses for farms (near Varde)
-INSERT INTO [dbo].[Address] ([Id],[Street],[City],[PostalCode],[Country])
+INSERT INTO [dbo].[Addresses] ([Id],[Street],[City],[PostalCode],[Country])
 VALUES
 (@FA1, N'Stuevej 1',      N'Varde',        N'6800', N'Denmark'),
 (@FA2, N'Agerskovvej 12',  N'Ølgod',        N'6870', N'Denmark'),
@@ -113,7 +115,9 @@ VALUES
 (@F17, N'Vindmark Farm', @FA17, N'77889900'),
 (@F18, N'Markholm Farm', @FA18, N'88990011');
 
--- Insert user addresses (Danish addresses)
+PRINT 'Inserted Farms and Addresses.';
+
+-- Insert persons addresses (Danish addresses)
 DECLARE
     @A1 UNIQUEIDENTIFIER = NEWID(),  @A2 UNIQUEIDENTIFIER = NEWID(),
     @A3 UNIQUEIDENTIFIER = NEWID(),  @A4 UNIQUEIDENTIFIER = NEWID(),
@@ -127,9 +131,10 @@ DECLARE
     @A19 UNIQUEIDENTIFIER = NEWID(), @A20 UNIQUEIDENTIFIER = NEWID(),
     @A21 UNIQUEIDENTIFIER = NEWID(), @A22 UNIQUEIDENTIFIER = NEWID(),
     @A23 UNIQUEIDENTIFIER = NEWID(), @A24 UNIQUEIDENTIFIER = NEWID(),
-    @A25 UNIQUEIDENTIFIER = NEWID();
+    @A25 UNIQUEIDENTIFIER = NEWID(), @A26 UNIQUEIDENTIFIER = NEWID(),
+    @A27 UNIQUEIDENTIFIER = NEWID();
 
-INSERT INTO [dbo].[Address] ([Id],[Street],[City],[PostalCode],[Country])
+INSERT INTO [dbo].[Addresses] ([Id],[Street],[City],[PostalCode],[Country])
 VALUES
 (@A1,  N'Rosenvej 3',       N'København',   N'2300', N'Denmark'),
 (@A2,  N'Borggade 12',      N'Aarhus',      N'8000', N'Denmark'),
@@ -155,7 +160,11 @@ VALUES
 (@A22, N'Hovedgade 6',      N'Ølgod',       N'6870', N'Denmark'),
 (@A23, N'Kirkeby 3',        N'Nørre Nebel', N'6830', N'Denmark'),
 (@A24, N'Bøstrup 7',        N'Henne',       N'6854', N'Denmark'),
-(@A25, N'Strandvej 9',      N'Blåvand',     N'6857', N'Denmark');
+(@A25, N'Strandvej 9',      N'Blåvand',     N'6857', N'Denmark'),
+(@A26, N'Havnevænget 2',    N'Varde',       N'6800', N'Denmark'),
+(@A27, N'Søndermarken 5',   N'Esbjerg',     N'6700', N'Denmark');
+
+PRINT 'Inserted Addresses for Persons.';
 
 -- Insert 15 farmers (15 Persons with farms)
 DECLARE
@@ -186,15 +195,27 @@ VALUES
 (@U14, N'Niels', N'Eriksen', N'niels.eriksen@example.dk', @Role_Farmer, @A14,1),
 (@U15, N'Rasmus', N'Poulsen', N'rasmus.poulsen@example.dk', @Role_Farmer, @A15,1);
 
--- Assign extra farms so3 farmers have2 farms each.
--- We'll give U1 -> F16, U2 -> F17, U3 -> F18 (in addition to their primary farm mapping below)
+-- Assign farms to farmers via UserFarms mapping table
+-- All farmers get their primary farm (F1-F15 -> U1-U15)
 INSERT INTO [dbo].[UserFarms] ([PersonId],[FarmId]) VALUES (@U1,@F1);
-INSERT INTO [dbo].[UserFarms] ([PersonId],[FarmId]) VALUES (@U1,@F16);
-
 INSERT INTO [dbo].[UserFarms] ([PersonId],[FarmId]) VALUES (@U2,@F2);
-INSERT INTO [dbo].[UserFarms] ([PersonId],[FarmId]) VALUES (@U2,@F17);
-
 INSERT INTO [dbo].[UserFarms] ([PersonId],[FarmId]) VALUES (@U3,@F3);
+INSERT INTO [dbo].[UserFarms] ([PersonId],[FarmId]) VALUES (@U4,@F4);
+INSERT INTO [dbo].[UserFarms] ([PersonId],[FarmId]) VALUES (@U5,@F5);
+INSERT INTO [dbo].[UserFarms] ([PersonId],[FarmId]) VALUES (@U6,@F6);
+INSERT INTO [dbo].[UserFarms] ([PersonId],[FarmId]) VALUES (@U7,@F7);
+INSERT INTO [dbo].[UserFarms] ([PersonId],[FarmId]) VALUES (@U8,@F8);
+INSERT INTO [dbo].[UserFarms] ([PersonId],[FarmId]) VALUES (@U9,@F9);
+INSERT INTO [dbo].[UserFarms] ([PersonId],[FarmId]) VALUES (@U10,@F10);
+INSERT INTO [dbo].[UserFarms] ([PersonId],[FarmId]) VALUES (@U11,@F11);
+INSERT INTO [dbo].[UserFarms] ([PersonId],[FarmId]) VALUES (@U12,@F12);
+INSERT INTO [dbo].[UserFarms] ([PersonId],[FarmId]) VALUES (@U13,@F13);
+INSERT INTO [dbo].[UserFarms] ([PersonId],[FarmId]) VALUES (@U14,@F14);
+INSERT INTO [dbo].[UserFarms] ([PersonId],[FarmId]) VALUES (@U15,@F15);
+
+-- Assign extra farms so three farmers have two farms each
+INSERT INTO [dbo].[UserFarms] ([PersonId],[FarmId]) VALUES (@U1,@F16);
+INSERT INTO [dbo].[UserFarms] ([PersonId],[FarmId]) VALUES (@U2,@F17);
 INSERT INTO [dbo].[UserFarms] ([PersonId],[FarmId]) VALUES (@U3,@F18);
 
 -- Insert5 consultants (no primary farm)
@@ -226,35 +247,44 @@ VALUES
 (@E5, N'Mathilde', N'Christoff',N'mathilde.christoff@example.dk', @Role_Employee, @A20,1);
 
 -- After Persons inserted: set primary owner on farms (F1..F15 -> U1..U15)
-UPDATE [dbo].[Farms] SET [PersonId] = @U1 WHERE [Id] = @F1;
-UPDATE [dbo].[Farms] SET [PersonId] = @U2 WHERE [Id] = @F2;
-UPDATE [dbo].[Farms] SET [PersonId] = @U3 WHERE [Id] = @F3;
-UPDATE [dbo].[Farms] SET [PersonId] = @U4 WHERE [Id] = @F4;
-UPDATE [dbo].[Farms] SET [PersonId] = @U5 WHERE [Id] = @F5;
-UPDATE [dbo].[Farms] SET [PersonId] = @U6 WHERE [Id] = @F6;
-UPDATE [dbo].[Farms] SET [PersonId] = @U7 WHERE [Id] = @F7;
-UPDATE [dbo].[Farms] SET [PersonId] = @U8 WHERE [Id] = @F8;
-UPDATE [dbo].[Farms] SET [PersonId] = @U9 WHERE [Id] = @F9;
-UPDATE [dbo].[Farms] SET [PersonId] = @U10 WHERE [Id] = @F10;
-UPDATE [dbo].[Farms] SET [PersonId] = @U11 WHERE [Id] = @F11;
-UPDATE [dbo].[Farms] SET [PersonId] = @U12 WHERE [Id] = @F12;
-UPDATE [dbo].[Farms] SET [PersonId] = @U13 WHERE [Id] = @F13;
-UPDATE [dbo].[Farms] SET [PersonId] = @U14 WHERE [Id] = @F14;
-UPDATE [dbo].[Farms] SET [PersonId] = @U15 WHERE [Id] = @F15;
+UPDATE [dbo].[Farms] SET [OwnerId] = @U1 WHERE [Id] = @F1;
+UPDATE [dbo].[Farms] SET [OwnerId] = @U2 WHERE [Id] = @F2;
+UPDATE [dbo].[Farms] SET [OwnerId] = @U3 WHERE [Id] = @F3;
+UPDATE [dbo].[Farms] SET [OwnerId] = @U4 WHERE [Id] = @F4;
+UPDATE [dbo].[Farms] SET [OwnerId] = @U5 WHERE [Id] = @F5;
+UPDATE [dbo].[Farms] SET [OwnerId] = @U6 WHERE [Id] = @F6;
+UPDATE [dbo].[Farms] SET [OwnerId] = @U7 WHERE [Id] = @F7;
+UPDATE [dbo].[Farms] SET [OwnerId] = @U8 WHERE [Id] = @F8;
+UPDATE [dbo].[Farms] SET [OwnerId] = @U9 WHERE [Id] = @F9;
+UPDATE [dbo].[Farms] SET [OwnerId] = @U10 WHERE [Id] = @F10;
+UPDATE [dbo].[Farms] SET [OwnerId] = @U11 WHERE [Id] = @F11;
+UPDATE [dbo].[Farms] SET [OwnerId] = @U12 WHERE [Id] = @F12;
+UPDATE [dbo].[Farms] SET [OwnerId] = @U13 WHERE [Id] = @F13;
+UPDATE [dbo].[Farms] SET [OwnerId] = @U14 WHERE [Id] = @F14;
+UPDATE [dbo].[Farms] SET [OwnerId] = @U15 WHERE [Id] = @F15;
 
 -- Also set owners for extra farms so three Persons own two farms each
-UPDATE [dbo].[Farms] SET [PersonId] = @U1 WHERE [Id] = @F16;
-UPDATE [dbo].[Farms] SET [PersonId] = @U2 WHERE [Id] = @F17;
-UPDATE [dbo].[Farms] SET [PersonId] = @U3 WHERE [Id] = @F18;
+UPDATE [dbo].[Farms] SET [OwnerId] = @U1 WHERE [Id] = @F16;
+UPDATE [dbo].[Farms] SET [OwnerId] = @U2 WHERE [Id] = @F17;
+UPDATE [dbo].[Farms] SET [OwnerId] = @U3 WHERE [Id] = @F18;
+
+-- Insert two new persons and assign the new addresses (Admin role)
+DECLARE @ADM3 UNIQUEIDENTIFIER = NEWID(), @ADM4 UNIQUEIDENTIFIER = NEWID();
+
+INSERT INTO [dbo].[Persons] ([Id],[FirstName],[LastName],[Email],[RoleId],[AddressId],[IsActive])
+VALUES
+(@ADM3, N'Louise', N'Møller', N'louise.moller@example.dk', @Role_Admin, @A26, 1),
+(@ADM4, N'Carsten', N'Birk', N'carsten.birk@example.dk', @Role_Admin, @A27, 1);
 
 -- Simple verification queries (uncomment to run)
+PRINT 'Inserted Addresses for Persons.';
+
 PRINT 'Using database [ArlaNatureConnect_Dev]...';
 USE [ArlaNatureConnect_Dev];
 GO
 SELECT TOP 20 * FROM [dbo].[Persons];
 SELECT TOP 20 * FROM [dbo].[Farms];
 SELECT TOP 50 * FROM [dbo].[UserFarms] JOIN [dbo].[Persons] u ON UserFarms.PersonId = u.Id JOIN [dbo].[Farms] f ON UserFarms.FarmId = f.Id;
-
 
 PRINT 'Sample data insertion completed.';
 
