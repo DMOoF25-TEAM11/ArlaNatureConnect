@@ -14,6 +14,7 @@ public partial class CRUDNatureAreaUCViewModel
     : CRUDViewModelBase<INatureAreaRepository, NatureArea>
 {
     #region Fields
+    private const double EARTH_RADIUS = 6371009;
     private readonly IFarmRepository _farmRepository;
     #endregion
     #region Properties
@@ -57,6 +58,7 @@ public partial class CRUDNatureAreaUCViewModel
             if (field == value) return;
             field = value;
             OnPropertyChanged();
+            OnPropertyChanged(nameof(NatureAreaSizeKm2));
         }
     } = [];
 
@@ -84,6 +86,19 @@ public partial class CRUDNatureAreaUCViewModel
             OnPropertyChanged();
         }
     } = [];
+
+    public double NatureAreaSizeKm2
+    {
+        get;
+        set
+        {
+            double area = CalculatePolygonAreaKm2(Coordinates);
+            if (Math.Abs(field - area) < 0.0001) return;
+            field = area;
+            OnPropertyChanged();
+        }
+    }
+
     #endregion
     #region Commands
     #endregion
@@ -105,6 +120,7 @@ public partial class CRUDNatureAreaUCViewModel
     private void CRUDNatureAreaUCViewModel_SelectedEntityChanged(object? sender, NatureArea? e)
     {
         PopulateFormFromSelectedItem();
+        NatureAreaSizeKm2 = CalculatePolygonAreaKm2(Coordinates);
     }
     #endregion
     #region Load Handlers
@@ -182,5 +198,30 @@ public partial class CRUDNatureAreaUCViewModel
             Coordinates = [];
         }
     }
+
+    private static double CalculatePolygonAreaKm2(IEnumerable<NatureAreaCoordinate> coordinates)
+    {
+        // Uses the spherical excess formula for area on a sphere (Earth)
+        // Assumes coordinates are ordered and form a closed polygon
+        const double EarthRadius = 6371.0; // km
+        List<NatureAreaCoordinate>? coords = coordinates?.OrderBy(c => c.OrderIndex).ToList();
+        if (coords == null || coords.Count < 3) return 0.0;
+        double area = 0.0;
+        int n = coords.Count;
+        for (int i = 0; i < n; i++)
+        {
+            NatureAreaCoordinate p1 = coords[i];
+            NatureAreaCoordinate p2 = coords[(i + 1) % n];
+            double lat1 = p1.Latitude * Math.PI / 180.0;
+            double lon1 = p1.Longitude * Math.PI / 180.0;
+            double lat2 = p2.Latitude * Math.PI / 180.0;
+            double lon2 = p2.Longitude * Math.PI / 180.0;
+            area += (lon2 - lon1) * (2 + Math.Sin(lat1) + Math.Sin(lat2));
+        }
+        area = area * EarthRadius * EarthRadius / 2.0;
+        return Math.Abs(area); // in km^2
+    }
+
+
     #endregion
 }

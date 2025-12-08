@@ -62,12 +62,16 @@
                 </DataTemplate>
               </ListView.ItemTemplate>
             </ListView>
+            <StackPanel Orientation="Horizontal">
+              <TextBlock Text="{Binding NatureAreaSizeKm2, Mode=OneWay}"/>
+              <TextBlock Text=" km2"/>
+            </StackPanel>
             <!-- Optionally, add buttons for add/remove -->
             <StackPanel Orientation="Horizontal" Spacing="8">
-              <Button Content="Add Coordinate" Command="{Binding AddCoordinateCommand}" />
-              <Button Content="Remove Selected" Command="{Binding RemoveCoordinateCommand}" />
+              <Button Content="Add Coordinate" IsEnabled="False" Command="{Binding AddCoordinateCommand}" />
+              <Button Content="Remove Selected" IsEnabled="False" Command="{Binding RemoveCoordinateCommand}" />
             </StackPanel>
-
+            <TextBlock Text="CRUD is for now done directly in database"/>
           </StackPanel>
         </StackPanel>
       </StackPanel>
