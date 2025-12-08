@@ -255,6 +255,33 @@ UPDATE [dbo].[Farms] SET [OwnerId] = @U1 WHERE [Id] = @F16;
 UPDATE [dbo].[Farms] SET [OwnerId] = @U2 WHERE [Id] = @F17;
 UPDATE [dbo].[Farms] SET [OwnerId] = @U3 WHERE [Id] = @F18;
 
+-- Insert UserFarms mappings (many-to-many relationship)
+-- Each farmer is associated with their primary farm, and some farmers have multiple farms
+INSERT INTO [dbo].[UserFarms] ([PersonId],[FarmId]) VALUES (@U1,@F1);
+INSERT INTO [dbo].[UserFarms] ([PersonId],[FarmId]) VALUES (@U1,@F16);
+
+INSERT INTO [dbo].[UserFarms] ([PersonId],[FarmId]) VALUES (@U2,@F2);
+INSERT INTO [dbo].[UserFarms] ([PersonId],[FarmId]) VALUES (@U2,@F17);
+
+INSERT INTO [dbo].[UserFarms] ([PersonId],[FarmId]) VALUES (@U3,@F3);
+INSERT INTO [dbo].[UserFarms] ([PersonId],[FarmId]) VALUES (@U3,@F18);
+
+-- Insert remaining farmers with their primary farms
+INSERT INTO [dbo].[UserFarms] ([PersonId],[FarmId]) VALUES (@U4,@F4);
+INSERT INTO [dbo].[UserFarms] ([PersonId],[FarmId]) VALUES (@U5,@F5);
+INSERT INTO [dbo].[UserFarms] ([PersonId],[FarmId]) VALUES (@U6,@F6);
+INSERT INTO [dbo].[UserFarms] ([PersonId],[FarmId]) VALUES (@U7,@F7);
+INSERT INTO [dbo].[UserFarms] ([PersonId],[FarmId]) VALUES (@U8,@F8);
+INSERT INTO [dbo].[UserFarms] ([PersonId],[FarmId]) VALUES (@U9,@F9);
+INSERT INTO [dbo].[UserFarms] ([PersonId],[FarmId]) VALUES (@U10,@F10);
+INSERT INTO [dbo].[UserFarms] ([PersonId],[FarmId]) VALUES (@U11,@F11);
+INSERT INTO [dbo].[UserFarms] ([PersonId],[FarmId]) VALUES (@U12,@F12);
+INSERT INTO [dbo].[UserFarms] ([PersonId],[FarmId]) VALUES (@U13,@F13);
+INSERT INTO [dbo].[UserFarms] ([PersonId],[FarmId]) VALUES (@U14,@F14);
+INSERT INTO [dbo].[UserFarms] ([PersonId],[FarmId]) VALUES (@U15,@F15);
+
+PRINT 'Inserted UserFarms mappings.';
+
 -- Insert two new persons and assign the new addresses (Admin role)
 DECLARE @ADM3 UNIQUEIDENTIFIER = NEWID(), @ADM4 UNIQUEIDENTIFIER = NEWID();
 
@@ -317,5 +344,125 @@ SELECT TOP 20 * FROM [dbo].[Persons];
 SELECT TOP 20 * FROM [dbo].[Farms];
 
 PRINT 'Sample data insertion completed.';
+
+/***********************************************************************
+ * Add data for UC002B - Assign Nature Check Case to Consultant
+ ***********************************************************************/
+
+PRINT 'Inserting sample Nature Check Cases...';
+
+-- Clean target table to ensure deterministic sample data
+IF OBJECT_ID(N'[dbo].[NatureCheckCases]', N'U') IS NOT NULL
+    DELETE FROM [dbo].[NatureCheckCases];
+GO
+
+-- Get IDs for consultants (from sample data above)
+DECLARE @Consultant1 UNIQUEIDENTIFIER;
+DECLARE @Consultant2 UNIQUEIDENTIFIER;
+DECLARE @Consultant3 UNIQUEIDENTIFIER;
+DECLARE @Consultant4 UNIQUEIDENTIFIER;
+DECLARE @Consultant5 UNIQUEIDENTIFIER;
+
+-- Get consultant IDs by email
+SELECT @Consultant1 = [Id] FROM [dbo].[Persons] WHERE [Email] = N'camilla.jepsen@example.dk';
+SELECT @Consultant2 = [Id] FROM [dbo].[Persons] WHERE [Email] = N'maria.andersen@example.dk';
+SELECT @Consultant3 = [Id] FROM [dbo].[Persons] WHERE [Email] = N'louise.mortensen@example.dk';
+SELECT @Consultant4 = [Id] FROM [dbo].[Persons] WHERE [Email] = N'ida.holst@example.dk';
+SELECT @Consultant5 = [Id] FROM [dbo].[Persons] WHERE [Email] = N'anna.bonde@example.dk';
+
+-- Get IDs for Arla employees
+DECLARE @Employee1 UNIQUEIDENTIFIER;
+DECLARE @Employee2 UNIQUEIDENTIFIER;
+
+-- Get employee IDs by email
+SELECT @Employee1 = [Id] FROM [dbo].[Persons] WHERE [Email] = N'christian.holm@example.dk';
+SELECT @Employee2 = [Id] FROM [dbo].[Persons] WHERE [Email] = N'sofie.kjaer@example.dk';
+
+-- Get farm IDs by name
+DECLARE @Farm1 UNIQUEIDENTIFIER;
+DECLARE @Farm2 UNIQUEIDENTIFIER;
+DECLARE @Farm3 UNIQUEIDENTIFIER;
+DECLARE @Farm4 UNIQUEIDENTIFIER;
+DECLARE @Farm5 UNIQUEIDENTIFIER;
+DECLARE @Farm6 UNIQUEIDENTIFIER;
+DECLARE @Farm7 UNIQUEIDENTIFIER;
+DECLARE @Farm8 UNIQUEIDENTIFIER;
+
+SELECT @Farm1 = [Id] FROM [dbo].[Farms] WHERE [Name] = N'Søndergaard Farm';
+SELECT @Farm2 = [Id] FROM [dbo].[Farms] WHERE [Name] = N'Bakken Farm';
+SELECT @Farm3 = [Id] FROM [dbo].[Farms] WHERE [Name] = N'Engholm Farm';
+SELECT @Farm4 = [Id] FROM [dbo].[Farms] WHERE [Name] = N'Lynggård Farm';
+SELECT @Farm5 = [Id] FROM [dbo].[Farms] WHERE [Name] = N'Vester Farm';
+SELECT @Farm6 = [Id] FROM [dbo].[Farms] WHERE [Name] = N'Skovgård Farm';
+SELECT @Farm7 = [Id] FROM [dbo].[Farms] WHERE [Name] = N'Bølling Farm';
+SELECT @Farm8 = [Id] FROM [dbo].[Farms] WHERE [Name] = N'Havbakken Farm';
+
+-- Verify that we have the required data
+IF @Consultant1 IS NULL OR @Employee1 IS NULL OR @Farm1 IS NULL
+BEGIN
+    PRINT 'ERROR: Required sample data not found.';
+    PRINT 'Please ensure farms, consultants, and employees are created first.';
+    RETURN;
+END
+
+-- Insert sample Nature Check Cases
+-- Case 1: Assigned to Consultant 1 (Camilla) for Farm 1
+INSERT INTO [dbo].[NatureCheckCases] 
+    ([Id], [FarmId], [ConsultantId], [AssignedByPersonId], [Status], [Notes], [Priority], [CreatedAt], [AssignedAt])
+VALUES 
+    (NEWID(), @Farm1, @Consultant1, @Employee1, N'Assigned', N'Spring 2024 batch - Priority case', N'High', 
+     DATEADD(DAY, -5, SYSUTCDATETIME()), DATEADD(DAY, -5, SYSUTCDATETIME()));
+
+-- Case 2: Assigned to Consultant 2 (Maria) for Farm 2 (Bakken Farm)
+INSERT INTO [dbo].[NatureCheckCases] 
+    ([Id], [FarmId], [ConsultantId], [AssignedByPersonId], [Status], [Notes], [Priority], [CreatedAt], [AssignedAt])
+VALUES 
+    (NEWID(), @Farm2, @Consultant2, @Employee1, N'Assigned', N'Standard check', N'Medium', 
+     DATEADD(DAY, -4, SYSUTCDATETIME()), DATEADD(DAY, -4, SYSUTCDATETIME()));
+
+-- Case 3: Assigned to Consultant 1 (Camilla) for Farm 3 - In Progress
+INSERT INTO [dbo].[NatureCheckCases] 
+    ([Id], [FarmId], [ConsultantId], [AssignedByPersonId], [Status], [Notes], [Priority], [CreatedAt], [AssignedAt])
+VALUES 
+    (NEWID(), @Farm3, @Consultant1, @Employee1, N'InProgress', N'Follow-up from previous year', N'Medium', 
+     DATEADD(DAY, -10, SYSUTCDATETIME()), DATEADD(DAY, -10, SYSUTCDATETIME()));
+
+-- Case 4: Assigned to Consultant 3 (Louise) for Farm 4
+INSERT INTO [dbo].[NatureCheckCases] 
+    ([Id], [FarmId], [ConsultantId], [AssignedByPersonId], [Status], [Notes], [Priority], [CreatedAt], [AssignedAt])
+VALUES 
+    (NEWID(), @Farm4, @Consultant3, @Employee2, N'Assigned', N'New farm - Initial assessment needed', N'High', 
+     DATEADD(DAY, -2, SYSUTCDATETIME()), DATEADD(DAY, -2, SYSUTCDATETIME()));
+
+-- Case 5: Assigned to Consultant 2 (Maria) for Farm 5 - Completed
+INSERT INTO [dbo].[NatureCheckCases] 
+    ([Id], [FarmId], [ConsultantId], [AssignedByPersonId], [Status], [Notes], [Priority], [CreatedAt], [AssignedAt])
+VALUES 
+    (NEWID(), @Farm5, @Consultant2, @Employee1, N'Completed', N'Completed successfully', N'Medium', 
+     DATEADD(DAY, -30, SYSUTCDATETIME()), DATEADD(DAY, -30, SYSUTCDATETIME()));
+
+-- Case 6: Assigned to Consultant 4 (Ida) for Farm 6
+INSERT INTO [dbo].[NatureCheckCases] 
+    ([Id], [FarmId], [ConsultantId], [AssignedByPersonId], [Status], [Notes], [Priority], [CreatedAt], [AssignedAt])
+VALUES 
+    (NEWID(), @Farm6, @Consultant4, @Employee2, N'Assigned', NULL, N'Low', 
+     DATEADD(DAY, -1, SYSUTCDATETIME()), DATEADD(DAY, -1, SYSUTCDATETIME()));
+
+-- Case 7: Assigned to Consultant 5 (Anna) for Farm 7
+INSERT INTO [dbo].[NatureCheckCases] 
+    ([Id], [FarmId], [ConsultantId], [AssignedByPersonId], [Status], [Notes], [Priority], [CreatedAt], [AssignedAt])
+VALUES 
+    (NEWID(), @Farm7, @Consultant5, @Employee1, N'Assigned', N'Urgent - Time sensitive', N'Urgent', 
+     SYSUTCDATETIME(), SYSUTCDATETIME());
+
+-- Case 8: Assigned to Consultant 1 (Camilla) for Farm 8 - Cancelled
+INSERT INTO [dbo].[NatureCheckCases] 
+    ([Id], [FarmId], [ConsultantId], [AssignedByPersonId], [Status], [Notes], [Priority], [CreatedAt], [AssignedAt])
+VALUES 
+    (NEWID(), @Farm8, @Consultant1, @Employee2, N'Cancelled', N'Farm withdrew from program', N'Low', 
+     DATEADD(DAY, -15, SYSUTCDATETIME()), DATEADD(DAY, -15, SYSUTCDATETIME()));
+
+PRINT 'Sample Nature Check Cases inserted successfully.';
+GO
 
 

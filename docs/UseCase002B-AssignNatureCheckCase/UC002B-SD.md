@@ -51,10 +51,14 @@ sequenceDiagram
         ArlaEmployee ->> ViewModel: Select existing farm
         ViewModel ->> ViewModel: SelectedFarm = farm
         alt Farm has active case
-            Note over ViewModel: Auto-populate form with existing assignment data
+            Note over ViewModel: Auto-populate form with existing assignment data<br/>Button text = "Opdater natur Check opgave"
             ViewModel ->> ViewModel: SelectedConsultant = assigned consultant
             ViewModel ->> ViewModel: SelectedPriority = assigned priority (converted to Danish)
             ViewModel ->> ViewModel: AssignmentNotes = existing notes
+            ViewModel ->> ViewModel: AssignCaseButtonText = "Opdater natur Check opgave"
+        else Farm has no active case
+            Note over ViewModel: Button text = "Lav natur Check opgave"
+            ViewModel ->> ViewModel: AssignCaseButtonText = "Lav natur Check opgave"
         end
         ViewModel -->> ArlaEmployee: Display farm details and form
     else Farm does not exist
@@ -68,7 +72,13 @@ sequenceDiagram
 
     %% Assignment Flow
     ArlaEmployee ->> ViewModel: Select consultant, priority, and enter notes
-    ArlaEmployee ->> ViewModel: Click "Lav natur check opgave"
+    alt Farm has active case
+        Note over ViewModel: Button text = "Opdater natur Check opgave"
+        ArlaEmployee ->> ViewModel: Click "Opdater natur Check opgave"
+    else Farm has no active case
+        Note over ViewModel: Button text = "Lav natur Check opgave"
+        ArlaEmployee ->> ViewModel: Click "Lav natur Check opgave"
+    end
     
     ViewModel ->> ViewModel: Validate selection (farm and consultant selected)
     alt Validation fails
@@ -76,47 +86,90 @@ sequenceDiagram
         ViewModel -->> ArlaEmployee: Display error message
     else Validation succeeds
         ViewModel ->> StatusService: BeginLoading()
-        ViewModel ->> Service: AssignCaseAsync(NatureCheckCaseAssignmentRequest)
         
-        %% Service validates and creates case
-        Service ->> FarmRepo: GetByIdAsync(request.FarmId)
-        FarmRepo -->> Service: Farm?
-        alt Farm not found
-            Service -->> ViewModel: InvalidOperationException("Gården findes ikke")
-            ViewModel ->> MsgService: AddErrorMessage(...)
-            ViewModel -->> ArlaEmployee: Display error message
-        else Farm found
-            Service ->> PersonRepo: GetByIdAsync(request.ConsultantId)
-            PersonRepo -->> Service: Person? (Consultant)
-            alt Consultant not found
-                Service -->> ViewModel: InvalidOperationException("Konsulent findes ikke")
+        alt Farm has active case
+            %% Update existing case
+            ViewModel ->> Service: UpdateCaseAsync(farmId, NatureCheckCaseAssignmentRequest)
+            
+            %% Service validates and updates case
+            Service ->> CaseRepo: GetActiveCaseForFarmAsync(farmId)
+            CaseRepo -->> Service: NatureCheckCase?
+            alt Active case not found
+                Service -->> ViewModel: InvalidOperationException("Der findes ingen aktiv opgave")
                 ViewModel ->> MsgService: AddErrorMessage(...)
                 ViewModel -->> ArlaEmployee: Display error message
-            else Consultant found
-                Service ->> RoleRepo: GetByIdAsync(consultant.RoleId)
-                RoleRepo -->> Service: Role?
-                alt Consultant does not have Consultant role
-                    Service -->> ViewModel: InvalidOperationException("Person har ikke konsulent-rollen")
+            else Active case found
+                Service ->> PersonRepo: GetByIdAsync(request.ConsultantId)
+                PersonRepo -->> Service: Person? (Consultant)
+                alt Consultant not found
+                    Service -->> ViewModel: InvalidOperationException("Konsulent findes ikke")
                     ViewModel ->> MsgService: AddErrorMessage(...)
                     ViewModel -->> ArlaEmployee: Display error message
-                else Consultant has correct role
-                    Service ->> CaseRepo: FarmHasActiveCaseAsync(farmId)
-                    CaseRepo -->> Service: bool
-                    alt Farm has active case AND allowDuplicate is false
-                        Service -->> ViewModel: InvalidOperationException("Gården har allerede en aktiv opgave")
+                else Consultant found
+                    Service ->> RoleRepo: GetByIdAsync(consultant.RoleId)
+                    RoleRepo -->> Service: Role?
+                    alt Consultant does not have Consultant role
+                        Service -->> ViewModel: InvalidOperationException("Person har ikke konsulent-rollen")
                         ViewModel ->> MsgService: AddErrorMessage(...)
                         ViewModel -->> ArlaEmployee: Display error message
-                    else No active case OR allowDuplicate is true
-                        %% Create new case
-                        Service ->> Service: Create NatureCheckCase entity
-                        Note over Service: Status = Assigned<br/>Priority = request.Priority<br/>Notes = request.Notes<br/>CreatedAt = DateTimeOffset.UtcNow<br/>AssignedAt = DateTimeOffset.UtcNow
-                        Service ->> CaseRepo: AddAsync(natureCheckCase)
+                    else Consultant has correct role
+                        %% Update existing case
+                        Service ->> Service: Update NatureCheckCase entity
+                        Note over Service: ConsultantId = request.ConsultantId<br/>Priority = request.Priority<br/>Notes = request.Notes<br/>AssignedAt = DateTimeOffset.UtcNow
+                        Service ->> CaseRepo: UpdateAsync(existingCase)
                         CaseRepo -->> Service: Task completed
-                        Service -->> ViewModel: NatureCheckCase (created entity)
-                        ViewModel ->> MsgService: AddInfoMessage("Opgave tildelt succesfuldt")
+                        Service -->> ViewModel: NatureCheckCase (updated entity)
+                        ViewModel ->> MsgService: AddInfoMessage("Natur Check opgave er opdateret for [FarmName]")
                         ViewModel ->> ViewModel: Refresh farm list (reload data)
                         ViewModel ->> StatusService: Dispose loading
                         ViewModel -->> ArlaEmployee: Display success message and updated list
+                    end
+                end
+            end
+        else Farm has no active case
+            %% Create new case
+            ViewModel ->> Service: AssignCaseAsync(NatureCheckCaseAssignmentRequest)
+            
+            %% Service validates and creates case
+            Service ->> FarmRepo: GetByIdAsync(request.FarmId)
+            FarmRepo -->> Service: Farm?
+            alt Farm not found
+                Service -->> ViewModel: InvalidOperationException("Gården findes ikke")
+                ViewModel ->> MsgService: AddErrorMessage(...)
+                ViewModel -->> ArlaEmployee: Display error message
+            else Farm found
+                Service ->> PersonRepo: GetByIdAsync(request.ConsultantId)
+                PersonRepo -->> Service: Person? (Consultant)
+                alt Consultant not found
+                    Service -->> ViewModel: InvalidOperationException("Konsulent findes ikke")
+                    ViewModel ->> MsgService: AddErrorMessage(...)
+                    ViewModel -->> ArlaEmployee: Display error message
+                else Consultant found
+                    Service ->> RoleRepo: GetByIdAsync(consultant.RoleId)
+                    RoleRepo -->> Service: Role?
+                    alt Consultant does not have Consultant role
+                        Service -->> ViewModel: InvalidOperationException("Person har ikke konsulent-rollen")
+                        ViewModel ->> MsgService: AddErrorMessage(...)
+                        ViewModel -->> ArlaEmployee: Display error message
+                    else Consultant has correct role
+                        Service ->> CaseRepo: FarmHasActiveCaseAsync(farmId)
+                        CaseRepo -->> Service: bool
+                        alt Farm has active case AND allowDuplicate is false
+                            Service -->> ViewModel: InvalidOperationException("Gården har allerede en aktiv opgave")
+                            ViewModel ->> MsgService: AddErrorMessage(...)
+                            ViewModel -->> ArlaEmployee: Display error message
+                        else No active case OR allowDuplicate is true
+                            %% Create new case
+                            Service ->> Service: Create NatureCheckCase entity
+                            Note over Service: Status = Assigned<br/>Priority = request.Priority<br/>Notes = request.Notes<br/>CreatedAt = DateTimeOffset.UtcNow<br/>AssignedAt = DateTimeOffset.UtcNow
+                            Service ->> CaseRepo: AddAsync(natureCheckCase)
+                            CaseRepo -->> Service: Task completed
+                            Service -->> ViewModel: NatureCheckCase (created entity)
+                            ViewModel ->> MsgService: AddInfoMessage("Natur Check opgave er oprettet for [FarmName]")
+                            ViewModel ->> ViewModel: Refresh farm list (reload data)
+                            ViewModel ->> StatusService: Dispose loading
+                            ViewModel -->> ArlaEmployee: Display success message and updated list
+                        end
                     end
                 end
             end

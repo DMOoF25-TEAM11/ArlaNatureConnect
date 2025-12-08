@@ -78,6 +78,7 @@ public class ArlaEmployeeAssignNatureCheckViewModel : ViewModelBase
             _selectedFarm = value;
             OnPropertyChanged();
             OnPropertyChanged(nameof(IsFarmSelected));
+            OnPropertyChanged(nameof(AssignCaseButtonText));
             AssignNatureCheckCaseCommand.RaiseCanExecuteChanged();
             DeleteFarmCommand.RaiseCanExecuteChanged();
             ShowFarmEditorCommand.RaiseCanExecuteChanged();
@@ -227,6 +228,13 @@ public class ArlaEmployeeAssignNatureCheckViewModel : ViewModelBase
     public string FarmEditorTitle => IsFarmEditMode ? "Rediger gård" : "Tilføj ny gård";
     public string FarmEditorSubmitText => IsFarmEditMode ? "Opdater gård" : "Tilføj gård";
 
+    /// <summary>
+    /// Gets the text for the assign/update nature check case button.
+    /// </summary>
+    public string AssignCaseButtonText => SelectedFarm != null && SelectedFarm.HasActiveCase 
+        ? "Opdater natur Check opgave" 
+        : "Lav natur Check opgave";
+
     public FarmFormModel FarmForm { get; } = new();
 
     /// <summary>
@@ -311,8 +319,17 @@ public class ArlaEmployeeAssignNatureCheckViewModel : ViewModelBase
                 AllowDuplicateActiveCase = false
             };
 
-            await _natureCheckCaseService.AssignCaseAsync(request);
-            _appMessageService.AddInfoMessage($"Natur Check opgave er oprettet for {SelectedFarm.FarmName}.");
+            // Check if farm already has an active case - update instead of create
+            if (SelectedFarm.HasActiveCase)
+            {
+                await _natureCheckCaseService.UpdateCaseAsync(SelectedFarm.FarmId, request);
+                _appMessageService.AddInfoMessage($"Natur Check opgave er opdateret for {SelectedFarm.FarmName}.");
+            }
+            else
+            {
+                await _natureCheckCaseService.AssignCaseAsync(request);
+                _appMessageService.AddInfoMessage($"Natur Check opgave er oprettet for {SelectedFarm.FarmName}.");
+            }
 
             AssignmentNotes = string.Empty;
             SelectedPriority = null;

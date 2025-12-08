@@ -29,13 +29,21 @@ sequenceDiagram
         System -->> ArlaEmployee: Display farm details<br/>Empty assignment form
     end
 
-    ArlaEmployee ->> System: Click "Lav natur check opgave" (Create Nature Check Case)
-    System -->> ArlaEmployee: Display assignment form with:<br/>- Consultant dropdown<br/>- Priority dropdown (Lav, Normal, Høj, Haster)<br/>- Notes text field
+    alt Farm has active case
+        System -->> ArlaEmployee: Display button "Opdater natur Check opgave" (Update Nature Check task)
+    else Farm has no active case
+        System -->> ArlaEmployee: Display button "Lav natur Check opgave" (Create Nature Check task)
+    end
 
-    ArlaEmployee ->> System: Select consultant, priority, enter notes, then submit
+    ArlaEmployee ->> System: Select consultant, priority, enter notes, then click button
     alt Validation succeeds
-        System -->> ArlaEmployee: Display success message "Opgave tildelt succesfuldt"
-        Note over System: System creates NatureCheckCase with status "Assigned"<br/>System updates farm list to show "Tilføjet" status<br/>System stores priority (English) and notes in database
+        alt Farm has active case
+            System -->> ArlaEmployee: Display success message "Natur Check opgave er opdateret for [FarmName]"
+            Note over System: System updates existing NatureCheckCase with:<br/>- New consultant (if changed)<br/>- New priority (English format)<br/>- New notes<br/>- Updated assignment time<br/>System updates farm list to show "Tilføjet" status
+        else Farm has no active case
+            System -->> ArlaEmployee: Display success message "Natur Check opgave er oprettet for [FarmName]"
+            Note over System: System creates new NatureCheckCase with status "Assigned"<br/>System updates farm list to show "Tilføjet" status<br/>System stores priority (English) and notes in database
+        end
     else Validation fails
         alt No consultant selected
             System -->> ArlaEmployee: Display error "Vælg konsulent"
@@ -53,8 +61,10 @@ sequenceDiagram
 
 **Notes:**
 - The system displays farms with their assignment status ("Tilføjet" / "Ikke tilføjet") and priority badges.
-- When a farm with an active case is selected, the form is auto-populated with existing assignment data (consultant, priority, notes).
+- When a farm with an active case is selected, the form is auto-populated with existing assignment data (consultant, priority, notes) and the button text changes to "Opdater natur Check opgave" (Update Nature Check task).
+- When a farm with no active case is selected, the button text displays "Lav natur Check opgave" (Create Nature Check task).
 - Priority selection is available in the assignment form (Danish values: Lav, Normal, Høj, Haster).
 - The system stores priority in English format in the database ("Low", "Medium", "High", "Urgent").
 - Notifications are database-based (consultant sees notification badge in UI, not email/SMS).
-- The system validates all inputs before creating the case and provides clear error messages.
+- The system validates all inputs before creating or updating the case and provides clear error messages.
+- The system can update existing active cases (status "Assigned" or "InProgress") without creating duplicate cases.

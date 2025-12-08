@@ -39,14 +39,15 @@
 2. The system loads available farms (with status "Tilføjet" / "Ikke tilføjet" and priority badges) and consultants, and displays them.  
 3. The employee selects an existing farm (or creates one via inline farm creation if missing).  
 4. The system presents the selected farm's summary information.  
-5. If the farm has an active case, the system auto-populates the form with existing assignment data (consultant, priority, notes).  
-6. The employee chooses to **Create Nature Check Case**.  
-7. The system shows a form where the employee selects a consultant, priority level (Lav, Normal, Høj, Haster), and optional notes.  
-8. The employee confirms the assignment.  
+5. If the farm has an active case, the system auto-populates the form with existing assignment data (consultant, priority, notes) and displays button text "Opdater natur Check opgave" (Update Nature Check task).  
+6. If the farm has no active case, the system displays button text "Lav natur Check opgave" (Create Nature Check task).  
+7. The employee selects a consultant, priority level (Lav, Normal, Høj, Haster), and optional notes.  
+8. The employee confirms the assignment by clicking the button.  
 9. The system validates the farm, consultant role, priority format, and any business rules.  
-10. A new Nature Check Case is created with status **Assigned**, priority (stored in English), and linked to the chosen consultant and farm.  
+10. **If farm has no active case:** A new Nature Check Case is created with status **Assigned**, priority (stored in English), and linked to the chosen consultant and farm. The system shows success message "Natur Check opgave er oprettet for [FarmName]."  
+10a. **If farm has an active case:** The existing active Nature Check Case is updated with the new consultant, priority (stored in English), and notes. The case assignment time is updated. The system shows success message "Natur Check opgave er opdateret for [FarmName]."  
 11. The system creates a database notification for the consultant (consultant sees notification badge in UI).  
-12. The system shows the employee a success confirmation and updates the farm list to show "Tilføjet" status.  
+12. The system updates the farm list to show "Tilføjet" status.  
 13. The consultant can continue in **UC03 – Create Nature Check** to plan the visit.
 
 ---
@@ -56,7 +57,7 @@
   The employee selects "Tilføj ny gård" → System shows farm creation form → Employee enters farm details → System creates farm → Employee returns to assignment form.
 
 - **5a. Farm has active case:**  
-  The system auto-populates the form with existing assignment data (consultant, priority converted to Danish, notes). Employee can modify and reassign, or view existing assignment.
+  The system auto-populates the form with existing assignment data (consultant, priority converted to Danish, notes). The button text changes to "Opdater natur Check opgave" (Update Nature Check task). Employee can modify consultant, priority, and notes, then click the button to update the existing case. The system updates the active case instead of creating a new one.
 
 - **7a. No consultant selected:**  
   The system prompts the employee to choose a consultant before continuing.
@@ -91,7 +92,9 @@
 - Priority values are displayed in Danish ("Lav", "Normal", "Høj", "Haster") in the UI but stored in English ("Low", "Medium", "High", "Urgent") in the database.
 - Notifications are database-based (consultant sees notification badge in UI), not email/SMS.
 - Farm list displays assignment status ("Tilføjet" / "Ikke tilføjet") and priority badges for farms with active cases.
-- When a farm with an active case is selected, the form is auto-populated with existing assignment data.
+- When a farm with an active case is selected, the form is auto-populated with existing assignment data and the button text changes to "Opdater natur Check opgave" (Update Nature Check task).
+- When a farm with no active case is selected, the button text displays "Lav natur Check opgave" (Create Nature Check task).
+- The system can update existing active cases (status "Assigned" or "InProgress") with new consultant, priority, and notes without creating duplicate cases.
 
 ---
 

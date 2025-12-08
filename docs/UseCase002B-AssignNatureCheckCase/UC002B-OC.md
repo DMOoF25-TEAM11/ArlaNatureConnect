@@ -47,6 +47,17 @@
 
 ---
 
+## **Operation Contract – UC002B: Update Nature Check Case**
+
+| Item | Description |
+|------|-------------|
+| **Operation** | Update an existing active Nature Check Case for a farm with new consultant, priority, and notes. The system validates the update and updates the case information. |
+| **Cross References** | UC002B – Assign Nature Check Case to Consultant<br/>UC002B-SSD: Steps 8-9 (update flow)<br/>UC002B-SD: Update sequence |
+| **Preconditions** | • The selected farm exists in the system.<br>• The farm has an active Nature Check Case (status "Assigned" or "InProgress").<br>• The selected person exists in the system and has the Consultant role.<br>• The Arla employee updating the case is authenticated.<br>• If a priority is selected, it is a valid priority level. |
+| **Postconditions** | • The existing active Nature Check Case is updated with the following properties:<br>  - The case is reassigned to the selected consultant (if changed)<br>  - The case priority is updated (if changed)<br>  - The case notes are updated (if changed)<br>  - The case assignment time is updated to reflect the modification<br>• The farm's assignment status remains "Tilføjet" (Assigned).<br>• The consultant receives a notification about the updated assignment (if consultant changed).<br>• The Arla employee sees a success confirmation message: "Natur Check opgave er opdateret for [FarmName]." |
+
+---
+
 ## **Operation Contract – UC002B: Load Consultant Notifications**
 
 | Item | Description |
