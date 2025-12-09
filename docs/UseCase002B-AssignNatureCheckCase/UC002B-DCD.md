@@ -133,13 +133,16 @@ classDiagram
             -string _farmSearchText
             -string _assignmentNotes
             -string? _selectedPriority
+            -Guid? _assignedByPersonId
             +ObservableCollection~AssignableFarmViewModel~ FilteredFarms
             +ObservableCollection~Person~ Consultants
             +AssignableFarmViewModel? SelectedFarm
             +Person? SelectedConsultant
             +string? SelectedPriority
             +string AssignmentNotes
+            +Guid? AssignedByPersonId
             +bool IsFarmSelected
+            +string AssignCaseButtonText
             +RelayCommand AssignNatureCheckCaseCommand
             +RelayCommand~string~ ApplyStatusFilterCommand
             +RelayCommand ShowFarmEditorCommand
@@ -205,6 +208,7 @@ classDiagram
             <<interface>>
             +Task~NatureCheckCaseAssignmentContext~ LoadAssignmentContextAsync(CancellationToken) Task
             +Task~NatureCheckCase~ AssignCaseAsync(NatureCheckCaseAssignmentRequest, CancellationToken) Task
+            +Task~NatureCheckCase~ UpdateCaseAsync(Guid, NatureCheckCaseAssignmentRequest, CancellationToken) Task
             +Task~Farm~ SaveFarmAsync(FarmRegistrationRequest, CancellationToken) Task
             +Task DeleteFarmAsync(Guid, CancellationToken) Task
             +Task~IReadOnlyList~ConsultantNotificationDto~~ GetNotificationsForConsultantAsync(Guid, CancellationToken) Task
@@ -218,6 +222,7 @@ classDiagram
             -IRoleRepository _roleRepository
             +Task~NatureCheckCaseAssignmentContext~ LoadAssignmentContextAsync(CancellationToken) Task
             +Task~NatureCheckCase~ AssignCaseAsync(NatureCheckCaseAssignmentRequest, CancellationToken) Task
+            +Task~NatureCheckCase~ UpdateCaseAsync(Guid, NatureCheckCaseAssignmentRequest, CancellationToken) Task
             +Task~Farm~ SaveFarmAsync(FarmRegistrationRequest, CancellationToken) Task
             +Task DeleteFarmAsync(Guid, CancellationToken) Task
             +Task~IReadOnlyList~ConsultantNotificationDto~~ GetNotificationsForConsultantAsync(Guid, CancellationToken) Task
@@ -256,6 +261,7 @@ classDiagram
             +Task~IReadOnlyList~NatureCheckCase~~ GetActiveCasesAsync(CancellationToken) Task
             +Task~bool~ FarmHasActiveCaseAsync(Guid, CancellationToken) Task
             +Task~IReadOnlyList~NatureCheckCase~~ GetAssignedCasesForConsultantAsync(Guid, CancellationToken) Task
+            +Task~NatureCheckCase?~ GetActiveCaseForFarmAsync(Guid, CancellationToken) Task
         }
 
         class IFarmRepository {

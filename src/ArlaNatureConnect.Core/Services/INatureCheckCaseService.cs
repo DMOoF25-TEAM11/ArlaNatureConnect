@@ -23,6 +23,15 @@ public interface INatureCheckCaseService
     Task<NatureCheckCase> AssignCaseAsync(NatureCheckCaseAssignmentRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Updates an existing active nature check case with new consultant, priority, and notes.
+    /// </summary>
+    /// <param name="farmId">The ID of the farm whose active case should be updated.</param>
+    /// <param name="request">The update request containing new consultant, priority, and notes.</param>
+    /// <param name="cancellationToken">A cancellation token that can be used to cancel the operation.</param>
+    /// <returns>The updated nature check case.</returns>
+    Task<NatureCheckCase> UpdateCaseAsync(Guid farmId, NatureCheckCaseAssignmentRequest request, CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// Saves a new farm based on the registration request.
     /// </summary>
     /// <param name="request"></param>

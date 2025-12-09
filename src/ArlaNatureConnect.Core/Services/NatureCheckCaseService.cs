@@ -61,8 +61,8 @@ public class NatureCheckCaseService : INatureCheckCaseService
 
         Dictionary<Guid, Person> personsById = allPersons.ToDictionary(p => p.Id, p => p);
         Dictionary<Guid, Address> addressesById = addresses.ToDictionary(a => a.Id, a => a);
+        // GetActiveCasesAsync already filters for Assigned and InProgress, so no need to filter again
         HashSet<Guid> activeFarmIds = activeCases
-            .Where(c => c.Status == NatureCheckCaseStatus.Assigned || c.Status == NatureCheckCaseStatus.InProgress)
             .Select(c => c.FarmId)
             .ToHashSet();
 
@@ -110,6 +110,12 @@ public class NatureCheckCaseService : INatureCheckCaseService
             throw new InvalidOperationException("Den valgte person har ikke konsulent-rollen.");
         }
 
+        // Validate AssignedByPersonId - must be a valid GUID
+        if (request.AssignedByPersonId == Guid.Empty)
+        {
+            throw new InvalidOperationException("Du mangler at vælge en gyldig Arla medarbejder.");
+        }
+
         bool hasActiveCase = await _natureCheckCaseRepository.FarmHasActiveCaseAsync(farm.Id, cancellationToken).ConfigureAwait(false);
         if (hasActiveCase && !request.AllowDuplicateActiveCase)
         {
@@ -131,6 +137,35 @@ public class NatureCheckCaseService : INatureCheckCaseService
 
         await _natureCheckCaseRepository.AddAsync(entity, cancellationToken).ConfigureAwait(false);
         return entity;
+    }
+
+    public async Task<NatureCheckCase> UpdateCaseAsync(Guid farmId, NatureCheckCaseAssignmentRequest request, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+
+        // Find the active case for the farm
+        NatureCheckCase? existingCase = await _natureCheckCaseRepository.GetActiveCaseForFarmAsync(farmId, cancellationToken).ConfigureAwait(false);
+        if (existingCase == null)
+        {
+            throw new InvalidOperationException("Der findes ingen aktiv Natur Check opgave for denne gård.");
+        }
+
+        // Validate consultant
+        Person? consultant = await _personRepository.GetByIdAsync(request.ConsultantId, cancellationToken).ConfigureAwait(false) ?? throw new InvalidOperationException("Den valgte konsulent findes ikke længere.");
+        ArlaNatureConnect.Domain.Entities.Role? consultantRole = await _roleRepository.GetByIdAsync(consultant.RoleId, cancellationToken).ConfigureAwait(false);
+        if (!string.Equals(consultantRole?.Name, RoleName.Consultant.ToString(), StringComparison.OrdinalIgnoreCase))
+        {
+            throw new InvalidOperationException("Den valgte person har ikke konsulent-rollen.");
+        }
+
+        // Update the case
+        existingCase.ConsultantId = consultant.Id;
+        existingCase.Priority = request.Priority;
+        existingCase.Notes = request.Notes;
+        existingCase.AssignedAt = DateTimeOffset.UtcNow; // Update assignment time
+
+        await _natureCheckCaseRepository.UpdateAsync(existingCase, cancellationToken).ConfigureAwait(false);
+        return existingCase;
     }
 
     /// <summary>

@@ -15,17 +15,21 @@
 The Arla staff member selects an existing farm or creates a new one, 
 and marks it as ready for a Nature Check by creating a 
 NatureCheckCase and assigning it to a consultant with optional priority level and notes. 
+If the farm already has an active Nature Check Case, the staff member can update the existing case 
+with a new consultant, priority, and notes instead of creating a duplicate. 
 This enables the consultant to proceed with UC03 – Create Nature Check. 
-The consultant receives a database notification (visible as a badge in UI) about the new assignment.
+The consultant receives a database notification (visible as a badge in UI) about the new or updated assignment.
 
 **Preconditions:**
 - The staff member is authenticated in the system (UC01).  
 - The farm exists in the system or is created via farm creation.  
 - The consultant is an active user with the *Consultant* role.  
-- No active NatureCheckCase is already assigned to the same farm.
+- For creating a new case: No active NatureCheckCase is already assigned to the same farm.  
+- For updating an existing case: An active NatureCheckCase (status "Assigned" or "InProgress") exists for the farm.
 
 **Postconditions:**
-- A new NatureCheckCase is created with status **Assigned**.  
+- **If creating a new case:** A new NatureCheckCase is created with status **Assigned**.  
+- **If updating an existing case:** The existing active NatureCheckCase is updated with new consultant, priority, and notes. The assignment time is updated.  
 - The selected consultant is linked to the case.  
 - Priority level (if selected) is stored in the database (English format: "Low", "Medium", "High", "Urgent").  
 - A database notification is created for the consultant (consultant sees notification badge in UI).  
@@ -43,3 +47,4 @@ The consultant receives a database notification (visible as a badge in UI) about
 - Priority values: UI displays Danish ("Lav", "Normal", "Høj", "Haster"), database stores English ("Low", "Medium", "High", "Urgent").
 - Notifications: Database-based (consultant sees badge in UI), not email/SMS.
 - Data aggregation: Service aggregates Farm + Person + Address + Case data into DTOs for efficient UI display.
+- Update functionality: When a farm with an active case is selected, the UI button text changes to "Opdater natur Check opgave" (Update Nature Check task) and allows updating the existing case instead of creating a duplicate.

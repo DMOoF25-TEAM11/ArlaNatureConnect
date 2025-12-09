@@ -22,18 +22,23 @@ public class NatureCheckCaseRepository : Repository<NatureCheckCase>, INatureChe
     {
         try
         {
-            NatureCheckCaseStatus[] activeStatuses = new[]
-            {
-                NatureCheckCaseStatus.Assigned,
-                NatureCheckCaseStatus.InProgress
-            };
-
+      
             await using AppDbContext ctx = _factory.CreateDbContext();
-            return await ctx.NatureCheckCases
-                .Where(c => activeStatuses.Contains(c.Status))
+            
+            // Get all cases - EF Core will convert Status from string to enum via HasConversion
+            List<NatureCheckCase> allCases = await ctx.NatureCheckCases
                 .AsNoTracking()
                 .ToListAsync(cancellationToken)
                 .ConfigureAwait(false);
+
+            // Filter for active statuses after materialization
+            // EF Core should have converted Status from string to enum by now
+            List<NatureCheckCase> activeCases = allCases
+                .Where(c => c.Status == NatureCheckCaseStatus.Assigned || 
+                           c.Status == NatureCheckCaseStatus.InProgress)
+                .ToList();
+
+            return activeCases;
         }
         catch (COMException)
         {
@@ -51,15 +56,18 @@ public class NatureCheckCaseRepository : Repository<NatureCheckCase>, INatureChe
     {
         try
         {
+            // Load all cases for the farm and filter in memory to work around potential EF Core translation issues
             await using AppDbContext ctx = _factory.CreateDbContext();
-            return await ctx.NatureCheckCases
+            List<NatureCheckCase> farmCases = await ctx.NatureCheckCases
                 .AsNoTracking()
-                .AnyAsync(c =>
-                    c.FarmId == farmId &&
-                    (c.Status == NatureCheckCaseStatus.Assigned ||
-                     c.Status == NatureCheckCaseStatus.InProgress),
-                    cancellationToken)
+                .Where(c => c.FarmId == farmId)
+                .ToListAsync(cancellationToken)
                 .ConfigureAwait(false);
+
+            // Check for active statuses after materialization
+            return farmCases.Any(c => 
+                c.Status == NatureCheckCaseStatus.Assigned ||
+                c.Status == NatureCheckCaseStatus.InProgress);
         }
         catch (COMException)
         {
@@ -90,6 +98,32 @@ public class NatureCheckCaseRepository : Repository<NatureCheckCase>, INatureChe
         catch (Exception)
         {
             return Array.Empty<NatureCheckCase>();
+        }
+    }
+
+    public async Task<NatureCheckCase?> GetActiveCaseForFarmAsync(Guid farmId, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            // Load all cases for the farm and filter in memory to work around potential EF Core translation issues
+            await using AppDbContext ctx = _factory.CreateDbContext();
+            List<NatureCheckCase> farmCases = await ctx.NatureCheckCases
+                .Where(c => c.FarmId == farmId)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+
+            // Find the first active case
+            return farmCases.FirstOrDefault(c => 
+                c.Status == NatureCheckCaseStatus.Assigned ||
+                c.Status == NatureCheckCaseStatus.InProgress);
+        }
+        catch (COMException)
+        {
+            return null;
+        }
+        catch (Exception)
+        {
+            return null;
         }
     }
     #endregion

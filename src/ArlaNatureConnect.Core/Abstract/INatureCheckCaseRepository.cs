@@ -17,6 +17,14 @@ public interface INatureCheckCaseRepository : IRepository<NatureCheckCase>
     /// <param name="cancellationToken">A cancellation token that can be used to cancel the operation.</param>
     /// <returns>A list of nature check cases with status "Assigned" for the specified consultant.</returns>
     Task<IReadOnlyList<NatureCheckCase>> GetAssignedCasesForConsultantAsync(Guid consultantId, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets the active nature check case for a specific farm, if one exists.
+    /// </summary>
+    /// <param name="farmId">The ID of the farm.</param>
+    /// <param name="cancellationToken">A cancellation token that can be used to cancel the operation.</param>
+    /// <returns>The active nature check case for the farm, or null if no active case exists.</returns>
+    Task<NatureCheckCase?> GetActiveCaseForFarmAsync(Guid farmId, CancellationToken cancellationToken = default);
 }
 
 

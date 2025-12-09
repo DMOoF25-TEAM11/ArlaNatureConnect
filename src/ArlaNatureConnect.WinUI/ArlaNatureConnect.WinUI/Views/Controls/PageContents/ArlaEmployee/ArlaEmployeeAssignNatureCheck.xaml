@@ -31,9 +31,15 @@
                            Style="{StaticResource ArlaSectionHeader}" />
 
                 <!-- Bindings Section: Search box -->
-                <TextBox PlaceholderText="Søg gårde"
-                         Text="{Binding FarmSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         Margin="0,4,0,0" />
+                <StackPanel Orientation="Vertical" Spacing="4">
+                    <TextBlock Text="Søg gårde"
+                               Style="{StaticResource ArlaBodyText}"
+                               FontWeight="SemiBold"
+                               Foreground="{StaticResource ArlaPrimaryDarkBrush}" />
+                    <TextBox PlaceholderText="Søg gårde"
+                             Text="{Binding FarmSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Style="{StaticResource ArlaTextBox}" />
+                </StackPanel>
 
                 <!-- Buttons Section: Status filter buttons -->
                 <StackPanel Orientation="Horizontal" Spacing="12">
@@ -59,7 +65,9 @@
                         <DataTemplate>
                             <Border Margin="0,4"
                                     Padding="12"
-                                    Background="{StaticResource ArlaNeutralLighterBrush}"
+                                    Background="{StaticResource ArlaSurfaceBrush}"
+                                    BorderBrush="{StaticResource ArlaPrimaryBrush}"
+                                    BorderThickness="2"
                                     CornerRadius="8">
                                 <StackPanel>
                                     <StackPanel Orientation="Horizontal"
@@ -139,12 +147,15 @@
                                Style="{StaticResource ArlaCaptionText}" />
                 </StackPanel>
 
-                <StackPanel>
+                <StackPanel Orientation="Vertical" Spacing="4">
                     <TextBlock Text="Vælg konsulent"
-                               Style="{StaticResource ArlaCaptionText}" />
+                               Style="{StaticResource ArlaBodyText}"
+                               FontWeight="SemiBold"
+                               Foreground="{StaticResource ArlaPrimaryDarkBrush}" />
                     <ComboBox ItemsSource="{Binding Consultants}"
                               SelectedItem="{Binding SelectedConsultant, Mode=TwoWay}"
-                              PlaceholderText="Vælg konsulent">
+                              PlaceholderText="Vælg konsulent"
+                              Style="{StaticResource ArlaComboBox}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" Spacing="4">
@@ -156,24 +167,30 @@
                     </ComboBox>
                 </StackPanel>
 
-                <StackPanel>
+                <StackPanel Orientation="Vertical" Spacing="4">
                     <TextBlock Text="Prioritet"
-                               Style="{StaticResource ArlaCaptionText}" />
+                               Style="{StaticResource ArlaBodyText}"
+                               FontWeight="SemiBold"
+                               Foreground="{StaticResource ArlaPrimaryDarkBrush}" />
                     <ComboBox ItemsSource="{Binding PriorityOptions}"
                               SelectedItem="{Binding SelectedPriority, Mode=TwoWay}"
-                              PlaceholderText="Vælg prioritet" />
+                              PlaceholderText="Vælg prioritet"
+                              Style="{StaticResource ArlaComboBox}" />
                 </StackPanel>
 
-                <StackPanel>
+                <StackPanel Orientation="Vertical" Spacing="4">
                     <TextBlock Text="Kommentar"
-                               Style="{StaticResource ArlaCaptionText}" />
+                               Style="{StaticResource ArlaBodyText}"
+                               FontWeight="SemiBold"
+                               Foreground="{StaticResource ArlaPrimaryDarkBrush}" />
                     <TextBox Text="{Binding AssignmentNotes, Mode=TwoWay}"
                              AcceptsReturn="True"
                              Height="140"
-                             TextWrapping="Wrap" />
+                             TextWrapping="Wrap"
+                             Style="{StaticResource ArlaTextBox}" />
                 </StackPanel>
 
-                <Button Content="Lav natur check opgave"
+                <Button Content="{Binding AssignCaseButtonText}"
                         Style="{StaticResource ArlaPrimaryActionButton}"
                         Command="{Binding AssignNatureCheckCaseCommand}"
                         IsEnabled="{Binding IsFarmSelected}" />
