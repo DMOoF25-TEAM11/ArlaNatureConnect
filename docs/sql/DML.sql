@@ -1,11 +1,26 @@
 /*
-File: docs/sql/DML.sql
-Description: Sample data insertion for UC002 - Administrate Farms and Persons
+    File: docs/sql/DML.sql
+    Description: 
+        Sample data insertion script for ArlaNatureConnect_Dev database.
+        This script adds data for UC002 - Administrate Farms and Persons,
+        as well as UC002B - Assign Nature Check Case to Consultant.
 
-Version: 1.0.0
-Changes:
+    Usage:
+        1. Execute this script in the ArlaNatureConnect_Dev database.
+        2. The script will clean existing relevant data and insert sample data.
 
- - 2025-12-19: 1.0.0 - Initial script content (original sample data)
+    Note:
+        - Ensure you have appropriate permissions to modify the database.
+        - Review and modify sample data as needed to fit your testing requirements.
+        
+    Script created by ChatGPT (GPT-4) based on user requirements.
+
+    Version: 1.0.0
+    Changes:
+
+     - 2025-12-19: 1.0.0 - Initial script content (original sample data)
+
+    Script created by ChatGPT (GPT-4) based on user requirements.
 */
 
 /***********************************************************************

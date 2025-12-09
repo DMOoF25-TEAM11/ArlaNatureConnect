@@ -65,6 +65,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Pages", "Pages", "{35461FFC
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sql", "sql", "{E730371B-D1F5-45B6-87BF-897ED515BDC3}"
 	ProjectSection(SolutionItems) = preProject
+		docs\sql\Create_Trigger_DDL.sql = docs\sql\Create_Trigger_DDL.sql
 		docs\sql\DDL.sql = docs\sql\DDL.sql
 		docs\sql\DML.sql = docs\sql\DML.sql
 	EndProjectSection

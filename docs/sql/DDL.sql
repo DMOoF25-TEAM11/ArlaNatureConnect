@@ -260,38 +260,6 @@ GO
 GO
 
 /***************************************************************************************************
-    Table: AuditLog
-    Purpose: Stores audit log entries.
-***************************************************************************************************/
-IF OBJECT_ID(N'[dbo].[AuditLog]') IS NULL
-BEGIN
-    CREATE TABLE [dbo].[AuditLog] (
-        [Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY DEFAULT NEWID(),
-        [ActorUserId] UNIQUEIDENTIFIER NULL,
-        [TargetUserId] UNIQUEIDENTIFIER NULL,
-        [Action] NVARCHAR(100) NOT NULL,
-        [Details] NVARCHAR(MAX) NULL,
-        [CreatedAt] DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME()
-        );
-END
-GO
-
--- Create indexes on AuditLog if they don't exist
-IF OBJECT_ID(N'[dbo].[AuditLog]') IS NOT NULL
-BEGIN
-    IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = N'IX_AuditLog_Actor' AND object_id = OBJECT_ID(N'[dbo].[AuditLog]'))
-    BEGIN
-        CREATE INDEX [IX_AuditLog_Actor] ON [dbo].[AuditLog]([ActorUserId]);
-    END
-    
-    IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = N'IX_AuditLog_Target' AND object_id = OBJECT_ID(N'[dbo].[AuditLog]'))
-    BEGIN
-        CREATE INDEX [IX_AuditLog_Target] ON [dbo].[AuditLog]([TargetUserId]);
-    END
-END
-GO
-
-/***************************************************************************************************
     Table: NatureCheckCases
     Purpose: Stores Nature Check Case assignments, linking farms to consultants.
     Note: This table extends the existing database schema from UC001 and UC002.
