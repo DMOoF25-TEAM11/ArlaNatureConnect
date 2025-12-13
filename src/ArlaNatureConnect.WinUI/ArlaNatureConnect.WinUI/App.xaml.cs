@@ -5,7 +5,10 @@ using Microsoft.Extensions.Hosting;
 
 namespace ArlaNatureConnect.WinUI;
 
+using ArlaNatureConnect.Core.Abstract;
 using ArlaNatureConnect.Core.Services;
+using ArlaNatureConnect.Infrastructure.ExternalServices;
+using ArlaNatureConnect.Infrastructure.Repositories;
 using ArlaNatureConnect.WinUI.Services;
 using ArlaNatureConnect.WinUI.ViewModels;
 using ArlaNatureConnect.WinUI.ViewModels.Controls;
@@ -54,6 +57,29 @@ public partial class App : Application
 
                     // Services
                     .AddSingleton<INavigationHandler, NavigationHandler>()
+
+                    // ---- NATURE CHECK FEATURE ----
+                    .AddScoped<ICreateNatureCheck, CreateNatureCheckService>()
+                    .AddScoped<ConsultantNatureCheckViewModel>()
+                    .AddScoped<ConsultantCreateNatureCheckViewModel>()
+                    .AddScoped<NatureCheckViewModel>()
+                    .AddScoped<IFarmRepository, FarmRepository>()
+                    .AddScoped<IPersonRepository, PersonRepository>()
+                    .AddScoped<ICreateNatureCheckRepository, CreateNatureCheckRepository>()
+
+                    // ---- Email Service ----
+                    .AddSingleton(new SmtpSettings
+                    {
+                        Host = "smtp.yourhost.com",
+                        Port = 587,
+                        EnableSsl = true,
+                        Username = "your-smtp-user",
+                        Password = "your-smtp-password",
+                        FromEmail = "no-reply@arlanatureconnect.dk",
+                        FromName = "Arla NatureConnect"
+                    })
+                    .AddSingleton<IEmailService, SmtpEmailService>()
+
 
                     // Control ViewModels
                     .AddSingleton<StatusBarUCViewModel>()

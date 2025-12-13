@@ -57,12 +57,13 @@
                             Orientation="Horizontal" 
                             Spacing="16"
                             VerticalAlignment="Center">
-                    <Button Content="Opret Naturtjek" 
+          <Button Content="Opret Naturtjek" 
                             Style="{StaticResource ArlaPrimaryButton}"
                             MinWidth="180"
                             MinHeight="48"
-                            Padding="24,14"/>
-                    <Button Content="Eksporter rapport" 
+                            Padding="24,14"
+                            Command="{Binding OpenCreateNatureCheckCommand}"/>
+          <Button Content="Eksporter rapport" 
                             Style="{StaticResource ArlaExportButton}"
                             MinWidth="180"
                             MinHeight="48"
@@ -222,13 +223,14 @@
                                                FontSize="18"
                                                FontWeight="SemiBold"
                                                Opacity="0.7"/>
-                                    <TextBlock Text="Klik på Opret Naturtjek for at starte." 
+
+                                              <TextBlock Text="Klik på Opret Naturtjek for at starte." 
                                                Style="{StaticResource ArlaBodyText}"
                                                HorizontalAlignment="Center"
                                                Foreground="{StaticResource ArlaNeutralDarkBrush}"
                                                FontSize="16"
                                                Opacity="0.6"/>
-                                </StackPanel>
+                                   </StackPanel>
                             </StackPanel>
                         </Border>
                     </Grid>

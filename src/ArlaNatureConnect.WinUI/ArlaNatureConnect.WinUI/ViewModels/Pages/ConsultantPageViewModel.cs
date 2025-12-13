@@ -6,6 +6,7 @@ using ArlaNatureConnect.WinUI.ViewModels.Abstracts;
 using ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu;
 using ArlaNatureConnect.WinUI.Views.Controls.PageContents.Consultant;
 using ArlaNatureConnect.WinUI.Views.Controls.SideMenu;
+using ArlaNatureConnect.Core.Abstract;
 
 using Microsoft.UI.Xaml.Controls;
 
@@ -17,6 +18,9 @@ namespace ArlaNatureConnect.WinUI.ViewModels.Pages;
 public sealed class ConsultantPageViewModel : NavigationViewModelBase
 {
     private readonly INatureCheckCaseService? _natureCheckCaseService;
+    public ConsultantNatureCheckViewModel NatureCheck { get; }
+
+    public RelayCommand OpenCreateNatureCheckCommand { get; set; } = null!;
 
     public ConsultantNatureCheckViewModel? NatureCheckViewModel { get; }
 
@@ -62,6 +66,7 @@ public sealed class ConsultantPageViewModel : NavigationViewModelBase
 
         NavigationCommand = new RelayCommand<object>(OnNavigate, CanNavigate);
         ChooseUserCommand = new RelayCommand<Person>(OnConsultantSelected);
+        OpenCreateNatureCheckCommand = new RelayCommand(OpenCreateNatureCheck);
 
         SetContent("Dashboards");
     }
@@ -78,9 +83,17 @@ public sealed class ConsultantPageViewModel : NavigationViewModelBase
 
         NavigationCommand = new RelayCommand<object>(OnNavigate, CanNavigate);
         ChooseUserCommand = new RelayCommand<Person>(OnConsultantSelected);
+        OpenCreateNatureCheckCommand = new RelayCommand(OpenCreateNatureCheck);
 
         SetContent("Dashboards");
     }
+    private void OpenCreateNatureCheck()
+    {
+        var view = new ConsultantCreateNatureCheck();
+        CurrentContent = view;
+    }
+
+
 
     public override Task InitializeAsync(Role? role) => Task.CompletedTask;
 
@@ -96,7 +109,7 @@ public sealed class ConsultantPageViewModel : NavigationViewModelBase
         SetContent(tag);
     }
 
-    private void SetContent(string tag)
+    /*private void SetContent(string tag)
     {
         CurrentSection = tag;
 
@@ -126,6 +139,29 @@ public sealed class ConsultantPageViewModel : NavigationViewModelBase
         }
 
         CurrentContent = newContent;
+    }*/
+
+    private void SetContent(string tag)
+    {
+        CurrentSection = tag;
+
+        UserControl? newContent = tag switch
+        {
+            "Dashboards" => new ConsultantDashboards(),
+            "Farms" => new ConsultantNatureCheck(),
+            "Tasks" => new ConsultantTasks(),
+            _ => new ConsultantDashboards(),
+        };
+
+        if (newContent == null)
+        {
+            return;
+        }
+
+        //Always use this page VM so the button can see OpenCreateNatureCheckCommand
+        newContent.DataContext = this;
+
+        CurrentContent = newContent;
     }
 
     private void OnConsultantSelected(Person? person)
@@ -133,4 +169,17 @@ public sealed class ConsultantPageViewModel : NavigationViewModelBase
         SelectedConsultant = person;
         // Future: trigger dashboard refresh based on selected consultant.
     }
+
+    private CreateNatureCheck? _currentNatureCheck;
+    public CreateNatureCheck? CurrentNatureCheck
+    {
+        get => _currentNatureCheck;
+        set
+        {
+            if (_currentNatureCheck == value) return;
+            _currentNatureCheck = value;
+            OnPropertyChanged();
+        }
+    }
+
 }

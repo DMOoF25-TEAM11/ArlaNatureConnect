@@ -31,6 +31,10 @@ public class NatureCheckCaseRepository : Repository<NatureCheckCase>, INatureChe
             await using AppDbContext ctx = _factory.CreateDbContext();
             return await ctx.NatureCheckCases
                 .Where(c => activeStatuses.Contains(c.Status))
+                .Include(c => c.Farm)
+                    .ThenInclude(f => f.Address)
+                .Include(c => c.Consultant)
+                    .ThenInclude(p => p.Address)
                 .AsNoTracking()
                 .ToListAsync(cancellationToken)
                 .ConfigureAwait(false);
@@ -79,7 +83,34 @@ public class NatureCheckCaseRepository : Repository<NatureCheckCase>, INatureChe
             return await ctx.NatureCheckCases
                 .AsNoTracking()
                 .Where(c => c.ConsultantId == consultantId && c.Status == NatureCheckCaseStatus.Assigned)
+                .Include(c => c.Farm)
+                    .ThenInclude(f => f.Address)
                 .OrderByDescending(c => c.AssignedAt ?? c.CreatedAt)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+        catch (COMException)
+        {
+            return Array.Empty<NatureCheckCase>();
+        }
+        catch (Exception)
+        {
+            return Array.Empty<NatureCheckCase>();
+        }
+    }
+
+    public async Task<IReadOnlyList<NatureCheckCase>> GetAllWithNavigationsAsync(CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            await using AppDbContext ctx = _factory.CreateDbContext();
+            return await ctx.NatureCheckCases
+                .AsNoTracking()
+                .Include(c => c.Farm)
+                    .ThenInclude(f => f.Address)
+                .Include(c => c.Consultant)
+                    .ThenInclude(p => p.Address)
+                .OrderByDescending(c => c.CreatedAt)
                 .ToListAsync(cancellationToken)
                 .ConfigureAwait(false);
         }
