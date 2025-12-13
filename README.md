@@ -8,11 +8,17 @@ Welcome to the Arla Nature Connect project! This repository contains resources a
   - [Getting Started](#getting-started)
   - [Project Structure](#project-structure)
   - [Debugging](#debugging)
-  - [Boilerplate](#boilerplate)
-    - [ViewModelBase](#viewmodelbase)
-  - [Services Used](#services-used)
-    - [AppMessageService](#appmessageservice)
-    - [StatusInfoService](#statusinfoservice)
+- [Wiki Documentation](#wiki-documentation)
+- [Boilerplate](#boilerplate)
+  - [ViewModelBase](#viewmodelbase)
+  - [ListViewModelBase](#listviewmodelbase)
+  - [CRUDViewModelBase](#crudviewmodelbase)
+- [Services Used](#services-used)
+  - [AppMessageService](#appmessageservice)
+  - [ConnectionStringService](#connectionstringservice)
+  - [StatusInfoService](#statusinfoservice)
+- [Documentation](#documentation)
+- [Use Cases](#use-cases)
 
 ## 📖 Overview
 Arla Nature Connect is a platform that enables members of the Arla Nature Connect community to connect, share ideas, and collaborate on sustainability projects.

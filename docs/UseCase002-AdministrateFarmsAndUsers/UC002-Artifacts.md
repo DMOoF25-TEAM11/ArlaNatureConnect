@@ -13,10 +13,22 @@
     - [Option: Delete](#option-delete)
   - [Security & Permissions](#security--permissions)
   - [Non-functional requirements](#non-functional-requirements)
+- [SSD - System Sequence Diagram](#ssd---system-sequence-diagram)
+- [OC - Operations Contracts](#oc---operations-contracts)
+  - [OC000-Navigate To Manage Users](#oc000-navigate-to-manage-users)
+  - [OC001-AddUser](#oc001-adduser)
+  - [OC002-Select User](#oc002-select-user)
+  - [OC003-Edit User](#oc003-edit-user)
+  - [OC004-Delete User](#oc004-delete-user)
+  - [OC005-Navigate To Home](#oc005-navigate-to-home)
+- [Sequence Diagram](#sequence-diagram)
 - [Domain Model](#domain-model)
+  - [Domain Model Metadata](#domain-model-metadata)
   - [Class Descriptions](#class-descriptions)
   - [Relationships](#relationships)
   - [Notes](#notes)
+- [DCD](#dcd)
+- [ERD](#erd)
 
 ---
 
