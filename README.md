@@ -91,6 +91,21 @@ Click the links below for detailed documentation.
 | [ConnectionStringService] | Service for managing database connection strings. |
 | [StatusInfoService]    | Service for displaying status information in the application. |
 
+## Documentation
+Additional documentation and resources for the Arla Nature Connect project can be found in the subfolder docs
+
+### Use Cases
+
+| Use Case | Documentation |
+|----------|-------------|
+| UC-001   | [Domain model][UC-001-DM]<br/>[DCD][UC-001-DCD]<br/>[User Story][UC-001-S]<br/>[SSD][UC-001-SSD]<br/>[OC][UC-001-OC]<br/>[SD][UC-001-SD]<br/>[UCBrief][UC-001-UCB]<br/>[UCCasual][UC-001-UCC] |
+| UC-002   | [Artifacts][UC-002-Artifacts] |
+| UC-002B  |
+| UC-003   |
+| UC-004   |
+| UC-010	 |
+
+
 <!-- MARKDOWN LINKS & IMAGES -->
 [Logo]: images/logo/logo32x32.png "Arla Nature Connect Logo"
 
@@ -101,3 +116,15 @@ Click the links below for detailed documentation.
 [ViewModelBase]: docs/wiki/Winui/ViewModels/Abstract/ViewModelBase.md "ViewModelBase Documentation"
 [ListViewModelBase]: docs/wiki/Winui/ViewModels/Abstract/ListViewModelBase.md "ListViewModelBase Documentation"
 [CRUDViewModelBase]: docs/wiki/Winui/ViewModels/Abstract/CRUDViewModelBase.md "CRUDViewModelBase Documentation"
+
+[UC-001-DM]:    docs/UseCase001-LoginAndRoleaccess/UC001-DomainModel.md
+[UC-001-DCD]:   docs/UseCase001-LoginAndRoleaccess/UC001-DCD.md
+[UC-001-S]: 	  docs/UseCase001-LoginAndRoleaccess/UC001-UserStory.md
+[UC-001-SSD]:   docs/UseCase001-LoginAndRoleaccess/UC001-SSD.md
+[UC-001-OC]:    docs/UseCase001-LoginAndRoleaccess/UC001-OC.md
+[UC-001-SD]:    docs/UseCase001-LoginAndRoleaccess/UC001-SD.md
+[UC-001-UCB]:   docs/UseCase001-LoginAndRoleaccess/UC001-UCBrief.md
+[UC-001-UCC]:   docs/UseCase001-LoginAndRoleaccess/UC001-UCCasual.md
+[UC-001-ERD]:   docs/UseCase001-LoginAndRoleaccess/UC001-ER.md
+
+[UC-002-Artifacts]:    docs/UseCase002-AdministrateFarmsAndUsers/UC002-Artifacts.md

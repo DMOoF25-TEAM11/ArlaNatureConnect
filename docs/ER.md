@@ -58,10 +58,10 @@ erDiagram
   }
   
   Farms ||--o{ NatureAreas : has
-  Farms ||--o{ Persons : owned_by
-  Farms ||--o{ Addresses : located_at
-  Persons ||--o{ Roles : assigned_to
-  Persons ||--o{ Addresses : resides_at
-  NatureAreas ||--o{ NatureAreaCoordinates : has
+  Farms }o--|| Persons : owned_by
+  Farms }o--|| Addresses : located_at
+  Persons }|--|| Roles : assigned_to
+  Persons }|--|| Addresses : resides_at
+  NatureAreas ||--|{ NatureAreaCoordinates : has
   NatureAreas ||--o{ NatureAreaImages : has
 ```

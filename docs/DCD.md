@@ -93,8 +93,6 @@ namespace ArlaNatureConnect.Domain.Entities {
   }
 }
 
-
-
 namespace ArlaNatureConnect.Core.Abstract {
   %% Repositories
 
