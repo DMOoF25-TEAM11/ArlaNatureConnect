@@ -40,6 +40,25 @@ namespace ArlaNatureConnect.Infrastructure.Repositories;
 public class PersonRepository(IDbContextFactory<AppDbContext> factory) : Repository<Person>(factory), IPersonRepository
 {
     /// <summary>
+    /// Returns all persons including their related Farms, Role, and Address navigation properties.
+    /// </summary>
+    /// <remarks>
+    /// Overrides the base GetAllAsync to ensure Farms collection is loaded.
+    /// AutoInclude is configured in AppDbContext, but this explicit Include ensures
+    /// the relationship is properly loaded even if AutoInclude doesn't work in all scenarios.
+    /// </remarks>
+    public new async Task<IEnumerable<Person>> GetAllAsync(CancellationToken cancellationToken = default)
+    {
+        await using AppDbContext ctx = _factory.CreateDbContext();
+        return await ctx.Set<Person>()
+            .Include(p => p.Farms)
+            .Include(p => p.Role)
+            .Include(p => p.Address)
+            .ToListAsync(cancellationToken)
+            .ConfigureAwait(false);
+    }
+
+    /// <summary>
     /// Returns all persons that have the specified role name.
     /// </summary>
     /// <remarks>
@@ -79,6 +98,9 @@ public class PersonRepository(IDbContextFactory<AppDbContext> factory) : Reposit
                 return [];
 
             return await ctx.Set<Person>()
+                .Include(p => p.Farms)
+                .Include(p => p.Role)
+                .Include(p => p.Address)
                 .Where(p => p.RoleId == roleEntity.Id)
                 .ToListAsync(ct).ConfigureAwait(false);
         }
@@ -86,6 +108,34 @@ public class PersonRepository(IDbContextFactory<AppDbContext> factory) : Reposit
         {
             // Consider logging the exception rather than swallowing.
             return [];
+        }
+    }
+
+    /// <summary>
+    /// Returns a person with the specified email address, if one exists.
+    /// </summary>
+    /// <param name="email">The email address to search for (case-insensitive).</param>
+    /// <param name="cancellationToken">A cancellation token.</param>
+    /// <returns>The person with the matching email, or null if not found.</returns>
+    public async Task<Person?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(email))
+            return null;
+
+        try
+        {
+            await using AppDbContext ctx = _factory.CreateDbContext();
+            return await ctx.Set<Person>()
+                .Include(p => p.Farms)
+                .Include(p => p.Role)
+                .Include(p => p.Address)
+                .FirstOrDefaultAsync(p => p.Email.ToLower() == email.Trim().ToLower(), cancellationToken)
+                .ConfigureAwait(false);
+        }
+        catch (Exception)
+        {
+            // Consider logging the exception rather than swallowing.
+            return null;
         }
     }
 }

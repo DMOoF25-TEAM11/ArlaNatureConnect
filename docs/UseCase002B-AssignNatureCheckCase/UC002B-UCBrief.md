@@ -48,3 +48,5 @@ The consultant receives a database notification (visible as a badge in UI) about
 - Notifications: Database-based (consultant sees badge in UI), not email/SMS.
 - Data aggregation: Service aggregates Farm + Person + Address + Case data into DTOs for efficient UI display.
 - Update functionality: When a farm with an active case is selected, the UI button text changes to "Opdater natur Check opgave" (Update Nature Check task) and allows updating the existing case instead of creating a duplicate.
+- **Farm creation:** When creating a new farm, if the owner email already exists and the person has the Farmer role, the system reuses the existing person and links the new farm to them. This allows a farmer to own multiple farms with different CVR numbers. Each farm must have a unique CVR number.
+- **Error handling:** The system provides specific, user-friendly error messages for validation failures and database constraint violations (duplicate email or CVR) to help users understand and correct issues.

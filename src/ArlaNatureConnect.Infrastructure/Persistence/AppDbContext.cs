@@ -1,5 +1,5 @@
 using ArlaNatureConnect.Domain.Entities;
-using ArlaNatureConnect.Domain.Enums;
+using ArlaNatureConnect.Infrastructure.Persistence.Configurations;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -19,6 +19,10 @@ public partial class AppDbContext(DbContextOptions<AppDbContext> options) : DbCo
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        // Apply entity configurations
+        modelBuilder.ApplyConfiguration(new NatureCheckCaseConfiguration());
+        modelBuilder.ApplyConfiguration(new PersonConfiguration());
 
         // Configure automatic inclusion of related entities
         modelBuilder.Entity<Person>().Navigation(e => e.Role).AutoInclude();
@@ -41,57 +45,5 @@ public partial class AppDbContext(DbContextOptions<AppDbContext> options) : DbCo
 
         modelBuilder.Entity<NatureArea>().Navigation(e => e.Coordinates).AutoInclude();
         modelBuilder.Entity<NatureArea>().Navigation(e => e.Images).AutoInclude();
-
-        // Configure NatureCheckCase Status enum to string conversion
-        // Database stores Status as NVARCHAR with CHECK constraint: 'Assigned', 'InProgress', 'Completed', 'Cancelled'
-        // Use ValueConverter for more explicit control over conversion
-        var statusConverter = new Microsoft.EntityFrameworkCore.Storage.ValueConversion.ValueConverter<NatureCheckCaseStatus, string>(
-            v => v.ToString(), // Convert enum to string when saving
-            v => ParseStatus(v)); // Convert string back to enum when reading
-            
-        modelBuilder.Entity<NatureCheckCase>()
-            .Property(e => e.Status)
-            .HasColumnType("nvarchar(50)")
-            .HasConversion(statusConverter);
-            
-        // Configure DateTimeOffset conversion for CreatedAt and AssignedAt
-        // Database uses DATETIME2, but EF Core expects DateTimeOffset
-        // Convert DateTime (from DATETIME2) to DateTimeOffset when reading
-        modelBuilder.Entity<NatureCheckCase>()
-            .Property(e => e.CreatedAt)
-            .HasConversion(
-                v => v.DateTime, // Convert DateTimeOffset to DateTime when saving
-                v => new DateTimeOffset(v, TimeSpan.Zero)); // Convert DateTime to DateTimeOffset when reading (assume UTC)
-            
-        modelBuilder.Entity<NatureCheckCase>()
-            .Property(e => e.AssignedAt)
-            .HasConversion(
-                v => v.HasValue ? v.Value.DateTime : (DateTime?)null, // Convert DateTimeOffset? to DateTime? when saving
-                v => v.HasValue ? new DateTimeOffset(v.Value, TimeSpan.Zero) : (DateTimeOffset?)null); // Convert DateTime? to DateTimeOffset? when reading (assume UTC)
-    }
-
-    private static NatureCheckCaseStatus ParseStatus(string? value)
-    {
-        // Handle null or empty values
-        if (string.IsNullOrWhiteSpace(value))
-        {
-            return NatureCheckCaseStatus.Assigned; // Default to Assigned
-        }
-
-        // Handle case-insensitive parsing
-        // Database CHECK constraint only allows: 'Assigned', 'InProgress', 'Completed', 'Cancelled'
-        if (Enum.TryParse<NatureCheckCaseStatus>(value, true, out NatureCheckCaseStatus result))
-        {
-            // Ensure the parsed value is one of the database-allowed values
-            if (result == NatureCheckCaseStatus.Assigned || 
-                result == NatureCheckCaseStatus.InProgress || 
-                result == NatureCheckCaseStatus.Completed || 
-                result == NatureCheckCaseStatus.Cancelled)
-            {
-                return result;
-            }
-        }
-        // Default to Assigned if invalid or if Draft was parsed (Draft is not in database CHECK constraint)
-        return NatureCheckCaseStatus.Assigned;
     }
 }

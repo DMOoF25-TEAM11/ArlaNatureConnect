@@ -12,7 +12,9 @@ sequenceDiagram
     participant ConsultantPageViewModel
     participant ArlaEmployeePage as "ArlaEmployeePage.xaml (View)"
     participant ArlaEmployeePageViewModel
-    participant IRoleRepository
+    participant ArlaEmployeeAssignNatureCheckViewModel
+    participant FarmerPageSideMenuUCViewModel
+    participant ConsultantPageSideMenuUCViewModel
     participant IPersonRepository
 
     %% Step 1: Launch
@@ -26,6 +28,7 @@ sequenceDiagram
     activate LoginPage
     LoginPage ->> LoginPageViewModel: Execute SelectRoleCommand(role)
     activate LoginPageViewModel
+    LoginPageViewModel ->> LoginPageViewModel: SelectRole(roleName)
     LoginPageViewModel ->> NavigationHandler: Navigate(pageType, parameter=role)
     activate NavigationHandler
 
@@ -35,22 +38,20 @@ sequenceDiagram
         activate FarmerPage
         FarmerPage ->> FarmerPageViewModel: InitializeAsync(role)
         activate FarmerPageViewModel
-        FarmerPageViewModel ->> IRoleRepository: GetAllAsync()
-        activate IRoleRepository
-        IRoleRepository -->> FarmerPageViewModel: roles
-        deactivate IRoleRepository
-        FarmerPageViewModel ->> IPersonRepository: GetAllAsync()
+        FarmerPage ->> FarmerPageSideMenuUCViewModel: InitializeAsync()
+        activate FarmerPageSideMenuUCViewModel
+        FarmerPageSideMenuUCViewModel ->> IPersonRepository: GetPersonsByRoleAsync("Farmer")
         activate IPersonRepository
-        IPersonRepository -->> FarmerPageViewModel: persons
+        IPersonRepository -->> FarmerPageSideMenuUCViewModel: persons
         deactivate IPersonRepository
-        FarmerPageViewModel ->> FarmerPageViewModel: LoadAvailableUsersAsync()
-        FarmerPageViewModel -->> FarmerPage: UpdateAvailablePersons()
+        FarmerPageSideMenuUCViewModel -->> FarmerPage: UpdateAvailablePersons()
         FarmerPage -->> User: DisplayPersonDropdown()
         User ->> FarmerPage: SelectPerson(person)
-        FarmerPage ->> FarmerPageViewModel: Execute ChooseUserCommand(person)
-        FarmerPageViewModel ->> FarmerPageViewModel: ChooseUser(person)
+        FarmerPage ->> FarmerPageSideMenuUCViewModel: SelectedPerson = person
+        FarmerPageSideMenuUCViewModel ->> FarmerPageViewModel: ChooseUserCommand.Execute(person)
         FarmerPageViewModel ->> FarmerPage: UpdateDashboard(person)
         FarmerPage -->> User: DisplayPersonSpecificDashboard()
+        deactivate FarmerPageSideMenuUCViewModel
         deactivate FarmerPageViewModel
         deactivate FarmerPage
     else Role = Consultant
@@ -58,29 +59,31 @@ sequenceDiagram
         activate ConsultantPage
         ConsultantPage ->> ConsultantPageViewModel: InitializeAsync(role)
         activate ConsultantPageViewModel
-        ConsultantPageViewModel ->> IRoleRepository: GetAllAsync()
-        activate IRoleRepository
-        IRoleRepository -->> ConsultantPageViewModel: roles
-        deactivate IRoleRepository
-        ConsultantPageViewModel ->> IPersonRepository: GetAllAsync()
+        ConsultantPage ->> ConsultantPageSideMenuUCViewModel: InitializeAsync()
+        activate ConsultantPageSideMenuUCViewModel
+        ConsultantPageSideMenuUCViewModel ->> IPersonRepository: GetPersonsByRoleAsync("Consultant")
         activate IPersonRepository
-        IPersonRepository -->> ConsultantPageViewModel: persons
+        IPersonRepository -->> ConsultantPageSideMenuUCViewModel: persons
         deactivate IPersonRepository
-        ConsultantPageViewModel ->> ConsultantPageViewModel: LoadAvailableUsersAsync()
-        ConsultantPageViewModel -->> ConsultantPage: UpdateAvailablePersons()
+        ConsultantPageSideMenuUCViewModel -->> ConsultantPage: UpdateAvailablePersons()
         ConsultantPage -->> User: DisplayPersonDropdown()
         User ->> ConsultantPage: SelectPerson(person)
-        ConsultantPage ->> ConsultantPageViewModel: Execute ChooseUserCommand(person)
-        ConsultantPageViewModel ->> ConsultantPageViewModel: ChooseUser(person)
+        ConsultantPage ->> ConsultantPageSideMenuUCViewModel: SelectedPerson = person
+        ConsultantPageSideMenuUCViewModel ->> ConsultantPageViewModel: ChooseUserCommand.Execute(person)
         ConsultantPageViewModel ->> ConsultantPage: UpdateDashboard(person)
         ConsultantPage -->> User: DisplayPersonSpecificDashboard()
+        deactivate ConsultantPageSideMenuUCViewModel
         deactivate ConsultantPageViewModel
         deactivate ConsultantPage
     else Role = Arla Employee
         NavigationHandler ->> ArlaEmployeePage: LoadPage()
         activate ArlaEmployeePage
-        ArlaEmployeePage ->> ArlaEmployeePageViewModel: Initialize(role)
+        ArlaEmployeePage ->> ArlaEmployeePageViewModel: InitializeAsync(role)
         activate ArlaEmployeePageViewModel
+        ArlaEmployeePageViewModel ->> ArlaEmployeeAssignNatureCheckViewModel: InitializeAsync()
+        activate ArlaEmployeeAssignNatureCheckViewModel
+        ArlaEmployeeAssignNatureCheckViewModel -->> ArlaEmployeePageViewModel: context loaded
+        deactivate ArlaEmployeeAssignNatureCheckViewModel
         ArlaEmployeePage -->> User: DisplayEmployeeDashboard()
         deactivate ArlaEmployeePageViewModel
         deactivate ArlaEmployeePage

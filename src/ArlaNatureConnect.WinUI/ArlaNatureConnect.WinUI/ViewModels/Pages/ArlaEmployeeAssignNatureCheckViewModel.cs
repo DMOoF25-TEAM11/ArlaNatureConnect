@@ -487,6 +487,13 @@ public class ArlaEmployeeAssignNatureCheckViewModel : ViewModelBase
             IsBusy = true;
             await operation();
         }
+        catch (Microsoft.EntityFrameworkCore.DbUpdateException dbEx)
+        {
+            // Extract meaningful error message from Entity Framework exceptions
+            string errorMessage = ExtractDatabaseErrorMessage(dbEx);
+            _appMessageService.AddErrorMessage(errorMessage);
+            await ContentDialogHelper.ShowInfoAsync(App.MainWindowXamlRoot, "Fejl", errorMessage);
+        }
         catch (Exception ex)
         {
             _appMessageService.AddErrorMessage(ex.Message);
@@ -496,6 +503,50 @@ public class ArlaEmployeeAssignNatureCheckViewModel : ViewModelBase
         {
             IsBusy = false;
         }
+    }
+
+    private static string ExtractDatabaseErrorMessage(Microsoft.EntityFrameworkCore.DbUpdateException dbEx)
+    {
+        // Check inner exception for SQL Server specific errors
+        if (dbEx.InnerException is Microsoft.Data.SqlClient.SqlException sqlEx)
+        {
+            // Check for unique constraint violations
+            if (sqlEx.Number == 2627) // Unique constraint violation
+            {
+                string message = sqlEx.Message;
+                
+                // Check if it's an email constraint
+                if (message.Contains("UQ_Persons_Email", StringComparison.OrdinalIgnoreCase) ||
+                    message.Contains("Email", StringComparison.OrdinalIgnoreCase))
+                {
+                    return "En person med denne e-mail findes allerede i systemet. Vælg en anden e-mail.";
+                }
+                
+                // Check if it's a CVR constraint
+                if (message.Contains("UQ_Farms_CVR", StringComparison.OrdinalIgnoreCase) ||
+                    message.Contains("CVR", StringComparison.OrdinalIgnoreCase))
+                {
+                    return "En gård med dette CVR-nummer findes allerede i systemet. Vælg et andet CVR-nummer.";
+                }
+                
+                return "En post med disse oplysninger findes allerede i systemet. Tjek at e-mail og CVR er unikke.";
+            }
+            
+            // Check for foreign key violations
+            if (sqlEx.Number == 547) // Foreign key constraint violation
+            {
+                return "Kan ikke gemme: Der er en reference til data der ikke findes. Kontakt systemadministratoren.";
+            }
+            
+            // Return SQL error message if it's meaningful
+            if (!string.IsNullOrWhiteSpace(sqlEx.Message))
+            {
+                return sqlEx.Message;
+            }
+        }
+        
+        // Fallback to original exception message
+        return dbEx.Message;
     }
     #endregion
 

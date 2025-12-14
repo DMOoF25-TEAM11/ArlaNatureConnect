@@ -8,7 +8,7 @@ erDiagram
         uniqueidentifier Id PK
         nvarchar Name
         nvarchar CVR
-        uniqueidentifier PersonId FK "NOT NULL"
+        uniqueidentifier OwnerId FK "NOT NULL"
         uniqueidentifier AddressId FK "NOT NULL"
     }
 
@@ -54,7 +54,7 @@ erDiagram
     PERSONS }o--|| ROLES : "has"
     PERSONS }o--o| ADDRESS : "residence"
     FARMS }o--|| ADDRESS : "location"
-    FARMS }o--|| PERSONS : "owner"
+    FARMS }o--|| PERSONS : "owner (OwnerId)"
 ```
 
 ## Relationship Details
@@ -79,7 +79,7 @@ erDiagram
 - `AssignedAt` is set when the case is assigned to a consultant (can be null if not yet assigned)
 
 ### FARMS
-- `PersonId` is NOT NULL per domain model (a farm must have an owner)
+- `OwnerId` is NOT NULL per domain model (a farm must have an owner)
 - `AddressId` is NOT NULL per domain model (a farm must have an address)
 - In the domain model, these use `Guid.Empty` as default if not set, but database schema enforces NOT NULL
 

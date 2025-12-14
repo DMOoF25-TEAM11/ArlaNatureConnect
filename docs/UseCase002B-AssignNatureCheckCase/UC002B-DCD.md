@@ -28,9 +28,9 @@ classDiagram
             +Guid Id
             +string Name
             +string CVR
-            +Guid PersonId
+            +Guid OwnerId
             +Guid AddressId
-            +Person Person
+            +Person Owner
             +Address Address
         }
 
@@ -266,11 +266,13 @@ classDiagram
 
         class IFarmRepository {
             <<interface>>
+            +Task~Farm?~ GetByCvrAsync(string, CancellationToken) Task
         }
 
         class IPersonRepository {
             <<interface>>
             +Task~IEnumerable~Person~~ GetPersonsByRoleAsync(string, CancellationToken) Task
+            +Task~Person?~ GetByEmailAsync(string, CancellationToken) Task
         }
 
         class IAddressRepository {
@@ -337,7 +339,7 @@ classDiagram
     NatureCheckCase --> Farm : Farm
     NatureCheckCase --> Person : Consultant
     NatureCheckCase --> Person : AssignedByPerson
-    Farm --> Person : Person
+    Farm --> Person : Owner
     Farm --> Address : Address
     Person --> Role : Role
     Person --> Address : Address
