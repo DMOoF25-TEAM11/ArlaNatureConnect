@@ -24,14 +24,34 @@ erDiagram
     string FirstName
     string LastName
     string Email "unique"
+    Guid RoleId FK
+    Guid AddressId FK "nullable"
+    bool IsActive
   }
 
   Farms {
     Guid Id PK
-    Guid AddressId FK
-    Guid OwnerId FK
+    Guid AddressId FK "nullable"
+    Guid OwnerId FK "nullable"
     string Name
-    string CVR "unique"
+    string CVR "unique, nullable"
+  }
+
+  UserFarms {
+    Guid PersonId PK, FK
+    Guid FarmId PK, FK
+  }
+
+  NatureCheckCases {
+    Guid Id PK
+    Guid FarmId FK
+    Guid ConsultantId FK
+    Guid AssignedByPersonId FK
+    string Status "CHECK: Assigned, InProgress, Completed, Cancelled"
+    string Notes "nullable, NVARCHAR(MAX)"
+    string Priority "nullable, CHECK: Low, Medium, High, Urgent"
+    DATETIME2 CreatedAt
+    DATETIME2 AssignedAt "nullable"
   }
 
   NatureAreas {
@@ -56,12 +76,25 @@ erDiagram
     string ImageUrl
     Int OrderIndex
   }
+
+  LoginSession {
+    Guid SessionId PK
+    Guid UserId FK "references Persons.Id"
+    DATETIME2 LoginTimestamp
+    DATETIME2 LogoutTimestamp "nullable"
+  }
   
+  Roles ||--o{ Persons : assigned_to
+  Addresses ||--o{ Persons : resides_at
+  Addresses ||--o{ Farms : located_at
+  Persons ||--o{ Farms : owns
+  Persons ||--o{ UserFarms : "assigned to"
+  Farms ||--o{ UserFarms : "assigned to"
   Farms ||--o{ NatureAreas : has
-  Farms }o--|| Persons : owned_by
-  Farms }o--|| Addresses : located_at
-  Persons }|--|| Roles : assigned_to
-  Persons }|--|| Addresses : resides_at
-  NatureAreas ||--|{ NatureAreaCoordinates : has
+  Farms ||--o{ NatureCheckCases : has
+  Persons ||--o{ NatureCheckCases : "assigned as consultant"
+  Persons ||--o{ NatureCheckCases : "assigned by"
+  Persons ||--o{ LoginSession : "creates many sessions"
+  NatureAreas ||--o{ NatureAreaCoordinates : has
   NatureAreas ||--o{ NatureAreaImages : has
 ```

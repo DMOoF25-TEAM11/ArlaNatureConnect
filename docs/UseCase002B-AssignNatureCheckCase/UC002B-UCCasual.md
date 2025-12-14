@@ -54,7 +54,11 @@
 
 ### **Extensions (Alternatives)**
 - **3a. Farm not found:**  
-  The employee selects "Tilføj ny gård" → System shows farm creation form → Employee enters farm details → System creates farm → Employee returns to assignment form.
+  The employee selects "Tilføj ny gård" → System shows farm creation form → Employee enters farm details (name, CVR, address, owner email) → System validates input:
+  - **3a.1. If CVR already exists:** System displays error "En gård med CVR-nummer '[CVR]' findes allerede i systemet. Vælg et andet CVR-nummer." → Employee must change CVR.
+  - **3a.2. If owner email exists and person has Farmer role:** System reuses existing person and creates new farm linked to them → Employee returns to assignment form with new farm.
+  - **3a.3. If owner email exists but person does not have Farmer role:** System displays error "En person med e-mail '[Email]' findes allerede i systemet, men har ikke rollen 'Farmer'. En landmand kan kun have flere gårde hvis de har Farmer-rollen." → Employee must use different email or contact administrator.
+  - **3a.4. If owner email does not exist:** System creates new person with Farmer role and new farm → Employee returns to assignment form with new farm.
 
 - **5a. Farm has active case:**  
   The system auto-populates the form with existing assignment data (consultant, priority converted to Danish, notes). The button text changes to "Opdater natur Check opgave" (Update Nature Check task). Employee can modify consultant, priority, and notes, then click the button to update the existing case. The system updates the active case instead of creating a new one.
@@ -95,6 +99,9 @@
 - When a farm with an active case is selected, the form is auto-populated with existing assignment data and the button text changes to "Opdater natur Check opgave" (Update Nature Check task).
 - When a farm with no active case is selected, the button text displays "Lav natur Check opgave" (Create Nature Check task).
 - The system can update existing active cases (status "Assigned" or "InProgress") with new consultant, priority, and notes without creating duplicate cases.
+- **Farm creation:** A farmer (person with Farmer role) can own multiple farms with different CVR numbers. When creating a new farm, if the owner email already exists and the person has the Farmer role, the system reuses the existing person and links the new farm to them. This allows efficient management of farmers with multiple farm operations.
+- **CVR uniqueness:** Each farm must have a unique CVR number. The system validates CVR uniqueness before creating a new farm.
+- **Error handling:** The system provides specific, user-friendly error messages for validation failures and database constraint violations (duplicate email or CVR) to help users understand and correct issues.
 
 ---
 

@@ -221,6 +221,66 @@ public class NatureCheckCaseService : INatureCheckCaseService
         }
         else
         {
+            // Validate that CVR doesn't already exist (if provided)
+            if (!string.IsNullOrWhiteSpace(request.Cvr))
+            {
+                Farm? existingFarm = await _farmRepository.GetByCvrAsync(request.Cvr, cancellationToken).ConfigureAwait(false);
+                if (existingFarm != null)
+                {
+                    throw new InvalidOperationException($"En gård med CVR-nummer '{request.Cvr}' findes allerede i systemet. Vælg et andet CVR-nummer.");
+                }
+            }
+
+            // Check if person with this email already exists
+            Person? existingPerson = await _personRepository.GetByEmailAsync(request.OwnerEmail, cancellationToken).ConfigureAwait(false);
+            Person farmer;
+            ArlaNatureConnect.Domain.Entities.Role farmerRole = await EnsureRoleAsync(RoleName.Farmer.ToString(), cancellationToken).ConfigureAwait(false);
+
+            if (existingPerson != null)
+            {
+                // Person exists - verify they have Farmer role
+                Role? existingRole = await _roleRepository.GetByIdAsync(existingPerson.RoleId, cancellationToken).ConfigureAwait(false);
+                if (existingRole == null || existingRole.Name != RoleName.Farmer.ToString())
+                {
+                    throw new InvalidOperationException($"En person med e-mail '{request.OwnerEmail}' findes allerede i systemet, men har ikke rollen 'Farmer'. En landmand kan kun have flere gårde hvis de har Farmer-rollen.");
+                }
+                
+                // Use existing person - they can have multiple farms
+                farmer = existingPerson;
+            }
+            else
+            {
+                // Create new person address (if provided)
+                Guid? personAddressId = null;
+                if (!string.IsNullOrWhiteSpace(request.Street) || !string.IsNullOrWhiteSpace(request.City))
+                {
+                    Address personAddress = new()
+                    {
+                        Id = Guid.NewGuid(),
+                        Street = request.Street,
+                        City = request.City,
+                        PostalCode = request.PostalCode,
+                        Country = request.Country
+                    };
+                    await _addressRepository.AddAsync(personAddress, cancellationToken).ConfigureAwait(false);
+                    personAddressId = personAddress.Id;
+                }
+
+                // Create new person
+                farmer = new()
+                {
+                    Id = Guid.NewGuid(),
+                    RoleId = farmerRole.Id,
+                    AddressId = personAddressId ?? Guid.Empty,
+                    FirstName = request.OwnerFirstName,
+                    LastName = request.OwnerLastName,
+                    Email = request.OwnerEmail,
+                    IsActive = request.OwnerIsActive
+                };
+                await _personRepository.AddAsync(farmer, cancellationToken).ConfigureAwait(false);
+            }
+
+            // Create farm address
             Address farmAddress = new()
             {
                 Id = Guid.NewGuid(),
@@ -231,19 +291,7 @@ public class NatureCheckCaseService : INatureCheckCaseService
             };
             await _addressRepository.AddAsync(farmAddress, cancellationToken).ConfigureAwait(false);
 
-            ArlaNatureConnect.Domain.Entities.Role farmerRole = await EnsureRoleAsync(RoleName.Farmer.ToString(), cancellationToken).ConfigureAwait(false);
-            Person farmer = new()
-            {
-                Id = Guid.NewGuid(),
-                RoleId = farmerRole.Id,
-                AddressId = farmAddress.Id,
-                FirstName = request.OwnerFirstName,
-                LastName = request.OwnerLastName,
-                Email = request.OwnerEmail,
-                IsActive = request.OwnerIsActive
-            };
-            await _personRepository.AddAsync(farmer, cancellationToken).ConfigureAwait(false);
-
+            // Create new farm linked to the person (existing or new)
             Farm farm = new()
             {
                 Id = Guid.NewGuid(),

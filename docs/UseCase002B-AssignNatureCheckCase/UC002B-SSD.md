@@ -23,10 +23,27 @@ sequenceDiagram
     else Farm does not exist
         ArlaEmployee ->> System: Click "Tilføj ny gård" (Create New Farm)
         System -->> ArlaEmployee: Display farm creation form
-        ArlaEmployee ->> System: Enter farm details (name, CVR, address, owner) and save
-        System -->> ArlaEmployee: Display confirmation and return to farm list
-        ArlaEmployee ->> System: Select newly created farm
-        System -->> ArlaEmployee: Display farm details<br/>Empty assignment form
+        ArlaEmployee ->> System: Enter farm details (name, CVR, address, owner email) and save
+        alt Validation succeeds
+            alt Owner email exists and has Farmer role
+                Note over System: System reuses existing person<br/>Creates new farm linked to existing owner
+                System -->> ArlaEmployee: Display success message "Ny gård er tilføjet"
+            else Owner email does not exist
+                Note over System: System creates new person with Farmer role<br/>Creates new farm linked to new owner
+                System -->> ArlaEmployee: Display success message "Ny gård er tilføjet"
+            end
+            System -->> ArlaEmployee: Return to farm list with new farm
+            ArlaEmployee ->> System: Select newly created farm
+            System -->> ArlaEmployee: Display farm details<br/>Empty assignment form
+        else Validation fails
+            alt CVR already exists
+                System -->> ArlaEmployee: Display error "En gård med CVR-nummer '[CVR]' findes allerede i systemet. Vælg et andet CVR-nummer."
+            else Owner email exists but does not have Farmer role
+                System -->> ArlaEmployee: Display error "En person med e-mail '[Email]' findes allerede i systemet, men har ikke rollen 'Farmer'. En landmand kan kun have flere gårde hvis de har Farmer-rollen."
+            else Missing required fields
+                System -->> ArlaEmployee: Display error "Udfyld alle påkrævede felter"
+            end
+        end
     end
 
     alt Farm has active case
@@ -53,6 +70,12 @@ sequenceDiagram
             System -->> ArlaEmployee: Display error "Gården har allerede en aktiv Natur Check opgave"
         else Consultant does not have Consultant role
             System -->> ArlaEmployee: Display error "Den valgte person har ikke konsulent-rollen"
+        else Database constraint violation
+            alt Email already exists (different person)
+                System -->> ArlaEmployee: Display error "En person med denne e-mail findes allerede i systemet. Vælg en anden e-mail."
+            else CVR already exists
+                System -->> ArlaEmployee: Display error "En gård med dette CVR-nummer findes allerede i systemet. Vælg et andet CVR-nummer."
+            end
         end
     end
 
@@ -68,3 +91,6 @@ sequenceDiagram
 - Notifications are database-based (consultant sees notification badge in UI, not email/SMS).
 - The system validates all inputs before creating or updating the case and provides clear error messages.
 - The system can update existing active cases (status "Assigned" or "InProgress") without creating duplicate cases.
+- **Farm creation:** When creating a new farm, if the owner email already exists and the person has the Farmer role, the system reuses the existing person and links the new farm to them. This allows a farmer to own multiple farms with different CVR numbers. If the email exists but the person does not have the Farmer role, the system displays an error message.
+- **CVR validation:** Each farm must have a unique CVR number. If a CVR already exists, the system displays an error message.
+- **Error handling:** The system provides specific error messages for database constraint violations (duplicate email or CVR) to help users understand what went wrong.
