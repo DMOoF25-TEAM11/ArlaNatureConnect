@@ -31,10 +31,10 @@ erDiagram
 
   Farms {
     Guid Id PK
-    Guid AddressId FK "nullable"
-    Guid OwnerId FK "nullable"
+    Guid AddressId FK "NOT NULL"
+    Guid OwnerId FK "NOT NULL"
     string Name
-    string CVR "unique, nullable"
+    string CVR "unique, NOT NULL"
   }
 
   UserFarms {
