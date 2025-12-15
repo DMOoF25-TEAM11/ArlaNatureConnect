@@ -6,9 +6,6 @@ using ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
-using System.Linq;
-using System.Collections.Generic;
-using System.Threading;
 
 namespace TestWinUI.ViewModels.Controls.SharedUC;
 
@@ -57,6 +54,11 @@ public class CRUDPersonUCViewModelTests
         }
 
         public Task<IEnumerable<Person>> GetPersonsByRoleAsync(string role, CancellationToken cancellationToken = default) => Task.FromResult<IEnumerable<Person>>(Array.Empty<Person>());
+
+        public Task<Person?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     private sealed class FakeAddressRepo : IAddressRepository
@@ -226,7 +228,7 @@ public class CRUDPersonUCViewModelTests
 
         bool added = await WaitForAsync(() => personRepo.Store.Count > 0, 1000);
         Assert.IsTrue(added, "Person repository should have an added person");
-        Assert.IsTrue(addrRepo.Store.Count > 0, "Address repository should have an added address");
+        Assert.IsNotEmpty(addrRepo.Store, "Address repository should have an added address");
 
         // form reset should clear important fields
         bool reset = await WaitForAsync(() => vm.FirstName == string.Empty && vm.IsAddMode, 1000);
@@ -286,11 +288,11 @@ public class CRUDPersonUCViewModelTests
         // Ensure initial load happened (constructor triggers load)
         //
         vm.SearchText = "anna";
-        Assert.AreEqual(1, vm.FilteredItems.Count);
+        Assert.HasCount(1, vm.FilteredItems);
         Assert.AreEqual(p1.Id, vm.FilteredItems.First().Id);
 
         vm.SearchText = "@x";
-        Assert.AreEqual(2, vm.FilteredItems.Count);
+        Assert.HasCount(2, vm.FilteredItems);
     }
 
     [TestMethod]
@@ -345,7 +347,7 @@ public class CRUDPersonUCViewModelTests
 
         // trigger selection changed handler indirectly
         // the viewmodel subscribes to SelectedEntityChanged; setting SelectedItem should have updated farms
-        Assert.AreEqual(1, vm.SelectedPersonFarms.Count);
+        Assert.HasCount(1, vm.SelectedPersonFarms);
         Assert.AreEqual("Farm1", vm.SelectedPersonFarms.First().Name);
     }
 

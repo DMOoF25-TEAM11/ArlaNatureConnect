@@ -142,7 +142,7 @@ sequenceDiagram
 
 **Operation**: NavigateToManageUsers()
 
-**Cross References**: UC002-SSD.mmd (Admin->>System: Open Users management view), UC002-UCBrief.md (steps1–2)
+**Cross References**: SSD - System Sequence Diagram (Admin->>System: Open Users management view), UC-002-B (steps1–2)
 
 **Preconditions**:
 - Administrator is logged in and has `Administrator` privileges.
@@ -157,7 +157,7 @@ sequenceDiagram
 
 **Operation**: AddNewUser(NewUserDto user, CredentialsDto? credentials)
 
-**Cross References**: UC002-SSD.mmd (Admin->>System: AddUser(User)), UC002-UCBrief.md (Create flow)
+**Cross References**: SSD - System Sequence Diagram (Admin->>System: AddUser(User)), UC-002-B (Create flow)
 
 **Preconditions**:
 - Administrator is logged in and authorized.
@@ -185,7 +185,7 @@ sequenceDiagram
 
 **Operation**: SelectUser(Guid userId)
 
-**Cross References**: UC002-SSD.mmd (Admin->>System: GetUserDetails), UC002-UCBrief.md (Read flow)
+**Cross References**: SSD - System Sequence Diagram (Admin->>System: GetUserDetails), UC-002-B (Read flow)
 
 **Preconditions**:
 - The user list is loaded in the UI.
@@ -204,7 +204,7 @@ sequenceDiagram
 
 **Operation**: SaveUser(Guid userId, UserUpdateDto changes, int? expectedVersion = null)
 
-**Cross References**: UC002-SSD.mmd (Admin->>System: UpdateUser), UC002-UCBrief.md (Update flow)
+**Cross References**: SSD - System Sequence Diagram (Admin->>System: UpdateUser), UC-002-B (Update flow)
 
 **Preconditions**:
 - An existing user is selected for editing (`userId`).
@@ -229,7 +229,7 @@ sequenceDiagram
 
 **Operation**: DeleteUser(Guid userId, bool force = false)
 
-**Cross References**: UC002-SSD.mmd (Admin->>System: DeleteUser), UC002-UCBrief.md (Delete flow)
+**Cross References**: SSD - System Sequence Diagram (Admin->>System: DeleteUser), UC-002-B (Delete flow)
 
 **Preconditions**:
 - `userId` exists.
@@ -252,7 +252,7 @@ sequenceDiagram
 
 **Operation**: NavigateToHome()
 
-**Cross References**: UC002-SSD.mmd (recent UX flow or return navigation), UC002-UCBrief.md (closing flow)
+**Cross References**: SSD - System Sequence Diagram (recent UX flow or return navigation), UC-002-B (closing flow)
 
 **Preconditions**:
 - The user administration view is active.
