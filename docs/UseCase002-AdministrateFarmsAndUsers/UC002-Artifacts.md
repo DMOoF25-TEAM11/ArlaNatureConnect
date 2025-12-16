@@ -155,15 +155,15 @@ sequenceDiagram
 
 ### OC001-AddUser
 
-**Operation**: AddNewUser(NewUserDto user, CredentialsDto? credentials)
+**Operation**: AddNewUser(User user)
 
 **Cross References**: SSD - System Sequence Diagram (Admin->>System: AddUser(User)), UC-002-B (Create flow)
 
 **Preconditions**:
 - Administrator is logged in and authorized.
 - The UI is in "New User" state (form visible).
-- Required fields in `NewUserDto` are filled (e.g., FirstName, LastName, Email, Role).
-- If Role == Farmer and farm data is required, `FarmDto` is provided.
+- Required fields in `User` are filled (e.g., FirstName, LastName, Email, Role).
+- If Role == Farmer and farm data is required.
 
 **Postconditions**:
 - A new `UserAggregate` is persisted to the data store.
@@ -208,7 +208,7 @@ sequenceDiagram
 
 **Preconditions**:
 - An existing user is selected for editing (`userId`).
-- Input fields in `UserUpdateDto` meet validation rules.
+- Input fields in `User` meet validation rules.
 - If email or username changes, they remain unique or are otherwise permitted.
 
 **Postconditions**:
@@ -227,7 +227,7 @@ sequenceDiagram
 
 ### OC004-Delete User
 
-**Operation**: DeleteUser(Guid userId, bool force = false)
+**Operation**: DeleteUser(Guid userId)
 
 **Cross References**: SSD - System Sequence Diagram (Admin->>System: DeleteUser), UC-002-B (Delete flow)
 
@@ -317,7 +317,7 @@ sequenceDiagram
     Store-->>-RoleRepo: Role
     RoleRepo-->>-Service: Role (validated)
     Service->>+UserRepo: InsertUser(mappedUser)
-    UserRepo->>+Store: EXEC uspCreateUser @FirstName, @LastName, @Email, @RoleId, @Address, @FarmParams
+    UserRepo->>+Store: Insert INTO Users (FirstName, LastName, Email, RoleId, Address, FarmParams) VALUES (@FirstName, @LastName, @Email, @RoleId, @Address, @FarmParams)
     Store-->>-UserRepo: CreatedUserId
     UserRepo-->>-Service: CreatedUserId
     Service-->>-VM: CreatedUserResponse(createdUserId)
@@ -345,7 +345,7 @@ sequenceDiagram
     Store-->>-RoleRepo: Role
     RoleRepo-->>-Service: Role (validated)
     Service->>+UserRepo: UpdateUser(mappedUser)
-    UserRepo->>+Store: EXEC uspUpdateUser @UserId, @FirstName, @LastName, @Email, @RoleId, @Address, @FarmParams, @Version
+    UserRepo->>+Store: UPDATE Users SET FirstName = @FirstName, LastName = @LastName, Email = @Email, RoleId = @RoleId, Address = @Address, FarmParams = @FarmParams, Version = @Version WHERE Id = @UserId
     Store-->>-UserRepo: User
     UserRepo-->>-Service: User
     Service-->>-VM: User

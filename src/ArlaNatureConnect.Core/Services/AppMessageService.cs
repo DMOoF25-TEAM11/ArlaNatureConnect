@@ -1,54 +1,50 @@
 using System.ComponentModel;
-using System.Linq;
 
 namespace ArlaNatureConnect.Core.Services;
 
 public class AppMessageService : IAppMessageService
 {
     #region Fields
-    private const int _infoMessageDuration = 3000;
+    private const int _INFO_MESSAGE_DURATION = 3000;
 
-    private const string _entityNamePlaceholder = "{EntityName}";
+    private const string _ENTITY_NAME_PLACEHOLDER = "{EntityName}";
 
-    private const string _errorPrefix = "Fejl: ";
-    protected const string _errorEntityNotFound = _errorPrefix + "Kunne ikke finde " + _entityNamePlaceholder + ".";
+    private const string _ERROR_PREFIX = "Fejl: ";
+    protected const string _errorEntityNotFound = _ERROR_PREFIX + "Kunne ikke finde " + _ENTITY_NAME_PLACEHOLDER + ".";
 
-    private const string _infoPrefix = "Info: ";
-    protected const string _infoDeleted = _infoPrefix + _entityNamePlaceholder + " er slettet.";
-    protected const string _infoSaved = _infoPrefix + _entityNamePlaceholder + " er gemt.";
+    private const string _INFO_PREFIX = "Info: ";
+    protected const string _infoDeleted = _INFO_PREFIX + _ENTITY_NAME_PLACEHOLDER + " er slettet.";
+    protected const string _infoSaved = _INFO_PREFIX + _ENTITY_NAME_PLACEHOLDER + " er gemt.";
 
-    protected const string _confirmDeleteTitle = "Bekræft sletning af " + _entityNamePlaceholder;
-    protected string _confirmDelete = "Er du sikker på, at du vil slette " + _entityNamePlaceholder + "?";
-
-    private IEnumerable<string> _statusMessages = Enumerable.Empty<string>();
-    private IEnumerable<string> _errorMessages = Enumerable.Empty<string>();
+    protected const string _confirmDeleteTitle = "Bekræft sletning af " + _ENTITY_NAME_PLACEHOLDER;
+    protected string _confirmDelete = "Er du sikker på, at du vil slette " + _ENTITY_NAME_PLACEHOLDER + "?";
     #endregion
     #region Properties
     public string? EntityName { get; set; }
     public IEnumerable<string> StatusMessages
     {
-        get => _statusMessages;
+        get;
         private set
         {
             if (value != null)
             {
-                _statusMessages = value;
+                field = value;
                 _ = AutoClearInfoMessageAsync(value);
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(StatusMessages)));
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasStatusMessages)));
             }
         }
-    }
+    } = [];
     public IEnumerable<string> ErrorMessages
     {
-        get => _errorMessages;
+        get;
         private set
         {
-            _errorMessages = value ?? Enumerable.Empty<string>();
+            field = value ?? [];
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ErrorMessages)));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasErrorMessages)));
         }
-    }
+    } = [];
     public bool HasStatusMessages { get => StatusMessages.Any(); }
     public bool HasErrorMessages { get => ErrorMessages.Any(); }
     #endregion
@@ -64,7 +60,7 @@ public class AppMessageService : IAppMessageService
     {
         if (!string.IsNullOrWhiteSpace(EntityName))
         {
-            message = message.Replace(_entityNamePlaceholder, EntityName!);
+            message = message.Replace(_ENTITY_NAME_PLACEHOLDER, EntityName!);
         }
         StatusMessages = StatusMessages.Append(message);
         OnAppMessageChanged();
@@ -74,7 +70,7 @@ public class AppMessageService : IAppMessageService
     {
         if (!string.IsNullOrWhiteSpace(EntityName))
         {
-            message = message.Replace(_entityNamePlaceholder, EntityName!);
+            message = message.Replace(_ENTITY_NAME_PLACEHOLDER, EntityName!);
         }
         ErrorMessages = ErrorMessages.Append(message);
         OnAppMessageChanged();
@@ -82,7 +78,7 @@ public class AppMessageService : IAppMessageService
 
     public void ClearErrorMessages()
     {
-        ErrorMessages = Enumerable.Empty<string>();
+        ErrorMessages = [];
         OnAppMessageChanged();
     }
 
@@ -102,9 +98,9 @@ public class AppMessageService : IAppMessageService
     {
         if (HasStatusMessages)
         {
-            await Task.Delay(_infoMessageDuration).ConfigureAwait(false);
-            IEnumerable<string> toRemove = msgs ?? Enumerable.Empty<string>();
-            StatusMessages = StatusMessages.Where(m => !toRemove.Contains(m)).ToList();
+            await Task.Delay(_INFO_MESSAGE_DURATION).ConfigureAwait(false);
+            IEnumerable<string> toRemove = msgs ?? [];
+            StatusMessages = [.. StatusMessages.Where(m => !toRemove.Contains(m))];
         }
     }
 }

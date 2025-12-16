@@ -6,8 +6,6 @@ namespace ArlaNatureConnect.WinUI.ViewModels.Controls;
 public partial class MessageErrorSuccesUCViewModel : ViewModelBase
 {
     #region Fields
-    private string _statusMessage = string.Empty;
-    private string _errorMessage = string.Empty;
     private readonly IAppMessageService? _appMessageService;
     #endregion
     #region Fields Commands
@@ -25,21 +23,36 @@ public partial class MessageErrorSuccesUCViewModel : ViewModelBase
     public MessageErrorSuccesUCViewModel(IAppMessageService appMessageService)
     {
         _appMessageService = appMessageService;
-        //_appMessageService.StatusMessageChanged += OnStatusMessageChanged;
-        //_appMessageService.ErrorMessageChanged += OnErrorMessageChanged;
+        _appMessageService.PropertyChanged += _appMessageService_PropertyChanged;
+    }
+
+    private void _appMessageService_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(IAppMessageService.StatusMessages))
+        {
+            StatusMessage = _appMessageService?.StatusMessages != null
+                ? string.Join(Environment.NewLine, _appMessageService.StatusMessages)
+                : string.Empty;
+        }
+        else if (e.PropertyName == nameof(IAppMessageService.ErrorMessages))
+        {
+            ErrorMessage = _appMessageService?.ErrorMessages != null
+                ? string.Join(Environment.NewLine, _appMessageService.ErrorMessages)
+                : string.Empty;
+        }
     }
 
     #region Properties
     public string StatusMessage
     {
-        get => _statusMessage;
-        set { _statusMessage = value; OnPropertyChanged(); }
-    }
+        get;
+        set { field = value; OnPropertyChanged(); }
+    } = string.Empty;
     public string ErrorMessage
     {
-        get => _errorMessage;
-        set { _errorMessage = value; OnPropertyChanged(); }
-    }
+        get;
+        set { field = value; OnPropertyChanged(); }
+    } = string.Empty;
 
     public bool IsSuccessVisible
     {
