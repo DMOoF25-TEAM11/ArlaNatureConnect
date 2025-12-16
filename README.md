@@ -46,7 +46,28 @@ To get started with the Arla Nature Connect project, follow these steps:
    dotnet build
    ```
 
-4. Run the application:
+4. Database setup (required before running the application)
+
+   The database schema and sample data must be created before launching the application. Execute the following scripts located in `docs/sql/` using SQL Server Management Studio (SSMS) or a command-line tool such as `sqlcmd`.
+
+   - `docs/sql/DDL.sql`  -- creates the database schema `ArlaNatureConnect_Dev`
+   - `docs/sql/DML.sql`  -- inserts sample data used by the application
+
+   SSMS (GUI):
+   - Open SSMS and connect to your SQL Server instance.
+   - Open `E:\repos\ArlaNatureConnect\docs\sql\DDL.sql` and execute it.
+   - Open `E:\repos\ArlaNatureConnect\docs\sql\DML.sql` and execute it.
+
+   sqlcmd (example):
+   ```powershell
+   # Replace <server> with your SQL Server instance (e.g. . or (localdb)\MSSQLLocalDB)
+   sqlcmd -S <server> -E -i "docs/sql/DDL.sql"
+   sqlcmd -S <server> -E -i "docs/sql/DML.sql"
+   ```
+
+   Note: The DDL script creates a database named `ArlaNatureConnect_Dev`. Ensure the account used to run the scripts has permissions to create databases.
+
+5. Run the application:
    ```bash
    dotnet run --project src/ArlaNatureConnect.WinUI/ArlaNatureConnect.WinUI (Package).wapproj
    ```
