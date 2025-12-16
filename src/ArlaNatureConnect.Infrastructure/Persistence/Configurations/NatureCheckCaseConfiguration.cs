@@ -23,27 +23,27 @@ public class NatureCheckCaseConfiguration : IEntityTypeConfiguration<NatureCheck
     public void Configure(EntityTypeBuilder<NatureCheckCase> builder)
     {
         // Status enum to string conversion (database: NVARCHAR with CHECK constraint)
-        Microsoft.EntityFrameworkCore.Storage.ValueConversion.ValueConverter<NatureCheckCaseStatus, string> statusConverter = new Microsoft.EntityFrameworkCore.Storage.ValueConversion.ValueConverter<NatureCheckCaseStatus, string>(
+        Microsoft.EntityFrameworkCore.Storage.ValueConversion.ValueConverter<NatureCheckCaseStatus, string> statusConverter = new(
             v => v.ToString(), // Enum to string when saving
             v => ParseStatus(v)); // String to enum when reading
-            
+
         builder
             .Property(e => e.Status)
             .HasColumnType("nvarchar(50)")
             .HasConversion(statusConverter);
-            
+
         // DateTimeOffset conversion (database: DATETIME2, EF Core: DateTimeOffset)
         builder
             .Property(e => e.CreatedAt)
             .HasConversion(
                 v => v.DateTime, // DateTimeOffset to DateTime when saving
                 v => new DateTimeOffset(v, TimeSpan.Zero)); // DateTime to DateTimeOffset when reading (UTC)
-            
+
         builder
             .Property(e => e.AssignedAt)
             .HasConversion(
                 v => v.HasValue ? v.Value.DateTime : (DateTime?)null, // DateTimeOffset? to DateTime? when saving
-                v => v.HasValue ? new DateTimeOffset(v.Value, TimeSpan.Zero) : (DateTimeOffset?)null); // DateTime? to DateTimeOffset? when reading (UTC)
+                v => v.HasValue ? new DateTimeOffset(v.Value, TimeSpan.Zero) : null); // DateTime? to DateTimeOffset? when reading (UTC)
     }
 
     private static NatureCheckCaseStatus ParseStatus(string? value)
@@ -58,9 +58,9 @@ public class NatureCheckCaseConfiguration : IEntityTypeConfiguration<NatureCheck
         if (Enum.TryParse<NatureCheckCaseStatus>(value, true, out NatureCheckCaseStatus result))
         {
             // Validate parsed value matches database-allowed values
-            if (result == NatureCheckCaseStatus.Assigned || 
-                result == NatureCheckCaseStatus.InProgress || 
-                result == NatureCheckCaseStatus.Completed || 
+            if (result == NatureCheckCaseStatus.Assigned ||
+                result == NatureCheckCaseStatus.InProgress ||
+                result == NatureCheckCaseStatus.Completed ||
                 result == NatureCheckCaseStatus.Cancelled)
             {
                 return result;

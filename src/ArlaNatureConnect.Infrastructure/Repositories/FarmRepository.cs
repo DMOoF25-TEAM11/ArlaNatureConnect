@@ -6,11 +6,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ArlaNatureConnect.Infrastructure.Repositories;
 
-public class FarmRepository : Repository<Farm>, IFarmRepository
+public class FarmRepository(IDbContextFactory<AppDbContext> factory) : Repository<Farm>(factory), IFarmRepository
 {
-    public FarmRepository(IDbContextFactory<AppDbContext> factory) : base(factory)
-    {
-    }
 
     /// <summary>
     /// Returns a farm with the specified CVR number, if one exists.

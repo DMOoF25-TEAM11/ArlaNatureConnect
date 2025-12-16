@@ -4,27 +4,25 @@ using ArlaNatureConnect.Domain.Enums;
 using ArlaNatureConnect.Infrastructure.Persistence;
 
 using Microsoft.EntityFrameworkCore;
+
 using System.Runtime.InteropServices;
 
 namespace ArlaNatureConnect.Infrastructure.Repositories;
 
 // Purpose: EF Core repository for NatureCheckCase entities.
 // Notes: Adds queries for active cases while reusing base CRUD behavior.
-public class NatureCheckCaseRepository : Repository<NatureCheckCase>, INatureCheckCaseRepository
+public class NatureCheckCaseRepository(IDbContextFactory<AppDbContext> factory) : Repository<NatureCheckCase>(factory), INatureCheckCaseRepository
 {
+
     #region Commands
-    public NatureCheckCaseRepository(IDbContextFactory<AppDbContext> factory)
-        : base(factory)
-    {
-    }
 
     public async Task<IReadOnlyList<NatureCheckCase>> GetActiveCasesAsync(CancellationToken cancellationToken = default)
     {
         try
         {
-      
+
             await using AppDbContext ctx = _factory.CreateDbContext();
-            
+
             // Get all cases - EF Core will convert Status from string to enum via HasConversion
             List<NatureCheckCase> allCases = await ctx.NatureCheckCases
                 .AsNoTracking()
@@ -33,22 +31,21 @@ public class NatureCheckCaseRepository : Repository<NatureCheckCase>, INatureChe
 
             // Filter for active statuses after materialization
             // EF Core should have converted Status from string to enum by now
-            List<NatureCheckCase> activeCases = allCases
-                .Where(c => c.Status == NatureCheckCaseStatus.Assigned || 
-                           c.Status == NatureCheckCaseStatus.InProgress)
-                .ToList();
+            List<NatureCheckCase> activeCases = [.. allCases
+                .Where(c => c.Status == NatureCheckCaseStatus.Assigned ||
+                           c.Status == NatureCheckCaseStatus.InProgress)];
 
             return activeCases;
         }
         catch (COMException)
         {
             // Swallow COM exceptions that may occur when DI/WinRT factory access fails on certain test environments
-            return Array.Empty<NatureCheckCase>();
+            return [];
         }
         catch (Exception)
         {
             // In keeping with other repository implementations, return an empty list on error to avoid bubbling infrastructure exceptions
-            return Array.Empty<NatureCheckCase>();
+            return [];
         }
     }
 
@@ -65,7 +62,7 @@ public class NatureCheckCaseRepository : Repository<NatureCheckCase>, INatureChe
                 .ConfigureAwait(false);
 
             // Check for active statuses after materialization
-            return farmCases.Any(c => 
+            return farmCases.Any(c =>
                 c.Status == NatureCheckCaseStatus.Assigned ||
                 c.Status == NatureCheckCaseStatus.InProgress);
         }
@@ -93,11 +90,11 @@ public class NatureCheckCaseRepository : Repository<NatureCheckCase>, INatureChe
         }
         catch (COMException)
         {
-            return Array.Empty<NatureCheckCase>();
+            return [];
         }
         catch (Exception)
         {
-            return Array.Empty<NatureCheckCase>();
+            return [];
         }
     }
 
@@ -113,7 +110,7 @@ public class NatureCheckCaseRepository : Repository<NatureCheckCase>, INatureChe
                 .ConfigureAwait(false);
 
             // Find the first active case
-            return farmCases.FirstOrDefault(c => 
+            return farmCases.FirstOrDefault(c =>
                 c.Status == NatureCheckCaseStatus.Assigned ||
                 c.Status == NatureCheckCaseStatus.InProgress);
         }

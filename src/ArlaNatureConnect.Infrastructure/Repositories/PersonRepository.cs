@@ -47,16 +47,16 @@ public class PersonRepository(IDbContextFactory<AppDbContext> factory) : Reposit
     /// AutoInclude is configured in AppDbContext, but this explicit Include ensures
     /// the relationship is properly loaded even if AutoInclude doesn't work in all scenarios.
     /// </remarks>
-    public new async Task<IEnumerable<Person>> GetAllAsync(CancellationToken cancellationToken = default)
-    {
-        await using AppDbContext ctx = _factory.CreateDbContext();
-        return await ctx.Set<Person>()
-            .Include(p => p.Farms)
-            .Include(p => p.Role)
-            .Include(p => p.Address)
-            .ToListAsync(cancellationToken)
-            .ConfigureAwait(false);
-    }
+    //public new async Task<IEnumerable<Person>> GetAllAsync(CancellationToken cancellationToken = default)
+    //{
+    //    await using AppDbContext ctx = _factory.CreateDbContext();
+    //    return await ctx.Set<Person>()
+    //        .Include(p => p.Farms)
+    //        .Include(p => p.Role)
+    //        .Include(p => p.Address)
+    //        .ToListAsync(cancellationToken)
+    //        .ConfigureAwait(false);
+    //}
 
     /// <summary>
     /// Returns all persons that have the specified role name.
@@ -98,9 +98,6 @@ public class PersonRepository(IDbContextFactory<AppDbContext> factory) : Reposit
                 return [];
 
             return await ctx.Set<Person>()
-                .Include(p => p.Farms)
-                .Include(p => p.Role)
-                .Include(p => p.Address)
                 .Where(p => p.RoleId == roleEntity.Id)
                 .ToListAsync(ct).ConfigureAwait(false);
         }
@@ -126,9 +123,6 @@ public class PersonRepository(IDbContextFactory<AppDbContext> factory) : Reposit
         {
             await using AppDbContext ctx = _factory.CreateDbContext();
             return await ctx.Set<Person>()
-                .Include(p => p.Farms)
-                .Include(p => p.Role)
-                .Include(p => p.Address)
                 .FirstOrDefaultAsync(p => p.Email.ToLower() == email.Trim().ToLower(), cancellationToken)
                 .ConfigureAwait(false);
         }

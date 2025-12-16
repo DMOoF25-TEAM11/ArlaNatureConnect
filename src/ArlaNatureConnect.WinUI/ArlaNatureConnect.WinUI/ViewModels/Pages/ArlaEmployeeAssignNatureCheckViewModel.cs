@@ -24,6 +24,8 @@ public class ArlaEmployeeAssignNatureCheckViewModel : ViewModelBase
     private readonly IAppMessageService _appMessageService;
     private readonly IStatusInfoServices _statusInfoServices;
     private readonly List<AssignableFarmViewModel> _allFarms = new();
+    // Guard to prevent concurrent assignment requests from executing in parallel
+    private readonly System.Threading.SemaphoreSlim _assignSemaphore = new(1, 1);
     private AssignableFarmViewModel? _selectedFarm;
     private Person? _selectedConsultant;
     private bool _assignmentLoaded;
@@ -307,34 +309,48 @@ public class ArlaEmployeeAssignNatureCheckViewModel : ViewModelBase
             return;
         }
 
-        await ExecuteWithBusyStateAsync(async () =>
+        // Try to acquire the assignment semaphore without waiting. If another assignment is in progress,
+        // exit early to avoid multiple concurrent assignments (command may be invoked directly in tests).
+        if (!_assignSemaphore.Wait(0))
         {
-            NatureCheckCaseAssignmentRequest request = new()
-            {
-                FarmId = SelectedFarm!.FarmId,
-                ConsultantId = SelectedConsultant!.Id,
-                AssignedByPersonId = AssignedByPersonId ?? Guid.Empty,
-                Notes = AssignmentNotes,
-                Priority = ToEnglish(SelectedPriority),
-                AllowDuplicateActiveCase = false
-            };
+            return;
+        }
 
-            // Check if farm already has an active case - update instead of create
-            if (SelectedFarm.HasActiveCase)
+        try
+        {
+            await ExecuteWithBusyStateAsync(async () =>
             {
-                await _natureCheckCaseService.UpdateCaseAsync(SelectedFarm.FarmId, request);
-                _appMessageService.AddInfoMessage($"Natur Check opgave er opdateret for {SelectedFarm.FarmName}.");
-            }
-            else
-            {
-                await _natureCheckCaseService.AssignCaseAsync(request);
-                _appMessageService.AddInfoMessage($"Natur Check opgave er oprettet for {SelectedFarm.FarmName}.");
-            }
+                NatureCheckCaseAssignmentRequest request = new()
+                {
+                    FarmId = SelectedFarm!.FarmId,
+                    ConsultantId = SelectedConsultant!.Id,
+                    AssignedByPersonId = AssignedByPersonId ?? Guid.Empty,
+                    Notes = AssignmentNotes,
+                    Priority = ToEnglish(SelectedPriority),
+                    AllowDuplicateActiveCase = false
+                };
 
-            AssignmentNotes = string.Empty;
-            SelectedPriority = null;
-            await EnsureAssignmentDataAsync(forceReload: true);
-        });
+                // Check if farm already has an active case - update instead of create
+                if (SelectedFarm.HasActiveCase)
+                {
+                    await _natureCheckCaseService.UpdateCaseAsync(SelectedFarm.FarmId, request);
+                    _appMessageService.AddInfoMessage($"Natur Check opgave er opdateret for {SelectedFarm.FarmName}.");
+                }
+                else
+                {
+                    await _natureCheckCaseService.AssignCaseAsync(request);
+                    _appMessageService.AddInfoMessage($"Natur Check opgave er oprettet for {SelectedFarm.FarmName}.");
+                }
+
+                AssignmentNotes = string.Empty;
+                SelectedPriority = null;
+                await EnsureAssignmentDataAsync(forceReload: true);
+            });
+        }
+        finally
+        {
+            _assignSemaphore.Release();
+        }
     }
 
     /// <summary>
@@ -358,6 +374,13 @@ public class ArlaEmployeeAssignNatureCheckViewModel : ViewModelBase
             using IDisposable loading = _statusInfoServices.BeginLoadingOrSaving();
 
             NatureCheckCaseAssignmentContext context = await _natureCheckCaseService.LoadAssignmentContextAsync();
+            if (context == null)
+            {
+                // Defensive: service returned null (mock or faulty implementation). Treat as failure to load.
+                _appMessageService.AddErrorMessage("Kunne ikke hente data: context was null");
+                _assignmentLoaded = false;
+                return;
+            }
             UpdateFarms(context.Farms);
             UpdateConsultants(context.Consultants);
 
