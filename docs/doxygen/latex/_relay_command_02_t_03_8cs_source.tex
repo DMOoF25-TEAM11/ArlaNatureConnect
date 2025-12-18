@@ -1,0 +1,70 @@
+\doxysection{Relay\+Command\{T\}.cs}
+\hypertarget{_relay_command_02_t_03_8cs_source}{}\label{_relay_command_02_t_03_8cs_source}\index{src/ArlaNatureConnect.WinUI/ArlaNatureConnect.WinUI/Commands/RelayCommand\lcurly{}T\rcurly{}.cs@{src/ArlaNatureConnect.WinUI/ArlaNatureConnect.WinUI/Commands/RelayCommand\lcurly{}T\rcurly{}.cs}}
+\mbox{\hyperlink{_relay_command_02_t_03_8cs}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00001}00001\ \textcolor{keyword}{using\ }System.Windows.Input;}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00002}00002\ }
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00003}00003\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_commands}{ArlaNatureConnect.WinUI.Commands}};}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00004}00004\ }
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00009}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command-1-g}{00009}}\ \textcolor{keyword}{public}\ \textcolor{keyword}{sealed}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command-1-g_aeff316f4ec783bc51fecb77de2a81b23}{RelayCommand}}<T>\ :\ ICommand}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00010}00010\ \{}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00014}00014\ \ \ \ \ \textcolor{keyword}{private}\ readonly\ Action<T?>\ \_execute;}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00015}00015\ }
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00019}00019\ \ \ \ \ \textcolor{keyword}{private}\ readonly\ Func<T?,\ bool>?\ \_canExecute;}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00024}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command-1-g_a73d6566054899befb2111c4ec5e10a73}{00024}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{event}\ EventHandler?\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command-1-g_a73d6566054899befb2111c4ec5e10a73}{CanExecuteChanged}};}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00032}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command-1-g_aeff316f4ec783bc51fecb77de2a81b23}{00032}}\ \ \ \ \ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command-1-g_aeff316f4ec783bc51fecb77de2a81b23}{RelayCommand}}(Action<T?>\ execute,\ Func<T?,\ bool>?\ canExecute\ =\ \textcolor{keyword}{null})}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00033}00033\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00034}00034\ \ \ \ \ \ \ \ \ \_execute\ =\ execute\ ??\ \textcolor{keywordflow}{throw}\ \textcolor{keyword}{new}\ ArgumentNullException(nameof(execute));}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00035}00035\ \ \ \ \ \ \ \ \ \_canExecute\ =\ canExecute;}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00036}00036\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00037}00037\ }
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00043}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command-1-g_a021d7037d23c04cd94e63bd629c3118d}{00043}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command-1-g_a021d7037d23c04cd94e63bd629c3118d}{CanExecute}}(\textcolor{keywordtype}{object}?\ parameter)}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00044}00044\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00045}00045\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (parameter\ is\ T\ typedParameter)}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00046}00046\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00047}00047\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_canExecute?.Invoke(typedParameter)\ ??\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00048}00048\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00049}00049\ }
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00050}00050\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_canExecute?.Invoke(\textcolor{keywordflow}{default})\ ??\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00051}00051\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00052}00052\ }
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00057}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command-1-g_aea5020be06b284db958dd480895fde41}{00057}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command-1-g_aea5020be06b284db958dd480895fde41}{Execute}}(\textcolor{keywordtype}{object}?\ parameter)}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00058}00058\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00059}00059\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (parameter\ is\ T\ typedParameter)}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00060}00060\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00061}00061\ \ \ \ \ \ \ \ \ \ \ \ \ \_execute(typedParameter);}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00062}00062\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00063}00063\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00064}00064\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00065}00065\ \ \ \ \ \ \ \ \ \ \ \ \ \_execute(\textcolor{keywordflow}{default});}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00066}00066\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00067}00067\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00068}00068\ }
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00072}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command-1-g_a983f1f64c2d8488771d27c3eefc992a5}{00072}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command-1-g_a983f1f64c2d8488771d27c3eefc992a5}{RaiseCanExecuteChanged}}()}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00073}00073\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00074}00074\ \ \ \ \ \ \ \ \ EventHandler?\ handler\ =\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command-1-g_a73d6566054899befb2111c4ec5e10a73}{CanExecuteChanged}};}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00075}00075\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (handler\ ==\ \textcolor{keyword}{null})\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00076}00076\ }
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00077}00077\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{foreach}\ (EventHandler\ single\ \textcolor{keywordflow}{in}\ handler.GetInvocationList())}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00078}00078\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00079}00079\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00080}00080\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00081}00081\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ single.Invoke(\textcolor{keyword}{this},\ EventArgs.Empty);}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00082}00082\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00083}00083\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{catch}\ (System.Runtime.InteropServices.COMException)}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00084}00084\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00085}00085\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ swallow\ COM\ exceptions\ from\ UI\ handlers}}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00086}00086\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00087}00087\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{catch}}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00088}00088\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00089}00089\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ swallow\ other\ exceptions\ defensively}}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00090}00090\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00091}00091\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00092}00092\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00093}00093\ \}}
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00094}00094\ }
+\DoxyCodeLine{\Hypertarget{_relay_command_02_t_03_8cs_source_l00095}00095\ }
+
+\end{DoxyCode}

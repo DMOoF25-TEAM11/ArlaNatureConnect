@@ -1,0 +1,45 @@
+\doxysection{View\+Model\+Base.\+cs}
+\hypertarget{_view_model_base_8cs_source}{}\label{_view_model_base_8cs_source}\index{src/ArlaNatureConnect.WinUI/ArlaNatureConnect.WinUI/ViewModels/Abstracts/ViewModelBase.cs@{src/ArlaNatureConnect.WinUI/ArlaNatureConnect.WinUI/ViewModels/Abstracts/ViewModelBase.cs}}
+\mbox{\hyperlink{_view_model_base_8cs}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_view_model_base_8cs_source_l00001}00001\ \textcolor{keyword}{using\ }System.ComponentModel;}
+\DoxyCodeLine{\Hypertarget{_view_model_base_8cs_source_l00002}00002\ \textcolor{keyword}{using\ }System.Runtime.CompilerServices;}
+\DoxyCodeLine{\Hypertarget{_view_model_base_8cs_source_l00003}00003\ }
+\DoxyCodeLine{\Hypertarget{_view_model_base_8cs_source_l00004}00004\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts}{ArlaNatureConnect.WinUI.ViewModels.Abstracts}};}
+\DoxyCodeLine{\Hypertarget{_view_model_base_8cs_source_l00005}00005\ }
+\DoxyCodeLine{\Hypertarget{_view_model_base_8cs_source_l00015}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base}{00015}}\ \textcolor{keyword}{public}\ \textcolor{keyword}{abstract}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base}{ViewModelBase}}\ :\ INotifyPropertyChanged}
+\DoxyCodeLine{\Hypertarget{_view_model_base_8cs_source_l00016}00016\ \{}
+\DoxyCodeLine{\Hypertarget{_view_model_base_8cs_source_l00017}00017\ \textcolor{preprocessor}{\ \ \ \ \#region\ Events}}
+\DoxyCodeLine{\Hypertarget{_view_model_base_8cs_source_l00022}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_a84af6959822f5dac7b036413ef1084e0}{00022}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{event}\ PropertyChangedEventHandler?\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_a84af6959822f5dac7b036413ef1084e0}{PropertyChanged}};}
+\DoxyCodeLine{\Hypertarget{_view_model_base_8cs_source_l00023}00023\ }
+\DoxyCodeLine{\Hypertarget{_view_model_base_8cs_source_l00024}00024\ \textcolor{preprocessor}{\ \ \ \ \#endregion}}
+\DoxyCodeLine{\Hypertarget{_view_model_base_8cs_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{_view_model_base_8cs_source_l00026}00026\ \textcolor{preprocessor}{\ \ \ \ \#region\ Property\ Changed}}
+\DoxyCodeLine{\Hypertarget{_view_model_base_8cs_source_l00027}00027\ }
+\DoxyCodeLine{\Hypertarget{_view_model_base_8cs_source_l00053}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_afe69f6fc4811892022c273a234f84ed7}{00053}}\ \ \ \ \ \textcolor{keyword}{protected}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_afe69f6fc4811892022c273a234f84ed7}{OnPropertyChanged}}([CallerMemberName]\ \textcolor{keywordtype}{string}?\ name\ =\ \textcolor{keyword}{null})}
+\DoxyCodeLine{\Hypertarget{_view_model_base_8cs_source_l00054}00054\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_view_model_base_8cs_source_l00055}00055\ \ \ \ \ \ \ \ \ PropertyChangedEventHandler?\ handler\ =\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_a84af6959822f5dac7b036413ef1084e0}{PropertyChanged}};}
+\DoxyCodeLine{\Hypertarget{_view_model_base_8cs_source_l00056}00056\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (handler\ ==\ \textcolor{keyword}{null})\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_view_model_base_8cs_source_l00057}00057\ }
+\DoxyCodeLine{\Hypertarget{_view_model_base_8cs_source_l00058}00058\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Invoke\ each\ subscriber\ individually\ so\ exceptions\ from\ one\ do\ not\ stop\ others}}
+\DoxyCodeLine{\Hypertarget{_view_model_base_8cs_source_l00059}00059\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ and\ so\ we\ can\ selectively\ swallow\ COMExceptions\ thrown\ by\ UI\ handlers.}}
+\DoxyCodeLine{\Hypertarget{_view_model_base_8cs_source_l00060}00060\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{foreach}\ (PropertyChangedEventHandler\ single\ \textcolor{keywordflow}{in}\ handler.GetInvocationList().Cast<PropertyChangedEventHandler>())}
+\DoxyCodeLine{\Hypertarget{_view_model_base_8cs_source_l00061}00061\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_view_model_base_8cs_source_l00062}00062\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}}
+\DoxyCodeLine{\Hypertarget{_view_model_base_8cs_source_l00063}00063\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_view_model_base_8cs_source_l00064}00064\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ single.Invoke(\textcolor{keyword}{this},\ \textcolor{keyword}{new}\ PropertyChangedEventArgs(name));}
+\DoxyCodeLine{\Hypertarget{_view_model_base_8cs_source_l00065}00065\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_view_model_base_8cs_source_l00066}00066\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{catch}\ (System.Runtime.InteropServices.COMException\ ex)}
+\DoxyCodeLine{\Hypertarget{_view_model_base_8cs_source_l00067}00067\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_view_model_base_8cs_source_l00068}00068\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Swallow\ UI-\/layer\ COM\ exceptions\ to\ avoid\ propagating\ UI-\/thread\ interop\ errors}}
+\DoxyCodeLine{\Hypertarget{_view_model_base_8cs_source_l00069}00069\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ back\ into\ ViewModel\ logic.\ Optionally\ log\ for\ diagnostics:}}
+\DoxyCodeLine{\Hypertarget{_view_model_base_8cs_source_l00070}00070\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ System.Diagnostics.Debug.WriteLine(\$\textcolor{stringliteral}{"{}Swallowed\ COMException\ in\ PropertyChanged\ handler:\ \{ex\}"{}});}
+\DoxyCodeLine{\Hypertarget{_view_model_base_8cs_source_l00071}00071\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ continue\ to\ next\ subscriber}}
+\DoxyCodeLine{\Hypertarget{_view_model_base_8cs_source_l00072}00072\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_view_model_base_8cs_source_l00073}00073\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_view_model_base_8cs_source_l00074}00074\ }
+\DoxyCodeLine{\Hypertarget{_view_model_base_8cs_source_l00075}00075\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_view_model_base_8cs_source_l00076}00076\ \textcolor{preprocessor}{\ \ \ \ \#endregion}}
+\DoxyCodeLine{\Hypertarget{_view_model_base_8cs_source_l00077}00077\ \}}
+
+\end{DoxyCode}

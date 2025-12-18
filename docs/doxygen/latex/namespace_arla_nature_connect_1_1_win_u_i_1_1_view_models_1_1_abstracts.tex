@@ -1,0 +1,17 @@
+\doxysection{Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts Namespace Reference}
+\hypertarget{namespace_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts}{}\label{namespace_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts}\index{ArlaNatureConnect.WinUI.ViewModels.Abstracts@{ArlaNatureConnect.WinUI.ViewModels.Abstracts}}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_c_r_u_d_view_model_base-2-g}{CRUDView\+Model\+Base$<$ TRepos, TEntity $>$}}
+\begin{DoxyCompactList}\small\item\em Base view-\/model that provides a lightweight scaffold for Create / Read / Update / Delete workflows. \end{DoxyCompactList}\item 
+interface \mbox{\hyperlink{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_button_wrapper}{IButton\+Wrapper}}
+\begin{DoxyCompactList}\small\item\em Represents a minimal wrapper for a button-\/like element used by view models. \end{DoxyCompactList}\item 
+interface \mbox{\hyperlink{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_navigation_view_model_base}{INavigation\+View\+Model\+Base}}
+\begin{DoxyCompactList}\small\item\em Contract for view-\/models that drive role-\/aware navigation and side-\/menu integration in \doxylink{namespace_arla_nature_connect_1_1_win_u_i}{Win\+UI} pages. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g}{List\+View\+Model\+Base$<$ TRepos, TEntity $>$}}
+\begin{DoxyCompactList}\small\item\em Base View\+Model for list views. Provides the foundational properties and methods needed to manage and interact with a list of entities in the user interface, including loading entities and handling common operations. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base}{Side\+Menu\+View\+Model\+Base}}
+\begin{DoxyCompactList}\small\item\em Base view-\/model for side-\/menu view-\/models. Inherits \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g}{List\+View\+Model\+Base$<$\+IPerson\+Repository, Person$>$} specialized for the \doxylink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_person}{Person} entity. Exposes \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base_a70a3768d117649f7471df105f31869e8}{Available\+Persons}, \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base_a7d7843cf83627560f72675b0435cf3ad}{Selected\+Person} and a \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base_a63c500cf8930e0624a5ae0f801a8ff31}{Navigation\+Command} usable by side-\/menu views. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base}{View\+Model\+Base}}
+\begin{DoxyCompactList}\small\item\em Base class for all \doxylink{namespace_arla_nature_connect_1_1_win_u_i_1_1_view_models}{View\+Models} providing common functionality. Implements INotify\+Property\+Changed to support property-\/change notifications required by data-\/binding frameworks (e.\+g. \doxylink{namespace_arla_nature_connect_1_1_win_u_i}{Win\+UI}, WPF, UWP). \end{DoxyCompactList}\end{DoxyCompactItemize}

@@ -1,0 +1,24 @@
+var searchData=
+[
+  ['iaddressrepository_0',['IAddressRepository',['../interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_address_repository.html',1,'ArlaNatureConnect::Core::Abstract']]],
+  ['iappmessageservice_1',['IAppMessageService',['../interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service.html',1,'ArlaNatureConnect::Core::Services']]],
+  ['ibuttonwrapper_2',['IButtonWrapper',['../interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_button_wrapper.html',1,'ArlaNatureConnect::WinUI::ViewModels::Abstracts']]],
+  ['iconnectionstringservice_3',['IConnectionStringService',['../interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_connection_string_service.html',1,'ArlaNatureConnect::Core::Services']]],
+  ['ientity_4',['IEntity',['../interface_arla_nature_connect_1_1_domain_1_1_abstract_1_1_i_entity.html',1,'ArlaNatureConnect::Domain::Abstract']]],
+  ['ifarmrepository_5',['IFarmRepository',['../interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_farm_repository.html',1,'ArlaNatureConnect::Core::Abstract']]],
+  ['igetaddressfromcvr_6',['IGetAddressFromCvr',['../interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_get_address_from_cvr.html',1,'ArlaNatureConnect::Core::Services']]],
+  ['inatureareacoordinaterepository_7',['INatureAreaCoordinateRepository',['../interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_nature_area_coordinate_repository.html',1,'ArlaNatureConnect::Core::Abstract']]],
+  ['inatureareaimagerepository_8',['INatureAreaImageRepository',['../interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_nature_area_image_repository.html',1,'ArlaNatureConnect::Core::Abstract']]],
+  ['inaturearearepository_9',['INatureAreaRepository',['../interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_nature_area_repository.html',1,'ArlaNatureConnect::Core::Abstract']]],
+  ['inaturecheckcaserepository_10',['INatureCheckCaseRepository',['../interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_nature_check_case_repository.html',1,'ArlaNatureConnect::Core::Abstract']]],
+  ['inaturecheckcaseservice_11',['INatureCheckCaseService',['../interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_nature_check_case_service.html',1,'ArlaNatureConnect::Core::Services']]],
+  ['inavigationhandler_12',['INavigationHandler',['../interface_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_i_navigation_handler.html',1,'ArlaNatureConnect::WinUI::Services']]],
+  ['inavigationviewmodelbase_13',['INavigationViewModelBase',['../interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_navigation_view_model_base.html',1,'ArlaNatureConnect::WinUI::ViewModels::Abstracts']]],
+  ['inttovisibilityconverter_14',['IntToVisibilityConverter',['../class_arla_nature_connect_1_1_win_u_i_1_1_converters_1_1_int_to_visibility_converter.html',1,'ArlaNatureConnect::WinUI::Converters']]],
+  ['invertboolconverter_15',['InvertBoolConverter',['../class_arla_nature_connect_1_1_win_u_i_1_1_converters_1_1_invert_bool_converter.html',1,'ArlaNatureConnect::WinUI::Converters']]],
+  ['ipersonrepository_16',['IPersonRepository',['../interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_person_repository.html',1,'ArlaNatureConnect::Core::Abstract']]],
+  ['iprivilegeservice_17',['IPrivilegeService',['../interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_services_1_1_i_privilege_service.html',1,'ArlaNatureConnect::Core::Abstract::Services']]],
+  ['irepository_2d1_2dg_18',['IRepository-1-g',['../interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_repository-1-g.html',1,'ArlaNatureConnect::Core::Abstract']]],
+  ['irolerepository_19',['IRoleRepository',['../interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_role_repository.html',1,'ArlaNatureConnect::Core::Abstract']]],
+  ['istatusinfoservices_20',['IStatusInfoServices',['../interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services.html',1,'ArlaNatureConnect::Core::Services']]]
+];

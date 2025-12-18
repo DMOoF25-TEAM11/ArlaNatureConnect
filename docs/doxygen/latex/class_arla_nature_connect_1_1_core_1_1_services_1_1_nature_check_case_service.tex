@@ -1,0 +1,267 @@
+\doxysection{Arla\+Nature\+Connect.\+Core.\+Services.\+Nature\+Check\+Case\+Service Class Reference}
+\hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_nature_check_case_service}{}\label{class_arla_nature_connect_1_1_core_1_1_services_1_1_nature_check_case_service}\index{ArlaNatureConnect.Core.Services.NatureCheckCaseService@{ArlaNatureConnect.Core.Services.NatureCheckCaseService}}
+Inheritance diagram for Arla\+Nature\+Connect.\+Core.\+Services.\+Nature\+Check\+Case\+Service\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_arla_nature_connect_1_1_core_1_1_services_1_1_nature_check_case_service}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_nature_check_case_service_ab20c919e32eb3f2bad90d16047c53f79}{Nature\+Check\+Case\+Service}} (\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_farm_repository}{IFarm\+Repository}} farm\+Repository, \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_person_repository}{IPerson\+Repository}} person\+Repository, \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_address_repository}{IAddress\+Repository}} address\+Repository, \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_nature_check_case_repository}{INature\+Check\+Case\+Repository}} nature\+Check\+Case\+Repository, \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_role_repository}{IRole\+Repository}} role\+Repository)
+\begin{DoxyCompactList}\small\item\em Initializes a new instance of the \doxylink{class_arla_nature_connect_1_1_core_1_1_services_1_1_nature_check_case_service}{Nature\+Check\+Case\+Service} class with the specified repository dependencies. \end{DoxyCompactList}\item 
+async Task$<$ \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_d_t_os_1_1_nature_check_case_assignment_context}{Nature\+Check\+Case\+Assignment\+Context}} $>$ \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_nature_check_case_service_a62a3b6c88f2346437f01c4a175e5f2f3}{Load\+Assignment\+Context\+Async}} (Cancellation\+Token cancellation\+Token=default)
+\begin{DoxyCompactList}\small\item\em Asynchronously loads the context required for assigning Nature\+Check cases, including farm overviews and available consultants. \end{DoxyCompactList}\item 
+async Task$<$ \mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_nature_check_case}{Nature\+Check\+Case}} $>$ \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_nature_check_case_service_a336b6a83d9e79c69c044ef8261be5bd2}{Assign\+Case\+Async}} (\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_d_t_os_1_1_nature_check_case_assignment_request}{Nature\+Check\+Case\+Assignment\+Request}} request, Cancellation\+Token cancellation\+Token=default)
+\begin{DoxyCompactList}\small\item\em Assigns a new Nature Check case to the specified consultant for the given farm, based on the provided assignment request. \end{DoxyCompactList}\item 
+async Task$<$ \mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_nature_check_case}{Nature\+Check\+Case}} $>$ \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_nature_check_case_service_a0f2e7b0f1bf363dd96988960d1cad1c8}{Update\+Case\+Async}} (Guid farm\+Id, \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_d_t_os_1_1_nature_check_case_assignment_request}{Nature\+Check\+Case\+Assignment\+Request}} request, Cancellation\+Token cancellation\+Token=default)
+\begin{DoxyCompactList}\small\item\em Updates an existing active nature check case with new consultant, priority, and notes. \end{DoxyCompactList}\item 
+async Task$<$ \mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_farm}{Farm}} $>$ \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_nature_check_case_service_a82ec7f0e7077c76b80ff8ee5b952bd84}{Save\+Farm\+Async}} (\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_d_t_os_1_1_farm_registration_request}{Farm\+Registration\+Request}} request, Cancellation\+Token cancellation\+Token=default)
+\begin{DoxyCompactList}\small\item\em Creates a new farm or updates an existing farm asynchronously based on the provided registration request. \end{DoxyCompactList}\item 
+async Task \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_nature_check_case_service_ae65714ed4a901a075d81a82a67c0de18}{Delete\+Farm\+Async}} (Guid farm\+Id, Cancellation\+Token cancellation\+Token=default)
+\begin{DoxyCompactList}\small\item\em Deletes a farm by its identifier. \end{DoxyCompactList}\item 
+async Task$<$ IRead\+Only\+List$<$ \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_d_t_os_1_1_consultant_notification_dto}{Consultant\+Notification\+Dto}} $>$ $>$ \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_nature_check_case_service_a13247bad276baafb3d746e05c9eb219e}{Get\+Notifications\+For\+Consultant\+Async}} (Guid consultant\+Id, Cancellation\+Token cancellation\+Token=default)
+\begin{DoxyCompactList}\small\item\em Gets all assigned (new) nature check cases for a specific consultant as notifications. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line \mbox{\hyperlink{_nature_check_case_service_8cs_source_l00010}{10}} of file \mbox{\hyperlink{_nature_check_case_service_8cs_source}{Nature\+Check\+Case\+Service.\+cs}}.
+
+
+
+\label{doc-constructors}
+\Hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_nature_check_case_service_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_nature_check_case_service_ab20c919e32eb3f2bad90d16047c53f79}\index{ArlaNatureConnect.Core.Services.NatureCheckCaseService@{ArlaNatureConnect.Core.Services.NatureCheckCaseService}!NatureCheckCaseService@{NatureCheckCaseService}}
+\index{NatureCheckCaseService@{NatureCheckCaseService}!ArlaNatureConnect.Core.Services.NatureCheckCaseService@{ArlaNatureConnect.Core.Services.NatureCheckCaseService}}
+\doxysubsubsection{\texorpdfstring{NatureCheckCaseService()}{NatureCheckCaseService()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_core_1_1_services_1_1_nature_check_case_service_ab20c919e32eb3f2bad90d16047c53f79} 
+Arla\+Nature\+Connect.\+Core.\+Services.\+Nature\+Check\+Case\+Service.\+Nature\+Check\+Case\+Service (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_farm_repository}{IFarm\+Repository}}}]{farm\+Repository}{, }\item[{\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_person_repository}{IPerson\+Repository}}}]{person\+Repository}{, }\item[{\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_address_repository}{IAddress\+Repository}}}]{address\+Repository}{, }\item[{\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_nature_check_case_repository}{INature\+Check\+Case\+Repository}}}]{nature\+Check\+Case\+Repository}{, }\item[{\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_role_repository}{IRole\+Repository}}}]{role\+Repository}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Initializes a new instance of the \doxylink{class_arla_nature_connect_1_1_core_1_1_services_1_1_nature_check_case_service}{Nature\+Check\+Case\+Service} class with the specified repository dependencies. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em farm\+Repository} & The repository used to access farm data. Cannot be null.\\
+\hline
+{\em person\+Repository} & The repository used to access person data. Cannot be null.\\
+\hline
+{\em address\+Repository} & The repository used to access address data. Cannot be null.\\
+\hline
+{\em nature\+Check\+Case\+Repository} & The repository used to access nature check case data. Cannot be null.\\
+\hline
+{\em role\+Repository} & The repository used to access role data. Cannot be null.\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em Argument\+Null\+Exception} & Thrown if any of the repository parameters is null.\\
+\hline
+\end{DoxyExceptions}
+
+
+Definition at line \mbox{\hyperlink{_nature_check_case_service_8cs_source_l00030}{30}} of file \mbox{\hyperlink{_nature_check_case_service_8cs_source}{Nature\+Check\+Case\+Service.\+cs}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_nature_check_case_service_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_nature_check_case_service_a336b6a83d9e79c69c044ef8261be5bd2}\index{ArlaNatureConnect.Core.Services.NatureCheckCaseService@{ArlaNatureConnect.Core.Services.NatureCheckCaseService}!AssignCaseAsync@{AssignCaseAsync}}
+\index{AssignCaseAsync@{AssignCaseAsync}!ArlaNatureConnect.Core.Services.NatureCheckCaseService@{ArlaNatureConnect.Core.Services.NatureCheckCaseService}}
+\doxysubsubsection{\texorpdfstring{AssignCaseAsync()}{AssignCaseAsync()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_core_1_1_services_1_1_nature_check_case_service_a336b6a83d9e79c69c044ef8261be5bd2} 
+async Task$<$ \mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_nature_check_case}{Nature\+Check\+Case}} $>$ Arla\+Nature\+Connect.\+Core.\+Services.\+Nature\+Check\+Case\+Service.\+Assign\+Case\+Async (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_d_t_os_1_1_nature_check_case_assignment_request}{Nature\+Check\+Case\+Assignment\+Request}}}]{request}{, }\item[{Cancellation\+Token}]{cancellation\+Token}{ = {\ttfamily default}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Assigns a new Nature Check case to the specified consultant for the given farm, based on the provided assignment request. 
+
+The method validates the existence of the farm and consultant, ensures the consultant has the appropriate role, and checks for active cases on the farm before assignment. If the assignment is successful, the new case is persisted and returned.
+
+
+\begin{DoxyParams}{Parameters}
+{\em request} & The assignment request containing details about the farm, consultant, assignment initiator, and case options. Cannot be null.\\
+\hline
+{\em cancellation\+Token} & A cancellation token that can be used to cancel the asynchronous operation.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A \doxylink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_nature_check_case}{Nature\+Check\+Case} instance representing the newly assigned case.
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em Argument\+Null\+Exception} & Thrown if {\itshape request}  is null.\\
+\hline
+{\em Invalid\+Operation\+Exception} & Thrown if the specified farm or consultant does not exist, if the consultant does not have the required role, or if the farm already has an active case and duplicate active cases are not allowed.\\
+\hline
+\end{DoxyExceptions}
+
+
+Implements \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_nature_check_case_service_a74d51020ab3255122a6d317a345fe42a}{Arla\+Nature\+Connect.\+Core.\+Services.\+INature\+Check\+Case\+Service}}.
+
+
+
+Definition at line \mbox{\hyperlink{_nature_check_case_service_8cs_source_l00101}{101}} of file \mbox{\hyperlink{_nature_check_case_service_8cs_source}{Nature\+Check\+Case\+Service.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_nature_check_case_service_ae65714ed4a901a075d81a82a67c0de18}\index{ArlaNatureConnect.Core.Services.NatureCheckCaseService@{ArlaNatureConnect.Core.Services.NatureCheckCaseService}!DeleteFarmAsync@{DeleteFarmAsync}}
+\index{DeleteFarmAsync@{DeleteFarmAsync}!ArlaNatureConnect.Core.Services.NatureCheckCaseService@{ArlaNatureConnect.Core.Services.NatureCheckCaseService}}
+\doxysubsubsection{\texorpdfstring{DeleteFarmAsync()}{DeleteFarmAsync()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_core_1_1_services_1_1_nature_check_case_service_ae65714ed4a901a075d81a82a67c0de18} 
+async Task Arla\+Nature\+Connect.\+Core.\+Services.\+Nature\+Check\+Case\+Service.\+Delete\+Farm\+Async (\begin{DoxyParamCaption}\item[{Guid}]{farm\+Id}{, }\item[{Cancellation\+Token}]{cancellation\+Token}{ = {\ttfamily default}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Deletes a farm by its identifier. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em farm\+Id} & \\
+\hline
+{\em cancellation\+Token} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_nature_check_case_service_a6b1478879b099d2eebfcbfccad134549}{Arla\+Nature\+Connect.\+Core.\+Services.\+INature\+Check\+Case\+Service}}.
+
+
+
+Definition at line \mbox{\hyperlink{_nature_check_case_service_8cs_source_l00309}{309}} of file \mbox{\hyperlink{_nature_check_case_service_8cs_source}{Nature\+Check\+Case\+Service.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_nature_check_case_service_a13247bad276baafb3d746e05c9eb219e}\index{ArlaNatureConnect.Core.Services.NatureCheckCaseService@{ArlaNatureConnect.Core.Services.NatureCheckCaseService}!GetNotificationsForConsultantAsync@{GetNotificationsForConsultantAsync}}
+\index{GetNotificationsForConsultantAsync@{GetNotificationsForConsultantAsync}!ArlaNatureConnect.Core.Services.NatureCheckCaseService@{ArlaNatureConnect.Core.Services.NatureCheckCaseService}}
+\doxysubsubsection{\texorpdfstring{GetNotificationsForConsultantAsync()}{GetNotificationsForConsultantAsync()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_core_1_1_services_1_1_nature_check_case_service_a13247bad276baafb3d746e05c9eb219e} 
+async Task$<$ IRead\+Only\+List$<$ \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_d_t_os_1_1_consultant_notification_dto}{Consultant\+Notification\+Dto}} $>$ $>$ Arla\+Nature\+Connect.\+Core.\+Services.\+Nature\+Check\+Case\+Service.\+Get\+Notifications\+For\+Consultant\+Async (\begin{DoxyParamCaption}\item[{Guid}]{consultant\+Id}{, }\item[{Cancellation\+Token}]{cancellation\+Token}{ = {\ttfamily default}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Gets all assigned (new) nature check cases for a specific consultant as notifications. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em consultant\+Id} & The ID of the consultant.\\
+\hline
+{\em cancellation\+Token} & A cancellation token that can be used to cancel the operation.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A list of notification \doxylink{namespace_arla_nature_connect_1_1_core_1_1_d_t_os}{DTOs} for assigned cases.
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_nature_check_case_service_a775abeb04f4b0b4c0a6a312b8ea7d0fe}{Arla\+Nature\+Connect.\+Core.\+Services.\+INature\+Check\+Case\+Service}}.
+
+
+
+Definition at line \mbox{\hyperlink{_nature_check_case_service_8cs_source_l00326}{326}} of file \mbox{\hyperlink{_nature_check_case_service_8cs_source}{Nature\+Check\+Case\+Service.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_nature_check_case_service_a62a3b6c88f2346437f01c4a175e5f2f3}\index{ArlaNatureConnect.Core.Services.NatureCheckCaseService@{ArlaNatureConnect.Core.Services.NatureCheckCaseService}!LoadAssignmentContextAsync@{LoadAssignmentContextAsync}}
+\index{LoadAssignmentContextAsync@{LoadAssignmentContextAsync}!ArlaNatureConnect.Core.Services.NatureCheckCaseService@{ArlaNatureConnect.Core.Services.NatureCheckCaseService}}
+\doxysubsubsection{\texorpdfstring{LoadAssignmentContextAsync()}{LoadAssignmentContextAsync()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_core_1_1_services_1_1_nature_check_case_service_a62a3b6c88f2346437f01c4a175e5f2f3} 
+async Task$<$ \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_d_t_os_1_1_nature_check_case_assignment_context}{Nature\+Check\+Case\+Assignment\+Context}} $>$ Arla\+Nature\+Connect.\+Core.\+Services.\+Nature\+Check\+Case\+Service.\+Load\+Assignment\+Context\+Async (\begin{DoxyParamCaption}\item[{Cancellation\+Token}]{cancellation\+Token}{ = {\ttfamily default}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Asynchronously loads the context required for assigning Nature\+Check cases, including farm overviews and available consultants. 
+
+The returned context includes only active farms and consultants. The operation may involve multiple data sources and can be cancelled via the provided token.
+
+
+\begin{DoxyParams}{Parameters}
+{\em cancellation\+Token} & A cancellation token that can be used to cancel the asynchronous operation.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A task that represents the asynchronous operation. The task result contains a \doxylink{class_arla_nature_connect_1_1_core_1_1_d_t_os_1_1_nature_check_case_assignment_context}{Nature\+Check\+Case\+Assignment\+Context} with farm assignment overviews and a sorted list of consultants.
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_nature_check_case_service_aa749b2e01fb87008c08cb3a45fe38cc4}{Arla\+Nature\+Connect.\+Core.\+Services.\+INature\+Check\+Case\+Service}}.
+
+
+
+Definition at line \mbox{\hyperlink{_nature_check_case_service_8cs_source_l00053}{53}} of file \mbox{\hyperlink{_nature_check_case_service_8cs_source}{Nature\+Check\+Case\+Service.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_nature_check_case_service_a82ec7f0e7077c76b80ff8ee5b952bd84}\index{ArlaNatureConnect.Core.Services.NatureCheckCaseService@{ArlaNatureConnect.Core.Services.NatureCheckCaseService}!SaveFarmAsync@{SaveFarmAsync}}
+\index{SaveFarmAsync@{SaveFarmAsync}!ArlaNatureConnect.Core.Services.NatureCheckCaseService@{ArlaNatureConnect.Core.Services.NatureCheckCaseService}}
+\doxysubsubsection{\texorpdfstring{SaveFarmAsync()}{SaveFarmAsync()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_core_1_1_services_1_1_nature_check_case_service_a82ec7f0e7077c76b80ff8ee5b952bd84} 
+async Task$<$ \mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_farm}{Farm}} $>$ Arla\+Nature\+Connect.\+Core.\+Services.\+Nature\+Check\+Case\+Service.\+Save\+Farm\+Async (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_d_t_os_1_1_farm_registration_request}{Farm\+Registration\+Request}}}]{request}{, }\item[{Cancellation\+Token}]{cancellation\+Token}{ = {\ttfamily default}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Creates a new farm or updates an existing farm asynchronously based on the provided registration request. 
+
+If {\itshape request}  contains a farm ID, the method updates the corresponding farm and its related address and owner information. If no farm ID is provided, a new farm, address, and owner are created. The operation is performed asynchronously and may involve multiple data repositories.
+
+
+\begin{DoxyParams}{Parameters}
+{\em request} & The registration details for the farm to create or update. Cannot be null.\\
+\hline
+{\em cancellation\+Token} & A cancellation token that can be used to cancel the operation.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A task that represents the asynchronous operation. The task result contains the created or updated farm entity.
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em Argument\+Null\+Exception} & Thrown if {\itshape request}  is null.\\
+\hline
+{\em Invalid\+Operation\+Exception} & Thrown if the specified farm to update does not exist.\\
+\hline
+\end{DoxyExceptions}
+
+
+Implements \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_nature_check_case_service_a0631397c54e03dc89ae718898a18ec9d}{Arla\+Nature\+Connect.\+Core.\+Services.\+INature\+Check\+Case\+Service}}.
+
+
+
+Definition at line \mbox{\hyperlink{_nature_check_case_service_8cs_source_l00182}{182}} of file \mbox{\hyperlink{_nature_check_case_service_8cs_source}{Nature\+Check\+Case\+Service.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_nature_check_case_service_a0f2e7b0f1bf363dd96988960d1cad1c8}\index{ArlaNatureConnect.Core.Services.NatureCheckCaseService@{ArlaNatureConnect.Core.Services.NatureCheckCaseService}!UpdateCaseAsync@{UpdateCaseAsync}}
+\index{UpdateCaseAsync@{UpdateCaseAsync}!ArlaNatureConnect.Core.Services.NatureCheckCaseService@{ArlaNatureConnect.Core.Services.NatureCheckCaseService}}
+\doxysubsubsection{\texorpdfstring{UpdateCaseAsync()}{UpdateCaseAsync()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_core_1_1_services_1_1_nature_check_case_service_a0f2e7b0f1bf363dd96988960d1cad1c8} 
+async Task$<$ \mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_nature_check_case}{Nature\+Check\+Case}} $>$ Arla\+Nature\+Connect.\+Core.\+Services.\+Nature\+Check\+Case\+Service.\+Update\+Case\+Async (\begin{DoxyParamCaption}\item[{Guid}]{farm\+Id}{, }\item[{\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_d_t_os_1_1_nature_check_case_assignment_request}{Nature\+Check\+Case\+Assignment\+Request}}}]{request}{, }\item[{Cancellation\+Token}]{cancellation\+Token}{ = {\ttfamily default}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Updates an existing active nature check case with new consultant, priority, and notes. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em farm\+Id} & The ID of the farm whose active case should be updated.\\
+\hline
+{\em request} & The update request containing new consultant, priority, and notes.\\
+\hline
+{\em cancellation\+Token} & A cancellation token that can be used to cancel the operation.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The updated nature check case.
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_nature_check_case_service_a02b88b1a2a71653e17143dcf777423ab}{Arla\+Nature\+Connect.\+Core.\+Services.\+INature\+Check\+Case\+Service}}.
+
+
+
+Definition at line \mbox{\hyperlink{_nature_check_case_service_8cs_source_l00142}{142}} of file \mbox{\hyperlink{_nature_check_case_service_8cs_source}{Nature\+Check\+Case\+Service.\+cs}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Arla\+Nature\+Connect.\+Core/\+Services/\mbox{\hyperlink{_nature_check_case_service_8cs}{Nature\+Check\+Case\+Service.\+cs}}\end{DoxyCompactItemize}

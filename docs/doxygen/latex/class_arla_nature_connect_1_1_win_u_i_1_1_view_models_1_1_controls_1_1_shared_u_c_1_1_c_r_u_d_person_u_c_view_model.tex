@@ -1,0 +1,787 @@
+\doxysection{Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model Class Reference}
+\hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model}{}\label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}}
+
+
+View-\/model that provides CRUD operations and UI bindings for \doxylink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_person}{Person} entities.  
+
+
+Inheritance diagram for Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=5.000000cm]{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_ae9824dfb1f69f4f946d9d5ff1c9e8170}{CRUDPerson\+UCView\+Model}} (\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services}{IStatus\+Info\+Services}} status\+Info\+Services, \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service}{IApp\+Message\+Service}} app\+Message\+Service, \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_person_repository}{IPerson\+Repository}} repository, \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_address_repository}{IAddress\+Repository}} address\+Repository, \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_role_repository}{IRole\+Repository}}? role\+Repository=null)
+\begin{DoxyCompactList}\small\item\em Creates a new instance of \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model}{CRUDPerson\+UCView\+Model}. \end{DoxyCompactList}\item 
+async Task \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_aa6a50fef566f1eb9e6e981b100af79ab}{Reload\+Async}} (Cancellation\+Token ct=default)
+\begin{DoxyCompactList}\small\item\em Public helper to reload the person list. The view can call this when it becomes visible to ensure the \doxylink{namespace_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items}{Items} collection is refreshed from the repository (fixes cases where navigation returns to a view with stale/empty items). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a3e495aff74cfef00ba0412ae40556f84}{Populate\+Form\+From\+Person}} (\mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_person}{Person}} person)
+\begin{DoxyCompactList}\small\item\em Populates the form-\/bound fields from the provided Owner instance. Role\+Display is set to the role\textquotesingle{}s Name and Address\+Display is set to "{}\+Postal\+Code, Street"{}. This method is public so callers (for example tests or other view-\/models) can reuse the mapping. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_c_r_u_d_view_model_base-2-g}{Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+CRUDView\+Model\+Base$<$ TRepos, TEntity $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+async Task \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_c_r_u_d_view_model_base-2-g_ad8feef20bda84c74105d83e259813177}{Load\+Async}} (Guid id)
+\begin{DoxyCompactList}\small\item\em Loads an entity by id and prepares the view-\/model for edit mode if the entity exists. This method hides the base implementation to augment loading with form hooks and edit-\/mode state. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g}{Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+List\+View\+Model\+Base$<$ TRepos, TEntity $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+async Task \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a495292bf770a1f778460459a80c1288d}{Load\+All\+Async}} (Cancellation\+Token ct=default)
+\begin{DoxyCompactList}\small\item\em Loads all entities from the repository and populates the \doxylink{namespace_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items}{Items} collection. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+override async Task$<$ \mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_person}{Person}} $>$ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a985db9f470d8e0e11684cc9086d11630}{On\+Add\+Form\+Async}} ()
+\begin{DoxyCompactList}\small\item\em Creates a \doxylink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_person}{Person} instance from the current form fields. \end{DoxyCompactList}\item 
+override async Task \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a27382ff2d38ea3b0f3168260b4da1845}{On\+Load\+Form\+Async}} (\mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_person}{Person}} entity)
+\begin{DoxyCompactList}\small\item\em Loads the provided entity into the form fields so the UI can edit it. \end{DoxyCompactList}\item 
+override async Task \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a70224038fc4c430a00650912d03ee6ca}{On\+Reset\+Form\+Async}} ()
+\begin{DoxyCompactList}\small\item\em Resets the form fields to their default values. \end{DoxyCompactList}\item 
+override bool \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_ac8dcf68b4ef8badb095fe5d65620a7d9}{Can\+Add}} ()
+\begin{DoxyCompactList}\small\item\em Persists the current form either by adding a new entity or updating an existing one. \end{DoxyCompactList}\item 
+override bool \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_acd4a4a1dc4199d5b445755893185b0c8}{Can\+Save}} ()
+\begin{DoxyCompactList}\small\item\em Determines whether the Save command can execute. \end{DoxyCompactList}\item 
+override async Task \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a3309726694caf0739b63fb3d3418bcda}{On\+Save\+Form\+Async}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions inherited from \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_c_r_u_d_view_model_base-2-g}{Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+CRUDView\+Model\+Base$<$ TRepos, TEntity $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_c_r_u_d_view_model_base-2-g_a327ba1b5d80ab1cb5b0614392a19b147}{CRUDView\+Model\+Base}} (\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services}{IStatus\+Info\+Services}} status\+Info\+Services, \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service}{IApp\+Message\+Service}} app\+Message\+Service, TRepos repository, bool auto\+Load=true)
+\begin{DoxyCompactList}\small\item\em Initializes a new instance of the \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_c_r_u_d_view_model_base-2-g}{CRUDView\+Model\+Base$<$\+TRepos, TEntity$>$} class. \end{DoxyCompactList}\item 
+async Task \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_c_r_u_d_view_model_base-2-g_a4abe0fbec67a76f35b9d8d0b80d7122a}{Get\+All\+Async}} (Cancellation\+Token ct=default)
+\begin{DoxyCompactList}\small\item\em Loads all persons including related role/navigation properties. \end{DoxyCompactList}\item 
+virtual bool \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_c_r_u_d_view_model_base-2-g_ae3af02ece607a6c92ae408a64e0f7b2f}{Can\+Submit\+Core}} ()
+\begin{DoxyCompactList}\small\item\em \doxylink{namespace_arla_nature_connect_1_1_core}{Core} check used by command Can\+Execute logic. Incorporates save state and application error messages. \end{DoxyCompactList}\item 
+virtual bool \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_c_r_u_d_view_model_base-2-g_a50411369407b18fa708c7ce3e5f1696e}{Can\+Delete}} ()
+\begin{DoxyCompactList}\small\item\em Determines whether the Delete command can execute. \end{DoxyCompactList}\item 
+virtual bool \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_c_r_u_d_view_model_base-2-g_a4500aaa08f92834c21880597afe3b7b1}{Can\+Cancel}} ()
+\begin{DoxyCompactList}\small\item\em Determines whether the Cancel command can execute. Derived classes may override to add additional checks. \end{DoxyCompactList}\item 
+virtual async Task \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_c_r_u_d_view_model_base-2-g_ab5d62c4db0d5f1a66a008bf3813a8d02}{On\+Add\+Async}} ()
+\begin{DoxyCompactList}\small\item\em Handler invoked by the Add command. Derived classes may override to provide behavior when adding. The base implementation ensures the command guard and sets \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_c_r_u_d_view_model_base-2-g_a1509b651109729cb4d8b1108bbb53a65}{Is\+Saving} to true. Derived implementations are expected to complete any required work and reset state as appropriate. \end{DoxyCompactList}\item 
+virtual async Task \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_c_r_u_d_view_model_base-2-g_a1fa69300a6fbe4689c5e33665111255a}{On\+Save\+Async}} ()
+\begin{DoxyCompactList}\small\item\em Handler invoked by the Save command. Derived classes must override to perform persistence operations. \end{DoxyCompactList}\item 
+virtual async Task \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_c_r_u_d_view_model_base-2-g_a9639cd06d4e0ea6df072e4e3a63c50b4}{On\+Delete\+Async}} ()
+\begin{DoxyCompactList}\small\item\em Handler invoked by the Delete command. Derived classes must override to perform deletion. \end{DoxyCompactList}\item 
+async Task \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_c_r_u_d_view_model_base-2-g_afd59175241ebfcda96c16a808458104e}{On\+Cancel\+Async}} ()
+\begin{DoxyCompactList}\small\item\em Handler invoked by the Cancel command; resets the form. \end{DoxyCompactList}\item 
+async Task \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_c_r_u_d_view_model_base-2-g_aacb3e74f2425df2abfb9bf267474650a}{On\+Reset\+Async}} ()
+\begin{DoxyCompactList}\small\item\em Resets the view-\/model to a default state and clears error messages. \end{DoxyCompactList}\item 
+Task \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_c_r_u_d_view_model_base-2-g_ac1adeb44a2cfa8c971ffc745765ba961}{On\+Reset\+Form\+Async}} ()
+\begin{DoxyCompactList}\small\item\em Reset form-\/specific fields and validation state. \end{DoxyCompactList}\item 
+Task$<$ TEntity $>$ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_c_r_u_d_view_model_base-2-g_a7c5deeec3a6239f480a5ff2710cb0ba6}{On\+Add\+Form\+Async}} ()
+\begin{DoxyCompactList}\small\item\em Create and return a new entity instance from form-\/bound values when adding. \end{DoxyCompactList}\item 
+Task \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_c_r_u_d_view_model_base-2-g_ae37d7b26fa970b1b52aafcb041b8f447}{On\+Save\+Form\+Async}} ()
+\begin{DoxyCompactList}\small\item\em Perform save logic for the current entity (add or update). Derived classes must implement persistence here. \end{DoxyCompactList}\item 
+Task \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_c_r_u_d_view_model_base-2-g_a2d237cb3b74bb4466845ae3c69fe205e}{On\+Load\+Form\+Async}} (TEntity entity)
+\begin{DoxyCompactList}\small\item\em Populate form-\/specific fields from a loaded entity. Called by \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_c_r_u_d_view_model_base-2-g_ad8feef20bda84c74105d83e259813177}{Load\+Async(\+Guid)} when an entity is found. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_c_r_u_d_view_model_base-2-g_a492492a7123e58ef3415dfbb63dfd388}{Refresh\+Command\+States}} ()
+\begin{DoxyCompactList}\small\item\em Raises ICommand.\+Can\+Execute\+Changed on internal commands to re-\/evaluate availability. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions inherited from \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g}{Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+List\+View\+Model\+Base$<$ TRepos, TEntity $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a2f28c364f9a89b72dffab6e7bb0e0b6f}{List\+View\+Model\+Base}} (\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services}{IStatus\+Info\+Services}} status\+Info\+Services, \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service}{IApp\+Message\+Service}} app\+Message\+Service, TRepos repository, bool auto\+Load=true)
+\begin{DoxyCompactList}\small\item\em Initializes a new instance of the \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g}{List\+View\+Model\+Base$<$\+TRepos,\+TEntity$>$} class. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a2d3a9ca4161f15299a7b4f385bc88d65}{On\+Selected\+Item\+Changed}} (TEntity? item)
+\begin{DoxyCompactList}\small\item\em Hook invoked synchronously when the Selected\+Item property changes. Derived classes may override to update dependent state (for example load a form). Implementations should avoid long-\/running work since this is invoked on the caller thread. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions inherited from \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base}{Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+View\+Model\+Base}}}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_afe69f6fc4811892022c273a234f84ed7}{On\+Property\+Changed}} (\mbox{[}Caller\+Member\+Name\mbox{]} string? name=null)
+\begin{DoxyCompactList}\small\item\em Raises the \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_a84af6959822f5dac7b036413ef1084e0}{Property\+Changed} event for the property specified by {\itshape name} . \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+static string \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a11d4f147348d65fb42622ba5cd353ae8}{Label\+First\+Name}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\item 
+static string \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a9975df12c64dd40978a304d2869f6157}{Label\+Last\+Name}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\item 
+static string \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a034f7e69e24043e10c1c83e6cc43138a}{Label\+Email}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\item 
+static string \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a66a06a27478b4edd0587848be44878ae}{Label\+Is\+Active}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\item 
+static string \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a1098c00578f3c1fd19a746b6ef1e6dfd}{Label\+Role}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\item 
+static string \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_ae0b3883fe3b00200f6b7d70d4c1e3900}{Label\+Address\+Postal\+Code}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\item 
+static string \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a2b9bef50590383ed9ff161e797fcc1d7}{Label\+Address\+City}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\item 
+static string \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_aa70d7777229907b91ae6ea59fdace4c4}{Label\+Address\+Street}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\item 
+static string \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_abff5ccdf0b6b9a5f05aa7f41d8c9f10b}{Label\+Address\+Country}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\item 
+static string \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a36b08400a6c54cb229486a2fd70959e1}{Label\+Address}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\item 
+static string \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a820108670b343970e50d943b858ff646}{Label\+Farms}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\item 
+bool \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_af67c48b328fc907db3e0de27590d12f7}{Is\+Address\+Entity\+Changed}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Indicates whether the address-\/related fields have been changed compared to the selected entity. Used to enable/disable the save functionality. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a41531b0a9225f82c4072125f7569d333}{Is\+Person\+Entity\+Changed}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Indicates whether the person-\/related fields have been changed compared to the selected entity. Used to enable/disable the save functionality. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a03ab940a8ae6f615b77d51f58f35bc8f}{Item\+Counter}} = 0\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+Observable\+Collection$<$ \mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_person}{Person}} $>$ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a12c3c17db1946d49e2e8be42f20b962e}{Persons}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\item 
+Guid \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a15fbc2c469cca88b776f596f918e5c14}{Id}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+Guid \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a79309c21938c5850e5ba9ec65b8d7ddc}{Role\+Id}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+Guid \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a8644bcc71bc259b76e40b9002920a161}{Address\+Id}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+string \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a3c2d7623c7e560cf9374cd7c91272ef2}{First\+Name}} = string.\+Empty\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+string \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_afd658ed92344852921b9604925ddc5cb}{Last\+Name}} = string.\+Empty\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+string \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a7e71cb50565d235b7c2095a5f17c22c1}{Email}} = string.\+Empty\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+bool \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_aa4ea4db31d08a0e2512d1ee38ae9bd1b}{Is\+Active}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+Observable\+Collection$<$ \mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_role}{Role}} $>$ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a3cbd57a5ebd69e76947ed816c0d1f54a}{Roles}} = \mbox{[}$\,$\mbox{]}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\item 
+\mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_role}{Role}}? \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_adbf7963dd81e6ca06f8639ba08fe8d3f}{Selected\+Role}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+string \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_aa478bb8e0958e20c8f0a54d0d861f668}{Address\+Postal\+Code}} = string.\+Empty\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+string \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a277369f653e7a007e548713ba98e0870}{Address\+City}} = string.\+Empty\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+string \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_af0f3934afb7d75f6c03ab74ccd68e395}{Address\+Street}} = string.\+Empty\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+string \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_adc80cd0ccb09519c830441c329cadd37}{Address\+Country}} = "{}Danmark"{}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+string \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a3ce100f42177e8bdc81c0a185baa346c}{Address\+Display}} = string.\+Empty\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+string \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_ae3c0430a62902d28192fbae6ba39e2b6}{Search\+Text}} = string.\+Empty\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+Observable\+Collection$<$ \mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_person}{Person}} $>$ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a09b2be3a7c5aba399177342c7fc21420}{Filtered\+Items}} = \mbox{[}$\,$\mbox{]}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\item 
+Observable\+Collection$<$ \mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_farm}{Farm}} $>$ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a2e4af50d6f3b92103812573f85ef866b}{Selected\+Person\+Farms}} = \mbox{[}$\,$\mbox{]}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\item 
+bool \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a19aea0bbda2d0bb8a43520820024fecf}{Is\+Farmer}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\item 
+\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command}{Relay\+Command}}$<$ string $>$? \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a125a559b4754da4153fb2d84f437f6f4}{Sort\+Command}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Properties inherited from \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_c_r_u_d_view_model_base-2-g}{Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+CRUDView\+Model\+Base$<$ TRepos, TEntity $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+ICommand \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_c_r_u_d_view_model_base-2-g_af18f7b5d8dd4b27fc87fddf634a7eff1}{Add\+Command}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Command used to start adding a new entity. \end{DoxyCompactList}\item 
+ICommand \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_c_r_u_d_view_model_base-2-g_abf4e77529d52ab630b3a658f450e8017}{Save\+Command}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Command used to persist the current entity (add or update depending on mode). \end{DoxyCompactList}\item 
+ICommand \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_c_r_u_d_view_model_base-2-g_abd82daecb068146121ce22cbc0e22347}{Delete\+Command}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Command used to delete the currently loaded entity. \end{DoxyCompactList}\item 
+ICommand \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_c_r_u_d_view_model_base-2-g_a6df7eeb2c92e073504dfb506a99e09ad}{Cancel\+Command}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Command used to cancel an edit operation and reset the form. \end{DoxyCompactList}\item 
+ICommand \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_c_r_u_d_view_model_base-2-g_a902b73afe15dff0f4d197ec1a50cd817}{Refresh\+Command}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Command used to refresh command Can\+Execute states. \end{DoxyCompactList}\item 
+TRepos \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_c_r_u_d_view_model_base-2-g_afb1f22f34958a2c86ccf07ee48bde0e0}{Repository}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+bool \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_c_r_u_d_view_model_base-2-g_a1509b651109729cb4d8b1108bbb53a65}{Is\+Saving}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, protected set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets a value indicating whether a save/delete operation is in progress. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_c_r_u_d_view_model_base-2-g_ad8d96607e1e7d1cb209574c78300b76f}{Is\+Edit\+Mode}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, protected set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets a value indicating whether the view-\/model is in edit mode (an existing entity is loaded). \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_c_r_u_d_view_model_base-2-g_a562394b69b74d3191db21eccd15067c7}{Is\+Add\+Mode}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets a value indicating whether the view-\/model is in add mode (no entity loaded). \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Properties inherited from \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g}{Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+List\+View\+Model\+Base$<$ TRepos, TEntity $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+TEntity? \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_ac6c514ea7eec5dd47a71e3a4c199d99d}{Selected\+Item}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+Observable\+Collection$<$ TEntity $>$ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a06011271607451b7a924017a009d8bd2}{Items}} = \mbox{[}$\,$\mbox{]}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Collection of entities exposed to the view. Observable\+Collection ensures UI updates when items change. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_c_r_u_d_view_model_base-2-g}{Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+CRUDView\+Model\+Base$<$ TRepos, TEntity $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_c_r_u_d_view_model_base-2-g_a5580ad90c52fa840ea722f2b695c91cc}{\+\_\+is\+Saving}}
+\item 
+bool \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_c_r_u_d_view_model_base-2-g_ad9cdb45acb894b70ca5b25f9caed76f1}{\+\_\+is\+Edit\+Mode}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g}{Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+List\+View\+Model\+Base$<$ TRepos, TEntity $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+TEntity? \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a7e5ea1a5d80664499249609899a4488f}{\+\_\+selected\+Item}}
+\item 
+TRepos \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a90f6ff42274d1b27273318adae28e428}{\+\_\+items}}
+\begin{DoxyCompactList}\small\item\em \doxylink{namespace_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items}{Items} used to access entities of type {\itshape TEntity} . \end{DoxyCompactList}\item 
+\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services}{IStatus\+Info\+Services}} \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_ad682524142e5db8a42385c2e14b7f39d}{\+\_\+status\+Info\+Services}}
+\begin{DoxyCompactList}\small\item\em Service used to report loading and connectivity status to the UI. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service}{IApp\+Message\+Service}} \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a471f7c22f0a615d475d2fb9bd7f1abb3}{\+\_\+app\+Message\+Service}}
+\begin{DoxyCompactList}\small\item\em Service used to report application messages and errors to the UI. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Events inherited from \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g}{Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+List\+View\+Model\+Base$<$ TRepos, TEntity $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+Event\+Handler$<$ TEntity?$>$? \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a01967c9faff0eccd4265737c8aaa1ed4}{Selected\+Entity\+Changed}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Events inherited from \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base}{Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+View\+Model\+Base}}}
+\begin{DoxyCompactItemize}
+\item 
+Property\+Changed\+Event\+Handler? \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_a84af6959822f5dac7b036413ef1084e0}{Property\+Changed}}
+\begin{DoxyCompactList}\small\item\em Occurs when a property value changes. Consumers (typically UI bindings) subscribe to this event to be notified that a property value has changed. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+View-\/model that provides CRUD operations and UI bindings for \doxylink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_person}{Person} entities. 
+
+Why we have this class\+:
+\begin{DoxyItemize}
+\item Encapsulates UI state and behavior for creating, reading, updating and deleting persons.
+\item Keeps UI logic separate from repository/data-\/access concerns (uses \doxylink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_person_repository}{IPerson\+Repository}). How to use\+:
+\item Bind the view to properties on this view-\/model (for example, {\ttfamily \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a3c2d7623c7e560cf9374cd7c91272ef2}{First\+Name}}, {\ttfamily \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_afd658ed92344852921b9604925ddc5cb}{Last\+Name}}, {\ttfamily \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a7e71cb50565d235b7c2095a5f17c22c1}{Email}}).
+\item Call the exposed commands and rely on the view-\/model to update the bound collection {\ttfamily \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a12c3c17db1946d49e2e8be42f20b962e}{Persons}}.
+\item The view-\/model handles conversion between form fields and the \doxylink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_person}{Person} entity during save/add.
+\end{DoxyItemize}
+
+Inheriting XML documentation with {\ttfamily \texorpdfstring{$<$}{<}inheritdoc/\texorpdfstring{$>$}{>}}\+: 
+
+The {\ttfamily \texorpdfstring{$<$}{<}inheritdoc/\texorpdfstring{$>$}{>}} tag lets a member inherit documentation from its base declaration. Use it on overrides or interface implementations when the behavior is the same as the base member to avoid duplicating documentation and keep docs consistent. 
+
+Why use it\+:
+\begin{DoxyItemize}
+\item Reduces duplication across derived members.
+\item Keeps documentation synchronized with the original contract.
+\item Makes intent explicit when a derived member does not change the base behavior. 
+\end{DoxyItemize}
+
+Example\+: inherit documentation for an overridden method 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{comment}{//\ base\ class}}
+\DoxyCodeLine{\textcolor{keyword}{public}\ \textcolor{keyword}{abstract}\ \textcolor{keyword}{class\ }FooBase}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{Performs\ an\ important\ operation.}
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{abstract}\ \textcolor{keywordtype}{void}\ DoWork();}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{//\ derived\ class\ uses\ <inheritdoc/>\ to\ reuse\ the\ base\ summary}}
+\DoxyCodeLine{\textcolor{keyword}{public}\ \textcolor{keyword}{class\ }FooDerived\ :\ FooBase}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{override}\ \textcolor{keywordtype}{void}\ DoWork()}
+\DoxyCodeLine{\ \ \ \ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \textcolor{comment}{//\ implementation\ here}}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+ 
+
+Definition at line \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source_l00061}{61}} of file \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source}{CRUDPerson\+UCView\+Model.\+cs}}.
+
+
+
+\label{doc-constructors}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_ae9824dfb1f69f4f946d9d5ff1c9e8170}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}!CRUDPersonUCViewModel@{CRUDPersonUCViewModel}}
+\index{CRUDPersonUCViewModel@{CRUDPersonUCViewModel}!ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}}
+\doxysubsubsection{\texorpdfstring{CRUDPersonUCViewModel()}{CRUDPersonUCViewModel()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_ae9824dfb1f69f4f946d9d5ff1c9e8170} 
+Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model.\+CRUDPerson\+UCView\+Model (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services}{IStatus\+Info\+Services}}}]{status\+Info\+Services}{, }\item[{\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service}{IApp\+Message\+Service}}}]{app\+Message\+Service}{, }\item[{\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_person_repository}{IPerson\+Repository}}}]{repository}{, }\item[{\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_address_repository}{IAddress\+Repository}}}]{address\+Repository}{, }\item[{\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_role_repository}{IRole\+Repository}}?}]{role\+Repository}{ = {\ttfamily null}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Creates a new instance of \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model}{CRUDPerson\+UCView\+Model}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em status\+Info\+Services} & Service used for status updates in the UI.\\
+\hline
+{\em app\+Message\+Service} & Service used to show messages to the user.\\
+\hline
+{\em repository} & Repository used to persist \doxylink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_person}{Person} entities.\\
+\hline
+{\em role\+Repository} & Repository used to load available roles for the dropdown. Optional for tests or callers that don\textquotesingle{}t need roles.\\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source_l00332}{332}} of file \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source}{CRUDPerson\+UCView\+Model.\+cs}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_ac8dcf68b4ef8badb095fe5d65620a7d9}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}!CanAdd@{CanAdd}}
+\index{CanAdd@{CanAdd}!ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}}
+\doxysubsubsection{\texorpdfstring{CanAdd()}{CanAdd()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_ac8dcf68b4ef8badb095fe5d65620a7d9} 
+override bool Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model.\+Can\+Add (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Persists the current form either by adding a new entity or updating an existing one. 
+
+
+
+Reimplemented from \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_c_r_u_d_view_model_base-2-g_a30c956aa92ac2959dc1a1cb0d12b5810}{Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+CRUDView\+Model\+Base$<$ TRepos, TEntity $>$}}.
+
+
+
+Definition at line \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source_l00571}{571}} of file \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source}{CRUDPerson\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_acd4a4a1dc4199d5b445755893185b0c8}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}!CanSave@{CanSave}}
+\index{CanSave@{CanSave}!ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}}
+\doxysubsubsection{\texorpdfstring{CanSave()}{CanSave()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_acd4a4a1dc4199d5b445755893185b0c8} 
+override bool Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model.\+Can\+Save (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Determines whether the Save command can execute. 
+
+
+
+Reimplemented from \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_c_r_u_d_view_model_base-2-g_addf651b3015a4ff6addaec627fce6584}{Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+CRUDView\+Model\+Base$<$ TRepos, TEntity $>$}}.
+
+
+
+Definition at line \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source_l00578}{578}} of file \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source}{CRUDPerson\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a985db9f470d8e0e11684cc9086d11630}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}!OnAddFormAsync@{OnAddFormAsync}}
+\index{OnAddFormAsync@{OnAddFormAsync}!ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}}
+\doxysubsubsection{\texorpdfstring{OnAddFormAsync()}{OnAddFormAsync()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a985db9f470d8e0e11684cc9086d11630} 
+override async Task$<$ \mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_person}{Person}} $>$ Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model.\+On\+Add\+Form\+Async (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+Creates a \doxylink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_person}{Person} instance from the current form fields. 
+
+
+
+Definition at line \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source_l00470}{470}} of file \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source}{CRUDPerson\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a27382ff2d38ea3b0f3168260b4da1845}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}!OnLoadFormAsync@{OnLoadFormAsync}}
+\index{OnLoadFormAsync@{OnLoadFormAsync}!ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}}
+\doxysubsubsection{\texorpdfstring{OnLoadFormAsync()}{OnLoadFormAsync()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a27382ff2d38ea3b0f3168260b4da1845} 
+override async Task Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model.\+On\+Load\+Form\+Async (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_person}{Person}}}]{entity}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+Loads the provided entity into the form fields so the UI can edit it. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em entity} & The entity to load into the form.\\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source_l00525}{525}} of file \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source}{CRUDPerson\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a70224038fc4c430a00650912d03ee6ca}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}!OnResetFormAsync@{OnResetFormAsync}}
+\index{OnResetFormAsync@{OnResetFormAsync}!ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}}
+\doxysubsubsection{\texorpdfstring{OnResetFormAsync()}{OnResetFormAsync()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a70224038fc4c430a00650912d03ee6ca} 
+override async Task Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model.\+On\+Reset\+Form\+Async (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+Resets the form fields to their default values. 
+
+
+
+Definition at line \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source_l00542}{542}} of file \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source}{CRUDPerson\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a3309726694caf0739b63fb3d3418bcda}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}!OnSaveFormAsync@{OnSaveFormAsync}}
+\index{OnSaveFormAsync@{OnSaveFormAsync}!ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}}
+\doxysubsubsection{\texorpdfstring{OnSaveFormAsync()}{OnSaveFormAsync()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a3309726694caf0739b63fb3d3418bcda} 
+override async Task Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model.\+On\+Save\+Form\+Async (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+Definition at line \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source_l00585}{585}} of file \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source}{CRUDPerson\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a3e495aff74cfef00ba0412ae40556f84}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}!PopulateFormFromPerson@{PopulateFormFromPerson}}
+\index{PopulateFormFromPerson@{PopulateFormFromPerson}!ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}}
+\doxysubsubsection{\texorpdfstring{PopulateFormFromPerson()}{PopulateFormFromPerson()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a3e495aff74cfef00ba0412ae40556f84} 
+void Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model.\+Populate\+Form\+From\+Person (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_person}{Person}}}]{person}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Populates the form-\/bound fields from the provided Owner instance. Role\+Display is set to the role\textquotesingle{}s Name and Address\+Display is set to "{}\+Postal\+Code, Street"{}. This method is public so callers (for example tests or other view-\/models) can reuse the mapping. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em person} & Owner to populate the form from.\\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source_l00649}{649}} of file \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source}{CRUDPerson\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_aa6a50fef566f1eb9e6e981b100af79ab}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}!ReloadAsync@{ReloadAsync}}
+\index{ReloadAsync@{ReloadAsync}!ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}}
+\doxysubsubsection{\texorpdfstring{ReloadAsync()}{ReloadAsync()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_aa6a50fef566f1eb9e6e981b100af79ab} 
+async Task Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model.\+Reload\+Async (\begin{DoxyParamCaption}\item[{Cancellation\+Token}]{ct}{ = {\ttfamily default}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Public helper to reload the person list. The view can call this when it becomes visible to ensure the \doxylink{namespace_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items}{Items} collection is refreshed from the repository (fixes cases where navigation returns to a view with stale/empty items). 
+
+
+
+Definition at line \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source_l00403}{403}} of file \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source}{CRUDPerson\+UCView\+Model.\+cs}}.
+
+
+
+\label{doc-property-members}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_doc-property-members}
+\doxysubsection{Property Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a277369f653e7a007e548713ba98e0870}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}!AddressCity@{AddressCity}}
+\index{AddressCity@{AddressCity}!ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}}
+\doxysubsubsection{\texorpdfstring{AddressCity}{AddressCity}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a277369f653e7a007e548713ba98e0870} 
+string Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model.\+Address\+City = string.\+Empty\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Definition at line \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source_l00245}{245}} of file \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source}{CRUDPerson\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_adc80cd0ccb09519c830441c329cadd37}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}!AddressCountry@{AddressCountry}}
+\index{AddressCountry@{AddressCountry}!ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}}
+\doxysubsubsection{\texorpdfstring{AddressCountry}{AddressCountry}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_adc80cd0ccb09519c830441c329cadd37} 
+string Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model.\+Address\+Country = "{}Danmark"{}\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Definition at line \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source_l00269}{269}} of file \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source}{CRUDPerson\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a3ce100f42177e8bdc81c0a185baa346c}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}!AddressDisplay@{AddressDisplay}}
+\index{AddressDisplay@{AddressDisplay}!ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}}
+\doxysubsubsection{\texorpdfstring{AddressDisplay}{AddressDisplay}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a3ce100f42177e8bdc81c0a185baa346c} 
+string Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model.\+Address\+Display = string.\+Empty\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Definition at line \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source_l00281}{281}} of file \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source}{CRUDPerson\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a8644bcc71bc259b76e40b9002920a161}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}!AddressId@{AddressId}}
+\index{AddressId@{AddressId}!ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}}
+\doxysubsubsection{\texorpdfstring{AddressId}{AddressId}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a8644bcc71bc259b76e40b9002920a161} 
+Guid Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model.\+Address\+Id\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Definition at line \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source_l00157}{157}} of file \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source}{CRUDPerson\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_aa478bb8e0958e20c8f0a54d0d861f668}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}!AddressPostalCode@{AddressPostalCode}}
+\index{AddressPostalCode@{AddressPostalCode}!ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}}
+\doxysubsubsection{\texorpdfstring{AddressPostalCode}{AddressPostalCode}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_aa478bb8e0958e20c8f0a54d0d861f668} 
+string Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model.\+Address\+Postal\+Code = string.\+Empty\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Definition at line \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source_l00233}{233}} of file \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source}{CRUDPerson\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_af0f3934afb7d75f6c03ab74ccd68e395}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}!AddressStreet@{AddressStreet}}
+\index{AddressStreet@{AddressStreet}!ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}}
+\doxysubsubsection{\texorpdfstring{AddressStreet}{AddressStreet}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_af0f3934afb7d75f6c03ab74ccd68e395} 
+string Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model.\+Address\+Street = string.\+Empty\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Definition at line \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source_l00257}{257}} of file \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source}{CRUDPerson\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a7e71cb50565d235b7c2095a5f17c22c1}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}!Email@{Email}}
+\index{Email@{Email}!ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}}
+\doxysubsubsection{\texorpdfstring{Email}{Email}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a7e71cb50565d235b7c2095a5f17c22c1} 
+string Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model.\+Email = string.\+Empty\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Definition at line \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source_l00192}{192}} of file \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source}{CRUDPerson\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a09b2be3a7c5aba399177342c7fc21420}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}!FilteredItems@{FilteredItems}}
+\index{FilteredItems@{FilteredItems}!ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}}
+\doxysubsubsection{\texorpdfstring{FilteredItems}{FilteredItems}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a09b2be3a7c5aba399177342c7fc21420} 
+Observable\+Collection$<$\mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_person}{Person}}$>$ Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model.\+Filtered\+Items = \mbox{[}$\,$\mbox{]}\hspace{0.3cm}{\ttfamily [get]}}
+
+
+
+Definition at line \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source_l00305}{305}} of file \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source}{CRUDPerson\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a3c2d7623c7e560cf9374cd7c91272ef2}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}!FirstName@{FirstName}}
+\index{FirstName@{FirstName}!ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}}
+\doxysubsubsection{\texorpdfstring{FirstName}{FirstName}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a3c2d7623c7e560cf9374cd7c91272ef2} 
+string Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model.\+First\+Name = string.\+Empty\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Definition at line \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source_l00168}{168}} of file \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source}{CRUDPerson\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a15fbc2c469cca88b776f596f918e5c14}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}!Id@{Id}}
+\index{Id@{Id}!ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}}
+\doxysubsubsection{\texorpdfstring{Id}{Id}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a15fbc2c469cca88b776f596f918e5c14} 
+Guid Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model.\+Id\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Definition at line \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source_l00135}{135}} of file \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source}{CRUDPerson\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_aa4ea4db31d08a0e2512d1ee38ae9bd1b}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}!IsActive@{IsActive}}
+\index{IsActive@{IsActive}!ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}}
+\doxysubsubsection{\texorpdfstring{IsActive}{IsActive}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_aa4ea4db31d08a0e2512d1ee38ae9bd1b} 
+bool Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model.\+Is\+Active\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Definition at line \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source_l00204}{204}} of file \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source}{CRUDPerson\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_af67c48b328fc907db3e0de27590d12f7}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}!IsAddressEntityChanged@{IsAddressEntityChanged}}
+\index{IsAddressEntityChanged@{IsAddressEntityChanged}!ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}}
+\doxysubsubsection{\texorpdfstring{IsAddressEntityChanged}{IsAddressEntityChanged}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_af67c48b328fc907db3e0de27590d12f7} 
+bool Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model.\+Is\+Address\+Entity\+Changed\hspace{0.3cm}{\ttfamily [get]}}
+
+
+
+Indicates whether the address-\/related fields have been changed compared to the selected entity. Used to enable/disable the save functionality. 
+
+
+
+Definition at line \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source_l00091}{91}} of file \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source}{CRUDPerson\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a19aea0bbda2d0bb8a43520820024fecf}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}!IsFarmer@{IsFarmer}}
+\index{IsFarmer@{IsFarmer}!ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}}
+\doxysubsubsection{\texorpdfstring{IsFarmer}{IsFarmer}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a19aea0bbda2d0bb8a43520820024fecf} 
+bool Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model.\+Is\+Farmer\hspace{0.3cm}{\ttfamily [get]}}
+
+
+
+Definition at line \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source_l00318}{318}} of file \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source}{CRUDPerson\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a41531b0a9225f82c4072125f7569d333}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}!IsPersonEntityChanged@{IsPersonEntityChanged}}
+\index{IsPersonEntityChanged@{IsPersonEntityChanged}!ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}}
+\doxysubsubsection{\texorpdfstring{IsPersonEntityChanged}{IsPersonEntityChanged}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a41531b0a9225f82c4072125f7569d333} 
+bool Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model.\+Is\+Person\+Entity\+Changed\hspace{0.3cm}{\ttfamily [get]}}
+
+
+
+Indicates whether the person-\/related fields have been changed compared to the selected entity. Used to enable/disable the save functionality. 
+
+
+
+Definition at line \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source_l00107}{107}} of file \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source}{CRUDPerson\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a03ab940a8ae6f615b77d51f58f35bc8f}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}!ItemCounter@{ItemCounter}}
+\index{ItemCounter@{ItemCounter}!ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}}
+\doxysubsubsection{\texorpdfstring{ItemCounter}{ItemCounter}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a03ab940a8ae6f615b77d51f58f35bc8f} 
+int Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model.\+Item\+Counter = 0\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Definition at line \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source_l00121}{121}} of file \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source}{CRUDPerson\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a36b08400a6c54cb229486a2fd70959e1}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}!LabelAddress@{LabelAddress}}
+\index{LabelAddress@{LabelAddress}!ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}}
+\doxysubsubsection{\texorpdfstring{LabelAddress}{LabelAddress}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a36b08400a6c54cb229486a2fd70959e1} 
+string Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model.\+Label\+Address\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [get]}}
+
+
+
+Definition at line \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source_l00084}{84}} of file \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source}{CRUDPerson\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a2b9bef50590383ed9ff161e797fcc1d7}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}!LabelAddressCity@{LabelAddressCity}}
+\index{LabelAddressCity@{LabelAddressCity}!ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}}
+\doxysubsubsection{\texorpdfstring{LabelAddressCity}{LabelAddressCity}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a2b9bef50590383ed9ff161e797fcc1d7} 
+string Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model.\+Label\+Address\+City\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [get]}}
+
+
+
+Definition at line \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source_l00081}{81}} of file \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source}{CRUDPerson\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_abff5ccdf0b6b9a5f05aa7f41d8c9f10b}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}!LabelAddressCountry@{LabelAddressCountry}}
+\index{LabelAddressCountry@{LabelAddressCountry}!ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}}
+\doxysubsubsection{\texorpdfstring{LabelAddressCountry}{LabelAddressCountry}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_abff5ccdf0b6b9a5f05aa7f41d8c9f10b} 
+string Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model.\+Label\+Address\+Country\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [get]}}
+
+
+
+Definition at line \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source_l00083}{83}} of file \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source}{CRUDPerson\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_ae0b3883fe3b00200f6b7d70d4c1e3900}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}!LabelAddressPostalCode@{LabelAddressPostalCode}}
+\index{LabelAddressPostalCode@{LabelAddressPostalCode}!ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}}
+\doxysubsubsection{\texorpdfstring{LabelAddressPostalCode}{LabelAddressPostalCode}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_ae0b3883fe3b00200f6b7d70d4c1e3900} 
+string Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model.\+Label\+Address\+Postal\+Code\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [get]}}
+
+
+
+Definition at line \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source_l00080}{80}} of file \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source}{CRUDPerson\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_aa70d7777229907b91ae6ea59fdace4c4}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}!LabelAddressStreet@{LabelAddressStreet}}
+\index{LabelAddressStreet@{LabelAddressStreet}!ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}}
+\doxysubsubsection{\texorpdfstring{LabelAddressStreet}{LabelAddressStreet}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_aa70d7777229907b91ae6ea59fdace4c4} 
+string Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model.\+Label\+Address\+Street\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [get]}}
+
+
+
+Definition at line \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source_l00082}{82}} of file \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source}{CRUDPerson\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a034f7e69e24043e10c1c83e6cc43138a}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}!LabelEmail@{LabelEmail}}
+\index{LabelEmail@{LabelEmail}!ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}}
+\doxysubsubsection{\texorpdfstring{LabelEmail}{LabelEmail}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a034f7e69e24043e10c1c83e6cc43138a} 
+string Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model.\+Label\+Email\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [get]}}
+
+
+
+Definition at line \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source_l00077}{77}} of file \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source}{CRUDPerson\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a820108670b343970e50d943b858ff646}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}!LabelFarms@{LabelFarms}}
+\index{LabelFarms@{LabelFarms}!ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}}
+\doxysubsubsection{\texorpdfstring{LabelFarms}{LabelFarms}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a820108670b343970e50d943b858ff646} 
+string Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model.\+Label\+Farms\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [get]}}
+
+
+
+Definition at line \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source_l00085}{85}} of file \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source}{CRUDPerson\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a11d4f147348d65fb42622ba5cd353ae8}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}!LabelFirstName@{LabelFirstName}}
+\index{LabelFirstName@{LabelFirstName}!ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}}
+\doxysubsubsection{\texorpdfstring{LabelFirstName}{LabelFirstName}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a11d4f147348d65fb42622ba5cd353ae8} 
+string Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model.\+Label\+First\+Name\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [get]}}
+
+
+
+Definition at line \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source_l00075}{75}} of file \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source}{CRUDPerson\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a66a06a27478b4edd0587848be44878ae}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}!LabelIsActive@{LabelIsActive}}
+\index{LabelIsActive@{LabelIsActive}!ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}}
+\doxysubsubsection{\texorpdfstring{LabelIsActive}{LabelIsActive}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a66a06a27478b4edd0587848be44878ae} 
+string Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model.\+Label\+Is\+Active\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [get]}}
+
+
+
+Definition at line \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source_l00078}{78}} of file \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source}{CRUDPerson\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a9975df12c64dd40978a304d2869f6157}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}!LabelLastName@{LabelLastName}}
+\index{LabelLastName@{LabelLastName}!ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}}
+\doxysubsubsection{\texorpdfstring{LabelLastName}{LabelLastName}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a9975df12c64dd40978a304d2869f6157} 
+string Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model.\+Label\+Last\+Name\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [get]}}
+
+
+
+Definition at line \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source_l00076}{76}} of file \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source}{CRUDPerson\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a1098c00578f3c1fd19a746b6ef1e6dfd}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}!LabelRole@{LabelRole}}
+\index{LabelRole@{LabelRole}!ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}}
+\doxysubsubsection{\texorpdfstring{LabelRole}{LabelRole}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a1098c00578f3c1fd19a746b6ef1e6dfd} 
+string Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model.\+Label\+Role\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [get]}}
+
+
+
+Definition at line \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source_l00079}{79}} of file \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source}{CRUDPerson\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_afd658ed92344852921b9604925ddc5cb}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}!LastName@{LastName}}
+\index{LastName@{LastName}!ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}}
+\doxysubsubsection{\texorpdfstring{LastName}{LastName}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_afd658ed92344852921b9604925ddc5cb} 
+string Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model.\+Last\+Name = string.\+Empty\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Definition at line \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source_l00180}{180}} of file \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source}{CRUDPerson\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a12c3c17db1946d49e2e8be42f20b962e}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}!Persons@{Persons}}
+\index{Persons@{Persons}!ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}}
+\doxysubsubsection{\texorpdfstring{Persons}{Persons}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a12c3c17db1946d49e2e8be42f20b962e} 
+Observable\+Collection$<$\mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_person}{Person}}$>$ Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model.\+Persons\hspace{0.3cm}{\ttfamily [get]}}
+
+
+
+Definition at line \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source_l00133}{133}} of file \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source}{CRUDPerson\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a79309c21938c5850e5ba9ec65b8d7ddc}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}!RoleId@{RoleId}}
+\index{RoleId@{RoleId}!ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}}
+\doxysubsubsection{\texorpdfstring{RoleId}{RoleId}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a79309c21938c5850e5ba9ec65b8d7ddc} 
+Guid Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model.\+Role\+Id\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Definition at line \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source_l00146}{146}} of file \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source}{CRUDPerson\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a3cbd57a5ebd69e76947ed816c0d1f54a}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}!Roles@{Roles}}
+\index{Roles@{Roles}!ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}}
+\doxysubsubsection{\texorpdfstring{Roles}{Roles}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a3cbd57a5ebd69e76947ed816c0d1f54a} 
+Observable\+Collection$<$\mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_role}{Role}}$>$ Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model.\+Roles = \mbox{[}$\,$\mbox{]}\hspace{0.3cm}{\ttfamily [get]}}
+
+
+
+Definition at line \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source_l00217}{217}} of file \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source}{CRUDPerson\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_ae3c0430a62902d28192fbae6ba39e2b6}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}!SearchText@{SearchText}}
+\index{SearchText@{SearchText}!ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}}
+\doxysubsubsection{\texorpdfstring{SearchText}{SearchText}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_ae3c0430a62902d28192fbae6ba39e2b6} 
+string Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model.\+Search\+Text = string.\+Empty\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Definition at line \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source_l00293}{293}} of file \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source}{CRUDPerson\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a2e4af50d6f3b92103812573f85ef866b}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}!SelectedPersonFarms@{SelectedPersonFarms}}
+\index{SelectedPersonFarms@{SelectedPersonFarms}!ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}}
+\doxysubsubsection{\texorpdfstring{SelectedPersonFarms}{SelectedPersonFarms}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a2e4af50d6f3b92103812573f85ef866b} 
+Observable\+Collection$<$\mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_farm}{Farm}}$>$ Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model.\+Selected\+Person\+Farms = \mbox{[}$\,$\mbox{]}\hspace{0.3cm}{\ttfamily [get]}}
+
+
+
+Definition at line \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source_l00316}{316}} of file \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source}{CRUDPerson\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_adbf7963dd81e6ca06f8639ba08fe8d3f}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}!SelectedRole@{SelectedRole}}
+\index{SelectedRole@{SelectedRole}!ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}}
+\doxysubsubsection{\texorpdfstring{SelectedRole}{SelectedRole}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_adbf7963dd81e6ca06f8639ba08fe8d3f} 
+\mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_role}{Role}}? Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model.\+Selected\+Role\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Definition at line \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source_l00219}{219}} of file \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source}{CRUDPerson\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a125a559b4754da4153fb2d84f437f6f4}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}!SortCommand@{SortCommand}}
+\index{SortCommand@{SortCommand}!ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel}}
+\doxysubsubsection{\texorpdfstring{SortCommand}{SortCommand}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model_a125a559b4754da4153fb2d84f437f6f4} 
+\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command}{Relay\+Command}}$<$string$>$? Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Shared\+UC.\+CRUDPerson\+UCView\+Model.\+Sort\+Command\hspace{0.3cm}{\ttfamily [get]}}
+
+
+
+Definition at line \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source_l00322}{322}} of file \mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs_source}{CRUDPerson\+UCView\+Model.\+cs}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Arla\+Nature\+Connect.\+Win\+UI/\+Arla\+Nature\+Connect.\+Win\+UI/\+View\+Models/\+Controls/\+Shared\+UC/\mbox{\hyperlink{_c_r_u_d_person_u_c_view_model_8cs}{CRUDPerson\+UCView\+Model.\+cs}}\end{DoxyCompactItemize}

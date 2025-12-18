@@ -1,0 +1,4 @@
+var _administrate_nature_area_u_c_view_model_8cs =
+[
+    [ "ArlaNatureConnect.WinUI.ViewModels.Controls.PageContents.AdministrateNatureAreaUCViewModel", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_page_contents_1_1_adminis7f27bda13ae104ad553fc82511b4d866.html", null ]
+];

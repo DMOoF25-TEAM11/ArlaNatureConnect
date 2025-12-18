@@ -1,0 +1,4 @@
+var class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_side_menu_1_1_arla_employee_page_side_menu_u_c =
+[
+    [ "ArlaEmployeePageSideMenuUC", "class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_side_menu_1_1_arla_employee_page_side_menu_u_c.html#a2239c93980c5da209d859554e4e069ff", null ]
+];

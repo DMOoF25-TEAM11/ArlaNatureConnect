@@ -1,0 +1,62 @@
+\doxysection{Content\+Dialog\+Helper.\+cs}
+\hypertarget{_content_dialog_helper_8cs_source}{}\label{_content_dialog_helper_8cs_source}\index{src/ArlaNatureConnect.WinUI/ArlaNatureConnect.WinUI/Helpers/ContentDialogHelper.cs@{src/ArlaNatureConnect.WinUI/ArlaNatureConnect.WinUI/Helpers/ContentDialogHelper.cs}}
+\mbox{\hyperlink{_content_dialog_helper_8cs}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00001}00001\ \textcolor{keyword}{using\ }System.Threading.Tasks;}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00002}00002\ \textcolor{keyword}{using\ }Microsoft.UI.Xaml;}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00003}00003\ \textcolor{keyword}{using\ }Microsoft.UI.Xaml.Controls;}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00004}00004\ }
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00005}\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_helpers}{00005}}\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_helpers}{ArlaNatureConnect.WinUI.Helpers}};}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00006}00006\ }
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00010}00010\ \textcolor{keyword}{public}\ \textcolor{keyword}{static}\ \textcolor{keyword}{class\ }ContentDialogHelper}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00011}00011\ \{}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00021}00021\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{static}\ async\ Task<bool>\ ShowConfirmationAsync(}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00022}00022\ \ \ \ \ \ \ \ \ XamlRoot?\ xamlRoot,}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00023}00023\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{string}\ title,}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00024}00024\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{string}\ content,}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00025}00025\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{string}\ primaryButtonText\ =\ \textcolor{stringliteral}{"{}OK"{}},}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00026}00026\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{string}\ closeButtonText\ =\ \textcolor{stringliteral}{"{}Annuller"{}})}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00027}00027\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00028}00028\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (xamlRoot\ ==\ \textcolor{keyword}{null})}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00029}00029\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00030}00030\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00031}00031\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00032}00032\ }
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00033}00033\ \ \ \ \ \ \ \ \ ContentDialog\ dialog\ =\ \textcolor{keyword}{new}()}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00034}00034\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00035}00035\ \ \ \ \ \ \ \ \ \ \ \ \ Title\ =\ title,}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00036}00036\ \ \ \ \ \ \ \ \ \ \ \ \ Content\ =\ content,}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00037}00037\ \ \ \ \ \ \ \ \ \ \ \ \ PrimaryButtonText\ =\ primaryButtonText,}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00038}00038\ \ \ \ \ \ \ \ \ \ \ \ \ CloseButtonText\ =\ closeButtonText,}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00039}00039\ \ \ \ \ \ \ \ \ \ \ \ \ XamlRoot\ =\ xamlRoot}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00040}00040\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00041}00041\ }
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00042}00042\ \ \ \ \ \ \ \ \ ContentDialogResult\ result\ =\ await\ dialog.ShowAsync();}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00043}00043\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result\ ==\ ContentDialogResult.Primary;}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00044}00044\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00045}00045\ }
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00046}00046\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{static}\ async\ Task\ ShowInfoAsync(}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00047}00047\ \ \ \ \ \ \ \ \ XamlRoot?\ xamlRoot,}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00048}00048\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{string}\ title,}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00049}00049\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{string}\ content,}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00050}00050\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{string}\ closeButtonText\ =\ \textcolor{stringliteral}{"{}OK"{}})}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00051}00051\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00052}00052\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (xamlRoot\ ==\ \textcolor{keyword}{null})}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00053}00053\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00054}00054\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00055}00055\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00056}00056\ }
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00057}00057\ \ \ \ \ \ \ \ \ ContentDialog\ dialog\ =\ \textcolor{keyword}{new}()}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00058}00058\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00059}00059\ \ \ \ \ \ \ \ \ \ \ \ \ Title\ =\ title,}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00060}00060\ \ \ \ \ \ \ \ \ \ \ \ \ Content\ =\ content,}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00061}00061\ \ \ \ \ \ \ \ \ \ \ \ \ CloseButtonText\ =\ closeButtonText,}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00062}00062\ \ \ \ \ \ \ \ \ \ \ \ \ XamlRoot\ =\ xamlRoot}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00063}00063\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00064}00064\ }
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00065}00065\ \ \ \ \ \ \ \ \ await\ dialog.ShowAsync();}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00066}00066\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00067}00067\ \}}
+\DoxyCodeLine{\Hypertarget{_content_dialog_helper_8cs_source_l00068}00068\ }
+
+\end{DoxyCode}

@@ -1,0 +1,45 @@
+\doxysection{Dependency\+Injection.\+cs}
+\hypertarget{_arla_nature_connect_8_infrastructure_2_dependency_injection_8cs_source}{}\label{_arla_nature_connect_8_infrastructure_2_dependency_injection_8cs_source}\index{src/ArlaNatureConnect.Infrastructure/DependencyInjection.cs@{src/ArlaNatureConnect.Infrastructure/DependencyInjection.cs}}
+\mbox{\hyperlink{_arla_nature_connect_8_infrastructure_2_dependency_injection_8cs}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_arla_nature_connect_8_infrastructure_2_dependency_injection_8cs_source_l00001}00001\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_core}{ArlaNatureConnect.Core}};}
+\DoxyCodeLine{\Hypertarget{_arla_nature_connect_8_infrastructure_2_dependency_injection_8cs_source_l00002}00002\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_core_1_1_abstract}{ArlaNatureConnect.Core.Abstract}};}
+\DoxyCodeLine{\Hypertarget{_arla_nature_connect_8_infrastructure_2_dependency_injection_8cs_source_l00003}00003\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_core_1_1_services}{ArlaNatureConnect.Core.Services}};}
+\DoxyCodeLine{\Hypertarget{_arla_nature_connect_8_infrastructure_2_dependency_injection_8cs_source_l00004}00004\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_infrastructure_1_1_persistence}{ArlaNatureConnect.Infrastructure.Persistence}};}
+\DoxyCodeLine{\Hypertarget{_arla_nature_connect_8_infrastructure_2_dependency_injection_8cs_source_l00005}00005\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_infrastructure_1_1_repositories}{ArlaNatureConnect.Infrastructure.Repositories}};}
+\DoxyCodeLine{\Hypertarget{_arla_nature_connect_8_infrastructure_2_dependency_injection_8cs_source_l00006}00006\ }
+\DoxyCodeLine{\Hypertarget{_arla_nature_connect_8_infrastructure_2_dependency_injection_8cs_source_l00007}00007\ \textcolor{keyword}{using\ }Microsoft.EntityFrameworkCore;}
+\DoxyCodeLine{\Hypertarget{_arla_nature_connect_8_infrastructure_2_dependency_injection_8cs_source_l00008}00008\ \textcolor{keyword}{using\ }Microsoft.Extensions.DependencyInjection;}
+\DoxyCodeLine{\Hypertarget{_arla_nature_connect_8_infrastructure_2_dependency_injection_8cs_source_l00009}00009\ }
+\DoxyCodeLine{\Hypertarget{_arla_nature_connect_8_infrastructure_2_dependency_injection_8cs_source_l00010}\mbox{\hyperlink{namespace_arla_nature_connect_1_1_infrastructure}{00010}}\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_infrastructure}{ArlaNatureConnect.Infrastructure}};}
+\DoxyCodeLine{\Hypertarget{_arla_nature_connect_8_infrastructure_2_dependency_injection_8cs_source_l00011}00011\ }
+\DoxyCodeLine{\Hypertarget{_arla_nature_connect_8_infrastructure_2_dependency_injection_8cs_source_l00012}00012\ \textcolor{keyword}{public}\ \textcolor{keyword}{static}\ \textcolor{keyword}{class\ }DependencyInjection}
+\DoxyCodeLine{\Hypertarget{_arla_nature_connect_8_infrastructure_2_dependency_injection_8cs_source_l00013}00013\ \{}
+\DoxyCodeLine{\Hypertarget{_arla_nature_connect_8_infrastructure_2_dependency_injection_8cs_source_l00014}00014\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{static}\ IServiceCollection\ AddInfrastructure(\textcolor{keyword}{this}\ IServiceCollection\ services)}
+\DoxyCodeLine{\Hypertarget{_arla_nature_connect_8_infrastructure_2_dependency_injection_8cs_source_l00015}00015\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_arla_nature_connect_8_infrastructure_2_dependency_injection_8cs_source_l00016}00016\ \ \ \ \ \ \ \ \ services.AddCoreServices();}
+\DoxyCodeLine{\Hypertarget{_arla_nature_connect_8_infrastructure_2_dependency_injection_8cs_source_l00017}00017\ }
+\DoxyCodeLine{\Hypertarget{_arla_nature_connect_8_infrastructure_2_dependency_injection_8cs_source_l00018}00018\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{string}\ connectionString\ =\ services.BuildServiceProvider().GetRequiredService<\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_connection_string_service}{IConnectionStringService}}>().ReadAsync().Result\ ??\ \textcolor{keywordtype}{string}.Empty;}
+\DoxyCodeLine{\Hypertarget{_arla_nature_connect_8_infrastructure_2_dependency_injection_8cs_source_l00019}00019\ }
+\DoxyCodeLine{\Hypertarget{_arla_nature_connect_8_infrastructure_2_dependency_injection_8cs_source_l00020}00020\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Register\ the\ EF\ Core\ DbContext\ factory\ after\ validation}}
+\DoxyCodeLine{\Hypertarget{_arla_nature_connect_8_infrastructure_2_dependency_injection_8cs_source_l00021}00021\ \ \ \ \ \ \ \ \ services.AddDbContext<\mbox{\hyperlink{namespace_arla_nature_connect_1_1_infrastructure_1_1_persistence_ad9d53c96f53dae1c20c0c2b0aea99dae}{AppDbContext}}>(options\ =>\ options.UseSqlServer(connectionString));}
+\DoxyCodeLine{\Hypertarget{_arla_nature_connect_8_infrastructure_2_dependency_injection_8cs_source_l00022}00022\ \ \ \ \ \ \ \ \ services.AddDbContextFactory<\mbox{\hyperlink{namespace_arla_nature_connect_1_1_infrastructure_1_1_persistence_ad9d53c96f53dae1c20c0c2b0aea99dae}{AppDbContext}}>(options\ =>\ options.UseSqlServer(connectionString));}
+\DoxyCodeLine{\Hypertarget{_arla_nature_connect_8_infrastructure_2_dependency_injection_8cs_source_l00023}00023\ }
+\DoxyCodeLine{\Hypertarget{_arla_nature_connect_8_infrastructure_2_dependency_injection_8cs_source_l00024}00024\ \ \ \ \ \ \ \ \ \textcolor{comment}{//services.AddSingleton<IConnectionStringService,\ ConnectionStringService>();}}
+\DoxyCodeLine{\Hypertarget{_arla_nature_connect_8_infrastructure_2_dependency_injection_8cs_source_l00025}00025\ \ \ \ \ \ \ \ \ services.AddScoped<\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_address_repository}{IAddressRepository}},\ AddressRepository>();}
+\DoxyCodeLine{\Hypertarget{_arla_nature_connect_8_infrastructure_2_dependency_injection_8cs_source_l00026}00026\ \ \ \ \ \ \ \ \ services.AddScoped<\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_role_repository}{IRoleRepository}},\ \mbox{\hyperlink{class_arla_nature_connect_1_1_infrastructure_1_1_repositories_1_1_role_repository}{RoleRepository}}>();}
+\DoxyCodeLine{\Hypertarget{_arla_nature_connect_8_infrastructure_2_dependency_injection_8cs_source_l00027}00027\ \ \ \ \ \ \ \ \ services.AddScoped<\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_person_repository}{IPersonRepository}},\ PersonRepository>();}
+\DoxyCodeLine{\Hypertarget{_arla_nature_connect_8_infrastructure_2_dependency_injection_8cs_source_l00028}00028\ \ \ \ \ \ \ \ \ services.AddScoped<\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_farm_repository}{IFarmRepository}},\ FarmRepository>();}
+\DoxyCodeLine{\Hypertarget{_arla_nature_connect_8_infrastructure_2_dependency_injection_8cs_source_l00029}00029\ \ \ \ \ \ \ \ \ services.AddScoped<\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_nature_check_case_repository}{INatureCheckCaseRepository}},\ NatureCheckCaseRepository>();}
+\DoxyCodeLine{\Hypertarget{_arla_nature_connect_8_infrastructure_2_dependency_injection_8cs_source_l00030}00030\ \ \ \ \ \ \ \ \ services.AddScoped<\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_nature_area_repository}{INatureAreaRepository}},\ NatureAreaRepository>();}
+\DoxyCodeLine{\Hypertarget{_arla_nature_connect_8_infrastructure_2_dependency_injection_8cs_source_l00031}00031\ \ \ \ \ \ \ \ \ services.AddScoped<\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_nature_area_image_repository}{INatureAreaImageRepository}},\ NatureAreaImageRepository>();}
+\DoxyCodeLine{\Hypertarget{_arla_nature_connect_8_infrastructure_2_dependency_injection_8cs_source_l00032}00032\ \ \ \ \ \ \ \ \ services.AddScoped<\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_nature_area_coordinate_repository}{INatureAreaCoordinateRepository}},\ NatureAreaCoordinateRepository>();}
+\DoxyCodeLine{\Hypertarget{_arla_nature_connect_8_infrastructure_2_dependency_injection_8cs_source_l00033}00033\ }
+\DoxyCodeLine{\Hypertarget{_arla_nature_connect_8_infrastructure_2_dependency_injection_8cs_source_l00034}00034\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Query\ services}}
+\DoxyCodeLine{\Hypertarget{_arla_nature_connect_8_infrastructure_2_dependency_injection_8cs_source_l00035}00035\ \ \ \ \ \ \ \ \ \textcolor{comment}{//services.AddScoped<IPersonQueryService,\ PersonQueryService>();}}
+\DoxyCodeLine{\Hypertarget{_arla_nature_connect_8_infrastructure_2_dependency_injection_8cs_source_l00036}00036\ }
+\DoxyCodeLine{\Hypertarget{_arla_nature_connect_8_infrastructure_2_dependency_injection_8cs_source_l00037}00037\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ services;}
+\DoxyCodeLine{\Hypertarget{_arla_nature_connect_8_infrastructure_2_dependency_injection_8cs_source_l00038}00038\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_arla_nature_connect_8_infrastructure_2_dependency_injection_8cs_source_l00039}00039\ \}}
+
+\end{DoxyCode}

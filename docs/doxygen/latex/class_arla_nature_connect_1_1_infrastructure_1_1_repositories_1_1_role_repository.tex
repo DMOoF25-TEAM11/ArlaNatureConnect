@@ -1,0 +1,127 @@
+\doxysection{Arla\+Nature\+Connect.\+Infrastructure.\+Repositories.\+Role\+Repository Class Reference}
+\hypertarget{class_arla_nature_connect_1_1_infrastructure_1_1_repositories_1_1_role_repository}{}\label{class_arla_nature_connect_1_1_infrastructure_1_1_repositories_1_1_role_repository}\index{ArlaNatureConnect.Infrastructure.Repositories.RoleRepository@{ArlaNatureConnect.Infrastructure.Repositories.RoleRepository}}
+
+
+SQL Server repository for \doxylink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_role}{Role} lookups used across UC flows.  
+
+
+Inheritance diagram for Arla\+Nature\+Connect.\+Infrastructure.\+Repositories.\+Role\+Repository\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.264151cm]{class_arla_nature_connect_1_1_infrastructure_1_1_repositories_1_1_role_repository}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_arla_nature_connect_1_1_infrastructure_1_1_repositories_1_1_role_repository_a7d64f34edc98c78c7148d1b8fa0da89a}{Role\+Repository}} (IDb\+Context\+Factory$<$ \mbox{\hyperlink{namespace_arla_nature_connect_1_1_infrastructure_1_1_persistence_ad9d53c96f53dae1c20c0c2b0aea99dae}{App\+Db\+Context}} $>$ factory)
+\item 
+async Task$<$ \mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_role}{Role}}?$>$ \mbox{\hyperlink{class_arla_nature_connect_1_1_infrastructure_1_1_repositories_1_1_role_repository_a5353e863cd633c87f2a204bbb31784b7}{Get\+By\+Name\+Async}} (string role\+Name, Cancellation\+Token cancellation\+Token=default)
+\begin{DoxyCompactList}\small\item\em Find a \doxylink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_role}{Role} by its name. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_repository-1-g}{Arla\+Nature\+Connect.\+Core.\+Abstract.\+IRepository$<$ TEntity $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+Task$<$ TEntity $>$ \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_repository-1-g_a4a7e3a0c6f6cab64d544297a7671384a}{Add\+Async}} (TEntity entity, Cancellation\+Token cancellation\+Token=default)
+\begin{DoxyCompactList}\small\item\em Adds a single {\itshape TEntity}  to the underlying store. \end{DoxyCompactList}\item 
+Task$<$ IEnumerable$<$ TEntity $>$ $>$ \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_repository-1-g_a240e01dc63db9a2126ff1b0583d765e0}{Add\+Range\+Async}} (IEnumerable$<$ TEntity $>$ entities, Cancellation\+Token cancellation\+Token=default)
+\begin{DoxyCompactList}\small\item\em Adds a collection of {\itshape TEntity}  instances to the underlying store. \end{DoxyCompactList}\item 
+Task$<$ TEntity?$>$ \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_repository-1-g_a41c0432e9afeb9d441d6c4eb1b907891}{Get\+By\+Id\+Async}} (Guid id, Cancellation\+Token cancellation\+Token=default)
+\begin{DoxyCompactList}\small\item\em Retrieves a single {\itshape TEntity}  by its unique identifier. \end{DoxyCompactList}\item 
+Task$<$ IEnumerable$<$ TEntity $>$ $>$ \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_repository-1-g_a8281e6082a7bc5ba0a78ffea9b9fc258}{Get\+All\+Async}} (Cancellation\+Token cancellation\+Token=default)
+\begin{DoxyCompactList}\small\item\em Retrieves all instances of {\itshape TEntity}  from the underlying store. \end{DoxyCompactList}\item 
+Task \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_repository-1-g_abb18e83155485dbd799f244b86cfc3fe}{Update\+Async}} (TEntity entity, Cancellation\+Token cancellation\+Token=default)
+\begin{DoxyCompactList}\small\item\em Updates an existing {\itshape TEntity}  in the underlying store. \end{DoxyCompactList}\item 
+Task \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_repository-1-g_a238d960074ece7bb45722109c8bbc80d}{Delete\+Async}} (Guid id, Cancellation\+Token cancellation\+Token=default)
+\begin{DoxyCompactList}\small\item\em Deletes the entity identified by {\itshape id}  from the underlying store. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+SQL Server repository for \doxylink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_role}{Role} lookups used across UC flows. 
+
+How to use and why we have it\+: 
+\begin{DoxyItemize}
+\item Use this repository to perform lookups and CRUD operations for \doxylink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_role}{Role} entities. 
+\item It encapsulates data-\/access concerns and keeps callers decoupled from EF \doxylink{namespace_arla_nature_connect_1_1_core}{Core} details. 
+\item When possible use {\ttfamily \texorpdfstring{$<$}{<}inheritdoc/\texorpdfstring{$>$}{>}} on implementing members to inherit documentation from interfaces or base types so documentation stays consistent across implementations. 
+\end{DoxyItemize}
+
+Code example\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{comment}{//\ create\ factory\ (DI\ normally\ provides\ this)}}
+\DoxyCodeLine{IDbContextFactory<AppDbContext>\ factory\ =\ \textcolor{comment}{/*\ ...\ *\&zwj;/;}}
+\DoxyCodeLine{\textcolor{comment}{var\ repo\ =\ new\ RoleRepository(factory);}}
+\DoxyCodeLine{\textcolor{comment}{Role?\ r\ =\ await\ repo.GetByNameAsync("{}Farmer"{});}}
+\DoxyCodeLine{\textcolor{comment}{if\ (r\ !=\ null)\ Console.WriteLine(r.Name);}}
+
+\end{DoxyCode}
+ 
+
+Definition at line \mbox{\hyperlink{_role_repository_8cs_source_l00030}{30}} of file \mbox{\hyperlink{_role_repository_8cs_source}{Role\+Repository.\+cs}}.
+
+
+
+\label{doc-constructors}
+\Hypertarget{class_arla_nature_connect_1_1_infrastructure_1_1_repositories_1_1_role_repository_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_infrastructure_1_1_repositories_1_1_role_repository_a7d64f34edc98c78c7148d1b8fa0da89a}\index{ArlaNatureConnect.Infrastructure.Repositories.RoleRepository@{ArlaNatureConnect.Infrastructure.Repositories.RoleRepository}!RoleRepository@{RoleRepository}}
+\index{RoleRepository@{RoleRepository}!ArlaNatureConnect.Infrastructure.Repositories.RoleRepository@{ArlaNatureConnect.Infrastructure.Repositories.RoleRepository}}
+\doxysubsubsection{\texorpdfstring{RoleRepository()}{RoleRepository()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_infrastructure_1_1_repositories_1_1_role_repository_a7d64f34edc98c78c7148d1b8fa0da89a} 
+Arla\+Nature\+Connect.\+Infrastructure.\+Repositories.\+Role\+Repository.\+Role\+Repository (\begin{DoxyParamCaption}\item[{IDb\+Context\+Factory$<$ \mbox{\hyperlink{namespace_arla_nature_connect_1_1_infrastructure_1_1_persistence_ad9d53c96f53dae1c20c0c2b0aea99dae}{App\+Db\+Context}} $>$}]{factory}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{_role_repository_8cs_source_l00032}{32}} of file \mbox{\hyperlink{_role_repository_8cs_source}{Role\+Repository.\+cs}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{class_arla_nature_connect_1_1_infrastructure_1_1_repositories_1_1_role_repository_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_infrastructure_1_1_repositories_1_1_role_repository_a5353e863cd633c87f2a204bbb31784b7}\index{ArlaNatureConnect.Infrastructure.Repositories.RoleRepository@{ArlaNatureConnect.Infrastructure.Repositories.RoleRepository}!GetByNameAsync@{GetByNameAsync}}
+\index{GetByNameAsync@{GetByNameAsync}!ArlaNatureConnect.Infrastructure.Repositories.RoleRepository@{ArlaNatureConnect.Infrastructure.Repositories.RoleRepository}}
+\doxysubsubsection{\texorpdfstring{GetByNameAsync()}{GetByNameAsync()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_infrastructure_1_1_repositories_1_1_role_repository_a5353e863cd633c87f2a204bbb31784b7} 
+async Task$<$ \mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_role}{Role}}?$>$ Arla\+Nature\+Connect.\+Infrastructure.\+Repositories.\+Role\+Repository.\+Get\+By\+Name\+Async (\begin{DoxyParamCaption}\item[{string}]{role\+Name}{, }\item[{Cancellation\+Token}]{cancellation\+Token}{ = {\ttfamily default}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Find a \doxylink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_role}{Role} by its name. 
+
+This method performs a case-\/sensitive lookup of the role name using a short-\/lived \doxylink{namespace_arla_nature_connect_1_1_infrastructure_1_1_persistence_ad9d53c96f53dae1c20c0c2b0aea99dae}{App\+Db\+Context} created from the injected IDb\+Context\+Factory$<$\+App\+Db\+Context$>$. 
+
+Inheriting XML documentation example\+: if the interface or a base member provided documentation for this method you could write {\ttfamily \texorpdfstring{$<$}{<}inheritdoc/\texorpdfstring{$>$}{>}} here to reuse it. For example\+: {\ttfamily \texorpdfstring{$<$}{<}inheritdoc cref="{}\+Arla\+Nature\+Connect.\+Core.\+Abstract.\+IRole\+Repository.\+Get\+By\+Name\+Async"{} /\texorpdfstring{$>$}{>}} 
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{comment}{//\ Usage\ example}}
+\DoxyCodeLine{IDbContextFactory<AppDbContext>\ factory\ =\ \textcolor{comment}{/*\ resolved\ from\ DI\ *\&zwj;/;}}
+\DoxyCodeLine{\textcolor{comment}{var\ repo\ =\ new\ RoleRepository(factory);}}
+\DoxyCodeLine{\textcolor{comment}{Role?\ role\ =\ await\ repo.GetByNameAsync("{}Admin"{});}}
+
+\end{DoxyCode}
+ 
+
+
+\begin{DoxyParams}{Parameters}
+{\em role\+Name} & Name of the role to look up.\\
+\hline
+{\em cancellation\+Token} & Cancellation token.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The matching \doxylink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_role}{Role}, or {\ttfamily null} when not found or on error.
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_role_repository_a14f5badfb4706e3ae7b0fd9fc9a32d4c}{Arla\+Nature\+Connect.\+Core.\+Abstract.\+IRole\+Repository}}.
+
+
+
+Definition at line \mbox{\hyperlink{_role_repository_8cs_source_l00062}{62}} of file \mbox{\hyperlink{_role_repository_8cs_source}{Role\+Repository.\+cs}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Arla\+Nature\+Connect.\+Infrastructure/\+Repositories/\mbox{\hyperlink{_role_repository_8cs}{Role\+Repository.\+cs}}\end{DoxyCompactItemize}

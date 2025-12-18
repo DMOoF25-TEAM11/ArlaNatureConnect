@@ -1,0 +1,4 @@
+var class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_page_contents_1_1_administrator45ff6fa0207d6eb5556f30733ad6527a =
+[
+    [ "AdministratorDashboardUC", "class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_page_contents_1_1_administrator45ff6fa0207d6eb5556f30733ad6527a.html#ae1028185efc55d149ea590f11cc32be5", null ]
+];

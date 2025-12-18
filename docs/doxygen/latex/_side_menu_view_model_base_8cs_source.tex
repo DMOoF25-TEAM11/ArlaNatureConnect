@@ -1,0 +1,251 @@
+\doxysection{Side\+Menu\+View\+Model\+Base.\+cs}
+\hypertarget{_side_menu_view_model_base_8cs_source}{}\label{_side_menu_view_model_base_8cs_source}\index{src/ArlaNatureConnect.WinUI/ArlaNatureConnect.WinUI/ViewModels/Abstracts/SideMenuViewModelBase.cs@{src/ArlaNatureConnect.WinUI/ArlaNatureConnect.WinUI/ViewModels/Abstracts/SideMenuViewModelBase.cs}}
+\mbox{\hyperlink{_side_menu_view_model_base_8cs}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00001}00001\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_core_1_1_abstract}{ArlaNatureConnect.Core.Abstract}};}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00002}00002\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_core_1_1_services}{ArlaNatureConnect.Core.Services}};}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00003}00003\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_domain_1_1_entities}{ArlaNatureConnect.Domain.Entities}};}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00004}00004\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_commands}{ArlaNatureConnect.WinUI.Commands}};}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00005}00005\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_services}{ArlaNatureConnect.WinUI.Services}};}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00006}00006\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages}{ArlaNatureConnect.WinUI.Views.Pages}};}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00007}00007\ }
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00008}00008\ \textcolor{keyword}{using\ }Microsoft.Extensions.DependencyInjection;}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00009}00009\ \textcolor{keyword}{using\ }Microsoft.UI.Xaml;}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00010}00010\ \textcolor{keyword}{using\ }Microsoft.UI.Xaml.Controls;}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00011}00011\ }
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00012}00012\ \textcolor{keyword}{using\ }System.Collections.ObjectModel;}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00013}00013\ \textcolor{keyword}{using\ }System.ComponentModel;}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00014}00014\ \textcolor{keyword}{using\ }System.Runtime.CompilerServices;}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00015}00015\ \textcolor{keyword}{using\ }System.Windows.Input;}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00016}00016\ }
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00017}00017\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts}{ArlaNatureConnect.WinUI.ViewModels.Abstracts}};}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00018}00018\ }
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00045}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base}{00045}}\ \textcolor{keyword}{public}\ \textcolor{keyword}{abstract}\ \textcolor{keyword}{partial\ class\ }\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base_a11ae05fd5d30ab78bd42173c442bd18f}{SideMenuViewModelBase}}\ :\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a2f28c364f9a89b72dffab6e7bb0e0b6f}{ListViewModelBase}}<IPersonRepository,\ Person>}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00046}00046\ \{}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00047}00047\ \textcolor{preprocessor}{\ \ \ \ \#region\ Types}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00048}00048\ \ \ \ \ \textcolor{comment}{//\ simple\ model\ for\ dynamic\ navigation\ buttons}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00049}00049\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{sealed}\ \textcolor{keyword}{partial\ class\ }NavItem(string\ label,\ ICommand?\ command\ =\ \textcolor{keyword}{null})\ :\ INotifyPropertyChanged}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00050}00050\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00051}00051\ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{string}\ Label\ \{\ \textcolor{keyword}{get};\ \}\ =\ label;}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00052}00052\ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}\ ICommand?\ Command\ \{\ \textcolor{keyword}{get};\ \}\ =\ command;}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00053}00053\ }
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00054}00054\ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{bool}\ IsSelected}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00055}00055\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00056}00056\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{get};}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00057}00057\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{set}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00058}00058\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00059}00059\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (field\ ==\ value)\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00060}00060\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ field\ =\ value;}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00061}00061\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_afe69f6fc4811892022c273a234f84ed7}{OnPropertyChanged}}();}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00062}00062\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00063}00063\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00064}00064\ }
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00065}00065\ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{event}\ PropertyChangedEventHandler?\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_a84af6959822f5dac7b036413ef1084e0}{PropertyChanged}};}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00066}00066\ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_afe69f6fc4811892022c273a234f84ed7}{OnPropertyChanged}}([CallerMemberName]\ \textcolor{keywordtype}{string}?\ name\ =\ \textcolor{keyword}{null})\ =>\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_a84af6959822f5dac7b036413ef1084e0}{PropertyChanged}}?.Invoke(\textcolor{keyword}{this},\ \textcolor{keyword}{new}\ PropertyChangedEventArgs(name));}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00067}00067\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00068}00068\ \textcolor{preprocessor}{\ \ \ \ \#endregion}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00069}00069\ }
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00070}00070\ \textcolor{preprocessor}{\ \ \ \ \#region\ Fields}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00071}00071\ \ \ \ \ \textcolor{keyword}{protected}\ \mbox{\hyperlink{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_navigation_view_model_base}{INavigationViewModelBase}}?\ \_navigationViewModel;}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00072}00072\ \ \ \ \ \textcolor{keyword}{private}\ readonly\ \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_person_repository}{IPersonRepository}}\ \_repository;}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00073}00073\ \ \ \ \ \textcolor{keyword}{private}\ readonly\ \mbox{\hyperlink{interface_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_i_navigation_handler}{INavigationHandler}}\ \_navigationHandler;}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00074}00074\ \textcolor{preprocessor}{\ \ \ \ \#endregion}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00075}00075\ }
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00076}00076\ \textcolor{preprocessor}{\ \ \ \ \#region\ Constructors}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00077}00077\ }
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00081}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base_a11ae05fd5d30ab78bd42173c442bd18f}{00081}}\ \ \ \ \ \textcolor{keyword}{protected}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base_a11ae05fd5d30ab78bd42173c442bd18f}{SideMenuViewModelBase}}(}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00082}00082\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services}{IStatusInfoServices}}\ statusInfoServices,}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00083}00083\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service}{IAppMessageService}}\ appMessageService,}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00084}00084\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_person_repository}{IPersonRepository}}\ repository,}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00085}00085\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{interface_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_i_navigation_handler}{INavigationHandler}}\ navigationHandler}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00086}00086\ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00087}00087\ \ \ \ \ \ \ \ \ :\ base(statusInfoServices,\ appMessageService,\ repository)}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00088}00088\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00089}00089\ \ \ \ \ \ \ \ \ \_repository\ =\ repository;}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00090}00090\ \ \ \ \ \ \ \ \ \_navigationHandler\ =\ navigationHandler;}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00091}00091\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base_a63c500cf8930e0624a5ae0f801a8ff31}{NavigationCommand}}\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command}{RelayCommand<object>}}(\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base_a6e80fa364f4ce976af726d1246357916}{OnNavigate}},\ CanNavigate);}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00092}00092\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base_a72316d59aed2c71c2df18762c7536add}{LogoutCommand}}\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command}{RelayCommand<object>}}(\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base_ada78a14fed9d722098f0abd2a871dd7a}{OnLogout}},\ CanLogout);}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00093}00093\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00094}00094\ \textcolor{preprocessor}{\ \ \ \ \#endregion}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00095}00095\ }
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00096}00096\ \textcolor{preprocessor}{\ \ \ \ \#region\ Properties}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00100}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base_a70a3768d117649f7471df105f31869e8}{00100}}\ \ \ \ \ \textcolor{keyword}{public}\ ObservableCollection<Person>\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base_a70a3768d117649f7471df105f31869e8}{AvailablePersons}}\ \{\ \textcolor{keyword}{get};\ \textcolor{keyword}{set};\ \}\ =\ [];}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00101}00101\ }
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00102}00102\ }
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00106}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base_a7d7843cf83627560f72675b0435cf3ad}{00106}}\ \ \ \ \ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_person}{Person}}?\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base_a7d7843cf83627560f72675b0435cf3ad}{SelectedPerson}}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00107}00107\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00108}00108\ \ \ \ \ \ \ \ \ \textcolor{keyword}{get};}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00109}00109\ \ \ \ \ \ \ \ \ \textcolor{keyword}{set}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00110}00110\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00111}00111\ \ \ \ \ \ \ \ \ \ \ \ \ field\ =\ value;}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00112}00112\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_afe69f6fc4811892022c273a234f84ed7}{OnPropertyChanged}}();}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00113}00113\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (value\ !=\ \textcolor{keyword}{null})}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00114}00114\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00115}00115\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ TODO:\ Notify\ StatusInfoServices\ of\ selected\ person\ change?}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00116}00116\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command}{RelayCommand<Person>}}?\ chooseCommand\ =\ \_navigationViewModel?.\mbox{\hyperlink{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_navigation_view_model_base_a2da2bd8413bff257c2d3aa55a2c4c944}{ChooseUserCommand}};}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00117}00117\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (chooseCommand\ !=\ \textcolor{keyword}{null}\ \&\&\ chooseCommand.\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command-1-g_a021d7037d23c04cd94e63bd629c3118d}{CanExecute}}(value))}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00118}00118\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00119}00119\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ chooseCommand.\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command-1-g_aea5020be06b284db958dd480895fde41}{Execute}}(value);}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00120}00120\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00121}00121\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00122}00122\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00123}00123\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00124}00124\ }
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00125}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base_a2384bb91266ff344bacbaf03256aed36}{00125}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base_a2384bb91266ff344bacbaf03256aed36}{IsLoading}}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00126}00126\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00127}00127\ \ \ \ \ \ \ \ \ \textcolor{keyword}{get};}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00128}00128\ \ \ \ \ \ \ \ \ \textcolor{keyword}{set}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00129}00129\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00130}00130\ \ \ \ \ \ \ \ \ \ \ \ \ field\ =\ value;}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00131}00131\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_afe69f6fc4811892022c273a234f84ed7}{OnPropertyChanged}}();}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00132}00132\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00133}00133\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00138}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base_a63c500cf8930e0624a5ae0f801a8ff31}{00138}}\ \ \ \ \ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command}{RelayCommand<object>}}?\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base_a63c500cf8930e0624a5ae0f801a8ff31}{NavigationCommand}}\ \{\ \textcolor{keyword}{get};\ \textcolor{keyword}{protected}\ \textcolor{keyword}{set};\ \}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00139}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base_a72316d59aed2c71c2df18762c7536add}{00139}}\ \ \ \ \ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command}{RelayCommand<object>}}?\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base_a72316d59aed2c71c2df18762c7536add}{LogoutCommand}}\ \{\ \textcolor{keyword}{get};\ \textcolor{keyword}{protected}\ \textcolor{keyword}{set};\ \}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00140}00140\ \textcolor{preprocessor}{\ \ \ \ \#endregion}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00141}00141\ }
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00142}00142\ \textcolor{preprocessor}{\ \ \ \ \#region\ Load\ handlers}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00143}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base_a0d89c5470d8218b71201ad857c4f4e48}{00143}}\ \ \ \ \ \textcolor{keyword}{public}\ async\ Task\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base_a0d89c5470d8218b71201ad857c4f4e48}{LoadAvailablePersonsAsync}}(\textcolor{keywordtype}{string}\ role)}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00144}00144\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00145}00145\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\textcolor{keywordtype}{string}.IsNullOrWhiteSpace(role))}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00146}00146\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00147}00147\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Ensure\ property\ change\ happens\ on\ UI\ thread\ when\ possible}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00148}00148\ \ \ \ \ \ \ \ \ \ \ \ \ TrySetAvailablePersons([]);}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00149}00149\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00150}00150\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00151}00151\ }
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00152}00152\ \ \ \ \ \ \ \ \ IEnumerable<Person>\ persons\ =\ await\ \_repository.GetPersonsByRoleAsync(role);}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00153}00153\ }
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00154}00154\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Set\ AvailablePersons\ on\ UI\ thread\ when\ possible\ so\ bindings\ update\ correctly\ in\ WinUI}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00155}00155\ \ \ \ \ \ \ \ \ TrySetAvailablePersons(persons);}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00156}00156\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00157}00157\ \textcolor{preprocessor}{\ \ \ \ \#endregion}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00158}00158\ }
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00159}00159\ \textcolor{preprocessor}{\ \ \ \ \#region\ Commands}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00164}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base_a6e80fa364f4ce976af726d1246357916}{00164}}\ \ \ \ \ \textcolor{keyword}{protected}\ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base_a6e80fa364f4ce976af726d1246357916}{OnNavigate}}(\textcolor{keywordtype}{object}?\ parameter)}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00165}00165\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00166}00166\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00167}00167\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00168}00168\ \ \ \ \ \ \ \ \ \ \ \ \ ArgumentNullException.ThrowIfNull(parameter);}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00169}00169\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_navigationViewModel\ ==\ \textcolor{keyword}{null})}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00170}00170\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \textcolor{keyword}{new}\ InvalidOperationException(\textcolor{stringliteral}{"{}No\ host\ navigation\ view-\/model\ set."{}});}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00171}00171\ }
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00172}00172\ }
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00173}00173\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ If\ parameter\ is\ a\ UserControl,\ set\ it\ directly\ as\ the\ host\ page\ content}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00174}00174\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (parameter\ is\ UserControl\ uc\ \&\&\ \_navigationViewModel\ is\ NavigationViewModelBase\ hostVm)}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00175}00175\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00176}00176\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{\ uc.DataContext\ =\ hostVm;\ \}\ \textcolor{keywordflow}{catch}\ \{\ \}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00177}00177\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ hostVm.GetType().GetProperty(\textcolor{stringliteral}{"{}CurrentContent"{}})?.SetValue(hostVm,\ uc);}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00178}00178\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00179}00179\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00180}00180\ }
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00181}00181\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ If\ parameter\ is\ a\ factory\ that\ returns\ a\ control\ or\ element,\ invoke\ and\ assign}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00182}00182\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (parameter\ is\ Func<object?>\ factory\ \&\&\ \_navigationViewModel\ is\ NavigationViewModelBase\ hostVm2)}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00183}00183\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00184}00184\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{object}?\ obj\ =\ \textcolor{keyword}{null};}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00185}00185\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{\ obj\ =\ factory();\ \}\ \textcolor{keywordflow}{catch}\ \{\ obj\ =\ \textcolor{keyword}{null};\ \}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00186}00186\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (obj\ is\ FrameworkElement\ fe)}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00187}00187\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00188}00188\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{\ fe.DataContext\ =\ hostVm2;\ \}\ \textcolor{keywordflow}{catch}\ \{\ \}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00189}00189\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00190}00190\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (obj\ is\ UserControl\ userControl)}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00191}00191\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00192}00192\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ hostVm2.GetType().GetProperty(\textcolor{stringliteral}{"{}CurrentContent"{}})?.SetValue(hostVm2,\ userControl);}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00193}00193\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00194}00194\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00195}00195\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00196}00196\ }
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00197}00197\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Otherwise\ try\ forwarding\ to\ host\ navigation\ command\ if\ available}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00198}00198\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_navigationViewModel\ is\ NavigationViewModelBase\ hostVm3)}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00199}00199\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00200}00200\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command}{RelayCommand<object>}}?\ hostCmd\ =\ hostVm3.NavigationCommand;}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00201}00201\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (hostCmd\ !=\ \textcolor{keyword}{null}\ \&\&\ hostCmd.\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command-1-g_a021d7037d23c04cd94e63bd629c3118d}{CanExecute}}(parameter))}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00202}00202\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00203}00203\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ hostCmd.\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command-1-g_aea5020be06b284db958dd480895fde41}{Execute}}(parameter);}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00204}00204\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00205}00205\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00206}00206\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00207}00207\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00208}00208\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{catch}\ (Exception\ ex)}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00209}00209\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00210}00210\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \textcolor{keyword}{new}\ InvalidOperationException(\textcolor{stringliteral}{"{}OnNavigate\ failed"{}},\ ex);}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00211}00211\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00212}00212\ }
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00213}00213\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ No\ host\ available\ or\ unable\ to\ set\ content:\ remain\ a\ no-\/op.}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00214}00214\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00215}00215\ }
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00216}00216\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{bool}\ CanNavigate(\textcolor{keywordtype}{object}?\ parameter)}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00217}00217\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00218}00218\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (parameter\ ==\ \textcolor{keyword}{null})\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00219}00219\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (parameter\ is\ \textcolor{keywordtype}{string}\ s)\ \textcolor{keywordflow}{return}\ !\textcolor{keywordtype}{string}.IsNullOrWhiteSpace(s);}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00220}00220\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (parameter\ is\ System.Delegate)\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00221}00221\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00222}00222\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00223}00223\ }
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00224}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base_ada78a14fed9d722098f0abd2a871dd7a}{00224}}\ \ \ \ \ \textcolor{keyword}{protected}\ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base_ada78a14fed9d722098f0abd2a871dd7a}{OnLogout}}(\textcolor{keywordtype}{object}?\ parameter)}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00225}00225\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00226}00226\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00227}00227\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00228}00228\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Clear\ selected\ person\ and\ any\ local\ state}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00229}00229\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base_a7d7843cf83627560f72675b0435cf3ad}{SelectedPerson}}\ =\ \textcolor{keyword}{null};}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00230}00230\ }
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00231}00231\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Try\ to\ resolve\ the\ NavigationHandler\ from\ the\ host\ DI\ container\ and\ navigate\ to\ LoginPage}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00232}00232\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{interface_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_i_navigation_handler}{INavigationHandler}}?\ navigationHandler\ =\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_app}{App}}.\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_app_a0aa62a7a04419f5e8af40c25248a4834}{HostInstance}}?.Services.GetService<\mbox{\hyperlink{interface_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_i_navigation_handler}{INavigationHandler}}>();}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00233}00233\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (navigationHandler\ !=\ \textcolor{keyword}{null})}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00234}00234\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00235}00235\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ navigationHandler.\mbox{\hyperlink{interface_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_i_navigation_handler_a5abc4891e86edbf8164afc6555f99c44}{Navigate}}(typeof(\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_login_page}{LoginPage}}));}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00236}00236\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00237}00237\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00238}00238\ }
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00239}00239\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Fallback:\ attempt\ to\ get\ NavigationHandler\ via\ GetRequiredService\ (throws\ if\ missing)}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00240}00240\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00241}00241\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00242}00242\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{interface_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_i_navigation_handler}{INavigationHandler}}?\ required\ =\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_app}{App}}.\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_app_a0aa62a7a04419f5e8af40c25248a4834}{HostInstance}}?.Services.GetRequiredService<\mbox{\hyperlink{interface_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_i_navigation_handler}{INavigationHandler}}>();}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00243}00243\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ required?.\mbox{\hyperlink{interface_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_i_navigation_handler_a5abc4891e86edbf8164afc6555f99c44}{Navigate}}(typeof(\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_login_page}{LoginPage}}));}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00244}00244\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00245}00245\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{catch}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00246}00246\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00247}00247\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ swallow\ -\/\ best\ effort\ navigation}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00248}00248\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00249}00249\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00250}00250\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{catch}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00251}00251\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00252}00252\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ swallow\ -\/\ logout\ is\ best-\/effort}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00253}00253\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00254}00254\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00255}00255\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{bool}\ CanLogout(\textcolor{keywordtype}{object}?\ parameter)}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00256}00256\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00257}00257\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00258}00258\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00259}00259\ \textcolor{preprocessor}{\ \ \ \ \#endregion}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00260}00260\ }
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00261}00261\ \textcolor{preprocessor}{\ \ \ \ \#region\ Helpers}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00262}00262\ \ \ \ \ \textcolor{comment}{//\ Add\ helper\ methods\ here\ if\ needed}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00263}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base_a36a043ba8e849ed275121ded3d4d1cb6}{00263}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base_a36a043ba8e849ed275121ded3d4d1cb6}{SetHostPageViewModel}}(\textcolor{keywordtype}{object}?\ vm)\ \{\ \_navigationViewModel\ =\ vm\ as\ \mbox{\hyperlink{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_navigation_view_model_base}{INavigationViewModelBase}};\ \}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00264}00264\ }
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00265}00265\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{void}\ TrySetAvailablePersons(IEnumerable<Person>\ persons)}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00266}00266\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00267}00267\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00268}00268\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00269}00269\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Inline\ comment:\ materialize\ enumerable\ to\ avoid\ deferred\ execution\ and\ potential\ collection-\/modification\ issues}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00270}00270\ \ \ \ \ \ \ \ \ \ \ \ \ List<Person>\ availablePersons\ =\ [..\ persons];}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00271}00271\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base_a70a3768d117649f7471df105f31869e8}{AvailablePersons}}.Clear();}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00272}00272\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{foreach}\ (\mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_person}{Person}}\ person\ \textcolor{keywordflow}{in}\ availablePersons)}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00273}00273\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00274}00274\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base_a70a3768d117649f7471df105f31869e8}{AvailablePersons}}.Add(person);}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00275}00275\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00276}00276\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00277}00277\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{catch}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00278}00278\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00279}00279\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ last\ resort:\ set\ directly}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00280}00280\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base_a70a3768d117649f7471df105f31869e8}{AvailablePersons}}.Clear();}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00281}00281\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{foreach}\ (\mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_person}{Person}}\ person\ \textcolor{keywordflow}{in}\ persons)}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00282}00282\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00283}00283\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base_a70a3768d117649f7471df105f31869e8}{AvailablePersons}}.Add(person);}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00284}00284\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00285}00285\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00286}00286\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00287}00287\ \textcolor{preprocessor}{\ \ \ \ \#endregion}}
+\DoxyCodeLine{\Hypertarget{_side_menu_view_model_base_8cs_source_l00288}00288\ \}}
+
+\end{DoxyCode}

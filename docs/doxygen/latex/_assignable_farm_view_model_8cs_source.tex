@@ -1,0 +1,272 @@
+\doxysection{Assignable\+Farm\+View\+Model.\+cs}
+\hypertarget{_assignable_farm_view_model_8cs_source}{}\label{_assignable_farm_view_model_8cs_source}\index{src/ArlaNatureConnect.WinUI/ArlaNatureConnect.WinUI/ViewModels/Items/AssignableFarmViewModel.cs@{src/ArlaNatureConnect.WinUI/ArlaNatureConnect.WinUI/ViewModels/Items/AssignableFarmViewModel.cs}}
+\mbox{\hyperlink{_assignable_farm_view_model_8cs}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00001}00001\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_core_1_1_d_t_os}{ArlaNatureConnect.Core.DTOs}};}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00002}00002\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts}{ArlaNatureConnect.WinUI.ViewModels.Abstracts}};}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00003}00003\ \textcolor{keyword}{using\ }static\ \mbox{\hyperlink{namespace_arla_nature_connect}{ArlaNatureConnect}}.\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i}{WinUI}}.\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_helpers}{Helpers}}.\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_helpers_1_1_priority_translator}{PriorityTranslator}};}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00004}00004\ }
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00005}\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items}{00005}}\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items}{ArlaNatureConnect.WinUI.ViewModels.Items}};}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00006}00006\ }
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00007}00007\ \textcolor{comment}{//\ Purpose:\ View-\/model\ wrapper\ for\ FarmAssignmentOverviewDto\ providing\ change\ notifications\ for\ the\ UI\ list.}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00008}00008\ \textcolor{comment}{//\ Notes:\ Keeps\ WinUI\ bindings\ simple\ while\ allowing\ service\ data\ to\ refresh\ individual\ items\ in-\/place.}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00009}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model}{00009}}\ \textcolor{keyword}{public}\ \textcolor{keyword}{sealed}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a4fc50b8cfb85e86716aa74cb00320315}{AssignableFarmViewModel}}\ :\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base}{ViewModelBase}}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00010}00010\ \{}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00011}00011\ \textcolor{preprocessor}{\ \ \ \ \#region\ Fields}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00012}00012\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{bool}\ \_hasActiveCase;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00013}00013\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{string}\ \_farmName\ =\ \textcolor{keywordtype}{string}.Empty;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00014}00014\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{string}\ \_cvr\ =\ \textcolor{keywordtype}{string}.Empty;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00015}00015\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{string}\ \_ownerFirstName\ =\ \textcolor{keywordtype}{string}.Empty;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00016}00016\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{string}\ \_ownerLastName\ =\ \textcolor{keywordtype}{string}.Empty;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00017}00017\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{string}\ \_ownerEmail\ =\ \textcolor{keywordtype}{string}.Empty;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00018}00018\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{string}\ \_street\ =\ \textcolor{keywordtype}{string}.Empty;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00019}00019\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{string}\ \_city\ =\ \textcolor{keywordtype}{string}.Empty;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00020}00020\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{string}\ \_postalCode\ =\ \textcolor{keywordtype}{string}.Empty;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00021}00021\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{string}\ \_country\ =\ \textcolor{keywordtype}{string}.Empty;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00022}00022\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{string}\ \_addressLine\ =\ \textcolor{keywordtype}{string}.Empty;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00023}00023\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{string}\ \_consultantName\ =\ \textcolor{keywordtype}{string}.Empty;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00024}00024\ \ \ \ \ \textcolor{keyword}{private}\ Guid?\ \_assignedConsultantId;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00025}00025\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{string}?\ \_priority;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00026}00026\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{string}?\ \_notes;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00027}00027\ \textcolor{preprocessor}{\ \ \ \ \#endregion}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00028}00028\ }
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00029}00029\ \textcolor{preprocessor}{\ \ \ \ \#region\ Field\ Commands}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00030}00030\ \textcolor{preprocessor}{\ \ \ \ \#endregion}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00031}00031\ }
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00032}00032\ \textcolor{preprocessor}{\ \ \ \ \#region\ Event\ Handlers}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00033}00033\ \textcolor{preprocessor}{\ \ \ \ \#endregion}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00034}00034\ }
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00035}00035\ \textcolor{preprocessor}{\ \ \ \ \#region\ Properties}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00036}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a859a81e76c3a5e1c17d64b299b89ae48}{00036}}\ \ \ \ \ \textcolor{keyword}{public}\ Guid\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a859a81e76c3a5e1c17d64b299b89ae48}{FarmId}}\ \{\ \textcolor{keyword}{get};\ \}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00037}00037\ \textcolor{preprocessor}{\ \ \ \ \#endregion}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00038}00038\ }
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00039}00039\ \textcolor{preprocessor}{\ \ \ \ \#region\ Observable\ Properties}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00040}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a079a076c8cb4f5b145abd9932eeeb877}{00040}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{string}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a079a076c8cb4f5b145abd9932eeeb877}{FarmName}}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00041}00041\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00042}00042\ \ \ \ \ \ \ \ \ \textcolor{keyword}{get}\ =>\ \_farmName;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00043}00043\ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keyword}{set}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00044}00044\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00045}00045\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_farmName\ ==\ value)\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00046}00046\ \ \ \ \ \ \ \ \ \ \ \ \ \_farmName\ =\ value;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00047}00047\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_afe69f6fc4811892022c273a234f84ed7}{OnPropertyChanged}}();}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00048}00048\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00049}00049\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00050}00050\ }
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00051}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a4b769cce01c234e954426ebe622172cc}{00051}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{string}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a4b769cce01c234e954426ebe622172cc}{Cvr}}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00052}00052\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00053}00053\ \ \ \ \ \ \ \ \ \textcolor{keyword}{get}\ =>\ \_cvr;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00054}00054\ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keyword}{set}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00055}00055\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00056}00056\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_cvr\ ==\ value)\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00057}00057\ \ \ \ \ \ \ \ \ \ \ \ \ \_cvr\ =\ value;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00058}00058\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_afe69f6fc4811892022c273a234f84ed7}{OnPropertyChanged}}();}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00059}00059\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00060}00060\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00061}00061\ }
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00062}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_addd127f7c424b87d152307fb272cbf52}{00062}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{string}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_addd127f7c424b87d152307fb272cbf52}{OwnerFirstName}}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00063}00063\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00064}00064\ \ \ \ \ \ \ \ \ \textcolor{keyword}{get}\ =>\ \_ownerFirstName;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00065}00065\ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keyword}{set}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00066}00066\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00067}00067\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_ownerFirstName\ ==\ value)\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00068}00068\ \ \ \ \ \ \ \ \ \ \ \ \ \_ownerFirstName\ =\ value;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00069}00069\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_afe69f6fc4811892022c273a234f84ed7}{OnPropertyChanged}}();}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00070}00070\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_afe69f6fc4811892022c273a234f84ed7}{OnPropertyChanged}}(nameof(\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a87283c144cdeb319de0dd627ab4f3508}{OwnerName}}));}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00071}00071\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00072}00072\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00073}00073\ }
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00074}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a6a494710cc3d09e45e6466d519dd5622}{00074}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{string}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a6a494710cc3d09e45e6466d519dd5622}{OwnerLastName}}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00075}00075\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00076}00076\ \ \ \ \ \ \ \ \ \textcolor{keyword}{get}\ =>\ \_ownerLastName;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00077}00077\ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keyword}{set}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00078}00078\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00079}00079\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_ownerLastName\ ==\ value)\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00080}00080\ \ \ \ \ \ \ \ \ \ \ \ \ \_ownerLastName\ =\ value;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00081}00081\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_afe69f6fc4811892022c273a234f84ed7}{OnPropertyChanged}}();}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00082}00082\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_afe69f6fc4811892022c273a234f84ed7}{OnPropertyChanged}}(nameof(\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a87283c144cdeb319de0dd627ab4f3508}{OwnerName}}));}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00083}00083\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00084}00084\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00085}00085\ }
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00086}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_aac073c8f5e8e042bf332fea1af5a9991}{00086}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{string}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_aac073c8f5e8e042bf332fea1af5a9991}{OwnerEmail}}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00087}00087\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00088}00088\ \ \ \ \ \ \ \ \ \textcolor{keyword}{get}\ =>\ \_ownerEmail;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00089}00089\ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keyword}{set}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00090}00090\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00091}00091\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_ownerEmail\ ==\ value)\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00092}00092\ \ \ \ \ \ \ \ \ \ \ \ \ \_ownerEmail\ =\ value;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00093}00093\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_afe69f6fc4811892022c273a234f84ed7}{OnPropertyChanged}}();}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00094}00094\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00095}00095\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00096}00096\ }
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00097}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a87283c144cdeb319de0dd627ab4f3508}{00097}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{string}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a87283c144cdeb319de0dd627ab4f3508}{OwnerName}}\ =>\ \$\textcolor{stringliteral}{"{}\{OwnerFirstName\}\ \{OwnerLastName\}"{}}.Trim();}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00098}00098\ }
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00099}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_ae472378992184c7d432d096f75b8a7b3}{00099}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{string}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_ae472378992184c7d432d096f75b8a7b3}{Street}}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00100}00100\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00101}00101\ \ \ \ \ \ \ \ \ \textcolor{keyword}{get}\ =>\ \_street;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00102}00102\ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keyword}{set}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00103}00103\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00104}00104\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_street\ ==\ value)\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00105}00105\ \ \ \ \ \ \ \ \ \ \ \ \ \_street\ =\ value;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00106}00106\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_afe69f6fc4811892022c273a234f84ed7}{OnPropertyChanged}}();}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00107}00107\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_afe69f6fc4811892022c273a234f84ed7}{OnPropertyChanged}}(nameof(\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a59f3210b99484594127dd5279b37dd68}{AddressLine}}));}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00108}00108\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00109}00109\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00110}00110\ }
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00111}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a53c8f15e4246f20dc38fed2bc701f68c}{00111}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{string}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a53c8f15e4246f20dc38fed2bc701f68c}{City}}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00112}00112\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00113}00113\ \ \ \ \ \ \ \ \ \textcolor{keyword}{get}\ =>\ \_city;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00114}00114\ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keyword}{set}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00115}00115\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00116}00116\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_city\ ==\ value)\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00117}00117\ \ \ \ \ \ \ \ \ \ \ \ \ \_city\ =\ value;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00118}00118\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_afe69f6fc4811892022c273a234f84ed7}{OnPropertyChanged}}();}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00119}00119\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_afe69f6fc4811892022c273a234f84ed7}{OnPropertyChanged}}(nameof(\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a59f3210b99484594127dd5279b37dd68}{AddressLine}}));}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00120}00120\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00121}00121\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00122}00122\ }
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00123}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_ae8e06e2771053e612d24df1e06a79da2}{00123}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{string}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_ae8e06e2771053e612d24df1e06a79da2}{PostalCode}}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00124}00124\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00125}00125\ \ \ \ \ \ \ \ \ \textcolor{keyword}{get}\ =>\ \_postalCode;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00126}00126\ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keyword}{set}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00127}00127\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00128}00128\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_postalCode\ ==\ value)\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00129}00129\ \ \ \ \ \ \ \ \ \ \ \ \ \_postalCode\ =\ value;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00130}00130\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_afe69f6fc4811892022c273a234f84ed7}{OnPropertyChanged}}();}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00131}00131\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_afe69f6fc4811892022c273a234f84ed7}{OnPropertyChanged}}(nameof(\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a59f3210b99484594127dd5279b37dd68}{AddressLine}}));}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00132}00132\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00133}00133\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00134}00134\ }
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00135}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_aa300fce2e383783911b2344548208243}{00135}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{string}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_aa300fce2e383783911b2344548208243}{Country}}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00136}00136\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00137}00137\ \ \ \ \ \ \ \ \ \textcolor{keyword}{get}\ =>\ \_country;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00138}00138\ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keyword}{set}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00139}00139\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00140}00140\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_country\ ==\ value)\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00141}00141\ \ \ \ \ \ \ \ \ \ \ \ \ \_country\ =\ value;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00142}00142\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_afe69f6fc4811892022c273a234f84ed7}{OnPropertyChanged}}();}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00143}00143\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00144}00144\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00145}00145\ }
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00146}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a59f3210b99484594127dd5279b37dd68}{00146}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{string}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a59f3210b99484594127dd5279b37dd68}{AddressLine}}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00147}00147\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00148}00148\ \ \ \ \ \ \ \ \ \textcolor{keyword}{get}\ =>\ \_addressLine;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00149}00149\ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keyword}{set}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00150}00150\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00151}00151\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_addressLine\ ==\ value)\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00152}00152\ \ \ \ \ \ \ \ \ \ \ \ \ \_addressLine\ =\ value;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00153}00153\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_afe69f6fc4811892022c273a234f84ed7}{OnPropertyChanged}}();}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00154}00154\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00155}00155\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00156}00156\ }
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00157}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_af0e9e2a5c20cb761fc83e9699a92c23f}{00157}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{string}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_af0e9e2a5c20cb761fc83e9699a92c23f}{ConsultantName}}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00158}00158\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00159}00159\ \ \ \ \ \ \ \ \ \textcolor{keyword}{get}\ =>\ \_consultantName;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00160}00160\ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keyword}{set}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00161}00161\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00162}00162\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_consultantName\ ==\ value)\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00163}00163\ \ \ \ \ \ \ \ \ \ \ \ \ \_consultantName\ =\ value;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00164}00164\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_afe69f6fc4811892022c273a234f84ed7}{OnPropertyChanged}}();}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00165}00165\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_afe69f6fc4811892022c273a234f84ed7}{OnPropertyChanged}}(nameof(\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a22b6f822b8ca27f9506dbe7031871db4}{ConsultantDisplay}}));}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00166}00166\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00167}00167\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00168}00168\ }
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00169}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_afce3351b4e9a02712bf625a51ea573f3}{00169}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_afce3351b4e9a02712bf625a51ea573f3}{HasActiveCase}}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00170}00170\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00171}00171\ \ \ \ \ \ \ \ \ \textcolor{keyword}{get}\ =>\ \_hasActiveCase;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00172}00172\ \ \ \ \ \ \ \ \ \textcolor{keyword}{set}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00173}00173\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00174}00174\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_hasActiveCase\ ==\ value)\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00175}00175\ \ \ \ \ \ \ \ \ \ \ \ \ \_hasActiveCase\ =\ value;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00176}00176\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_afe69f6fc4811892022c273a234f84ed7}{OnPropertyChanged}}();}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00177}00177\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_afe69f6fc4811892022c273a234f84ed7}{OnPropertyChanged}}(nameof(\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a8db4bdbde182cca2a4c8bbe39aa80e67}{StatusLabel}}));}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00178}00178\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00179}00179\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00180}00180\ }
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00181}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a8db4bdbde182cca2a4c8bbe39aa80e67}{00181}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{string}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a8db4bdbde182cca2a4c8bbe39aa80e67}{StatusLabel}}\ =>\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_afce3351b4e9a02712bf625a51ea573f3}{HasActiveCase}}\ ?\ \textcolor{stringliteral}{"{}Tilføjet"{}}\ :\ \textcolor{stringliteral}{"{}Ikke\ tilføjet"{}};}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00182}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a22b6f822b8ca27f9506dbe7031871db4}{00182}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{string}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a22b6f822b8ca27f9506dbe7031871db4}{ConsultantDisplay}}\ =>\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_afce3351b4e9a02712bf625a51ea573f3}{HasActiveCase}}\ \&\&\ !\textcolor{keywordtype}{string}.IsNullOrWhiteSpace(\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_af0e9e2a5c20cb761fc83e9699a92c23f}{ConsultantName}})}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00183}00183\ \ \ \ \ \ \ \ \ ?\ \$\textcolor{stringliteral}{"{}Konsulent:\ \{ConsultantName\}"{}}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00184}00184\ \ \ \ \ \ \ \ \ :\ \textcolor{keywordtype}{string}.Empty;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00185}00185\ }
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00186}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a4cfcb5ab918f2d0cbe19067d7eaa5425}{00186}}\ \ \ \ \ \textcolor{keyword}{public}\ Guid?\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a4cfcb5ab918f2d0cbe19067d7eaa5425}{AssignedConsultantId}}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00187}00187\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00188}00188\ \ \ \ \ \ \ \ \ \textcolor{keyword}{get}\ =>\ \_assignedConsultantId;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00189}00189\ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keyword}{set}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00190}00190\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00191}00191\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_assignedConsultantId\ ==\ value)\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00192}00192\ \ \ \ \ \ \ \ \ \ \ \ \ \_assignedConsultantId\ =\ value;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00193}00193\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_afe69f6fc4811892022c273a234f84ed7}{OnPropertyChanged}}();}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00194}00194\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00195}00195\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00196}00196\ }
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00197}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a1876e579e53f054c51e51d74cf538c92}{00197}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{string}?\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a1876e579e53f054c51e51d74cf538c92}{Priority}}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00198}00198\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00199}00199\ \ \ \ \ \ \ \ \ \textcolor{keyword}{get}\ =>\ \_priority;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00200}00200\ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keyword}{set}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00201}00201\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00202}00202\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_priority\ ==\ value)\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00203}00203\ \ \ \ \ \ \ \ \ \ \ \ \ \_priority\ =\ value;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00204}00204\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_afe69f6fc4811892022c273a234f84ed7}{OnPropertyChanged}}();}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00205}00205\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_afe69f6fc4811892022c273a234f84ed7}{OnPropertyChanged}}(nameof(\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a2fb8c40e7e60163ba159039c8351c9f4}{PriorityDisplay}}));}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00206}00206\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_afe69f6fc4811892022c273a234f84ed7}{OnPropertyChanged}}(nameof(\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_af2a7b233c530394e5824bae95c17acac}{HasPriority}}));}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00207}00207\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00208}00208\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00209}00209\ }
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00210}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a57fbf5f724fe989d9f5965386821d61a}{00210}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{string}?\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a57fbf5f724fe989d9f5965386821d61a}{Notes}}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00211}00211\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00212}00212\ \ \ \ \ \ \ \ \ \textcolor{keyword}{get}\ =>\ \_notes;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00213}00213\ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keyword}{set}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00214}00214\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00215}00215\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_notes\ ==\ value)\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00216}00216\ \ \ \ \ \ \ \ \ \ \ \ \ \_notes\ =\ value;}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00217}00217\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_afe69f6fc4811892022c273a234f84ed7}{OnPropertyChanged}}();}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00218}00218\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00219}00219\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00220}00220\ }
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00224}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a2fb8c40e7e60163ba159039c8351c9f4}{00224}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{string}?\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a2fb8c40e7e60163ba159039c8351c9f4}{PriorityDisplay}}\ =>\ ToDanish(\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a1876e579e53f054c51e51d74cf538c92}{Priority}});}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00225}00225\ }
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00229}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_af2a7b233c530394e5824bae95c17acac}{00229}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_af2a7b233c530394e5824bae95c17acac}{HasPriority}}\ =>\ !\textcolor{keywordtype}{string}.IsNullOrWhiteSpace(\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a1876e579e53f054c51e51d74cf538c92}{Priority}});}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00230}00230\ }
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00231}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_af628489c04688050351416c6acdb2a51}{00231}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{string}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_af628489c04688050351416c6acdb2a51}{SearchContent}}\ =>\ \$\textcolor{stringliteral}{"{}\{FarmName\}\ \{OwnerName\}\ \{Cvr\}\ \{Street\}\ \{City\}\ \{PostalCode\}"{}}.ToLowerInvariant();}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00232}00232\ \textcolor{preprocessor}{\ \ \ \ \#endregion}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00233}00233\ }
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00234}00234\ \textcolor{preprocessor}{\ \ \ \ \#region\ Load\ Handler}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00235}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a4fc50b8cfb85e86716aa74cb00320315}{00235}}\ \ \ \ \ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a4fc50b8cfb85e86716aa74cb00320315}{AssignableFarmViewModel}}(\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_d_t_os_1_1_farm_assignment_overview_dto}{FarmAssignmentOverviewDto}}\ dto)}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00236}00236\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00237}00237\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a859a81e76c3a5e1c17d64b299b89ae48}{FarmId}}\ =\ dto.\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_d_t_os_1_1_farm_assignment_overview_dto_a0aa07e79be914338f762b937e221901e}{FarmId}};}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00238}00238\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a46d2a170b677386de05305d4f3097b22}{Apply}}(dto);}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00239}00239\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00240}00240\ \textcolor{preprocessor}{\ \ \ \ \#endregion}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00241}00241\ }
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00242}00242\ \textcolor{preprocessor}{\ \ \ \ \#region\ Commands}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00243}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a46d2a170b677386de05305d4f3097b22}{00243}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a46d2a170b677386de05305d4f3097b22}{Apply}}(\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_d_t_os_1_1_farm_assignment_overview_dto}{FarmAssignmentOverviewDto}}\ dto)}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00244}00244\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00245}00245\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a079a076c8cb4f5b145abd9932eeeb877}{FarmName}}\ =\ dto.\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_d_t_os_1_1_farm_assignment_overview_dto_a358a37350474ea72e95ac753bd8e4f91}{FarmName}};}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00246}00246\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a4b769cce01c234e954426ebe622172cc}{Cvr}}\ =\ dto.\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_d_t_os_1_1_farm_assignment_overview_dto_a2ec3e62d89300e9a3e202c09bac3a6e0}{Cvr}};}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00247}00247\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_addd127f7c424b87d152307fb272cbf52}{OwnerFirstName}}\ =\ dto.\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_d_t_os_1_1_farm_assignment_overview_dto_a3ad00115fcd6b938510942e971b63925}{OwnerFirstName}};}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00248}00248\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a6a494710cc3d09e45e6466d519dd5622}{OwnerLastName}}\ =\ dto.\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_d_t_os_1_1_farm_assignment_overview_dto_a137ecd9242c6534e016be25f6c8e3d5d}{OwnerLastName}};}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00249}00249\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_aac073c8f5e8e042bf332fea1af5a9991}{OwnerEmail}}\ =\ dto.\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_d_t_os_1_1_farm_assignment_overview_dto_a0d484904f2938f66acba984d16e7c1b6}{OwnerEmail}};}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00250}00250\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_ae472378992184c7d432d096f75b8a7b3}{Street}}\ =\ dto.\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_d_t_os_1_1_farm_assignment_overview_dto_a97686b2cff39b64939ba6ab0b074dfd4}{Street}};}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00251}00251\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a53c8f15e4246f20dc38fed2bc701f68c}{City}}\ =\ dto.\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_d_t_os_1_1_farm_assignment_overview_dto_a3cabe5c9e3817d25105878ba0045224c}{City}};}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00252}00252\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_ae8e06e2771053e612d24df1e06a79da2}{PostalCode}}\ =\ dto.\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_d_t_os_1_1_farm_assignment_overview_dto_a6968f071a465b94070214f89bf233abb}{PostalCode}};}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00253}00253\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_aa300fce2e383783911b2344548208243}{Country}}\ =\ dto.\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_d_t_os_1_1_farm_assignment_overview_dto_a67df7d00cc37f2e2d46067837028cbb5}{Country}};}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00254}00254\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a59f3210b99484594127dd5279b37dd68}{AddressLine}}\ =\ dto.\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_d_t_os_1_1_farm_assignment_overview_dto_aaf1c8f2dd75afcb5df41f5059f9321fa}{AddressLine}};}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00255}00255\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_afce3351b4e9a02712bf625a51ea573f3}{HasActiveCase}}\ =\ dto.\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_d_t_os_1_1_farm_assignment_overview_dto_a59f4b5bbc215fc245f3b53b5ba15b8bc}{HasActiveCase}};}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00256}00256\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_af0e9e2a5c20cb761fc83e9699a92c23f}{ConsultantName}}\ =\ dto.\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_d_t_os_1_1_farm_assignment_overview_dto_a6b4b15bd43ba54cc176f8c6a6d26c348}{AssignedConsultantName}};}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00257}00257\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a4cfcb5ab918f2d0cbe19067d7eaa5425}{AssignedConsultantId}}\ =\ dto.\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_d_t_os_1_1_farm_assignment_overview_dto_a34057709cfa92977cc85d088032aa6be}{AssignedConsultantId}};}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00258}00258\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a1876e579e53f054c51e51d74cf538c92}{Priority}}\ =\ dto.\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_d_t_os_1_1_farm_assignment_overview_dto_a1721ae35a3e61a8a4e902fcedc838663}{Priority}};}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00259}00259\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model_a57fbf5f724fe989d9f5965386821d61a}{Notes}}\ =\ dto.\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_d_t_os_1_1_farm_assignment_overview_dto_a29f136b479332829e483fad4042bda6b}{Notes}};}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00260}00260\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00261}00261\ \textcolor{preprocessor}{\ \ \ \ \#endregion}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00262}00262\ }
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00263}00263\ \textcolor{preprocessor}{\ \ \ \ \#region\ CanXXX\ Command}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00264}00264\ \textcolor{preprocessor}{\ \ \ \ \#endregion}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00265}00265\ }
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00266}00266\ \textcolor{preprocessor}{\ \ \ \ \#region\ OnXXX\ Command}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00267}00267\ \textcolor{preprocessor}{\ \ \ \ \#endregion}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00268}00268\ }
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00269}00269\ \textcolor{preprocessor}{\ \ \ \ \#region\ Helpers}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00270}00270\ \textcolor{preprocessor}{\ \ \ \ \#endregion}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00271}00271\ \}}
+\DoxyCodeLine{\Hypertarget{_assignable_farm_view_model_8cs_source_l00272}00272\ }
+
+\end{DoxyCode}

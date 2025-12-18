@@ -1,0 +1,57 @@
+\doxysection{Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Pages.\+Farmer\+Page\+View\+Model Class Reference}
+\hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_farmer_page_view_model}{}\label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_farmer_page_view_model}\index{ArlaNatureConnect.WinUI.ViewModels.Pages.FarmerPageViewModel@{ArlaNatureConnect.WinUI.ViewModels.Pages.FarmerPageViewModel}}
+
+
+View\+Model for \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_farmer_page}{Farmer\+Page} -\/ handles user selection and dashboard display for farmers.  
+
+
+Inheritance diagram for Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Pages.\+Farmer\+Page\+View\+Model\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_farmer_page_view_model}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_farmer_page_view_model_a82a3c2504940a8965705ebaebf01983d}{Farmer\+Page\+View\+Model}} (\mbox{\hyperlink{interface_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_i_navigation_handler}{INavigation\+Handler}} navigation\+Handler)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+View\+Model for \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_farmer_page}{Farmer\+Page} -\/ handles user selection and dashboard display for farmers. 
+
+Responsibilities\+:
+\begin{DoxyItemize}
+\item Receives Role object from \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_login_page}{Login\+Page} via Initialize\+Async()
+\item Loads all available persons with \doxylink{namespace_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_page_contents_1_1_farmer}{Farmer} role from repositories
+\item Filters persons based on role and active status
+\item Sorts persons alphabetically (first name, last name)
+\item Handles user selection from dropdown menu
+\item Loads dashboard for the selected farmer
+\end{DoxyItemize}
+
+Usage\+: This View\+Model is used by Farmer\+Page.\+xaml to display a dropdown with all farmers, and when a farmer is selected, their dashboard is displayed. The View\+Model also handles loading state to show progress indicator while data is loading. 
+
+Definition at line \mbox{\hyperlink{_farmer_page_view_model_8cs_source_l00025}{25}} of file \mbox{\hyperlink{_farmer_page_view_model_8cs_source}{Farmer\+Page\+View\+Model.\+cs}}.
+
+
+
+\label{doc-constructors}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_farmer_page_view_model_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_farmer_page_view_model_a82a3c2504940a8965705ebaebf01983d}\index{ArlaNatureConnect.WinUI.ViewModels.Pages.FarmerPageViewModel@{ArlaNatureConnect.WinUI.ViewModels.Pages.FarmerPageViewModel}!FarmerPageViewModel@{FarmerPageViewModel}}
+\index{FarmerPageViewModel@{FarmerPageViewModel}!ArlaNatureConnect.WinUI.ViewModels.Pages.FarmerPageViewModel@{ArlaNatureConnect.WinUI.ViewModels.Pages.FarmerPageViewModel}}
+\doxysubsubsection{\texorpdfstring{FarmerPageViewModel()}{FarmerPageViewModel()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_farmer_page_view_model_a82a3c2504940a8965705ebaebf01983d} 
+Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Pages.\+Farmer\+Page\+View\+Model.\+Farmer\+Page\+View\+Model (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interface_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_i_navigation_handler}{INavigation\+Handler}}}]{navigation\+Handler}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{_farmer_page_view_model_8cs_source_l00027}{27}} of file \mbox{\hyperlink{_farmer_page_view_model_8cs_source}{Farmer\+Page\+View\+Model.\+cs}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Arla\+Nature\+Connect.\+Win\+UI/\+Arla\+Nature\+Connect.\+Win\+UI/\+View\+Models/\+Pages/\mbox{\hyperlink{_farmer_page_view_model_8cs}{Farmer\+Page\+View\+Model.\+cs}}\end{DoxyCompactItemize}

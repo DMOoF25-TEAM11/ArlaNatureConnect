@@ -1,0 +1,4 @@
+var _administrator_page_side_menu_u_c_view_model_8cs =
+[
+    [ "ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu.AdministratorPageSideMenuUCViewModel", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_administratb0dcabd1a48acf37397bb421b86acd21.html", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_administratb0dcabd1a48acf37397bb421b86acd21" ]
+];

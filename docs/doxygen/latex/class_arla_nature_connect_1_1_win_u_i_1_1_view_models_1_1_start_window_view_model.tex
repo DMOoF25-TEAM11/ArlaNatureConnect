@@ -1,0 +1,118 @@
+\doxysection{Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Start\+Window\+View\+Model Class Reference}
+\hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_start_window_view_model}{}\label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_start_window_view_model}\index{ArlaNatureConnect.WinUI.ViewModels.StartWindowViewModel@{ArlaNatureConnect.WinUI.ViewModels.StartWindowViewModel}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_start_window_view_model_a202d8040d024fd91916d8f54870730c1}{Start\+Window\+View\+Model}} ()
+\item 
+\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_start_window_view_model_a005795127e48fb19f0b208ed2f6244ef}{Start\+Window\+View\+Model}} (\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_connection_string_service}{IConnection\+String\+Service}} conn\+Service, \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services}{IStatus\+Info\+Services}} status\+Info\+Services)
+\item 
+async Task \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_start_window_view_model_a7425f8cb76c8c4e5d41df780b5b56580}{Initialize\+Async}} (Func$<$ Task $>$ show\+Connection\+Dialog\+And\+Save\+Async, Func$<$ string, Task $>$ show\+Connection\+Error\+Async)
+\begin{DoxyCompactList}\small\item\em Perform startup checks previously performed in Start\+Window.\+Loaded. UI interactions (showing dialogs) are delegated to the caller via provided callbacks. \end{DoxyCompactList}\item 
+async Task$<$(bool Is\+Valid, string? Error\+Message)$>$ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_start_window_view_model_af09cb971bc137af24c997bf017766b73}{Validate\+Connection\+String\+With\+Retry\+Async}} (string connection\+String)
+\begin{DoxyCompactList}\small\item\em Validates the provided connection string by checking the Data\+Source and attempting to open a connection. Returns a tuple indicating success and an optional error message suitable for display. This method is UI-\/agnostic to allow unit testing. \end{DoxyCompactList}\item 
+async Task$<$ bool $>$ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_start_window_view_model_a1d60862931498630d088b7c299fc72b0}{Connection\+Exists\+Async}} ()
+\item 
+Task$<$ string?$>$ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_start_window_view_model_ab35a5263dce33a9088af4b568233ce67}{Read\+Connection\+String\+Async}} ()
+\item 
+Task \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_start_window_view_model_a8a77bbeae31df6423f5be90dec5a5e12}{Save\+Connection\+String\+Async}} (string connection\+String)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line \mbox{\hyperlink{_start_window_view_model_8cs_source_l00009}{9}} of file \mbox{\hyperlink{_start_window_view_model_8cs_source}{Start\+Window\+View\+Model.\+cs}}.
+
+
+
+\label{doc-constructors}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_start_window_view_model_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_start_window_view_model_a202d8040d024fd91916d8f54870730c1}\index{ArlaNatureConnect.WinUI.ViewModels.StartWindowViewModel@{ArlaNatureConnect.WinUI.ViewModels.StartWindowViewModel}!StartWindowViewModel@{StartWindowViewModel}}
+\index{StartWindowViewModel@{StartWindowViewModel}!ArlaNatureConnect.WinUI.ViewModels.StartWindowViewModel@{ArlaNatureConnect.WinUI.ViewModels.StartWindowViewModel}}
+\doxysubsubsection{\texorpdfstring{StartWindowViewModel()}{StartWindowViewModel()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_start_window_view_model_a202d8040d024fd91916d8f54870730c1} 
+Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Start\+Window\+View\+Model.\+Start\+Window\+View\+Model (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{_start_window_view_model_8cs_source_l00016}{16}} of file \mbox{\hyperlink{_start_window_view_model_8cs_source}{Start\+Window\+View\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_start_window_view_model_a005795127e48fb19f0b208ed2f6244ef}\index{ArlaNatureConnect.WinUI.ViewModels.StartWindowViewModel@{ArlaNatureConnect.WinUI.ViewModels.StartWindowViewModel}!StartWindowViewModel@{StartWindowViewModel}}
+\index{StartWindowViewModel@{StartWindowViewModel}!ArlaNatureConnect.WinUI.ViewModels.StartWindowViewModel@{ArlaNatureConnect.WinUI.ViewModels.StartWindowViewModel}}
+\doxysubsubsection{\texorpdfstring{StartWindowViewModel()}{StartWindowViewModel()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_start_window_view_model_a005795127e48fb19f0b208ed2f6244ef} 
+Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Start\+Window\+View\+Model.\+Start\+Window\+View\+Model (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_connection_string_service}{IConnection\+String\+Service}}}]{conn\+Service}{, }\item[{\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services}{IStatus\+Info\+Services}}}]{status\+Info\+Services}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{_start_window_view_model_8cs_source_l00021}{21}} of file \mbox{\hyperlink{_start_window_view_model_8cs_source}{Start\+Window\+View\+Model.\+cs}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_start_window_view_model_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_start_window_view_model_a1d60862931498630d088b7c299fc72b0}\index{ArlaNatureConnect.WinUI.ViewModels.StartWindowViewModel@{ArlaNatureConnect.WinUI.ViewModels.StartWindowViewModel}!ConnectionExistsAsync@{ConnectionExistsAsync}}
+\index{ConnectionExistsAsync@{ConnectionExistsAsync}!ArlaNatureConnect.WinUI.ViewModels.StartWindowViewModel@{ArlaNatureConnect.WinUI.ViewModels.StartWindowViewModel}}
+\doxysubsubsection{\texorpdfstring{ConnectionExistsAsync()}{ConnectionExistsAsync()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_start_window_view_model_a1d60862931498630d088b7c299fc72b0} 
+async Task$<$ bool $>$ Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Start\+Window\+View\+Model.\+Connection\+Exists\+Async (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{_start_window_view_model_8cs_source_l00144}{144}} of file \mbox{\hyperlink{_start_window_view_model_8cs_source}{Start\+Window\+View\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_start_window_view_model_a7425f8cb76c8c4e5d41df780b5b56580}\index{ArlaNatureConnect.WinUI.ViewModels.StartWindowViewModel@{ArlaNatureConnect.WinUI.ViewModels.StartWindowViewModel}!InitializeAsync@{InitializeAsync}}
+\index{InitializeAsync@{InitializeAsync}!ArlaNatureConnect.WinUI.ViewModels.StartWindowViewModel@{ArlaNatureConnect.WinUI.ViewModels.StartWindowViewModel}}
+\doxysubsubsection{\texorpdfstring{InitializeAsync()}{InitializeAsync()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_start_window_view_model_a7425f8cb76c8c4e5d41df780b5b56580} 
+async Task Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Start\+Window\+View\+Model.\+Initialize\+Async (\begin{DoxyParamCaption}\item[{Func$<$ Task $>$}]{show\+Connection\+Dialog\+And\+Save\+Async}{, }\item[{Func$<$ string, Task $>$}]{show\+Connection\+Error\+Async}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Perform startup checks previously performed in Start\+Window.\+Loaded. UI interactions (showing dialogs) are delegated to the caller via provided callbacks. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em show\+Connection\+Dialog\+And\+Save\+Async} & Delegate used to show the connection dialog and save the connection string when needed.\\
+\hline
+{\em show\+Connection\+Error\+Async} & Delegate used to show connection error messages to the user.\\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{_start_window_view_model_8cs_source_l00035}{35}} of file \mbox{\hyperlink{_start_window_view_model_8cs_source}{Start\+Window\+View\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_start_window_view_model_ab35a5263dce33a9088af4b568233ce67}\index{ArlaNatureConnect.WinUI.ViewModels.StartWindowViewModel@{ArlaNatureConnect.WinUI.ViewModels.StartWindowViewModel}!ReadConnectionStringAsync@{ReadConnectionStringAsync}}
+\index{ReadConnectionStringAsync@{ReadConnectionStringAsync}!ArlaNatureConnect.WinUI.ViewModels.StartWindowViewModel@{ArlaNatureConnect.WinUI.ViewModels.StartWindowViewModel}}
+\doxysubsubsection{\texorpdfstring{ReadConnectionStringAsync()}{ReadConnectionStringAsync()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_start_window_view_model_ab35a5263dce33a9088af4b568233ce67} 
+Task$<$ string?$>$ Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Start\+Window\+View\+Model.\+Read\+Connection\+String\+Async (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_start_window_view_model_a8a77bbeae31df6423f5be90dec5a5e12}\index{ArlaNatureConnect.WinUI.ViewModels.StartWindowViewModel@{ArlaNatureConnect.WinUI.ViewModels.StartWindowViewModel}!SaveConnectionStringAsync@{SaveConnectionStringAsync}}
+\index{SaveConnectionStringAsync@{SaveConnectionStringAsync}!ArlaNatureConnect.WinUI.ViewModels.StartWindowViewModel@{ArlaNatureConnect.WinUI.ViewModels.StartWindowViewModel}}
+\doxysubsubsection{\texorpdfstring{SaveConnectionStringAsync()}{SaveConnectionStringAsync()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_start_window_view_model_a8a77bbeae31df6423f5be90dec5a5e12} 
+Task Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Start\+Window\+View\+Model.\+Save\+Connection\+String\+Async (\begin{DoxyParamCaption}\item[{string}]{connection\+String}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_start_window_view_model_af09cb971bc137af24c997bf017766b73}\index{ArlaNatureConnect.WinUI.ViewModels.StartWindowViewModel@{ArlaNatureConnect.WinUI.ViewModels.StartWindowViewModel}!ValidateConnectionStringWithRetryAsync@{ValidateConnectionStringWithRetryAsync}}
+\index{ValidateConnectionStringWithRetryAsync@{ValidateConnectionStringWithRetryAsync}!ArlaNatureConnect.WinUI.ViewModels.StartWindowViewModel@{ArlaNatureConnect.WinUI.ViewModels.StartWindowViewModel}}
+\doxysubsubsection{\texorpdfstring{ValidateConnectionStringWithRetryAsync()}{ValidateConnectionStringWithRetryAsync()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_start_window_view_model_af09cb971bc137af24c997bf017766b73} 
+async Task$<$(bool Is\+Valid, string? Error\+Message)$>$ Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Start\+Window\+View\+Model.\+Validate\+Connection\+String\+With\+Retry\+Async (\begin{DoxyParamCaption}\item[{string}]{connection\+String}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Validates the provided connection string by checking the Data\+Source and attempting to open a connection. Returns a tuple indicating success and an optional error message suitable for display. This method is UI-\/agnostic to allow unit testing. 
+
+
+
+Definition at line \mbox{\hyperlink{_start_window_view_model_8cs_source_l00090}{90}} of file \mbox{\hyperlink{_start_window_view_model_8cs_source}{Start\+Window\+View\+Model.\+cs}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Arla\+Nature\+Connect.\+Win\+UI/\+Arla\+Nature\+Connect.\+Win\+UI/\+View\+Models/\mbox{\hyperlink{_start_window_view_model_8cs}{Start\+Window\+View\+Model.\+cs}}\end{DoxyCompactItemize}

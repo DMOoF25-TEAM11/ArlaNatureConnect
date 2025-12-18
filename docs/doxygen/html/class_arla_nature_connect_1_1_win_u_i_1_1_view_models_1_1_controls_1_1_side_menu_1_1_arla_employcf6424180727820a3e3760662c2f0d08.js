@@ -1,0 +1,11 @@
+var class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_arla_employcf6424180727820a3e3760662c2f0d08 =
+[
+    [ "ArlaEmployeePageSideMenuUCViewModel", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_arla_employcf6424180727820a3e3760662c2f0d08.html#a66618296b5687a39d807b72036636b21", null ],
+    [ "InitializeAsync", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_arla_employcf6424180727820a3e3760662c2f0d08.html#a2a90116f6ee1720ff0260ac2f820d997", null ],
+    [ "OnNavigate", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_arla_employcf6424180727820a3e3760662c2f0d08.html#a10b56d32eff887f57dc700abfa93dd9e", null ],
+    [ "DashboardsCommand", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_arla_employcf6424180727820a3e3760662c2f0d08.html#af055567d06ad076fc6640ab9a5f67d7f", null ],
+    [ "FarmsCommand", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_arla_employcf6424180727820a3e3760662c2f0d08.html#a1bf8683724ef8cf440fe1efdc9fc04a1", null ],
+    [ "NatureAreasCommand", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_arla_employcf6424180727820a3e3760662c2f0d08.html#a07b41e0174c2a2197badc4a171319322", null ],
+    [ "NavItems", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_arla_employcf6424180727820a3e3760662c2f0d08.html#acee97b970574796eea42c4f5f9ed1ac7", null ],
+    [ "UsersCommand", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_arla_employcf6424180727820a3e3760662c2f0d08.html#ad9860d619c4b1ca7f76ae77cbd398654", null ]
+];

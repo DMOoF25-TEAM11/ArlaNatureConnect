@@ -1,0 +1,75 @@
+\doxysection{Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+IButton\+Wrapper Interface Reference}
+\hypertarget{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_button_wrapper}{}\label{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_button_wrapper}\index{ArlaNatureConnect.WinUI.ViewModels.Abstracts.IButtonWrapper@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.IButtonWrapper}}
+
+
+Represents a minimal wrapper for a button-\/like element used by view models.  
+
+
+Inheritance diagram for Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+IButton\+Wrapper\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_button_wrapper}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+object? \mbox{\hyperlink{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_button_wrapper_ad6368bf166d1c82b7d139ed35233e7e4}{Command\+Parameter}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets the parameter that will be passed to a command when the associated button is invoked. \end{DoxyCompactList}\item 
+object? \mbox{\hyperlink{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_button_wrapper_ac5d2dc67302825cc108ad0e5c253f205}{Tag}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets an arbitrary metadata object associated with the button. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Represents a minimal wrapper for a button-\/like element used by view models. 
+
+This abstraction allows view models to interact with button controls or button-\/like view elements without referencing UI framework types directly. It is useful for decoupling, unit testing, and providing a uniform contract for passing command parameters or arbitrary metadata (Tag) from views to view models. 
+
+Definition at line \mbox{\hyperlink{_i_button_wrapper_8cs_source_l00013}{13}} of file \mbox{\hyperlink{_i_button_wrapper_8cs_source}{IButton\+Wrapper.\+cs}}.
+
+
+
+\label{doc-property-members}
+\Hypertarget{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_button_wrapper_doc-property-members}
+\doxysubsection{Property Documentation}
+\Hypertarget{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_button_wrapper_ad6368bf166d1c82b7d139ed35233e7e4}\index{ArlaNatureConnect.WinUI.ViewModels.Abstracts.IButtonWrapper@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.IButtonWrapper}!CommandParameter@{CommandParameter}}
+\index{CommandParameter@{CommandParameter}!ArlaNatureConnect.WinUI.ViewModels.Abstracts.IButtonWrapper@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.IButtonWrapper}}
+\doxysubsubsection{\texorpdfstring{CommandParameter}{CommandParameter}}
+{\footnotesize\ttfamily \label{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_button_wrapper_ad6368bf166d1c82b7d139ed35233e7e4} 
+object? Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+IButton\+Wrapper.\+Command\+Parameter\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Gets or sets the parameter that will be passed to a command when the associated button is invoked. 
+
+Use this property to forward contextual information (for example an identifier or a data object) from the view to the command handler in the view model. The type is object to keep the contract flexible; callers should cast to the expected type. 
+
+Implemented in \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_abstracts_1_1_button_wrapper_adf55633c1e128580baa57463d3ea6c19}{Arla\+Nature\+Connect.\+Win\+UI.\+Views.\+Controls.\+Abstracts.\+Button\+Wrapper}}.
+
+
+
+Definition at line \mbox{\hyperlink{_i_button_wrapper_8cs_source_l00025}{25}} of file \mbox{\hyperlink{_i_button_wrapper_8cs_source}{IButton\+Wrapper.\+cs}}.
+
+\Hypertarget{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_button_wrapper_ac5d2dc67302825cc108ad0e5c253f205}\index{ArlaNatureConnect.WinUI.ViewModels.Abstracts.IButtonWrapper@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.IButtonWrapper}!Tag@{Tag}}
+\index{Tag@{Tag}!ArlaNatureConnect.WinUI.ViewModels.Abstracts.IButtonWrapper@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.IButtonWrapper}}
+\doxysubsubsection{\texorpdfstring{Tag}{Tag}}
+{\footnotesize\ttfamily \label{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_button_wrapper_ac5d2dc67302825cc108ad0e5c253f205} 
+object? Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+IButton\+Wrapper.\+Tag\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Gets or sets an arbitrary metadata object associated with the button. 
+
+The \doxylink{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_button_wrapper_ac5d2dc67302825cc108ad0e5c253f205}{Tag} property can be used to store additional state or identifiers related to the button that are not necessarily passed to commands. This mirrors common UI paradigms where controls expose a {\ttfamily Tag} for lightweight metadata. 
+
+Implemented in \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_abstracts_1_1_button_wrapper_ae4cc8b1a85cc1aaa93b139bd45ba18ff}{Arla\+Nature\+Connect.\+Win\+UI.\+Views.\+Controls.\+Abstracts.\+Button\+Wrapper}}.
+
+
+
+Definition at line \mbox{\hyperlink{_i_button_wrapper_8cs_source_l00036}{36}} of file \mbox{\hyperlink{_i_button_wrapper_8cs_source}{IButton\+Wrapper.\+cs}}.
+
+
+
+The documentation for this interface was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Arla\+Nature\+Connect.\+Win\+UI/\+Arla\+Nature\+Connect.\+Win\+UI/\+View\+Models/\+Abstracts/\mbox{\hyperlink{_i_button_wrapper_8cs}{IButton\+Wrapper.\+cs}}\end{DoxyCompactItemize}

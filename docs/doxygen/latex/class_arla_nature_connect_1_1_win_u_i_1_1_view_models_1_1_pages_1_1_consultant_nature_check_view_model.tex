@@ -1,0 +1,149 @@
+\doxysection{Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Pages.\+Consultant\+Nature\+Check\+View\+Model Class Reference}
+\hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_consultant_nature_check_view_model}{}\label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_consultant_nature_check_view_model}\index{ArlaNatureConnect.WinUI.ViewModels.Pages.ConsultantNatureCheckViewModel@{ArlaNatureConnect.WinUI.ViewModels.Pages.ConsultantNatureCheckViewModel}}
+
+
+View\+Model for Consultant\+Nature\+Check view -\/ handles notifications and nature check case display for consultants.  
+
+
+Inheritance diagram for Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Pages.\+Consultant\+Nature\+Check\+View\+Model\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_consultant_nature_check_view_model}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_consultant_nature_check_view_model_a912224fc426168df86f43fc8a3b11416}{Consultant\+Nature\+Check\+View\+Model}} (\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_nature_check_case_service}{INature\+Check\+Case\+Service}} nature\+Check\+Case\+Service)
+\item 
+async Task \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_consultant_nature_check_view_model_a4ae3e1e56b18d3349b7c45c971609a9a}{Load\+Notifications\+Async}} ()
+\begin{DoxyCompactList}\small\item\em Loads notifications for the currently selected consultant. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+Observable\+Collection$<$ \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_d_t_os_1_1_consultant_notification_dto}{Consultant\+Notification\+Dto}} $>$ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_consultant_nature_check_view_model_a8da79d056287149b9c260e1d92575018}{Notifications}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets the list of notifications for the selected consultant. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_consultant_nature_check_view_model_aedf4a1b8df21682a6fe864876f72523a}{Notification\+Count}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets the count of unread notifications. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_consultant_nature_check_view_model_a2e90c5ccb681293099f194880e24d1fd}{Has\+Notifications}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets a value indicating whether there are any notifications. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_person}{Person}}? \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_consultant_nature_check_view_model_abe4be6d1b0d35382bc23c79d8f40c101}{Selected\+Consultant}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Sets the selected consultant and loads notifications for that consultant. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Protected Member Functions inherited from \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base}{Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+View\+Model\+Base}}}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_afe69f6fc4811892022c273a234f84ed7}{On\+Property\+Changed}} (\mbox{[}Caller\+Member\+Name\mbox{]} string? name=null)
+\begin{DoxyCompactList}\small\item\em Raises the \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_a84af6959822f5dac7b036413ef1084e0}{Property\+Changed} event for the property specified by {\itshape name} . \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Events inherited from \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base}{Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+View\+Model\+Base}}}
+\begin{DoxyCompactItemize}
+\item 
+Property\+Changed\+Event\+Handler? \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_a84af6959822f5dac7b036413ef1084e0}{Property\+Changed}}
+\begin{DoxyCompactList}\small\item\em Occurs when a property value changes. Consumers (typically UI bindings) subscribe to this event to be notified that a property value has changed. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+View\+Model for Consultant\+Nature\+Check view -\/ handles notifications and nature check case display for consultants. 
+
+Definition at line \mbox{\hyperlink{_consultant_nature_check_view_model_8cs_source_l00012}{12}} of file \mbox{\hyperlink{_consultant_nature_check_view_model_8cs_source}{Consultant\+Nature\+Check\+View\+Model.\+cs}}.
+
+
+
+\label{doc-constructors}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_consultant_nature_check_view_model_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_consultant_nature_check_view_model_a912224fc426168df86f43fc8a3b11416}\index{ArlaNatureConnect.WinUI.ViewModels.Pages.ConsultantNatureCheckViewModel@{ArlaNatureConnect.WinUI.ViewModels.Pages.ConsultantNatureCheckViewModel}!ConsultantNatureCheckViewModel@{ConsultantNatureCheckViewModel}}
+\index{ConsultantNatureCheckViewModel@{ConsultantNatureCheckViewModel}!ArlaNatureConnect.WinUI.ViewModels.Pages.ConsultantNatureCheckViewModel@{ArlaNatureConnect.WinUI.ViewModels.Pages.ConsultantNatureCheckViewModel}}
+\doxysubsubsection{\texorpdfstring{ConsultantNatureCheckViewModel()}{ConsultantNatureCheckViewModel()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_consultant_nature_check_view_model_a912224fc426168df86f43fc8a3b11416} 
+Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Pages.\+Consultant\+Nature\+Check\+View\+Model.\+Consultant\+Nature\+Check\+View\+Model (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_nature_check_case_service}{INature\+Check\+Case\+Service}}}]{nature\+Check\+Case\+Service}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{_consultant_nature_check_view_model_8cs_source_l00019}{19}} of file \mbox{\hyperlink{_consultant_nature_check_view_model_8cs_source}{Consultant\+Nature\+Check\+View\+Model.\+cs}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_consultant_nature_check_view_model_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_consultant_nature_check_view_model_a4ae3e1e56b18d3349b7c45c971609a9a}\index{ArlaNatureConnect.WinUI.ViewModels.Pages.ConsultantNatureCheckViewModel@{ArlaNatureConnect.WinUI.ViewModels.Pages.ConsultantNatureCheckViewModel}!LoadNotificationsAsync@{LoadNotificationsAsync}}
+\index{LoadNotificationsAsync@{LoadNotificationsAsync}!ArlaNatureConnect.WinUI.ViewModels.Pages.ConsultantNatureCheckViewModel@{ArlaNatureConnect.WinUI.ViewModels.Pages.ConsultantNatureCheckViewModel}}
+\doxysubsubsection{\texorpdfstring{LoadNotificationsAsync()}{LoadNotificationsAsync()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_consultant_nature_check_view_model_a4ae3e1e56b18d3349b7c45c971609a9a} 
+async Task Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Pages.\+Consultant\+Nature\+Check\+View\+Model.\+Load\+Notifications\+Async (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Loads notifications for the currently selected consultant. 
+
+
+
+Definition at line \mbox{\hyperlink{_consultant_nature_check_view_model_8cs_source_l00075}{75}} of file \mbox{\hyperlink{_consultant_nature_check_view_model_8cs_source}{Consultant\+Nature\+Check\+View\+Model.\+cs}}.
+
+
+
+\label{doc-property-members}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_consultant_nature_check_view_model_doc-property-members}
+\doxysubsection{Property Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_consultant_nature_check_view_model_a2e90c5ccb681293099f194880e24d1fd}\index{ArlaNatureConnect.WinUI.ViewModels.Pages.ConsultantNatureCheckViewModel@{ArlaNatureConnect.WinUI.ViewModels.Pages.ConsultantNatureCheckViewModel}!HasNotifications@{HasNotifications}}
+\index{HasNotifications@{HasNotifications}!ArlaNatureConnect.WinUI.ViewModels.Pages.ConsultantNatureCheckViewModel@{ArlaNatureConnect.WinUI.ViewModels.Pages.ConsultantNatureCheckViewModel}}
+\doxysubsubsection{\texorpdfstring{HasNotifications}{HasNotifications}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_consultant_nature_check_view_model_a2e90c5ccb681293099f194880e24d1fd} 
+bool Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Pages.\+Consultant\+Nature\+Check\+View\+Model.\+Has\+Notifications\hspace{0.3cm}{\ttfamily [get]}}
+
+
+
+Gets a value indicating whether there are any notifications. 
+
+
+
+Definition at line \mbox{\hyperlink{_consultant_nature_check_view_model_8cs_source_l00051}{51}} of file \mbox{\hyperlink{_consultant_nature_check_view_model_8cs_source}{Consultant\+Nature\+Check\+View\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_consultant_nature_check_view_model_aedf4a1b8df21682a6fe864876f72523a}\index{ArlaNatureConnect.WinUI.ViewModels.Pages.ConsultantNatureCheckViewModel@{ArlaNatureConnect.WinUI.ViewModels.Pages.ConsultantNatureCheckViewModel}!NotificationCount@{NotificationCount}}
+\index{NotificationCount@{NotificationCount}!ArlaNatureConnect.WinUI.ViewModels.Pages.ConsultantNatureCheckViewModel@{ArlaNatureConnect.WinUI.ViewModels.Pages.ConsultantNatureCheckViewModel}}
+\doxysubsubsection{\texorpdfstring{NotificationCount}{NotificationCount}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_consultant_nature_check_view_model_aedf4a1b8df21682a6fe864876f72523a} 
+int Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Pages.\+Consultant\+Nature\+Check\+View\+Model.\+Notification\+Count\hspace{0.3cm}{\ttfamily [get]}}
+
+
+
+Gets the count of unread notifications. 
+
+
+
+Definition at line \mbox{\hyperlink{_consultant_nature_check_view_model_8cs_source_l00032}{32}} of file \mbox{\hyperlink{_consultant_nature_check_view_model_8cs_source}{Consultant\+Nature\+Check\+View\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_consultant_nature_check_view_model_a8da79d056287149b9c260e1d92575018}\index{ArlaNatureConnect.WinUI.ViewModels.Pages.ConsultantNatureCheckViewModel@{ArlaNatureConnect.WinUI.ViewModels.Pages.ConsultantNatureCheckViewModel}!Notifications@{Notifications}}
+\index{Notifications@{Notifications}!ArlaNatureConnect.WinUI.ViewModels.Pages.ConsultantNatureCheckViewModel@{ArlaNatureConnect.WinUI.ViewModels.Pages.ConsultantNatureCheckViewModel}}
+\doxysubsubsection{\texorpdfstring{Notifications}{Notifications}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_consultant_nature_check_view_model_a8da79d056287149b9c260e1d92575018} 
+Observable\+Collection$<$\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_d_t_os_1_1_consultant_notification_dto}{Consultant\+Notification\+Dto}}$>$ Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Pages.\+Consultant\+Nature\+Check\+View\+Model.\+Notifications\hspace{0.3cm}{\ttfamily [get]}}
+
+
+
+Gets the list of notifications for the selected consultant. 
+
+
+
+Definition at line \mbox{\hyperlink{_consultant_nature_check_view_model_8cs_source_l00027}{27}} of file \mbox{\hyperlink{_consultant_nature_check_view_model_8cs_source}{Consultant\+Nature\+Check\+View\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_consultant_nature_check_view_model_abe4be6d1b0d35382bc23c79d8f40c101}\index{ArlaNatureConnect.WinUI.ViewModels.Pages.ConsultantNatureCheckViewModel@{ArlaNatureConnect.WinUI.ViewModels.Pages.ConsultantNatureCheckViewModel}!SelectedConsultant@{SelectedConsultant}}
+\index{SelectedConsultant@{SelectedConsultant}!ArlaNatureConnect.WinUI.ViewModels.Pages.ConsultantNatureCheckViewModel@{ArlaNatureConnect.WinUI.ViewModels.Pages.ConsultantNatureCheckViewModel}}
+\doxysubsubsection{\texorpdfstring{SelectedConsultant}{SelectedConsultant}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_consultant_nature_check_view_model_abe4be6d1b0d35382bc23c79d8f40c101} 
+\mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_person}{Person}}? Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Pages.\+Consultant\+Nature\+Check\+View\+Model.\+Selected\+Consultant\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Sets the selected consultant and loads notifications for that consultant. 
+
+
+
+Definition at line \mbox{\hyperlink{_consultant_nature_check_view_model_8cs_source_l00056}{56}} of file \mbox{\hyperlink{_consultant_nature_check_view_model_8cs_source}{Consultant\+Nature\+Check\+View\+Model.\+cs}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Arla\+Nature\+Connect.\+Win\+UI/\+Arla\+Nature\+Connect.\+Win\+UI/\+View\+Models/\+Pages/\mbox{\hyperlink{_consultant_nature_check_view_model_8cs}{Consultant\+Nature\+Check\+View\+Model.\+cs}}\end{DoxyCompactItemize}

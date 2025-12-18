@@ -1,0 +1,27 @@
+var class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model =
+[
+    [ "AssignableFarmViewModel", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model.html#a4fc50b8cfb85e86716aa74cb00320315", null ],
+    [ "Apply", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model.html#a46d2a170b677386de05305d4f3097b22", null ],
+    [ "AddressLine", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model.html#a59f3210b99484594127dd5279b37dd68", null ],
+    [ "AssignedConsultantId", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model.html#a4cfcb5ab918f2d0cbe19067d7eaa5425", null ],
+    [ "City", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model.html#a53c8f15e4246f20dc38fed2bc701f68c", null ],
+    [ "ConsultantDisplay", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model.html#a22b6f822b8ca27f9506dbe7031871db4", null ],
+    [ "ConsultantName", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model.html#af0e9e2a5c20cb761fc83e9699a92c23f", null ],
+    [ "Country", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model.html#aa300fce2e383783911b2344548208243", null ],
+    [ "Cvr", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model.html#a4b769cce01c234e954426ebe622172cc", null ],
+    [ "FarmId", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model.html#a859a81e76c3a5e1c17d64b299b89ae48", null ],
+    [ "FarmName", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model.html#a079a076c8cb4f5b145abd9932eeeb877", null ],
+    [ "HasActiveCase", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model.html#afce3351b4e9a02712bf625a51ea573f3", null ],
+    [ "HasPriority", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model.html#af2a7b233c530394e5824bae95c17acac", null ],
+    [ "Notes", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model.html#a57fbf5f724fe989d9f5965386821d61a", null ],
+    [ "OwnerEmail", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model.html#aac073c8f5e8e042bf332fea1af5a9991", null ],
+    [ "OwnerFirstName", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model.html#addd127f7c424b87d152307fb272cbf52", null ],
+    [ "OwnerLastName", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model.html#a6a494710cc3d09e45e6466d519dd5622", null ],
+    [ "OwnerName", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model.html#a87283c144cdeb319de0dd627ab4f3508", null ],
+    [ "PostalCode", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model.html#ae8e06e2771053e612d24df1e06a79da2", null ],
+    [ "Priority", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model.html#a1876e579e53f054c51e51d74cf538c92", null ],
+    [ "PriorityDisplay", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model.html#a2fb8c40e7e60163ba159039c8351c9f4", null ],
+    [ "SearchContent", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model.html#af628489c04688050351416c6acdb2a51", null ],
+    [ "StatusLabel", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model.html#a8db4bdbde182cca2a4c8bbe39aa80e67", null ],
+    [ "Street", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items_1_1_assignable_farm_view_model.html#ae472378992184c7d432d096f75b8a7b3", null ]
+];

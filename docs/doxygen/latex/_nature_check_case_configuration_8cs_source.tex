@@ -1,0 +1,68 @@
+\doxysection{Nature\+Check\+Case\+Configuration.\+cs}
+\hypertarget{_nature_check_case_configuration_8cs_source}{}\label{_nature_check_case_configuration_8cs_source}\index{src/ArlaNatureConnect.Infrastructure/Persistence/Configurations/NatureCheckCaseConfiguration.cs@{src/ArlaNatureConnect.Infrastructure/Persistence/Configurations/NatureCheckCaseConfiguration.cs}}
+\mbox{\hyperlink{_nature_check_case_configuration_8cs}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00001}00001\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_domain_1_1_entities}{ArlaNatureConnect.Domain.Entities}};}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00002}00002\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_domain_1_1_enums}{ArlaNatureConnect.Domain.Enums}};}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00003}00003\ }
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00004}00004\ \textcolor{keyword}{using\ }Microsoft.EntityFrameworkCore;}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00005}00005\ \textcolor{keyword}{using\ }Microsoft.EntityFrameworkCore.Metadata.Builders;}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00006}00006\ }
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00007}\mbox{\hyperlink{namespace_arla_nature_connect_1_1_infrastructure_1_1_persistence_1_1_configurations}{00007}}\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_infrastructure_1_1_persistence_1_1_configurations}{ArlaNatureConnect.Infrastructure.Persistence.Configurations}};}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00008}00008\ }
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00021}\mbox{\hyperlink{class_arla_nature_connect_1_1_infrastructure_1_1_persistence_1_1_configurations_1_1_nature_check_case_configuration}{00021}}\ \textcolor{keyword}{public}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_arla_nature_connect_1_1_infrastructure_1_1_persistence_1_1_configurations_1_1_nature_check_case_configuration}{NatureCheckCaseConfiguration}}\ :\ IEntityTypeConfiguration<NatureCheckCase>}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00022}00022\ \{}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00023}\mbox{\hyperlink{class_arla_nature_connect_1_1_infrastructure_1_1_persistence_1_1_configurations_1_1_nature_check_case_configuration_a67080861248b4773c7087e31f6273117}{00023}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_infrastructure_1_1_persistence_1_1_configurations_1_1_nature_check_case_configuration_a67080861248b4773c7087e31f6273117}{Configure}}(EntityTypeBuilder<NatureCheckCase>\ builder)}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00024}00024\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00025}00025\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Status\ enum\ to\ string\ conversion\ (database:\ NVARCHAR\ with\ CHECK\ constraint)}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00026}00026\ \ \ \ \ \ \ \ \ Microsoft.EntityFrameworkCore.Storage.ValueConversion.ValueConverter<\mbox{\hyperlink{namespace_arla_nature_connect_1_1_domain_1_1_enums_a51de6ec6ae8534ab1bbd1f3bec819374}{NatureCheckCaseStatus}},\ \textcolor{keywordtype}{string}>\ statusConverter\ =\ \textcolor{keyword}{new}(}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00027}00027\ \ \ \ \ \ \ \ \ \ \ \ \ v\ =>\ v.ToString(),\ \textcolor{comment}{//\ Enum\ to\ string\ when\ saving}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00028}00028\ \ \ \ \ \ \ \ \ \ \ \ \ v\ =>\ ParseStatus(v));\ \textcolor{comment}{//\ String\ to\ enum\ when\ reading}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00029}00029\ }
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00030}00030\ \ \ \ \ \ \ \ \ builder}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00031}00031\ \ \ \ \ \ \ \ \ \ \ \ \ .Property(e\ =>\ e.Status)}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00032}00032\ \ \ \ \ \ \ \ \ \ \ \ \ .HasColumnType(\textcolor{stringliteral}{"{}nvarchar(50)"{}})}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00033}00033\ \ \ \ \ \ \ \ \ \ \ \ \ .HasConversion(statusConverter);}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00034}00034\ }
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00035}00035\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ DateTimeOffset\ conversion\ (database:\ DATETIME2,\ EF\ Core:\ DateTimeOffset)}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00036}00036\ \ \ \ \ \ \ \ \ builder}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00037}00037\ \ \ \ \ \ \ \ \ \ \ \ \ .Property(e\ =>\ e.CreatedAt)}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00038}00038\ \ \ \ \ \ \ \ \ \ \ \ \ .HasConversion(}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00039}00039\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ v\ =>\ v.DateTime,\ \textcolor{comment}{//\ DateTimeOffset\ to\ DateTime\ when\ saving}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00040}00040\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ v\ =>\ \textcolor{keyword}{new}\ DateTimeOffset(v,\ TimeSpan.Zero));\ \textcolor{comment}{//\ DateTime\ to\ DateTimeOffset\ when\ reading\ (UTC)}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00041}00041\ }
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00042}00042\ \ \ \ \ \ \ \ \ builder}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00043}00043\ \ \ \ \ \ \ \ \ \ \ \ \ .Property(e\ =>\ e.AssignedAt)}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00044}00044\ \ \ \ \ \ \ \ \ \ \ \ \ .HasConversion(}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00045}00045\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ v\ =>\ v.HasValue\ ?\ v.Value.DateTime\ :\ (DateTime?)\textcolor{keyword}{null},\ \textcolor{comment}{//\ DateTimeOffset?\ to\ DateTime?\ when\ saving}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00046}00046\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ v\ =>\ v.HasValue\ ?\ \textcolor{keyword}{new}\ DateTimeOffset(v.Value,\ TimeSpan.Zero)\ :\ \textcolor{keyword}{null});\ \textcolor{comment}{//\ DateTime?\ to\ DateTimeOffset?\ when\ reading\ (UTC)}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00047}00047\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00048}00048\ }
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00049}00049\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keyword}{static}\ \mbox{\hyperlink{namespace_arla_nature_connect_1_1_domain_1_1_enums_a51de6ec6ae8534ab1bbd1f3bec819374}{NatureCheckCaseStatus}}\ ParseStatus(\textcolor{keywordtype}{string}?\ value)}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00050}00050\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00051}00051\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Default\ to\ Assigned\ if\ null\ or\ empty}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00052}00052\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\textcolor{keywordtype}{string}.IsNullOrWhiteSpace(value))}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00053}00053\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00054}00054\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{namespace_arla_nature_connect_1_1_domain_1_1_enums_a51de6ec6ae8534ab1bbd1f3bec819374}{NatureCheckCaseStatus}}.Assigned;}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00055}00055\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00056}00056\ }
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00057}00057\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Case-\/insensitive\ parsing\ (database\ CHECK:\ 'Assigned',\ 'InProgress',\ 'Completed',\ 'Cancelled')}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00058}00058\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Enum.TryParse<\mbox{\hyperlink{namespace_arla_nature_connect_1_1_domain_1_1_enums_a51de6ec6ae8534ab1bbd1f3bec819374}{NatureCheckCaseStatus}}>(value,\ \textcolor{keyword}{true},\ out\ \mbox{\hyperlink{namespace_arla_nature_connect_1_1_domain_1_1_enums_a51de6ec6ae8534ab1bbd1f3bec819374}{NatureCheckCaseStatus}}\ result))}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00059}00059\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00060}00060\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Validate\ parsed\ value\ matches\ database-\/allowed\ values}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00061}00061\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (result\ ==\ \mbox{\hyperlink{namespace_arla_nature_connect_1_1_domain_1_1_enums_a51de6ec6ae8534ab1bbd1f3bec819374}{NatureCheckCaseStatus}}.Assigned\ ||}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00062}00062\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ result\ ==\ \mbox{\hyperlink{namespace_arla_nature_connect_1_1_domain_1_1_enums_a51de6ec6ae8534ab1bbd1f3bec819374}{NatureCheckCaseStatus}}.InProgress\ ||}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00063}00063\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ result\ ==\ \mbox{\hyperlink{namespace_arla_nature_connect_1_1_domain_1_1_enums_a51de6ec6ae8534ab1bbd1f3bec819374}{NatureCheckCaseStatus}}.Completed\ ||}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00064}00064\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ result\ ==\ \mbox{\hyperlink{namespace_arla_nature_connect_1_1_domain_1_1_enums_a51de6ec6ae8534ab1bbd1f3bec819374}{NatureCheckCaseStatus}}.Cancelled)}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00065}00065\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00066}00066\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00067}00067\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00068}00068\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00069}00069\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Default\ to\ Assigned\ if\ invalid\ (e.g.,\ Draft\ is\ not\ in\ database\ CHECK\ constraint)}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00070}00070\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{namespace_arla_nature_connect_1_1_domain_1_1_enums_a51de6ec6ae8534ab1bbd1f3bec819374}{NatureCheckCaseStatus}}.Assigned;}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00071}00071\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00072}00072\ \}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00073}00073\ }
+\DoxyCodeLine{\Hypertarget{_nature_check_case_configuration_8cs_source_l00074}00074\ }
+
+\end{DoxyCode}

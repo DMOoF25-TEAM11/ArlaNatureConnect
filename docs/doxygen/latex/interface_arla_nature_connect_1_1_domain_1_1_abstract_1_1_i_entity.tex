@@ -1,0 +1,72 @@
+\doxysection{Arla\+Nature\+Connect.\+Domain.\+Abstract.\+IEntity Interface Reference}
+\hypertarget{interface_arla_nature_connect_1_1_domain_1_1_abstract_1_1_i_entity}{}\label{interface_arla_nature_connect_1_1_domain_1_1_abstract_1_1_i_entity}\index{ArlaNatureConnect.Domain.Abstract.IEntity@{ArlaNatureConnect.Domain.Abstract.IEntity}}
+
+
+Represents a domain entity that exposes a unique identifier.  
+
+
+Inheritance diagram for Arla\+Nature\+Connect.\+Domain.\+Abstract.\+IEntity\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=7.179488cm]{interface_arla_nature_connect_1_1_domain_1_1_abstract_1_1_i_entity}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+Guid \mbox{\hyperlink{interface_arla_nature_connect_1_1_domain_1_1_abstract_1_1_i_entity_a1da051643328e339ee693cabcc161abb}{Id}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets the unique identifier for the entity. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Represents a domain entity that exposes a unique identifier. 
+
+Use the {\ttfamily \texorpdfstring{$<$}{<}inheritdoc/\texorpdfstring{$>$}{>}} tag on implementing members to inherit this documentation. This reduces duplication and keeps documentation consistent between interfaces/base types and their implementations. 
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{comment}{//\ Interface\ declares\ the\ contract\ and\ documentation}}
+\DoxyCodeLine{\textcolor{keyword}{public}\ \textcolor{keyword}{interface\ }IEntity}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\ \ \ \ Guid\ Id\ \{\ \textcolor{keyword}{get};\ \}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{//\ Implementation\ can\ inherit\ the\ documentation\ for\ the\ Id\ property\ from\ IEntity}}
+\DoxyCodeLine{\textcolor{keyword}{public}\ \textcolor{keyword}{class\ }Owner\ :\ IEntity}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{public}\ Guid\ Id\ \{\ \textcolor{keyword}{get};\ init;\ \}}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+ 
+
+Definition at line \mbox{\hyperlink{_i_entity_8cs_source_l00027}{27}} of file \mbox{\hyperlink{_i_entity_8cs_source}{IEntity.\+cs}}.
+
+
+
+\label{doc-property-members}
+\Hypertarget{interface_arla_nature_connect_1_1_domain_1_1_abstract_1_1_i_entity_doc-property-members}
+\doxysubsection{Property Documentation}
+\Hypertarget{interface_arla_nature_connect_1_1_domain_1_1_abstract_1_1_i_entity_a1da051643328e339ee693cabcc161abb}\index{ArlaNatureConnect.Domain.Abstract.IEntity@{ArlaNatureConnect.Domain.Abstract.IEntity}!Id@{Id}}
+\index{Id@{Id}!ArlaNatureConnect.Domain.Abstract.IEntity@{ArlaNatureConnect.Domain.Abstract.IEntity}}
+\doxysubsubsection{\texorpdfstring{Id}{Id}}
+{\footnotesize\ttfamily \label{interface_arla_nature_connect_1_1_domain_1_1_abstract_1_1_i_entity_a1da051643328e339ee693cabcc161abb} 
+Guid Arla\+Nature\+Connect.\+Domain.\+Abstract.\+IEntity.\+Id\hspace{0.3cm}{\ttfamily [get]}}
+
+
+
+Gets the unique identifier for the entity. 
+
+Implementations can use {\ttfamily \texorpdfstring{$<$}{<}inheritdoc/\texorpdfstring{$>$}{>}} to inherit this summary instead of copying it. This keeps the interface as the single source of truth for the contract and its documentation. 
+
+Implemented in \mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_address_a0d755531b45ddf3cf217d2ee56d3285e}{Arla\+Nature\+Connect.\+Domain.\+Entities.\+Address}}, \mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_farm_a3f86c8e656d890b68b95d1ba3dccfe17}{Arla\+Nature\+Connect.\+Domain.\+Entities.\+Farm}}, \mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_nature_area_a57995d3864fc5fa739851d2ec035e98b}{Arla\+Nature\+Connect.\+Domain.\+Entities.\+Nature\+Area}}, \mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_nature_area_coordinate_a99649c72e300c8a9559846bdcd7487cf}{Arla\+Nature\+Connect.\+Domain.\+Entities.\+Nature\+Area\+Coordinate}}, \mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_nature_area_image_a3ed2b2afbbb2e7b56d934d0b8c968535}{Arla\+Nature\+Connect.\+Domain.\+Entities.\+Nature\+Area\+Image}}, \mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_nature_check_case_a0ec38e20a687dff08b447f10f99f6f54}{Arla\+Nature\+Connect.\+Domain.\+Entities.\+Nature\+Check\+Case}}, \mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_person_a67f9765f88fe2ebb2b9c970ed50d9a2a}{Arla\+Nature\+Connect.\+Domain.\+Entities.\+Person}}, and \mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_role_a34d6b187d867f17192fe23f9d2bba6a1}{Arla\+Nature\+Connect.\+Domain.\+Entities.\+Role}}.
+
+
+
+Definition at line \mbox{\hyperlink{_i_entity_8cs_source_l00037}{37}} of file \mbox{\hyperlink{_i_entity_8cs_source}{IEntity.\+cs}}.
+
+
+
+The documentation for this interface was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Arla\+Nature\+Connect.\+Domain/\+Abstract/\mbox{\hyperlink{_i_entity_8cs}{IEntity.\+cs}}\end{DoxyCompactItemize}

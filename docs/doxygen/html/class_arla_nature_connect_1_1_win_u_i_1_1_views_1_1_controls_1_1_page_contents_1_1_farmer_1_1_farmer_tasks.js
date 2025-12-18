@@ -1,0 +1,4 @@
+var class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_page_contents_1_1_farmer_1_1_farmer_tasks =
+[
+    [ "FarmerTasks", "class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_page_contents_1_1_farmer_1_1_farmer_tasks.html#aa5b5ce33da437c4fee6519d93a716f31", null ]
+];

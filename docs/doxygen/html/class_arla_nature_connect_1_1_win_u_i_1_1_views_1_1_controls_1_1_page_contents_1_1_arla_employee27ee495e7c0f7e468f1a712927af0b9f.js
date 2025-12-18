@@ -1,0 +1,4 @@
+var class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_page_contents_1_1_arla_employee27ee495e7c0f7e468f1a712927af0b9f =
+[
+    [ "AdministrateNatureAreaUC", "class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_page_contents_1_1_arla_employee27ee495e7c0f7e468f1a712927af0b9f.html#a05267ad3b1b2c518ef44a5ce25e8df9e", null ]
+];

@@ -1,0 +1,36 @@
+\doxysection{Arla\+Nature\+Connect.\+Core.\+Abstract.\+INature\+Area\+Coordinate\+Repository Interface Reference}
+\hypertarget{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_nature_area_coordinate_repository}{}\label{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_nature_area_coordinate_repository}\index{ArlaNatureConnect.Core.Abstract.INatureAreaCoordinateRepository@{ArlaNatureConnect.Core.Abstract.INatureAreaCoordinateRepository}}
+Inheritance diagram for Arla\+Nature\+Connect.\+Core.\+Abstract.\+INature\+Area\+Coordinate\+Repository\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_nature_area_coordinate_repository}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_repository-1-g}{Arla\+Nature\+Connect.\+Core.\+Abstract.\+IRepository$<$ TEntity $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+Task$<$ TEntity $>$ \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_repository-1-g_a4a7e3a0c6f6cab64d544297a7671384a}{Add\+Async}} (TEntity entity, Cancellation\+Token cancellation\+Token=default)
+\begin{DoxyCompactList}\small\item\em Adds a single {\itshape TEntity}  to the underlying store. \end{DoxyCompactList}\item 
+Task$<$ IEnumerable$<$ TEntity $>$ $>$ \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_repository-1-g_a240e01dc63db9a2126ff1b0583d765e0}{Add\+Range\+Async}} (IEnumerable$<$ TEntity $>$ entities, Cancellation\+Token cancellation\+Token=default)
+\begin{DoxyCompactList}\small\item\em Adds a collection of {\itshape TEntity}  instances to the underlying store. \end{DoxyCompactList}\item 
+Task$<$ TEntity?$>$ \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_repository-1-g_a41c0432e9afeb9d441d6c4eb1b907891}{Get\+By\+Id\+Async}} (Guid id, Cancellation\+Token cancellation\+Token=default)
+\begin{DoxyCompactList}\small\item\em Retrieves a single {\itshape TEntity}  by its unique identifier. \end{DoxyCompactList}\item 
+Task$<$ IEnumerable$<$ TEntity $>$ $>$ \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_repository-1-g_a8281e6082a7bc5ba0a78ffea9b9fc258}{Get\+All\+Async}} (Cancellation\+Token cancellation\+Token=default)
+\begin{DoxyCompactList}\small\item\em Retrieves all instances of {\itshape TEntity}  from the underlying store. \end{DoxyCompactList}\item 
+Task \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_repository-1-g_abb18e83155485dbd799f244b86cfc3fe}{Update\+Async}} (TEntity entity, Cancellation\+Token cancellation\+Token=default)
+\begin{DoxyCompactList}\small\item\em Updates an existing {\itshape TEntity}  in the underlying store. \end{DoxyCompactList}\item 
+Task \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_repository-1-g_a238d960074ece7bb45722109c8bbc80d}{Delete\+Async}} (Guid id, Cancellation\+Token cancellation\+Token=default)
+\begin{DoxyCompactList}\small\item\em Deletes the entity identified by {\itshape id}  from the underlying store. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line \mbox{\hyperlink{_i_nature_area_coordinate_repository_8cs_source_l00005}{5}} of file \mbox{\hyperlink{_i_nature_area_coordinate_repository_8cs_source}{INature\+Area\+Coordinate\+Repository.\+cs}}.
+
+
+
+The documentation for this interface was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Arla\+Nature\+Connect.\+Core/\+Abstract/\mbox{\hyperlink{_i_nature_area_coordinate_repository_8cs}{INature\+Area\+Coordinate\+Repository.\+cs}}\end{DoxyCompactItemize}

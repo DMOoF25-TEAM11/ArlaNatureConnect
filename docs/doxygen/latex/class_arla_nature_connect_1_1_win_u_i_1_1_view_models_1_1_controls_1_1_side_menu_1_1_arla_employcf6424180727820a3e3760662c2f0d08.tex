@@ -1,0 +1,230 @@
+\doxysection{Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Side\+Menu.\+Arla\+Employee\+Page\+Side\+Menu\+UCView\+Model Class Reference}
+\hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_arla_employcf6424180727820a3e3760662c2f0d08}{}\label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_arla_employcf6424180727820a3e3760662c2f0d08}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu.ArlaEmployeePageSideMenuUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu.ArlaEmployeePageSideMenuUCViewModel}}
+
+
+View-\/model for the Arla Employee side-\/menu user control.  
+
+
+Inheritance diagram for Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Side\+Menu.\+Arla\+Employee\+Page\+Side\+Menu\+UCView\+Model\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=4.674458cm]{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_arla_employcf6424180727820a3e3760662c2f0d08}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_arla_employcf6424180727820a3e3760662c2f0d08_a66618296b5687a39d807b72036636b21}{Arla\+Employee\+Page\+Side\+Menu\+UCView\+Model}} (\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services}{IStatus\+Info\+Services}} status\+Info\+Services, \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service}{IApp\+Message\+Service}} app\+Message\+Service, \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_person_repository}{IPerson\+Repository}} person\+Repository, \mbox{\hyperlink{interface_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_i_navigation_handler}{INavigation\+Handler}} navigation\+Handler)
+\item 
+async Task \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_arla_employcf6424180727820a3e3760662c2f0d08_a2a90116f6ee1720ff0260ac2f820d997}{Initialize\+Async}} ()
+\begin{DoxyCompactList}\small\item\em Performs asynchronous initialization for the Arla Employee side-\/menu view-\/model. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base}{Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+Side\+Menu\+View\+Model\+Base}}}
+\begin{DoxyCompactItemize}
+\item 
+async Task \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base_a0d89c5470d8218b71201ad857c4f4e48}{Load\+Available\+Persons\+Async}} (string role)
+\item 
+void \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base_a36a043ba8e849ed275121ded3d4d1cb6}{Set\+Host\+Page\+View\+Model}} (object? vm)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g}{Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+List\+View\+Model\+Base$<$ TRepos, TEntity $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+async Task \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a495292bf770a1f778460459a80c1288d}{Load\+All\+Async}} (Cancellation\+Token ct=default)
+\begin{DoxyCompactList}\small\item\em Loads all entities from the repository and populates the \doxylink{namespace_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items}{Items} collection. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+override void \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_arla_employcf6424180727820a3e3760662c2f0d08_a10b56d32eff887f57dc700abfa93dd9e}{On\+Navigate}} (object? parameter)
+\begin{DoxyCompactList}\small\item\em Override On\+Navigate to handle Data\+Context assignment for Farms\+Who\+Have\+Nature\+Area view. This ensures Data\+Context is set correctly before binding evaluation, preventing binding failures. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions inherited from \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base}{Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+Side\+Menu\+View\+Model\+Base}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base_a11ae05fd5d30ab78bd42173c442bd18f}{Side\+Menu\+View\+Model\+Base}} (\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services}{IStatus\+Info\+Services}} status\+Info\+Services, \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service}{IApp\+Message\+Service}} app\+Message\+Service, \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_person_repository}{IPerson\+Repository}} repository, \mbox{\hyperlink{interface_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_i_navigation_handler}{INavigation\+Handler}} navigation\+Handler)
+\begin{DoxyCompactList}\small\item\em Parameterless ctor for design-\/time and tests. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base_ada78a14fed9d722098f0abd2a871dd7a}{On\+Logout}} (object? parameter)
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions inherited from \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g}{Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+List\+View\+Model\+Base$<$ TRepos, TEntity $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a2f28c364f9a89b72dffab6e7bb0e0b6f}{List\+View\+Model\+Base}} (\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services}{IStatus\+Info\+Services}} status\+Info\+Services, \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service}{IApp\+Message\+Service}} app\+Message\+Service, TRepos repository, bool auto\+Load=true)
+\begin{DoxyCompactList}\small\item\em Initializes a new instance of the \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g}{List\+View\+Model\+Base$<$\+TRepos,\+TEntity$>$} class. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a2d3a9ca4161f15299a7b4f385bc88d65}{On\+Selected\+Item\+Changed}} (TEntity? item)
+\begin{DoxyCompactList}\small\item\em Hook invoked synchronously when the Selected\+Item property changes. Derived classes may override to update dependent state (for example load a form). Implementations should avoid long-\/running work since this is invoked on the caller thread. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions inherited from \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base}{Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+View\+Model\+Base}}}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_afe69f6fc4811892022c273a234f84ed7}{On\+Property\+Changed}} (\mbox{[}Caller\+Member\+Name\mbox{]} string? name=null)
+\begin{DoxyCompactList}\small\item\em Raises the \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_a84af6959822f5dac7b036413ef1084e0}{Property\+Changed} event for the property specified by {\itshape name} . \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+Observable\+Collection$<$ Nav\+Item $>$ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_arla_employcf6424180727820a3e3760662c2f0d08_acee97b970574796eea42c4f5f9ed1ac7}{Nav\+Items}} = new()\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\item 
+ICommand \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_arla_employcf6424180727820a3e3760662c2f0d08_af055567d06ad076fc6640ab9a5f67d7f}{Dashboards\+Command}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\item 
+ICommand \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_arla_employcf6424180727820a3e3760662c2f0d08_a1bf8683724ef8cf440fe1efdc9fc04a1}{Farms\+Command}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\item 
+ICommand \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_arla_employcf6424180727820a3e3760662c2f0d08_ad9860d619c4b1ca7f76ae77cbd398654}{Users\+Command}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\item 
+ICommand \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_arla_employcf6424180727820a3e3760662c2f0d08_a07b41e0174c2a2197badc4a171319322}{Nature\+Areas\+Command}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Properties inherited from \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base}{Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+Side\+Menu\+View\+Model\+Base}}}
+\begin{DoxyCompactItemize}
+\item 
+Observable\+Collection$<$ \mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_person}{Person}} $>$ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base_a70a3768d117649f7471df105f31869e8}{Available\+Persons}} = \mbox{[}$\,$\mbox{]}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Persons available for selection in the side-\/menu. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_person}{Person}}? \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base_a7d7843cf83627560f72675b0435cf3ad}{Selected\+Person}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Currently selected person in the side-\/menu. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base_a2384bb91266ff344bacbaf03256aed36}{Is\+Loading}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command}{Relay\+Command}}$<$ object $>$? \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base_a63c500cf8930e0624a5ae0f801a8ff31}{Navigation\+Command}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, protected set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Navigation command that side-\/menu buttons bind to. Default implementation is a no-\/op. Derived view-\/models may replace this with a command that performs real navigation. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command}{Relay\+Command}}$<$ object $>$? \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base_a72316d59aed2c71c2df18762c7536add}{Logout\+Command}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, protected set\mbox{]}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Properties inherited from \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g}{Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+List\+View\+Model\+Base$<$ TRepos, TEntity $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+TEntity? \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_ac6c514ea7eec5dd47a71e3a4c199d99d}{Selected\+Item}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+Observable\+Collection$<$ TEntity $>$ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a06011271607451b7a924017a009d8bd2}{Items}} = \mbox{[}$\,$\mbox{]}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Collection of entities exposed to the view. Observable\+Collection ensures UI updates when items change. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g}{Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+List\+View\+Model\+Base$<$ TRepos, TEntity $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+TEntity? \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a7e5ea1a5d80664499249609899a4488f}{\+\_\+selected\+Item}}
+\item 
+TRepos \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a90f6ff42274d1b27273318adae28e428}{\+\_\+items}}
+\begin{DoxyCompactList}\small\item\em \doxylink{namespace_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items}{Items} used to access entities of type {\itshape TEntity} . \end{DoxyCompactList}\item 
+\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services}{IStatus\+Info\+Services}} \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_ad682524142e5db8a42385c2e14b7f39d}{\+\_\+status\+Info\+Services}}
+\begin{DoxyCompactList}\small\item\em Service used to report loading and connectivity status to the UI. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service}{IApp\+Message\+Service}} \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a471f7c22f0a615d475d2fb9bd7f1abb3}{\+\_\+app\+Message\+Service}}
+\begin{DoxyCompactList}\small\item\em Service used to report application messages and errors to the UI. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Events inherited from \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g}{Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+List\+View\+Model\+Base$<$ TRepos, TEntity $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+Event\+Handler$<$ TEntity?$>$? \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a01967c9faff0eccd4265737c8aaa1ed4}{Selected\+Entity\+Changed}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Events inherited from \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base}{Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+View\+Model\+Base}}}
+\begin{DoxyCompactItemize}
+\item 
+Property\+Changed\+Event\+Handler? \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_a84af6959822f5dac7b036413ef1084e0}{Property\+Changed}}
+\begin{DoxyCompactList}\small\item\em Occurs when a property value changes. Consumers (typically UI bindings) subscribe to this event to be notified that a property value has changed. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+View-\/model for the Arla Employee side-\/menu user control. 
+
+Definition at line \mbox{\hyperlink{_arla_employee_page_side_menu_u_c_view_model_8cs_source_l00021}{21}} of file \mbox{\hyperlink{_arla_employee_page_side_menu_u_c_view_model_8cs_source}{Arla\+Employee\+Page\+Side\+Menu\+UCView\+Model.\+cs}}.
+
+
+
+\label{doc-constructors}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_arla_employcf6424180727820a3e3760662c2f0d08_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_arla_employcf6424180727820a3e3760662c2f0d08_a66618296b5687a39d807b72036636b21}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu.ArlaEmployeePageSideMenuUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu.ArlaEmployeePageSideMenuUCViewModel}!ArlaEmployeePageSideMenuUCViewModel@{ArlaEmployeePageSideMenuUCViewModel}}
+\index{ArlaEmployeePageSideMenuUCViewModel@{ArlaEmployeePageSideMenuUCViewModel}!ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu.ArlaEmployeePageSideMenuUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu.ArlaEmployeePageSideMenuUCViewModel}}
+\doxysubsubsection{\texorpdfstring{ArlaEmployeePageSideMenuUCViewModel()}{ArlaEmployeePageSideMenuUCViewModel()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_arla_employcf6424180727820a3e3760662c2f0d08_a66618296b5687a39d807b72036636b21} 
+Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Side\+Menu.\+Arla\+Employee\+Page\+Side\+Menu\+UCView\+Model.\+Arla\+Employee\+Page\+Side\+Menu\+UCView\+Model (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services}{IStatus\+Info\+Services}}}]{status\+Info\+Services}{, }\item[{\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service}{IApp\+Message\+Service}}}]{app\+Message\+Service}{, }\item[{\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_person_repository}{IPerson\+Repository}}}]{person\+Repository}{, }\item[{\mbox{\hyperlink{interface_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_i_navigation_handler}{INavigation\+Handler}}}]{navigation\+Handler}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{_arla_employee_page_side_menu_u_c_view_model_8cs_source_l00047}{47}} of file \mbox{\hyperlink{_arla_employee_page_side_menu_u_c_view_model_8cs_source}{Arla\+Employee\+Page\+Side\+Menu\+UCView\+Model.\+cs}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_arla_employcf6424180727820a3e3760662c2f0d08_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_arla_employcf6424180727820a3e3760662c2f0d08_a2a90116f6ee1720ff0260ac2f820d997}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu.ArlaEmployeePageSideMenuUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu.ArlaEmployeePageSideMenuUCViewModel}!InitializeAsync@{InitializeAsync}}
+\index{InitializeAsync@{InitializeAsync}!ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu.ArlaEmployeePageSideMenuUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu.ArlaEmployeePageSideMenuUCViewModel}}
+\doxysubsubsection{\texorpdfstring{InitializeAsync()}{InitializeAsync()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_arla_employcf6424180727820a3e3760662c2f0d08_a2a90116f6ee1720ff0260ac2f820d997} 
+async Task Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Side\+Menu.\+Arla\+Employee\+Page\+Side\+Menu\+UCView\+Model.\+Initialize\+Async (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Performs asynchronous initialization for the Arla Employee side-\/menu view-\/model. 
+
+
+
+Definition at line \mbox{\hyperlink{_arla_employee_page_side_menu_u_c_view_model_8cs_source_l00163}{163}} of file \mbox{\hyperlink{_arla_employee_page_side_menu_u_c_view_model_8cs_source}{Arla\+Employee\+Page\+Side\+Menu\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_arla_employcf6424180727820a3e3760662c2f0d08_a10b56d32eff887f57dc700abfa93dd9e}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu.ArlaEmployeePageSideMenuUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu.ArlaEmployeePageSideMenuUCViewModel}!OnNavigate@{OnNavigate}}
+\index{OnNavigate@{OnNavigate}!ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu.ArlaEmployeePageSideMenuUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu.ArlaEmployeePageSideMenuUCViewModel}}
+\doxysubsubsection{\texorpdfstring{OnNavigate()}{OnNavigate()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_arla_employcf6424180727820a3e3760662c2f0d08_a10b56d32eff887f57dc700abfa93dd9e} 
+override void Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Side\+Menu.\+Arla\+Employee\+Page\+Side\+Menu\+UCView\+Model.\+On\+Navigate (\begin{DoxyParamCaption}\item[{object?}]{parameter}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Override On\+Navigate to handle Data\+Context assignment for Farms\+Who\+Have\+Nature\+Area view. This ensures Data\+Context is set correctly before binding evaluation, preventing binding failures. 
+
+
+
+Reimplemented from \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base_a6e80fa364f4ce976af726d1246357916}{Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+Side\+Menu\+View\+Model\+Base}}.
+
+
+
+Definition at line \mbox{\hyperlink{_arla_employee_page_side_menu_u_c_view_model_8cs_source_l00133}{133}} of file \mbox{\hyperlink{_arla_employee_page_side_menu_u_c_view_model_8cs_source}{Arla\+Employee\+Page\+Side\+Menu\+UCView\+Model.\+cs}}.
+
+
+
+\label{doc-property-members}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_arla_employcf6424180727820a3e3760662c2f0d08_doc-property-members}
+\doxysubsection{Property Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_arla_employcf6424180727820a3e3760662c2f0d08_af055567d06ad076fc6640ab9a5f67d7f}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu.ArlaEmployeePageSideMenuUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu.ArlaEmployeePageSideMenuUCViewModel}!DashboardsCommand@{DashboardsCommand}}
+\index{DashboardsCommand@{DashboardsCommand}!ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu.ArlaEmployeePageSideMenuUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu.ArlaEmployeePageSideMenuUCViewModel}}
+\doxysubsubsection{\texorpdfstring{DashboardsCommand}{DashboardsCommand}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_arla_employcf6424180727820a3e3760662c2f0d08_af055567d06ad076fc6640ab9a5f67d7f} 
+ICommand Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Side\+Menu.\+Arla\+Employee\+Page\+Side\+Menu\+UCView\+Model.\+Dashboards\+Command\hspace{0.3cm}{\ttfamily [get]}}
+
+
+
+Definition at line \mbox{\hyperlink{_arla_employee_page_side_menu_u_c_view_model_8cs_source_l00041}{41}} of file \mbox{\hyperlink{_arla_employee_page_side_menu_u_c_view_model_8cs_source}{Arla\+Employee\+Page\+Side\+Menu\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_arla_employcf6424180727820a3e3760662c2f0d08_a1bf8683724ef8cf440fe1efdc9fc04a1}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu.ArlaEmployeePageSideMenuUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu.ArlaEmployeePageSideMenuUCViewModel}!FarmsCommand@{FarmsCommand}}
+\index{FarmsCommand@{FarmsCommand}!ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu.ArlaEmployeePageSideMenuUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu.ArlaEmployeePageSideMenuUCViewModel}}
+\doxysubsubsection{\texorpdfstring{FarmsCommand}{FarmsCommand}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_arla_employcf6424180727820a3e3760662c2f0d08_a1bf8683724ef8cf440fe1efdc9fc04a1} 
+ICommand Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Side\+Menu.\+Arla\+Employee\+Page\+Side\+Menu\+UCView\+Model.\+Farms\+Command\hspace{0.3cm}{\ttfamily [get]}}
+
+
+
+Definition at line \mbox{\hyperlink{_arla_employee_page_side_menu_u_c_view_model_8cs_source_l00042}{42}} of file \mbox{\hyperlink{_arla_employee_page_side_menu_u_c_view_model_8cs_source}{Arla\+Employee\+Page\+Side\+Menu\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_arla_employcf6424180727820a3e3760662c2f0d08_a07b41e0174c2a2197badc4a171319322}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu.ArlaEmployeePageSideMenuUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu.ArlaEmployeePageSideMenuUCViewModel}!NatureAreasCommand@{NatureAreasCommand}}
+\index{NatureAreasCommand@{NatureAreasCommand}!ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu.ArlaEmployeePageSideMenuUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu.ArlaEmployeePageSideMenuUCViewModel}}
+\doxysubsubsection{\texorpdfstring{NatureAreasCommand}{NatureAreasCommand}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_arla_employcf6424180727820a3e3760662c2f0d08_a07b41e0174c2a2197badc4a171319322} 
+ICommand Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Side\+Menu.\+Arla\+Employee\+Page\+Side\+Menu\+UCView\+Model.\+Nature\+Areas\+Command\hspace{0.3cm}{\ttfamily [get]}}
+
+
+
+Definition at line \mbox{\hyperlink{_arla_employee_page_side_menu_u_c_view_model_8cs_source_l00044}{44}} of file \mbox{\hyperlink{_arla_employee_page_side_menu_u_c_view_model_8cs_source}{Arla\+Employee\+Page\+Side\+Menu\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_arla_employcf6424180727820a3e3760662c2f0d08_acee97b970574796eea42c4f5f9ed1ac7}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu.ArlaEmployeePageSideMenuUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu.ArlaEmployeePageSideMenuUCViewModel}!NavItems@{NavItems}}
+\index{NavItems@{NavItems}!ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu.ArlaEmployeePageSideMenuUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu.ArlaEmployeePageSideMenuUCViewModel}}
+\doxysubsubsection{\texorpdfstring{NavItems}{NavItems}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_arla_employcf6424180727820a3e3760662c2f0d08_acee97b970574796eea42c4f5f9ed1ac7} 
+Observable\+Collection$<$Nav\+Item$>$ Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Side\+Menu.\+Arla\+Employee\+Page\+Side\+Menu\+UCView\+Model.\+Nav\+Items = new()\hspace{0.3cm}{\ttfamily [get]}}
+
+
+
+Definition at line \mbox{\hyperlink{_arla_employee_page_side_menu_u_c_view_model_8cs_source_l00037}{37}} of file \mbox{\hyperlink{_arla_employee_page_side_menu_u_c_view_model_8cs_source}{Arla\+Employee\+Page\+Side\+Menu\+UCView\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_arla_employcf6424180727820a3e3760662c2f0d08_ad9860d619c4b1ca7f76ae77cbd398654}\index{ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu.ArlaEmployeePageSideMenuUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu.ArlaEmployeePageSideMenuUCViewModel}!UsersCommand@{UsersCommand}}
+\index{UsersCommand@{UsersCommand}!ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu.ArlaEmployeePageSideMenuUCViewModel@{ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu.ArlaEmployeePageSideMenuUCViewModel}}
+\doxysubsubsection{\texorpdfstring{UsersCommand}{UsersCommand}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_arla_employcf6424180727820a3e3760662c2f0d08_ad9860d619c4b1ca7f76ae77cbd398654} 
+ICommand Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Controls.\+Side\+Menu.\+Arla\+Employee\+Page\+Side\+Menu\+UCView\+Model.\+Users\+Command\hspace{0.3cm}{\ttfamily [get]}}
+
+
+
+Definition at line \mbox{\hyperlink{_arla_employee_page_side_menu_u_c_view_model_8cs_source_l00043}{43}} of file \mbox{\hyperlink{_arla_employee_page_side_menu_u_c_view_model_8cs_source}{Arla\+Employee\+Page\+Side\+Menu\+UCView\+Model.\+cs}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Arla\+Nature\+Connect.\+Win\+UI/\+Arla\+Nature\+Connect.\+Win\+UI/\+View\+Models/\+Controls/\+Side\+Menu/\mbox{\hyperlink{_arla_employee_page_side_menu_u_c_view_model_8cs}{Arla\+Employee\+Page\+Side\+Menu\+UCView\+Model.\+cs}}\end{DoxyCompactItemize}

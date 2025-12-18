@@ -1,0 +1,12 @@
+var namespace_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages =
+[
+    [ "AdministratorPageViewModel", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_administrator_page_view_model.html", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_administrator_page_view_model" ],
+    [ "ArlaEmployeeAssignNatureCheckViewModel", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_arla_employee_assign_nature_check_view_model.html", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_arla_employee_assign_nature_check_view_model" ],
+    [ "ArlaEmployeePageViewModel", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_arla_employee_page_view_model.html", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_arla_employee_page_view_model" ],
+    [ "ConsultantNatureCheckViewModel", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_consultant_nature_check_view_model.html", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_consultant_nature_check_view_model" ],
+    [ "ConsultantPageViewModel", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_consultant_page_view_model.html", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_consultant_page_view_model" ],
+    [ "FarmerPageViewModel", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_farmer_page_view_model.html", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_farmer_page_view_model" ],
+    [ "FarmerViewModel", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_farmer_view_model.html", null ],
+    [ "LoginPageViewModel", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_login_page_view_model.html", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_login_page_view_model" ],
+    [ "ManageViewModel", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_manage_view_model.html", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_manage_view_model" ]
+];

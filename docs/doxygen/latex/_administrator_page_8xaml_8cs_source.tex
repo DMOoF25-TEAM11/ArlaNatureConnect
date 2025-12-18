@@ -1,0 +1,38 @@
+\doxysection{Administrator\+Page.\+xaml.\+cs}
+\hypertarget{_administrator_page_8xaml_8cs_source}{}\label{_administrator_page_8xaml_8cs_source}\index{src/ArlaNatureConnect.WinUI/ArlaNatureConnect.WinUI/Views/Pages/AdministratorPage.xaml.cs@{src/ArlaNatureConnect.WinUI/ArlaNatureConnect.WinUI/Views/Pages/AdministratorPage.xaml.cs}}
+\mbox{\hyperlink{_administrator_page_8xaml_8cs}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_administrator_page_8xaml_8cs_source_l00001}00001\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts}{ArlaNatureConnect.WinUI.ViewModels.Abstracts}};}
+\DoxyCodeLine{\Hypertarget{_administrator_page_8xaml_8cs_source_l00002}00002\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages}{ArlaNatureConnect.WinUI.ViewModels.Pages}};}
+\DoxyCodeLine{\Hypertarget{_administrator_page_8xaml_8cs_source_l00003}00003\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_abstracts}{ArlaNatureConnect.WinUI.Views.Pages.Abstracts}};}
+\DoxyCodeLine{\Hypertarget{_administrator_page_8xaml_8cs_source_l00004}00004\ }
+\DoxyCodeLine{\Hypertarget{_administrator_page_8xaml_8cs_source_l00005}00005\ \textcolor{keyword}{using\ }Microsoft.UI.Xaml;}
+\DoxyCodeLine{\Hypertarget{_administrator_page_8xaml_8cs_source_l00006}00006\ }
+\DoxyCodeLine{\Hypertarget{_administrator_page_8xaml_8cs_source_l00007}00007\ \textcolor{comment}{//\ To\ learn\ more\ about\ WinUI,\ the\ WinUI\ project\ structure,}}
+\DoxyCodeLine{\Hypertarget{_administrator_page_8xaml_8cs_source_l00008}00008\ \textcolor{comment}{//\ and\ more\ about\ our\ project\ templates,\ see:\ http://aka.ms/winui-\/project-\/info.}}
+\DoxyCodeLine{\Hypertarget{_administrator_page_8xaml_8cs_source_l00009}00009\ }
+\DoxyCodeLine{\Hypertarget{_administrator_page_8xaml_8cs_source_l00010}00010\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages}{ArlaNatureConnect.WinUI.Views.Pages}};}
+\DoxyCodeLine{\Hypertarget{_administrator_page_8xaml_8cs_source_l00011}00011\ }
+\DoxyCodeLine{\Hypertarget{_administrator_page_8xaml_8cs_source_l00015}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_administrator_page}{00015}}\ \textcolor{keyword}{public}\ \textcolor{keyword}{sealed}\ \textcolor{keyword}{partial\ class\ }\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_administrator_page_a21068b1bc4c97e1f0b9b1266db8f508d}{AdministratorPage}}\ :\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_abstracts_1_1_nav_page}{NavPage}}}
+\DoxyCodeLine{\Hypertarget{_administrator_page_8xaml_8cs_source_l00016}00016\ \{}
+\DoxyCodeLine{\Hypertarget{_administrator_page_8xaml_8cs_source_l00017}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_administrator_page_a21068b1bc4c97e1f0b9b1266db8f508d}{00017}}\ \ \ \ \ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_administrator_page_a21068b1bc4c97e1f0b9b1266db8f508d}{AdministratorPage}}()}
+\DoxyCodeLine{\Hypertarget{_administrator_page_8xaml_8cs_source_l00018}00018\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_administrator_page_8xaml_8cs_source_l00019}00019\ \ \ \ \ \ \ \ \ InitializeComponent();}
+\DoxyCodeLine{\Hypertarget{_administrator_page_8xaml_8cs_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{_administrator_page_8xaml_8cs_source_l00021}00021\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Create\ view\ model\ with\ dependencies}}
+\DoxyCodeLine{\Hypertarget{_administrator_page_8xaml_8cs_source_l00022}00022\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_administrator_page_view_model}{AdministratorPageViewModel}}\ vm\ =\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_app}{App}}.\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_app_a0aa62a7a04419f5e8af40c25248a4834}{HostInstance}}?.Services.GetService(typeof(\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_administrator_page_view_model}{AdministratorPageViewModel}}))\ as\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_administrator_page_view_model}{AdministratorPageViewModel}}\ ??\ \textcolor{keywordflow}{throw}\ \textcolor{keyword}{new}\ InvalidOperationException(\textcolor{stringliteral}{"{}Failed\ to\ resolve\ AdministratorPageViewModel"{}});}
+\DoxyCodeLine{\Hypertarget{_administrator_page_8xaml_8cs_source_l00023}00023\ }
+\DoxyCodeLine{\Hypertarget{_administrator_page_8xaml_8cs_source_l00024}00024\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_abstracts_1_1_nav_page_abb79715fa6bebfec790c7d554ddd51a8}{ViewModel}}\ =\ vm;\ \ \ \ \ \ \textcolor{comment}{//\ required\ by\ NavPage}}
+\DoxyCodeLine{\Hypertarget{_administrator_page_8xaml_8cs_source_l00025}00025\ \ \ \ \ \ \ \ \ DataContext\ =\ vm;\ \ \ \ \textcolor{comment}{//\ bindings\ in\ XAML}}
+\DoxyCodeLine{\Hypertarget{_administrator_page_8xaml_8cs_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{_administrator_page_8xaml_8cs_source_l00027}00027\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ If\ a\ side-\/menu\ control\ exists\ in\ the\ visual\ tree\ and\ its\ DataContext\ is\ a\ SideMenuViewModelBase,}}
+\DoxyCodeLine{\Hypertarget{_administrator_page_8xaml_8cs_source_l00028}00028\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ ensure\ it\ knows\ about\ this\ page\ view-\/model\ (backwards\ compatibility\ with\ existing\ side-\/menu\ wiring).}}
+\DoxyCodeLine{\Hypertarget{_administrator_page_8xaml_8cs_source_l00029}00029\ \ \ \ \ \ \ \ \ FrameworkElement?\ sideMenuControl\ =\ FindName(\textcolor{stringliteral}{"{}SideMenu"{}})\ as\ FrameworkElement;}
+\DoxyCodeLine{\Hypertarget{_administrator_page_8xaml_8cs_source_l00030}00030\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (sideMenuControl\ !=\ \textcolor{keyword}{null}\ \&\&\ sideMenuControl.DataContext\ is\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base}{SideMenuViewModelBase}}\ sideMenuVm)}
+\DoxyCodeLine{\Hypertarget{_administrator_page_8xaml_8cs_source_l00031}00031\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_administrator_page_8xaml_8cs_source_l00032}00032\ \ \ \ \ \ \ \ \ \ \ \ \ sideMenuVm.SetHostPageViewModel(vm);}
+\DoxyCodeLine{\Hypertarget{_administrator_page_8xaml_8cs_source_l00033}00033\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_administrator_page_8xaml_8cs_source_l00034}00034\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_administrator_page_8xaml_8cs_source_l00035}00035\ \}}
+
+\end{DoxyCode}

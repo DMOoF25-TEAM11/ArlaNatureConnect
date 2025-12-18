@@ -1,0 +1,222 @@
+\doxysection{Arla\+Nature\+Connect.\+Core.\+Services.\+Status\+Info\+Service Class Reference}
+\hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service}{}\label{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service}\index{ArlaNatureConnect.Core.Services.StatusInfoService@{ArlaNatureConnect.Core.Services.StatusInfoService}}
+
+
+Centralizes app-\/wide status reporting so multiple components can signal loading and database-\/connection state in a consistent way. This prevents UI flicker and race conditions by keeping {\ttfamily Is\+Loading\+Or\+Saving} true until every independent caller finishes (reference-\/counted tokens), so the UI and other consumers observe reliable state.  
+
+
+Inheritance diagram for Arla\+Nature\+Connect.\+Core.\+Services.\+Status\+Info\+Service\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.568807cm]{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_ad171253d5cc36b1a54161aab1a5f20fb}{Status\+Info\+Service}} ()
+\item 
+IDisposable \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_a8325649a903df53b29fd5cca9081b19b}{Begin\+Loading\+Or\+Saving}} ()
+\begin{DoxyCompactList}\small\item\em Acquire a loading token. When the returned IDisposable is disposed the internal loading count is decremented. Use this when multiple independent callers need to indicate "{}loading"{} and you want \doxylink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_a14a9927fde51d0b81532f2f331192e45}{Is\+Loading\+Or\+Saving} to be true until every caller has finished (disposed their token). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_aa3cdf9959a05f457e32656b859a593df}{Dispose}} ()
+\begin{DoxyCompactList}\small\item\em Disposes the \doxylink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service}{Status\+Info\+Service}, releasing any resources. This is idempotent. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_a36019cb1e19d30edd1e8429416715ae9}{On\+Property\+Changed}} (\mbox{[}Caller\+Member\+Name\mbox{]} string? name=null)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_a14a9927fde51d0b81532f2f331192e45}{Is\+Loading\+Or\+Saving}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em True while one or more callers have an active loading token from \doxylink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_a8325649a903df53b29fd5cca9081b19b}{Begin\+Loading\+Or\+Saving}. Setting this property directly will replace the internal reference-\/count with 0/1. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_acfa61e3af8ce29dd3eebf13006d055ce}{Has\+Db\+Connection}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Indicates whether a database connection is available. Use lock-\/based synchronization for thread-\/safety. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Events}
+\begin{DoxyCompactItemize}
+\item 
+Event\+Handler? \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_a1fbe9997e086f552078af48be24fa9da}{Status\+Info\+Changed}}
+\item 
+Property\+Changed\+Event\+Handler? \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_a25c6d6f7ffef4c2dc3746ee05514ffd3}{Property\+Changed}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Events inherited from \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services}{Arla\+Nature\+Connect.\+Core.\+Services.\+IStatus\+Info\+Services}}}
+\begin{DoxyCompactItemize}
+\item 
+Event\+Handler? \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services_a5fd6e3c1f7aca8fb9a37359f83333346}{Status\+Info\+Changed}}
+\begin{DoxyCompactList}\small\item\em Occurs when any status information exposed by this service has changed. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Centralizes app-\/wide status reporting so multiple components can signal loading and database-\/connection state in a consistent way. This prevents UI flicker and race conditions by keeping {\ttfamily Is\+Loading\+Or\+Saving} true until every independent caller finishes (reference-\/counted tokens), so the UI and other consumers observe reliable state. 
+
+How to use\+:
+\begin{DoxyItemize}
+\item Call \doxylink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_a8325649a903df53b29fd5cca9081b19b}{Begin\+Loading\+Or\+Saving} when a component starts an operation that should mark the app as loading. Dispose the returned token when the operation completes.
+\item Read \doxylink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_a14a9927fde51d0b81532f2f331192e45}{Is\+Loading\+Or\+Saving} to know whether any active loading callers remain.
+\item Set or read \doxylink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_acfa61e3af8ce29dd3eebf13006d055ce}{Has\+Db\+Connection} to indicate whether a database connection is available.
+\end{DoxyItemize}
+
+Why we have it\+:
+\begin{DoxyItemize}
+\item To provide a single source of truth for global loading/db connection state so multiple independent components do not fight over UI indicators and can avoid flicker.
+\item To provide change notifications via \doxylink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_a25c6d6f7ffef4c2dc3746ee05514ffd3}{Property\+Changed} and \doxylink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_a1fbe9997e086f552078af48be24fa9da}{Status\+Info\+Changed} so UIs and other services can react to status changes.
+\end{DoxyItemize}
+
+Implements \doxylink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services}{IStatus\+Info\+Services}. 
+
+Definition at line \mbox{\hyperlink{_status_info_service_8cs_source_l00027}{27}} of file \mbox{\hyperlink{_status_info_service_8cs_source}{Status\+Info\+Service.\+cs}}.
+
+
+
+\label{doc-constructors}
+\Hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_ad171253d5cc36b1a54161aab1a5f20fb}\index{ArlaNatureConnect.Core.Services.StatusInfoService@{ArlaNatureConnect.Core.Services.StatusInfoService}!StatusInfoService@{StatusInfoService}}
+\index{StatusInfoService@{StatusInfoService}!ArlaNatureConnect.Core.Services.StatusInfoService@{ArlaNatureConnect.Core.Services.StatusInfoService}}
+\doxysubsubsection{\texorpdfstring{StatusInfoService()}{StatusInfoService()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_ad171253d5cc36b1a54161aab1a5f20fb} 
+Arla\+Nature\+Connect.\+Core.\+Services.\+Status\+Info\+Service.\+Status\+Info\+Service (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{_status_info_service_8cs_source_l00045}{45}} of file \mbox{\hyperlink{_status_info_service_8cs_source}{Status\+Info\+Service.\+cs}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_a8325649a903df53b29fd5cca9081b19b}\index{ArlaNatureConnect.Core.Services.StatusInfoService@{ArlaNatureConnect.Core.Services.StatusInfoService}!BeginLoadingOrSaving@{BeginLoadingOrSaving}}
+\index{BeginLoadingOrSaving@{BeginLoadingOrSaving}!ArlaNatureConnect.Core.Services.StatusInfoService@{ArlaNatureConnect.Core.Services.StatusInfoService}}
+\doxysubsubsection{\texorpdfstring{BeginLoadingOrSaving()}{BeginLoadingOrSaving()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_a8325649a903df53b29fd5cca9081b19b} 
+IDisposable Arla\+Nature\+Connect.\+Core.\+Services.\+Status\+Info\+Service.\+Begin\+Loading\+Or\+Saving (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Acquire a loading token. When the returned IDisposable is disposed the internal loading count is decremented. Use this when multiple independent callers need to indicate "{}loading"{} and you want \doxylink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_a14a9927fde51d0b81532f2f331192e45}{Is\+Loading\+Or\+Saving} to be true until every caller has finished (disposed their token). 
+
+Typical usage\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keyword}{using}\ (statusService.BeginLoadingOrSaving())}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\ \ \ \ await\ SomeWorkAsync();}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+ 
+
+Implements \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services_a6e098a14ecc16a31f815606c84472c26}{Arla\+Nature\+Connect.\+Core.\+Services.\+IStatus\+Info\+Services}}.
+
+
+
+Definition at line \mbox{\hyperlink{_status_info_service_8cs_source_l00148}{148}} of file \mbox{\hyperlink{_status_info_service_8cs_source}{Status\+Info\+Service.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_aa3cdf9959a05f457e32656b859a593df}\index{ArlaNatureConnect.Core.Services.StatusInfoService@{ArlaNatureConnect.Core.Services.StatusInfoService}!Dispose@{Dispose}}
+\index{Dispose@{Dispose}!ArlaNatureConnect.Core.Services.StatusInfoService@{ArlaNatureConnect.Core.Services.StatusInfoService}}
+\doxysubsubsection{\texorpdfstring{Dispose()}{Dispose()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_aa3cdf9959a05f457e32656b859a593df} 
+void Arla\+Nature\+Connect.\+Core.\+Services.\+Status\+Info\+Service.\+Dispose (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Disposes the \doxylink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service}{Status\+Info\+Service}, releasing any resources. This is idempotent. 
+
+
+
+Definition at line \mbox{\hyperlink{_status_info_service_8cs_source_l00177}{177}} of file \mbox{\hyperlink{_status_info_service_8cs_source}{Status\+Info\+Service.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_a36019cb1e19d30edd1e8429416715ae9}\index{ArlaNatureConnect.Core.Services.StatusInfoService@{ArlaNatureConnect.Core.Services.StatusInfoService}!OnPropertyChanged@{OnPropertyChanged}}
+\index{OnPropertyChanged@{OnPropertyChanged}!ArlaNatureConnect.Core.Services.StatusInfoService@{ArlaNatureConnect.Core.Services.StatusInfoService}}
+\doxysubsubsection{\texorpdfstring{OnPropertyChanged()}{OnPropertyChanged()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_a36019cb1e19d30edd1e8429416715ae9} 
+void Arla\+Nature\+Connect.\+Core.\+Services.\+Status\+Info\+Service.\+On\+Property\+Changed (\begin{DoxyParamCaption}\item[{\mbox{[}\+Caller\+Member\+Name\mbox{]} string?}]{name}{ = {\ttfamily null}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+Definition at line \mbox{\hyperlink{_status_info_service_8cs_source_l00119}{119}} of file \mbox{\hyperlink{_status_info_service_8cs_source}{Status\+Info\+Service.\+cs}}.
+
+
+
+\label{doc-property-members}
+\Hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_doc-property-members}
+\doxysubsection{Property Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_acfa61e3af8ce29dd3eebf13006d055ce}\index{ArlaNatureConnect.Core.Services.StatusInfoService@{ArlaNatureConnect.Core.Services.StatusInfoService}!HasDbConnection@{HasDbConnection}}
+\index{HasDbConnection@{HasDbConnection}!ArlaNatureConnect.Core.Services.StatusInfoService@{ArlaNatureConnect.Core.Services.StatusInfoService}}
+\doxysubsubsection{\texorpdfstring{HasDbConnection}{HasDbConnection}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_acfa61e3af8ce29dd3eebf13006d055ce} 
+bool Arla\+Nature\+Connect.\+Core.\+Services.\+Status\+Info\+Service.\+Has\+Db\+Connection\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Indicates whether a database connection is available. Use lock-\/based synchronization for thread-\/safety. 
+
+How to use\+:
+\begin{DoxyItemize}
+\item Set this to true when the app establishes a DB connection, false when lost.
+\item Observe this property to disable features that require DB access. 
+\end{DoxyItemize}
+
+Implements \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services_a82c841e5c7c1662364ad6b078f540fd4}{Arla\+Nature\+Connect.\+Core.\+Services.\+IStatus\+Info\+Services}}.
+
+
+
+Definition at line \mbox{\hyperlink{_status_info_service_8cs_source_l00093}{93}} of file \mbox{\hyperlink{_status_info_service_8cs_source}{Status\+Info\+Service.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_a14a9927fde51d0b81532f2f331192e45}\index{ArlaNatureConnect.Core.Services.StatusInfoService@{ArlaNatureConnect.Core.Services.StatusInfoService}!IsLoadingOrSaving@{IsLoadingOrSaving}}
+\index{IsLoadingOrSaving@{IsLoadingOrSaving}!ArlaNatureConnect.Core.Services.StatusInfoService@{ArlaNatureConnect.Core.Services.StatusInfoService}}
+\doxysubsubsection{\texorpdfstring{IsLoadingOrSaving}{IsLoadingOrSaving}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_a14a9927fde51d0b81532f2f331192e45} 
+bool Arla\+Nature\+Connect.\+Core.\+Services.\+Status\+Info\+Service.\+Is\+Loading\+Or\+Saving\hspace{0.3cm}{\ttfamily [get]}}
+
+
+
+True while one or more callers have an active loading token from \doxylink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_a8325649a903df53b29fd5cca9081b19b}{Begin\+Loading\+Or\+Saving}. Setting this property directly will replace the internal reference-\/count with 0/1. 
+
+How to use\+:
+\begin{DoxyItemize}
+\item Prefer \doxylink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_a8325649a903df53b29fd5cca9081b19b}{Begin\+Loading\+Or\+Saving} to participate in reference-\/counted loading.
+\item Read this property to drive UI indicators (e.\+g. spinners).
+\end{DoxyItemize}
+
+Why we have it\+:
+\begin{DoxyItemize}
+\item Ensures UI shows loading only while there are active operations, preventing flicker caused by short-\/lived operations starting and stopping rapidly. 
+\end{DoxyItemize}
+
+Implements \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services_a481e1640fef9c62cae1a373da5a953e0}{Arla\+Nature\+Connect.\+Core.\+Services.\+IStatus\+Info\+Services}}.
+
+
+
+Definition at line \mbox{\hyperlink{_status_info_service_8cs_source_l00063}{63}} of file \mbox{\hyperlink{_status_info_service_8cs_source}{Status\+Info\+Service.\+cs}}.
+
+
+
+\label{doc-event-members}
+\Hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_doc-event-members}
+\doxysubsection{Event Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_a25c6d6f7ffef4c2dc3746ee05514ffd3}\index{ArlaNatureConnect.Core.Services.StatusInfoService@{ArlaNatureConnect.Core.Services.StatusInfoService}!PropertyChanged@{PropertyChanged}}
+\index{PropertyChanged@{PropertyChanged}!ArlaNatureConnect.Core.Services.StatusInfoService@{ArlaNatureConnect.Core.Services.StatusInfoService}}
+\doxysubsubsection{\texorpdfstring{PropertyChanged}{PropertyChanged}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_a25c6d6f7ffef4c2dc3746ee05514ffd3} 
+Property\+Changed\+Event\+Handler? Arla\+Nature\+Connect.\+Core.\+Services.\+Status\+Info\+Service.\+Property\+Changed}
+
+
+
+Definition at line \mbox{\hyperlink{_status_info_service_8cs_source_l00042}{42}} of file \mbox{\hyperlink{_status_info_service_8cs_source}{Status\+Info\+Service.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_a1fbe9997e086f552078af48be24fa9da}\index{ArlaNatureConnect.Core.Services.StatusInfoService@{ArlaNatureConnect.Core.Services.StatusInfoService}!StatusInfoChanged@{StatusInfoChanged}}
+\index{StatusInfoChanged@{StatusInfoChanged}!ArlaNatureConnect.Core.Services.StatusInfoService@{ArlaNatureConnect.Core.Services.StatusInfoService}}
+\doxysubsubsection{\texorpdfstring{StatusInfoChanged}{StatusInfoChanged}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_a1fbe9997e086f552078af48be24fa9da} 
+Event\+Handler? Arla\+Nature\+Connect.\+Core.\+Services.\+Status\+Info\+Service.\+Status\+Info\+Changed}
+
+
+
+Definition at line \mbox{\hyperlink{_status_info_service_8cs_source_l00041}{41}} of file \mbox{\hyperlink{_status_info_service_8cs_source}{Status\+Info\+Service.\+cs}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Arla\+Nature\+Connect.\+Core/\+Services/\mbox{\hyperlink{_status_info_service_8cs}{Status\+Info\+Service.\+cs}}\end{DoxyCompactItemize}

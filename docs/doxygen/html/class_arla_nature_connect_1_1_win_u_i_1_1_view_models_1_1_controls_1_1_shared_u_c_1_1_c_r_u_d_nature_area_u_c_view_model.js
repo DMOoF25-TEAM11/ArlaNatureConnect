@@ -1,0 +1,15 @@
+var class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_nature_area_u_c_view_model =
+[
+    [ "CRUDNatureAreaUCViewModel", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_nature_area_u_c_view_model.html#af33f10c9fd9c45087b3db5438dc7b118", null ],
+    [ "OnAddFormAsync", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_nature_area_u_c_view_model.html#a706821da1deda567917da361fb6c6860", null ],
+    [ "OnLoadFormAsync", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_nature_area_u_c_view_model.html#af3bf31a11a01ccebcb654955de929a70", null ],
+    [ "OnResetFormAsync", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_nature_area_u_c_view_model.html#a5679207a71d771981108c08db78706bc", null ],
+    [ "OnSaveFormAsync", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_nature_area_u_c_view_model.html#a4bb4f20c819bcc8c9bcdee6c0b017273", null ],
+    [ "PopulateFormFromSelectedItem", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_nature_area_u_c_view_model.html#a73de69a958bc70422a30944e95c589eb", null ],
+    [ "Coordinates", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_nature_area_u_c_view_model.html#aa8d5ca72b5ed10617251d7054049cae7", null ],
+    [ "FarmsWhoHaveNatureArea", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_nature_area_u_c_view_model.html#ada49d4142a923dff0f2b38dd59e36160", null ],
+    [ "NatureAreaDescription", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_nature_area_u_c_view_model.html#afeabf6c3a297d5adb62ba3fa7e037ede", null ],
+    [ "NatureAreaName", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_nature_area_u_c_view_model.html#a8ab4439c5bcda25c07189b13ffd28949", null ],
+    [ "NatureAreaSizeKm2", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_nature_area_u_c_view_model.html#a00aa2d94c809228db3ca9a6ef98aaa16", null ],
+    [ "SelectedFarm", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_nature_area_u_c_view_model.html#ae8a8b27e411fc1f04d6d8e912d62b9af", null ]
+];

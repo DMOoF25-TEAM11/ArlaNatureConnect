@@ -1,0 +1,4 @@
+var class_arla_nature_connect_1_1_infrastructure_1_1_persistence_1_1_configurations_1_1_nature_check_case_configuration =
+[
+    [ "Configure", "class_arla_nature_connect_1_1_infrastructure_1_1_persistence_1_1_configurations_1_1_nature_check_case_configuration.html#a67080861248b4773c7087e31f6273117", null ]
+];

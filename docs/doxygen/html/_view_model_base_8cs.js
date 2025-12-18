@@ -1,0 +1,4 @@
+var _view_model_base_8cs =
+[
+    [ "ArlaNatureConnect.WinUI.ViewModels.Abstracts.ViewModelBase", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base.html", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base" ]
+];

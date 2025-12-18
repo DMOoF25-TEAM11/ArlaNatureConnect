@@ -1,0 +1,133 @@
+\doxysection{Arla\+Nature\+Connect.\+Core.\+Services.\+IStatus\+Info\+Services Interface Reference}
+\hypertarget{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services}{}\label{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services}\index{ArlaNatureConnect.Core.Services.IStatusInfoServices@{ArlaNatureConnect.Core.Services.IStatusInfoServices}}
+
+
+Provides application-\/wide status information and control for UI components and services.  
+
+
+Inheritance diagram for Arla\+Nature\+Connect.\+Core.\+Services.\+IStatus\+Info\+Services\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.568807cm]{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+IDisposable \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services_a6e098a14ecc16a31f815606c84472c26}{Begin\+Loading\+Or\+Saving}} ()
+\begin{DoxyCompactList}\small\item\em Begins a loading scope and returns an IDisposable that ends the scope when disposed. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services_a481e1640fef9c62cae1a373da5a953e0}{Is\+Loading\+Or\+Saving}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets a value indicating whether a long-\/running operation is in progress. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services_a82c841e5c7c1662364ad6b078f540fd4}{Has\+Db\+Connection}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets a value indicating whether a database connection is currently available. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Events}
+\begin{DoxyCompactItemize}
+\item 
+Event\+Handler? \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services_a5fd6e3c1f7aca8fb9a37359f83333346}{Status\+Info\+Changed}}
+\begin{DoxyCompactList}\small\item\em Occurs when any status information exposed by this service has changed. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Provides application-\/wide status information and control for UI components and services. 
+
+This interface abstracts global status such as whether the application is currently performing a long-\/running operation and whether a database connection is available. Consumers (views, view-\/models, and services) use this interface to observe changes via \doxylink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services_a5fd6e3c1f7aca8fb9a37359f83333346}{Status\+Info\+Changed} and to enter a loading scope via \doxylink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services_a6e098a14ecc16a31f815606c84472c26}{Begin\+Loading\+Or\+Saving}. The scoped loader returned by \doxylink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services_a6e098a14ecc16a31f815606c84472c26}{Begin\+Loading\+Or\+Saving} ensures \doxylink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services_a481e1640fef9c62cae1a373da5a953e0}{Is\+Loading\+Or\+Saving} is set while an operation runs and automatically resets when the scope is disposed. Abstracting this behavior enables easier testing and decouples UI concerns from concrete implementations. 
+
+Definition at line \mbox{\hyperlink{_i_status_info_services_8cs_source_l00017}{17}} of file \mbox{\hyperlink{_i_status_info_services_8cs_source}{IStatus\+Info\+Services.\+cs}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services_a6e098a14ecc16a31f815606c84472c26}\index{ArlaNatureConnect.Core.Services.IStatusInfoServices@{ArlaNatureConnect.Core.Services.IStatusInfoServices}!BeginLoadingOrSaving@{BeginLoadingOrSaving}}
+\index{BeginLoadingOrSaving@{BeginLoadingOrSaving}!ArlaNatureConnect.Core.Services.IStatusInfoServices@{ArlaNatureConnect.Core.Services.IStatusInfoServices}}
+\doxysubsubsection{\texorpdfstring{BeginLoadingOrSaving()}{BeginLoadingOrSaving()}}
+{\footnotesize\ttfamily \label{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services_a6e098a14ecc16a31f815606c84472c26} 
+IDisposable Arla\+Nature\+Connect.\+Core.\+Services.\+IStatus\+Info\+Services.\+Begin\+Loading\+Or\+Saving (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Begins a loading scope and returns an IDisposable that ends the scope when disposed. 
+
+\begin{DoxyReturn}{Returns}
+An IDisposable which, when disposed, will end the loading scope (typically by setting \doxylink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services_a481e1640fef9c62cae1a373da5a953e0}{Is\+Loading\+Or\+Saving} to false). 
+\end{DoxyReturn}
+
+
+Use this method to ensure the \doxylink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services_a481e1640fef9c62cae1a373da5a953e0}{Is\+Loading\+Or\+Saving} flag is set for the duration of an operation. Typical usage\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keyword}{using}\ (status.BeginLoadingOrSaving())\ \{\ await\ DoWorkAsync();\ \}}
+
+\end{DoxyCode}
+ 
+
+Implemented in \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_a8325649a903df53b29fd5cca9081b19b}{Arla\+Nature\+Connect.\+Core.\+Services.\+Status\+Info\+Service}}.
+
+
+
+\label{doc-property-members}
+\Hypertarget{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services_doc-property-members}
+\doxysubsection{Property Documentation}
+\Hypertarget{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services_a82c841e5c7c1662364ad6b078f540fd4}\index{ArlaNatureConnect.Core.Services.IStatusInfoServices@{ArlaNatureConnect.Core.Services.IStatusInfoServices}!HasDbConnection@{HasDbConnection}}
+\index{HasDbConnection@{HasDbConnection}!ArlaNatureConnect.Core.Services.IStatusInfoServices@{ArlaNatureConnect.Core.Services.IStatusInfoServices}}
+\doxysubsubsection{\texorpdfstring{HasDbConnection}{HasDbConnection}}
+{\footnotesize\ttfamily \label{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services_a82c841e5c7c1662364ad6b078f540fd4} 
+bool Arla\+Nature\+Connect.\+Core.\+Services.\+IStatus\+Info\+Services.\+Has\+Db\+Connection\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Gets or sets a value indicating whether a database connection is currently available. 
+
+This flag can be used by UI components to show offline states or disable features that require database access. Implementations should raise \doxylink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services_a5fd6e3c1f7aca8fb9a37359f83333346}{Status\+Info\+Changed} when this value changes. 
+
+Implemented in \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_acfa61e3af8ce29dd3eebf13006d055ce}{Arla\+Nature\+Connect.\+Core.\+Services.\+Status\+Info\+Service}}.
+
+
+
+Definition at line \mbox{\hyperlink{_i_status_info_services_8cs_source_l00035}{35}} of file \mbox{\hyperlink{_i_status_info_services_8cs_source}{IStatus\+Info\+Services.\+cs}}.
+
+\Hypertarget{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services_a481e1640fef9c62cae1a373da5a953e0}\index{ArlaNatureConnect.Core.Services.IStatusInfoServices@{ArlaNatureConnect.Core.Services.IStatusInfoServices}!IsLoadingOrSaving@{IsLoadingOrSaving}}
+\index{IsLoadingOrSaving@{IsLoadingOrSaving}!ArlaNatureConnect.Core.Services.IStatusInfoServices@{ArlaNatureConnect.Core.Services.IStatusInfoServices}}
+\doxysubsubsection{\texorpdfstring{IsLoadingOrSaving}{IsLoadingOrSaving}}
+{\footnotesize\ttfamily \label{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services_a481e1640fef9c62cae1a373da5a953e0} 
+bool Arla\+Nature\+Connect.\+Core.\+Services.\+IStatus\+Info\+Services.\+Is\+Loading\+Or\+Saving\hspace{0.3cm}{\ttfamily [get]}}
+
+
+
+Gets or sets a value indicating whether a long-\/running operation is in progress. 
+
+Implementations should raise \doxylink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services_a5fd6e3c1f7aca8fb9a37359f83333346}{Status\+Info\+Changed} when this value changes. 
+
+Implemented in \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_a14a9927fde51d0b81532f2f331192e45}{Arla\+Nature\+Connect.\+Core.\+Services.\+Status\+Info\+Service}}.
+
+
+
+Definition at line \mbox{\hyperlink{_i_status_info_services_8cs_source_l00025}{25}} of file \mbox{\hyperlink{_i_status_info_services_8cs_source}{IStatus\+Info\+Services.\+cs}}.
+
+
+
+\label{doc-event-members}
+\Hypertarget{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services_doc-event-members}
+\doxysubsection{Event Documentation}
+\Hypertarget{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services_a5fd6e3c1f7aca8fb9a37359f83333346}\index{ArlaNatureConnect.Core.Services.IStatusInfoServices@{ArlaNatureConnect.Core.Services.IStatusInfoServices}!StatusInfoChanged@{StatusInfoChanged}}
+\index{StatusInfoChanged@{StatusInfoChanged}!ArlaNatureConnect.Core.Services.IStatusInfoServices@{ArlaNatureConnect.Core.Services.IStatusInfoServices}}
+\doxysubsubsection{\texorpdfstring{StatusInfoChanged}{StatusInfoChanged}}
+{\footnotesize\ttfamily \label{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services_a5fd6e3c1f7aca8fb9a37359f83333346} 
+Event\+Handler? Arla\+Nature\+Connect.\+Core.\+Services.\+IStatus\+Info\+Services.\+Status\+Info\+Changed}
+
+
+
+Occurs when any status information exposed by this service has changed. 
+
+Subscribers should update UI or internal state in response to this event. 
+
+Definition at line \mbox{\hyperlink{_i_status_info_services_8cs_source_l00043}{43}} of file \mbox{\hyperlink{_i_status_info_services_8cs_source}{IStatus\+Info\+Services.\+cs}}.
+
+
+
+The documentation for this interface was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Arla\+Nature\+Connect.\+Core/\+Services/\mbox{\hyperlink{_i_status_info_services_8cs}{IStatus\+Info\+Services.\+cs}}\end{DoxyCompactItemize}

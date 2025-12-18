@@ -1,0 +1,28 @@
+\doxysection{IApp\+Message\+Service.\+cs}
+\hypertarget{_i_app_message_service_8cs_source}{}\label{_i_app_message_service_8cs_source}\index{src/ArlaNatureConnect.Core/Services/IAppMessageService.cs@{src/ArlaNatureConnect.Core/Services/IAppMessageService.cs}}
+\mbox{\hyperlink{_i_app_message_service_8cs}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_i_app_message_service_8cs_source_l00001}00001\ \textcolor{keyword}{using\ }System.ComponentModel;}
+\DoxyCodeLine{\Hypertarget{_i_app_message_service_8cs_source_l00002}00002\ }
+\DoxyCodeLine{\Hypertarget{_i_app_message_service_8cs_source_l00003}00003\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_core_1_1_services}{ArlaNatureConnect.Core.Services}};}
+\DoxyCodeLine{\Hypertarget{_i_app_message_service_8cs_source_l00004}00004\ }
+\DoxyCodeLine{\Hypertarget{_i_app_message_service_8cs_source_l00022}\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service}{00022}}\ \textcolor{keyword}{public}\ \textcolor{keyword}{interface\ }\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service}{IAppMessageService}}\ :\ INotifyPropertyChanged}
+\DoxyCodeLine{\Hypertarget{_i_app_message_service_8cs_source_l00023}00023\ \{}
+\DoxyCodeLine{\Hypertarget{_i_app_message_service_8cs_source_l00032}\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service_a79f436975260633ee8e3209a0c04b2fa}{00032}}\ \ \ \ \ \textcolor{keywordtype}{string}?\ \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service_a79f436975260633ee8e3209a0c04b2fa}{EntityName}}\ \{\ \textcolor{keyword}{get};\ \textcolor{keyword}{set};\ \}}
+\DoxyCodeLine{\Hypertarget{_i_app_message_service_8cs_source_l00033}00033\ }
+\DoxyCodeLine{\Hypertarget{_i_app_message_service_8cs_source_l00037}\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service_a790a7ab0ebf460345b6e7af4be13b2bb}{00037}}\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service_a790a7ab0ebf460345b6e7af4be13b2bb}{HasStatusMessages}}\ \{\ \textcolor{keyword}{get};\ \}}
+\DoxyCodeLine{\Hypertarget{_i_app_message_service_8cs_source_l00038}00038\ }
+\DoxyCodeLine{\Hypertarget{_i_app_message_service_8cs_source_l00042}\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service_aaee201c210ee27c315c1bd2c3d460f7b}{00042}}\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service_aaee201c210ee27c315c1bd2c3d460f7b}{HasErrorMessages}}\ \{\ \textcolor{keyword}{get};\ \}}
+\DoxyCodeLine{\Hypertarget{_i_app_message_service_8cs_source_l00043}00043\ }
+\DoxyCodeLine{\Hypertarget{_i_app_message_service_8cs_source_l00052}\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service_a8c65e9e9ecce944000ac28d472f2d100}{00052}}\ \ \ \ \ IEnumerable<string>\ \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service_a8c65e9e9ecce944000ac28d472f2d100}{StatusMessages}}\ \{\ \textcolor{keyword}{get};\ \}}
+\DoxyCodeLine{\Hypertarget{_i_app_message_service_8cs_source_l00053}00053\ }
+\DoxyCodeLine{\Hypertarget{_i_app_message_service_8cs_source_l00062}\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service_a7d0ec25d845e1d476061b5a24cfc3dcd}{00062}}\ \ \ \ \ IEnumerable<string>\ \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service_a7d0ec25d845e1d476061b5a24cfc3dcd}{ErrorMessages}}\ \{\ \textcolor{keyword}{get};\ \}}
+\DoxyCodeLine{\Hypertarget{_i_app_message_service_8cs_source_l00063}00063\ }
+\DoxyCodeLine{\Hypertarget{_i_app_message_service_8cs_source_l00072}\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service_a190969dd3fdc919ead86b13a5a798d02}{00072}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service_a190969dd3fdc919ead86b13a5a798d02}{AddInfoMessage}}(\textcolor{keywordtype}{string}\ message);}
+\DoxyCodeLine{\Hypertarget{_i_app_message_service_8cs_source_l00073}00073\ }
+\DoxyCodeLine{\Hypertarget{_i_app_message_service_8cs_source_l00082}\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service_a8cfd40fb17088b829cb9970e468a1566}{00082}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service_a8cfd40fb17088b829cb9970e468a1566}{AddErrorMessage}}(\textcolor{keywordtype}{string}\ message);}
+\DoxyCodeLine{\Hypertarget{_i_app_message_service_8cs_source_l00083}00083\ }
+\DoxyCodeLine{\Hypertarget{_i_app_message_service_8cs_source_l00091}\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service_a277079035558952913fed395653ea0ef}{00091}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service_a277079035558952913fed395653ea0ef}{ClearErrorMessages}}();}
+\DoxyCodeLine{\Hypertarget{_i_app_message_service_8cs_source_l00092}00092\ \}}
+
+\end{DoxyCode}

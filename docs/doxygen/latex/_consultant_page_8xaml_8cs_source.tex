@@ -1,0 +1,36 @@
+\doxysection{Consultant\+Page.\+xaml.\+cs}
+\hypertarget{_consultant_page_8xaml_8cs_source}{}\label{_consultant_page_8xaml_8cs_source}\index{src/ArlaNatureConnect.WinUI/ArlaNatureConnect.WinUI/Views/Pages/ConsultantPage.xaml.cs@{src/ArlaNatureConnect.WinUI/ArlaNatureConnect.WinUI/Views/Pages/ConsultantPage.xaml.cs}}
+\mbox{\hyperlink{_consultant_page_8xaml_8cs}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_consultant_page_8xaml_8cs_source_l00001}00001\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts}{ArlaNatureConnect.WinUI.ViewModels.Abstracts}};}
+\DoxyCodeLine{\Hypertarget{_consultant_page_8xaml_8cs_source_l00002}00002\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages}{ArlaNatureConnect.WinUI.ViewModels.Pages}};}
+\DoxyCodeLine{\Hypertarget{_consultant_page_8xaml_8cs_source_l00003}00003\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_abstracts}{ArlaNatureConnect.WinUI.Views.Pages.Abstracts}};}
+\DoxyCodeLine{\Hypertarget{_consultant_page_8xaml_8cs_source_l00004}00004\ }
+\DoxyCodeLine{\Hypertarget{_consultant_page_8xaml_8cs_source_l00005}00005\ \textcolor{keyword}{using\ }Microsoft.UI.Xaml;}
+\DoxyCodeLine{\Hypertarget{_consultant_page_8xaml_8cs_source_l00006}00006\ }
+\DoxyCodeLine{\Hypertarget{_consultant_page_8xaml_8cs_source_l00007}00007\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages}{ArlaNatureConnect.WinUI.Views.Pages}};}
+\DoxyCodeLine{\Hypertarget{_consultant_page_8xaml_8cs_source_l00008}00008\ }
+\DoxyCodeLine{\Hypertarget{_consultant_page_8xaml_8cs_source_l00014}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_consultant_page}{00014}}\ \textcolor{keyword}{public}\ \textcolor{keyword}{sealed}\ \textcolor{keyword}{partial\ class\ }\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_consultant_page_a898d747cc506c84a61a504718ab404db}{ConsultantPage}}\ :\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_abstracts_1_1_nav_page}{NavPage}}}
+\DoxyCodeLine{\Hypertarget{_consultant_page_8xaml_8cs_source_l00015}00015\ \{}
+\DoxyCodeLine{\Hypertarget{_consultant_page_8xaml_8cs_source_l00016}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_consultant_page_a898d747cc506c84a61a504718ab404db}{00016}}\ \ \ \ \ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_consultant_page_a898d747cc506c84a61a504718ab404db}{ConsultantPage}}()}
+\DoxyCodeLine{\Hypertarget{_consultant_page_8xaml_8cs_source_l00017}00017\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_consultant_page_8xaml_8cs_source_l00018}00018\ \ \ \ \ \ \ \ \ InitializeComponent();}
+\DoxyCodeLine{\Hypertarget{_consultant_page_8xaml_8cs_source_l00019}00019\ }
+\DoxyCodeLine{\Hypertarget{_consultant_page_8xaml_8cs_source_l00020}00020\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Create\ view\ model\ with\ dependencies}}
+\DoxyCodeLine{\Hypertarget{_consultant_page_8xaml_8cs_source_l00021}00021\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_consultant_page_view_model}{ConsultantPageViewModel}}\ vm\ =\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_app}{App}}.\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_app_a0aa62a7a04419f5e8af40c25248a4834}{HostInstance}}?.Services.GetService(typeof(\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_consultant_page_view_model}{ConsultantPageViewModel}}))\ as\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_consultant_page_view_model}{ConsultantPageViewModel}}\ ??\ \textcolor{keywordflow}{throw}\ \textcolor{keyword}{new}\ InvalidOperationException(\textcolor{stringliteral}{"{}Failed\ to\ resolve\ ConsultantPageViewModel"{}});}
+\DoxyCodeLine{\Hypertarget{_consultant_page_8xaml_8cs_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{_consultant_page_8xaml_8cs_source_l00023}00023\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_abstracts_1_1_nav_page_abb79715fa6bebfec790c7d554ddd51a8}{ViewModel}}\ =\ vm;\ \ \ \ \ \ \textcolor{comment}{//\ required\ by\ NavPage}}
+\DoxyCodeLine{\Hypertarget{_consultant_page_8xaml_8cs_source_l00024}00024\ \ \ \ \ \ \ \ \ DataContext\ =\ vm;\ \ \ \ \textcolor{comment}{//\ bindings\ in\ XAML}}
+\DoxyCodeLine{\Hypertarget{_consultant_page_8xaml_8cs_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{_consultant_page_8xaml_8cs_source_l00026}00026\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ If\ a\ side-\/menu\ control\ exists\ in\ the\ visual\ tree\ and\ its\ DataContext\ is\ a\ SideMenuViewModelBase,}}
+\DoxyCodeLine{\Hypertarget{_consultant_page_8xaml_8cs_source_l00027}00027\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ ensure\ it\ knows\ about\ this\ page\ view-\/model\ (backwards\ compatibility\ with\ existing\ side-\/menu\ wiring).}}
+\DoxyCodeLine{\Hypertarget{_consultant_page_8xaml_8cs_source_l00028}00028\ \ \ \ \ \ \ \ \ FrameworkElement?\ sideMenuControl\ =\ FindName(\textcolor{stringliteral}{"{}SideMenu"{}})\ as\ FrameworkElement;}
+\DoxyCodeLine{\Hypertarget{_consultant_page_8xaml_8cs_source_l00029}00029\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (sideMenuControl?.DataContext\ is\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_side_menu_view_model_base}{SideMenuViewModelBase}}\ sideMenuVm)}
+\DoxyCodeLine{\Hypertarget{_consultant_page_8xaml_8cs_source_l00030}00030\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_consultant_page_8xaml_8cs_source_l00031}00031\ \ \ \ \ \ \ \ \ \ \ \ \ sideMenuVm.SetHostPageViewModel(vm);}
+\DoxyCodeLine{\Hypertarget{_consultant_page_8xaml_8cs_source_l00032}00032\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_consultant_page_8xaml_8cs_source_l00033}00033\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_consultant_page_8xaml_8cs_source_l00034}00034\ \}}
+\DoxyCodeLine{\Hypertarget{_consultant_page_8xaml_8cs_source_l00035}00035\ }
+
+\end{DoxyCode}

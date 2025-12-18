@@ -1,0 +1,95 @@
+\doxysection{Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Pages.\+Login\+Page\+View\+Model Class Reference}
+\hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_login_page_view_model}{}\label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_login_page_view_model}\index{ArlaNatureConnect.WinUI.ViewModels.Pages.LoginPageViewModel@{ArlaNatureConnect.WinUI.ViewModels.Pages.LoginPageViewModel}}
+
+
+View\+Model for \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_login_page}{Login\+Page} -\/ handles role selection and navigation to different dashboards.  
+
+
+Inheritance diagram for Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Pages.\+Login\+Page\+View\+Model\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_login_page_view_model}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_login_page_view_model_aac2a048c37732075454bef32ffad0a39}{Login\+Page\+View\+Model}} (\mbox{\hyperlink{interface_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_i_navigation_handler}{INavigation\+Handler}} navigation\+Handler)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command}{Relay\+Command}}$<$ string $>$ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_login_page_view_model_a9e0dcaa3deb5243253e5517580269758}{Select\+Role\+Command}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Command to select a role and navigate to the appropriate page. Receives role name as string parameter (e.\+g., "{}\+Farmer"{}, "{}\+Consultant"{}, "{}\+Arla\+Employee"{}). \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_role}{Role}}? \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_login_page_view_model_a66934d61ac416879e95738116d7e7082}{Selected\+Role}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The currently selected role. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+View\+Model for \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_login_page}{Login\+Page} -\/ handles role selection and navigation to different dashboards. 
+
+Responsibilities\+:
+\begin{DoxyItemize}
+\item Receives role selection from UI (Farmer, Consultant, Arla Employee)
+\item Creates \doxylink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_role}{Role} object based on the selection
+\item Navigates to the correct Page (\doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_farmer_page}{Farmer\+Page}, \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_consultant_page}{Consultant\+Page}, or \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_arla_employee_page}{Arla\+Employee\+Page})
+\item Passes the \doxylink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_role}{Role} object to the next Page via \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_navigation_handler}{Navigation\+Handler}
+\end{DoxyItemize}
+
+Usage\+: This View\+Model is used by Login\+Page.\+xaml to handle the user\textquotesingle{}s role selection. When the user clicks a role button, the role name is sent as a parameter to Select\+Role\+Command, which then navigates to the correct Page with the selected \doxylink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_role}{Role} object. 
+
+Definition at line \mbox{\hyperlink{_login_page_view_model_8cs_source_l00023}{23}} of file \mbox{\hyperlink{_login_page_view_model_8cs_source}{Login\+Page\+View\+Model.\+cs}}.
+
+
+
+\label{doc-constructors}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_login_page_view_model_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_login_page_view_model_aac2a048c37732075454bef32ffad0a39}\index{ArlaNatureConnect.WinUI.ViewModels.Pages.LoginPageViewModel@{ArlaNatureConnect.WinUI.ViewModels.Pages.LoginPageViewModel}!LoginPageViewModel@{LoginPageViewModel}}
+\index{LoginPageViewModel@{LoginPageViewModel}!ArlaNatureConnect.WinUI.ViewModels.Pages.LoginPageViewModel@{ArlaNatureConnect.WinUI.ViewModels.Pages.LoginPageViewModel}}
+\doxysubsubsection{\texorpdfstring{LoginPageViewModel()}{LoginPageViewModel()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_login_page_view_model_aac2a048c37732075454bef32ffad0a39} 
+Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Pages.\+Login\+Page\+View\+Model.\+Login\+Page\+View\+Model (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interface_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_i_navigation_handler}{INavigation\+Handler}}}]{navigation\+Handler}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{_login_page_view_model_8cs_source_l00060}{60}} of file \mbox{\hyperlink{_login_page_view_model_8cs_source}{Login\+Page\+View\+Model.\+cs}}.
+
+
+
+\label{doc-property-members}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_login_page_view_model_doc-property-members}
+\doxysubsection{Property Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_login_page_view_model_a66934d61ac416879e95738116d7e7082}\index{ArlaNatureConnect.WinUI.ViewModels.Pages.LoginPageViewModel@{ArlaNatureConnect.WinUI.ViewModels.Pages.LoginPageViewModel}!SelectedRole@{SelectedRole}}
+\index{SelectedRole@{SelectedRole}!ArlaNatureConnect.WinUI.ViewModels.Pages.LoginPageViewModel@{ArlaNatureConnect.WinUI.ViewModels.Pages.LoginPageViewModel}}
+\doxysubsubsection{\texorpdfstring{SelectedRole}{SelectedRole}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_login_page_view_model_a66934d61ac416879e95738116d7e7082} 
+\mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_role}{Role}}? Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Pages.\+Login\+Page\+View\+Model.\+Selected\+Role\hspace{0.3cm}{\ttfamily [get]}}
+
+
+
+The currently selected role. 
+
+
+
+Definition at line \mbox{\hyperlink{_login_page_view_model_8cs_source_l00046}{46}} of file \mbox{\hyperlink{_login_page_view_model_8cs_source}{Login\+Page\+View\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_login_page_view_model_a9e0dcaa3deb5243253e5517580269758}\index{ArlaNatureConnect.WinUI.ViewModels.Pages.LoginPageViewModel@{ArlaNatureConnect.WinUI.ViewModels.Pages.LoginPageViewModel}!SelectRoleCommand@{SelectRoleCommand}}
+\index{SelectRoleCommand@{SelectRoleCommand}!ArlaNatureConnect.WinUI.ViewModels.Pages.LoginPageViewModel@{ArlaNatureConnect.WinUI.ViewModels.Pages.LoginPageViewModel}}
+\doxysubsubsection{\texorpdfstring{SelectRoleCommand}{SelectRoleCommand}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_login_page_view_model_a9e0dcaa3deb5243253e5517580269758} 
+\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command}{Relay\+Command}}$<$string$>$ Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Pages.\+Login\+Page\+View\+Model.\+Select\+Role\+Command\hspace{0.3cm}{\ttfamily [get]}}
+
+
+
+Command to select a role and navigate to the appropriate page. Receives role name as string parameter (e.\+g., "{}\+Farmer"{}, "{}\+Consultant"{}, "{}\+Arla\+Employee"{}). 
+
+
+
+Definition at line \mbox{\hyperlink{_login_page_view_model_8cs_source_l00037}{37}} of file \mbox{\hyperlink{_login_page_view_model_8cs_source}{Login\+Page\+View\+Model.\+cs}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Arla\+Nature\+Connect.\+Win\+UI/\+Arla\+Nature\+Connect.\+Win\+UI/\+View\+Models/\+Pages/\mbox{\hyperlink{_login_page_view_model_8cs}{Login\+Page\+View\+Model.\+cs}}\end{DoxyCompactItemize}

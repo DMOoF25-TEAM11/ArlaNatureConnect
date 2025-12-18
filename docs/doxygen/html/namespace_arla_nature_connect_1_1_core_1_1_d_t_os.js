@@ -1,0 +1,8 @@
+var namespace_arla_nature_connect_1_1_core_1_1_d_t_os =
+[
+    [ "ConsultantNotificationDto", "class_arla_nature_connect_1_1_core_1_1_d_t_os_1_1_consultant_notification_dto.html", "class_arla_nature_connect_1_1_core_1_1_d_t_os_1_1_consultant_notification_dto" ],
+    [ "FarmAssignmentOverviewDto", "class_arla_nature_connect_1_1_core_1_1_d_t_os_1_1_farm_assignment_overview_dto.html", "class_arla_nature_connect_1_1_core_1_1_d_t_os_1_1_farm_assignment_overview_dto" ],
+    [ "FarmRegistrationRequest", "class_arla_nature_connect_1_1_core_1_1_d_t_os_1_1_farm_registration_request.html", "class_arla_nature_connect_1_1_core_1_1_d_t_os_1_1_farm_registration_request" ],
+    [ "NatureCheckCaseAssignmentContext", "class_arla_nature_connect_1_1_core_1_1_d_t_os_1_1_nature_check_case_assignment_context.html", "class_arla_nature_connect_1_1_core_1_1_d_t_os_1_1_nature_check_case_assignment_context" ],
+    [ "NatureCheckCaseAssignmentRequest", "class_arla_nature_connect_1_1_core_1_1_d_t_os_1_1_nature_check_case_assignment_request.html", "class_arla_nature_connect_1_1_core_1_1_d_t_os_1_1_nature_check_case_assignment_request" ]
+];

@@ -1,0 +1,125 @@
+\doxysection{Arla\+Nature\+Connect.\+Core.\+Services.\+IConnection\+String\+Service Interface Reference}
+\hypertarget{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_connection_string_service}{}\label{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_connection_string_service}\index{ArlaNatureConnect.Core.Services.IConnectionStringService@{ArlaNatureConnect.Core.Services.IConnectionStringService}}
+
+
+Abstraction responsible for managing the application\textquotesingle{}s database connection string.  
+
+
+Inheritance diagram for Arla\+Nature\+Connect.\+Core.\+Services.\+IConnection\+String\+Service\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_connection_string_service}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+Task$<$ bool $>$ \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_connection_string_service_a63b28472c84158521584d202e5a7af4c}{Exists\+Async}} ()
+\begin{DoxyCompactList}\small\item\em Determines whether a persisted connection string exists. \end{DoxyCompactList}\item 
+Task$<$ bool $>$ \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_connection_string_service_a8542265b1aea309dfc6c99eb924ad32e}{Can\+Connection\+String\+Connect}} (string connection\+String)
+\begin{DoxyCompactList}\small\item\em Validates that the provided connection string can be used to establish a connection to the database. \end{DoxyCompactList}\item 
+Task \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_connection_string_service_a5284f38bc35a323ebfee3d37e4477ba9}{Save\+Async}} (string connection\+String)
+\begin{DoxyCompactList}\small\item\em Persists the provided connection string using the implementation\textquotesingle{}s chosen storage mechanism. \end{DoxyCompactList}\item 
+Task$<$ string?$>$ \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_connection_string_service_abcb4e1ca2ee899d2dc47221eae91cbb4}{Read\+Async}} ()
+\begin{DoxyCompactList}\small\item\em Reads the persisted connection string, if one exists. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Abstraction responsible for managing the application\textquotesingle{}s database connection string. 
+
+This interface centralizes responsibilities related to the connection string\+: detecting whether a stored connection string exists, validating that a connection string can be used to connect to the database, persisting a connection string and reading it back.
+
+The interface exists to decouple persistence and validation logic from callers (UI, services and tests). Implementations can store the connection string in different places (configuration file, secure store, platform-\/specific credential stores) and can be mocked during unit tests. It also provides a single place to add additional validation, logging or security measures related to connection strings. 
+
+Definition at line \mbox{\hyperlink{_i_connection_string_service_8cs_source_l00017}{17}} of file \mbox{\hyperlink{_i_connection_string_service_8cs_source}{IConnection\+String\+Service.\+cs}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_connection_string_service_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_connection_string_service_a8542265b1aea309dfc6c99eb924ad32e}\index{ArlaNatureConnect.Core.Services.IConnectionStringService@{ArlaNatureConnect.Core.Services.IConnectionStringService}!CanConnectionStringConnect@{CanConnectionStringConnect}}
+\index{CanConnectionStringConnect@{CanConnectionStringConnect}!ArlaNatureConnect.Core.Services.IConnectionStringService@{ArlaNatureConnect.Core.Services.IConnectionStringService}}
+\doxysubsubsection{\texorpdfstring{CanConnectionStringConnect()}{CanConnectionStringConnect()}}
+{\footnotesize\ttfamily \label{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_connection_string_service_a8542265b1aea309dfc6c99eb924ad32e} 
+Task$<$ bool $>$ Arla\+Nature\+Connect.\+Core.\+Services.\+IConnection\+String\+Service.\+Can\+Connection\+String\+Connect (\begin{DoxyParamCaption}\item[{string}]{connection\+String}{}\end{DoxyParamCaption})}
+
+
+
+Validates that the provided connection string can be used to establish a connection to the database. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em connection\+String} & The connection string to validate.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A task that resolves to {\ttfamily true} when a connection can be established using the supplied connection string; otherwise {\ttfamily false}. Implementations should avoid throwing on transient failures and instead return {\ttfamily false} where appropriate. 
+\end{DoxyReturn}
+
+
+Implemented in \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_connection_string_service_a4fc71060e8526b4a650dc93afb77d1c3}{Arla\+Nature\+Connect.\+Core.\+Services.\+Connection\+String\+Service}}.
+
+\Hypertarget{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_connection_string_service_a63b28472c84158521584d202e5a7af4c}\index{ArlaNatureConnect.Core.Services.IConnectionStringService@{ArlaNatureConnect.Core.Services.IConnectionStringService}!ExistsAsync@{ExistsAsync}}
+\index{ExistsAsync@{ExistsAsync}!ArlaNatureConnect.Core.Services.IConnectionStringService@{ArlaNatureConnect.Core.Services.IConnectionStringService}}
+\doxysubsubsection{\texorpdfstring{ExistsAsync()}{ExistsAsync()}}
+{\footnotesize\ttfamily \label{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_connection_string_service_a63b28472c84158521584d202e5a7af4c} 
+Task$<$ bool $>$ Arla\+Nature\+Connect.\+Core.\+Services.\+IConnection\+String\+Service.\+Exists\+Async (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Determines whether a persisted connection string exists. 
+
+\begin{DoxyReturn}{Returns}
+A task that resolves to {\ttfamily true} if a connection string has been saved and is available to read; otherwise {\ttfamily false}. 
+\end{DoxyReturn}
+
+
+Implemented in \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_connection_string_service_a3bceac31dde0332cf472a80e98461f66}{Arla\+Nature\+Connect.\+Core.\+Services.\+Connection\+String\+Service}}.
+
+\Hypertarget{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_connection_string_service_abcb4e1ca2ee899d2dc47221eae91cbb4}\index{ArlaNatureConnect.Core.Services.IConnectionStringService@{ArlaNatureConnect.Core.Services.IConnectionStringService}!ReadAsync@{ReadAsync}}
+\index{ReadAsync@{ReadAsync}!ArlaNatureConnect.Core.Services.IConnectionStringService@{ArlaNatureConnect.Core.Services.IConnectionStringService}}
+\doxysubsubsection{\texorpdfstring{ReadAsync()}{ReadAsync()}}
+{\footnotesize\ttfamily \label{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_connection_string_service_abcb4e1ca2ee899d2dc47221eae91cbb4} 
+Task$<$ string?$>$ Arla\+Nature\+Connect.\+Core.\+Services.\+IConnection\+String\+Service.\+Read\+Async (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Reads the persisted connection string, if one exists. 
+
+\begin{DoxyReturn}{Returns}
+A task that resolves to the stored connection string, or {\ttfamily null} if none is available. 
+\end{DoxyReturn}
+
+
+Implemented in \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_connection_string_service_aaa1c206c07349855115f658668eba2c2}{Arla\+Nature\+Connect.\+Core.\+Services.\+Connection\+String\+Service}}.
+
+\Hypertarget{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_connection_string_service_a5284f38bc35a323ebfee3d37e4477ba9}\index{ArlaNatureConnect.Core.Services.IConnectionStringService@{ArlaNatureConnect.Core.Services.IConnectionStringService}!SaveAsync@{SaveAsync}}
+\index{SaveAsync@{SaveAsync}!ArlaNatureConnect.Core.Services.IConnectionStringService@{ArlaNatureConnect.Core.Services.IConnectionStringService}}
+\doxysubsubsection{\texorpdfstring{SaveAsync()}{SaveAsync()}}
+{\footnotesize\ttfamily \label{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_connection_string_service_a5284f38bc35a323ebfee3d37e4477ba9} 
+Task Arla\+Nature\+Connect.\+Core.\+Services.\+IConnection\+String\+Service.\+Save\+Async (\begin{DoxyParamCaption}\item[{string}]{connection\+String}{}\end{DoxyParamCaption})}
+
+
+
+Persists the provided connection string using the implementation\textquotesingle{}s chosen storage mechanism. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em connection\+String} & The connection string to persist.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A task that completes when the save operation has finished.
+\end{DoxyReturn}
+
+
+Implementations are responsible for choosing an appropriate storage location and any required protections (encryption, secure platform stores). Callers should not assume the storage is readable by other processes. 
+
+Implemented in \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_connection_string_service_a2428987ca7426f58bb0ac5e52b0d839c}{Arla\+Nature\+Connect.\+Core.\+Services.\+Connection\+String\+Service}}.
+
+
+
+The documentation for this interface was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Arla\+Nature\+Connect.\+Core/\+Services/\mbox{\hyperlink{_i_connection_string_service_8cs}{IConnection\+String\+Service.\+cs}}\end{DoxyCompactItemize}

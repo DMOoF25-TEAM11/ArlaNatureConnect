@@ -1,0 +1,8 @@
+var class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_administratb0dcabd1a48acf37397bb421b86acd21 =
+[
+    [ "AdministratorPageSideMenuUCViewModel", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_administratb0dcabd1a48acf37397bb421b86acd21.html#a2d3569c53fc403267d557c8bdf10100a", null ],
+    [ "InitializeAsync", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_administratb0dcabd1a48acf37397bb421b86acd21.html#ab811559fe2fae1503002302666edcd69", null ],
+    [ "AdministratePersonsCommand", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_administratb0dcabd1a48acf37397bb421b86acd21.html#a727aeff127e7c2f6e2431452ee7de895", null ],
+    [ "DashboardsCommand", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_administratb0dcabd1a48acf37397bb421b86acd21.html#a889e3344cd439a0e46916bc83a5a145f", null ],
+    [ "NavItems", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_administratb0dcabd1a48acf37397bb421b86acd21.html#a21e794807ea796b6821ccf3078de163f", null ]
+];

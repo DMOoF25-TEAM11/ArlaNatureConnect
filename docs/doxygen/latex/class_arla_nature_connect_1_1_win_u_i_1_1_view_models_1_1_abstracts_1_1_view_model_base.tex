@@ -1,0 +1,97 @@
+\doxysection{Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+View\+Model\+Base Class Reference}
+\hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base}{}\label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base}\index{ArlaNatureConnect.WinUI.ViewModels.Abstracts.ViewModelBase@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.ViewModelBase}}
+
+
+Base class for all \doxylink{namespace_arla_nature_connect_1_1_win_u_i_1_1_view_models}{View\+Models} providing common functionality. Implements INotify\+Property\+Changed to support property-\/change notifications required by data-\/binding frameworks (e.\+g. \doxylink{namespace_arla_nature_connect_1_1_win_u_i}{Win\+UI}, WPF, UWP).  
+
+
+Inheritance diagram for Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+View\+Model\+Base\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=7.088607cm]{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_afe69f6fc4811892022c273a234f84ed7}{On\+Property\+Changed}} (\mbox{[}Caller\+Member\+Name\mbox{]} string? name=null)
+\begin{DoxyCompactList}\small\item\em Raises the \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_a84af6959822f5dac7b036413ef1084e0}{Property\+Changed} event for the property specified by {\itshape name} . \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Events}
+\begin{DoxyCompactItemize}
+\item 
+Property\+Changed\+Event\+Handler? \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_a84af6959822f5dac7b036413ef1084e0}{Property\+Changed}}
+\begin{DoxyCompactList}\small\item\em Occurs when a property value changes. Consumers (typically UI bindings) subscribe to this event to be notified that a property value has changed. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Base class for all \doxylink{namespace_arla_nature_connect_1_1_win_u_i_1_1_view_models}{View\+Models} providing common functionality. Implements INotify\+Property\+Changed to support property-\/change notifications required by data-\/binding frameworks (e.\+g. \doxylink{namespace_arla_nature_connect_1_1_win_u_i}{Win\+UI}, WPF, UWP). 
+
+Derive concrete View\+Model classes from this abstract class. Use \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_afe69f6fc4811892022c273a234f84ed7}{On\+Property\+Changed(string?)} within property setters to notify the UI of updates. Do not attempt to instantiate this abstract class directly. 
+
+Definition at line \mbox{\hyperlink{_view_model_base_8cs_source_l00015}{15}} of file \mbox{\hyperlink{_view_model_base_8cs_source}{View\+Model\+Base.\+cs}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_afe69f6fc4811892022c273a234f84ed7}\index{ArlaNatureConnect.WinUI.ViewModels.Abstracts.ViewModelBase@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.ViewModelBase}!OnPropertyChanged@{OnPropertyChanged}}
+\index{OnPropertyChanged@{OnPropertyChanged}!ArlaNatureConnect.WinUI.ViewModels.Abstracts.ViewModelBase@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.ViewModelBase}}
+\doxysubsubsection{\texorpdfstring{OnPropertyChanged()}{OnPropertyChanged()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_afe69f6fc4811892022c273a234f84ed7} 
+void Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+View\+Model\+Base.\+On\+Property\+Changed (\begin{DoxyParamCaption}\item[{\mbox{[}\+Caller\+Member\+Name\mbox{]} string?}]{name}{ = {\ttfamily null}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+Raises the \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_a84af6959822f5dac7b036413ef1084e0}{Property\+Changed} event for the property specified by {\itshape name} . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & The name of the property that changed. This parameter is optional; when omitted, the compiler will supply the caller member name due to the Caller\+Member\+Name\+Attribute. \\
+\hline
+\end{DoxyParams}
+
+
+Use this method in property setters to notify listeners of changes, for example\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keyword}{private}\ \textcolor{keywordtype}{string}?\ \_name;}
+\DoxyCodeLine{\textcolor{keyword}{public}\ \textcolor{keywordtype}{string}?\ Name}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{get}\ =>\ \_name;}
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{set}}
+\DoxyCodeLine{\ \ \ \ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (value\ ==\ \_name)\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \_name\ =\ value;}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_afe69f6fc4811892022c273a234f84ed7}{OnPropertyChanged}}();\ \textcolor{comment}{//\ CallerMemberName\ provides\ "{}Name"{}}}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+ The method invokes \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_a84af6959822f5dac7b036413ef1084e0}{Property\+Changed} handlers but ensures UI-\/layer COMExceptions thrown by subscribers do not propagate and crash View\+Model logic. 
+
+Definition at line \mbox{\hyperlink{_view_model_base_8cs_source_l00053}{53}} of file \mbox{\hyperlink{_view_model_base_8cs_source}{View\+Model\+Base.\+cs}}.
+
+
+
+\label{doc-event-members}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_doc-event-members}
+\doxysubsection{Event Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_a84af6959822f5dac7b036413ef1084e0}\index{ArlaNatureConnect.WinUI.ViewModels.Abstracts.ViewModelBase@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.ViewModelBase}!PropertyChanged@{PropertyChanged}}
+\index{PropertyChanged@{PropertyChanged}!ArlaNatureConnect.WinUI.ViewModels.Abstracts.ViewModelBase@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.ViewModelBase}}
+\doxysubsubsection{\texorpdfstring{PropertyChanged}{PropertyChanged}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_a84af6959822f5dac7b036413ef1084e0} 
+Property\+Changed\+Event\+Handler? Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+View\+Model\+Base.\+Property\+Changed}
+
+
+
+Occurs when a property value changes. Consumers (typically UI bindings) subscribe to this event to be notified that a property value has changed. 
+
+
+
+Definition at line \mbox{\hyperlink{_view_model_base_8cs_source_l00022}{22}} of file \mbox{\hyperlink{_view_model_base_8cs_source}{View\+Model\+Base.\+cs}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Arla\+Nature\+Connect.\+Win\+UI/\+Arla\+Nature\+Connect.\+Win\+UI/\+View\+Models/\+Abstracts/\mbox{\hyperlink{_view_model_base_8cs}{View\+Model\+Base.\+cs}}\end{DoxyCompactItemize}

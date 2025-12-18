@@ -1,0 +1,16 @@
+\doxysection{src/\+Arla\+Nature\+Connect.Core/\+Services/\+Status\+Info\+Service.cs File Reference}
+\hypertarget{_status_info_service_8cs}{}\label{_status_info_service_8cs}\index{src/ArlaNatureConnect.Core/Services/StatusInfoService.cs@{src/ArlaNatureConnect.Core/Services/StatusInfoService.cs}}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service}{Arla\+Nature\+Connect.\+Core.\+Services.\+Status\+Info\+Service}}
+\begin{DoxyCompactList}\small\item\em Centralizes app-\/wide status reporting so multiple components can signal loading and database-\/connection state in a consistent way. This prevents UI flicker and race conditions by keeping {\ttfamily Is\+Loading\+Or\+Saving} true until every independent caller finishes (reference-\/counted tokens), so the UI and other consumers observe reliable state. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespace_arla_nature_connect}{Arla\+Nature\+Connect}}
+\item 
+namespace \mbox{\hyperlink{namespace_arla_nature_connect_1_1_core}{Arla\+Nature\+Connect.\+Core}}
+\item 
+namespace \mbox{\hyperlink{namespace_arla_nature_connect_1_1_core_1_1_services}{Arla\+Nature\+Connect.\+Core.\+Services}}
+\end{DoxyCompactItemize}

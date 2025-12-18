@@ -1,0 +1,5 @@
+var namespace_arla_nature_connect_1_1_infrastructure_1_1_persistence_1_1_configurations =
+[
+    [ "NatureCheckCaseConfiguration", "class_arla_nature_connect_1_1_infrastructure_1_1_persistence_1_1_configurations_1_1_nature_check_case_configuration.html", "class_arla_nature_connect_1_1_infrastructure_1_1_persistence_1_1_configurations_1_1_nature_check_case_configuration" ],
+    [ "PersonConfiguration", "class_arla_nature_connect_1_1_infrastructure_1_1_persistence_1_1_configurations_1_1_person_configuration.html", "class_arla_nature_connect_1_1_infrastructure_1_1_persistence_1_1_configurations_1_1_person_configuration" ]
+];

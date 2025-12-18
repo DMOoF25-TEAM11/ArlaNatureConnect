@@ -1,0 +1,170 @@
+\doxysection{List\+View\+Model\+Base.\+cs}
+\hypertarget{_list_view_model_base_8cs_source}{}\label{_list_view_model_base_8cs_source}\index{src/ArlaNatureConnect.WinUI/ArlaNatureConnect.WinUI/ViewModels/Abstracts/ListViewModelBase.cs@{src/ArlaNatureConnect.WinUI/ArlaNatureConnect.WinUI/ViewModels/Abstracts/ListViewModelBase.cs}}
+\mbox{\hyperlink{_list_view_model_base_8cs}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00001}00001\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_core_1_1_abstract}{ArlaNatureConnect.Core.Abstract}};}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00002}00002\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_core_1_1_services}{ArlaNatureConnect.Core.Services}};}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00003}00003\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_domain_1_1_abstract}{ArlaNatureConnect.Domain.Abstract}};}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00004}00004\ }
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00005}00005\ \textcolor{comment}{//\ Add\ dispatcher\ support}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00006}00006\ \textcolor{keyword}{using\ }Microsoft.UI.Dispatching;}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00007}00007\ }
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00008}00008\ \textcolor{keyword}{using\ }System.Collections.ObjectModel;}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00009}00009\ \textcolor{keyword}{using\ }System.ComponentModel;}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00010}00010\ }
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00011}00011\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts}{ArlaNatureConnect.WinUI.ViewModels.Abstracts}};}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00012}00012\ }
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00024}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g}{00024}}\ \textcolor{keyword}{public}\ \textcolor{keyword}{abstract}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a2f28c364f9a89b72dffab6e7bb0e0b6f}{ListViewModelBase}}<TRepos,\ TEntity>\ :\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base}{ViewModelBase}}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00025}00025\ \ \ \ \ where\ TRepos\ :\ IRepository<TEntity>}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00026}00026\ \ \ \ \ where\ TEntity\ :\ \mbox{\hyperlink{interface_arla_nature_connect_1_1_domain_1_1_abstract_1_1_i_entity}{IEntity}}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00027}00027\ \{}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00028}00028\ \textcolor{preprocessor}{\ \ \ \ \#region\ Fields}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00029}00029\ }
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00030}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a7e5ea1a5d80664499249609899a4488f}{00030}}\ \ \ \ \ \textcolor{keyword}{protected}\ TEntity?\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a7e5ea1a5d80664499249609899a4488f}{\_selectedItem}};}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00031}00031\ }
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00035}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a90f6ff42274d1b27273318adae28e428}{00035}}\ \ \ \ \ \textcolor{keyword}{protected}\ TRepos\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a90f6ff42274d1b27273318adae28e428}{\_items}};}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00036}00036\ }
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00040}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_ad682524142e5db8a42385c2e14b7f39d}{00040}}\ \ \ \ \ \textcolor{keyword}{protected}\ \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services}{IStatusInfoServices}}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_ad682524142e5db8a42385c2e14b7f39d}{\_statusInfoServices}};}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00041}00041\ }
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00045}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a471f7c22f0a615d475d2fb9bd7f1abb3}{00045}}\ \ \ \ \ \textcolor{keyword}{protected}\ \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service}{IAppMessageService}}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a471f7c22f0a615d475d2fb9bd7f1abb3}{\_appMessageService}};}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00046}00046\ \textcolor{preprocessor}{\ \ \ \ \#endregion}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00047}00047\ \textcolor{preprocessor}{\ \ \ \ \#region\ Events}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00048}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a01967c9faff0eccd4265737c8aaa1ed4}{00048}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{event}\ EventHandler<TEntity?>?\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a01967c9faff0eccd4265737c8aaa1ed4}{SelectedEntityChanged}};}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00049}00049\ \textcolor{preprocessor}{\ \ \ \ \#endregion}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00050}00050\ }
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00062}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a2f28c364f9a89b72dffab6e7bb0e0b6f}{00062}}\ \ \ \ \ \textcolor{keyword}{protected}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a2f28c364f9a89b72dffab6e7bb0e0b6f}{ListViewModelBase}}(\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services}{IStatusInfoServices}}\ statusInfoServices,\ \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service}{IAppMessageService}}\ appMessageService,\ TRepos\ repository,\ \textcolor{keywordtype}{bool}\ autoLoad\ =\ \textcolor{keyword}{true})}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00063}00063\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00064}00064\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_ad682524142e5db8a42385c2e14b7f39d}{\_statusInfoServices}}\ =\ statusInfoServices;}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00065}00065\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a471f7c22f0a615d475d2fb9bd7f1abb3}{\_appMessageService}}\ =\ appMessageService;}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00066}00066\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a90f6ff42274d1b27273318adae28e428}{\_items}}\ =\ repository;}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00067}00067\ }
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00068}00068\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Subscribe\ to\ status\ service\ property\ changes\ so\ view-\/models\ forward\ those\ notifications}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00069}00069\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ to\ their\ own\ PropertyChanged\ event.\ This\ allows\ consumers\ to\ bind\ to\ service\ properties}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00070}00070\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ (for\ example\ IsLoadingOrSaving)\ through\ the\ view-\/model.}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00071}00071\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00072}00072\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00073}00073\ \ \ \ \ \ \ \ \ \ \ \ \ \_statusInfoServices.PropertyChanged\ +=\ StatusInfoServices\_PropertyChanged;}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00074}00074\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00075}00075\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{catch}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00076}00076\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00077}00077\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ swallow\ -\/\ best-\/effort\ subscription\ for\ mocked\ or\ partial\ services}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00078}00078\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00079}00079\ }
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00080}00080\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Start\ loading\ items\ (fire-\/and-\/forget)\ when\ requested.\ LoadAllAsync\ updates\ the\ ObservableCollection\ on\ the\ UI\ thread.}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00081}00081\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (autoLoad)}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00082}00082\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00083}00083\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Try\ to\ schedule\ the\ load\ on\ the\ UI\ dispatcher\ so\ ObservableCollection\ updates\ happen\ on\ the\ UI\ thread.}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00084}00084\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00085}00085\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00086}00086\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ DispatcherQueue?\ dq\ =\ DispatcherQueue.GetForCurrentThread();}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00087}00087\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (dq\ !=\ \textcolor{keyword}{null}\ \&\&\ dq.HasThreadAccess)}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00088}00088\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00089}00089\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Already\ on\ UI\ thread:\ start\ load\ directly}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00090}00090\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_\ =\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a495292bf770a1f778460459a80c1288d}{LoadAllAsync}}();}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00091}00091\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00092}00092\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (dq\ !=\ \textcolor{keyword}{null})}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00093}00093\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00094}00094\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Enqueue\ to\ UI\ thread}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00095}00095\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ dq.TryEnqueue(async\ ()\ =>\ await\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a495292bf770a1f778460459a80c1288d}{LoadAllAsync}}());}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00096}00096\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00097}00097\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00098}00098\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00099}00099\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ No\ dispatcher\ available;\ run\ in\ background\ but\ ensure\ LoadAllAsync\ will\ marshal\ updates\ if\ needed}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00100}00100\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_\ =\ Task.Run(async\ ()\ =>\ await\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a495292bf770a1f778460459a80c1288d}{LoadAllAsync}}());}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00101}00101\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00102}00102\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00103}00103\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{catch}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00104}00104\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00105}00105\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Best-\/effort\ fallback}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00106}00106\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_\ =\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a495292bf770a1f778460459a80c1288d}{LoadAllAsync}}();}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00107}00107\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00108}00108\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00109}00109\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00110}00110\ }
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00111}00111\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{void}\ StatusInfoServices\_PropertyChanged(\textcolor{keywordtype}{object}?\ sender,\ PropertyChangedEventArgs\ e)}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00112}00112\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00113}00113\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00114}00114\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00115}00115\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Forward\ the\ property\ name\ from\ the\ status\ service\ to\ this\ view-\/model's\ PropertyChanged}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00116}00116\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ so\ consumers\ observing\ the\ view-\/model\ receive\ the\ same\ property\ notifications.}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00117}00117\ \ \ \ \ \ \ \ \ \ \ \ \ OnPropertyChanged(e.PropertyName);}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00118}00118\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00119}00119\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{catch}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00120}00120\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00121}00121\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ swallow\ to\ avoid\ tests\ failing\ due\ to\ unexpected\ exceptions\ from\ handlers}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00122}00122\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00123}00123\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00124}00124\ }
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00125}00125\ \textcolor{preprocessor}{\ \ \ \ \#region\ Observables\ Properties}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00126}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_ac6c514ea7eec5dd47a71e3a4c199d99d}{00126}}\ \ \ \ \ \textcolor{keyword}{public}\ TEntity?\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_ac6c514ea7eec5dd47a71e3a4c199d99d}{SelectedItem}}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00127}00127\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00128}00128\ \ \ \ \ \ \ \ \ \textcolor{keyword}{get}\ =>\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a7e5ea1a5d80664499249609899a4488f}{\_selectedItem}};}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00129}00129\ \ \ \ \ \ \ \ \ \textcolor{keyword}{set}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00130}00130\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00131}00131\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\textcolor{keywordtype}{object}.Equals(\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a7e5ea1a5d80664499249609899a4488f}{\_selectedItem}},\ value))\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00132}00132\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a7e5ea1a5d80664499249609899a4488f}{\_selectedItem}}\ =\ value;}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00133}00133\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_afe69f6fc4811892022c273a234f84ed7}{OnPropertyChanged}}();}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00134}00134\ }
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00135}00135\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Call\ synchronous\ hook\ so\ derived\ classes\ can\ react\ immediately\ to\ selection\ changes}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00136}00136\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00137}00137\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00138}00138\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a2d3a9ca4161f15299a7b4f385bc88d65}{OnSelectedItemChanged}}(\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a7e5ea1a5d80664499249609899a4488f}{\_selectedItem}});}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00139}00139\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a01967c9faff0eccd4265737c8aaa1ed4}{SelectedEntityChanged}}?.Invoke(\textcolor{keyword}{this},\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a7e5ea1a5d80664499249609899a4488f}{\_selectedItem}});}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00140}00140\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00141}00141\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{catch}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00142}00142\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00143}00143\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Swallow\ -\/\ view-\/models\ should\ not\ throw\ from\ selection\ changed\ handlers}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00144}00144\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00145}00145\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00146}00146\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00147}00147\ }
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00151}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a06011271607451b7a924017a009d8bd2}{00151}}\ \ \ \ \ \textcolor{keyword}{public}\ ObservableCollection<TEntity>\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a06011271607451b7a924017a009d8bd2}{Items}}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00152}00152\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00153}00153\ \ \ \ \ \ \ \ \ \textcolor{keyword}{get};}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00154}00154\ \ \ \ \ \ \ \ \ \textcolor{keyword}{set}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00155}00155\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00156}00156\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\textcolor{keywordtype}{object}.Equals(field,\ value))\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00157}00157\ \ \ \ \ \ \ \ \ \ \ \ \ field\ =\ value;}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00158}00158\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_afe69f6fc4811892022c273a234f84ed7}{OnPropertyChanged}}();}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00159}00159\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00160}00160\ \ \ \ \ \}\ =\ [];}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00161}00161\ \textcolor{preprocessor}{\ \ \ \ \#endregion}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00162}00162\ }
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00169}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a2d3a9ca4161f15299a7b4f385bc88d65}{00169}}\ \ \ \ \ \textcolor{keyword}{protected}\ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a2d3a9ca4161f15299a7b4f385bc88d65}{OnSelectedItemChanged}}(TEntity?\ item)}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00170}00170\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00171}00171\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ default\ no-\/op}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00172}00172\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00173}00173\ }
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00174}00174\ \textcolor{preprocessor}{\ \ \ \ \#region\ Load\ Handlers}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00179}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a495292bf770a1f778460459a80c1288d}{00179}}\ \ \ \ \ \textcolor{keyword}{public}\ async\ Task\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a495292bf770a1f778460459a80c1288d}{LoadAllAsync}}(CancellationToken\ ct\ =\ \textcolor{keywordflow}{default})}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00180}00180\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00181}00181\ \ \ \ \ \ \ \ \ \textcolor{keyword}{using}\ (\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_ad682524142e5db8a42385c2e14b7f39d}{\_statusInfoServices}}.BeginLoadingOrSaving())}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00182}00182\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00183}00183\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00184}00184\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00185}00185\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ IEnumerable<TEntity>\ all\ =\ await\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a90f6ff42274d1b27273318adae28e428}{\_items}}.GetAllAsync(ct);}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00186}00186\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a06011271607451b7a924017a009d8bd2}{Items}}.Clear();}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00187}00187\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{foreach}\ (TEntity\ it\ \textcolor{keywordflow}{in}\ all\ ??\ [])}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00188}00188\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00189}00189\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a06011271607451b7a924017a009d8bd2}{Items}}.Add(it);}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00190}00190\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00191}00191\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_ac6c514ea7eec5dd47a71e3a4c199d99d}{SelectedItem}}\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00192}00192\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00193}00193\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{catch}\ (Exception\ ex)}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00194}00194\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00195}00195\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Report\ error\ to\ UI\ and\ do\ not\ propagate\ for\ fire-\/and-\/forget/automatic\ load\ scenarios}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00196}00196\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a471f7c22f0a615d475d2fb9bd7f1abb3}{\_appMessageService}}?.AddErrorMessage(\textcolor{stringliteral}{"{}Failed\ to\ load\ items:\ "{}}\ +\ ex.Message);\ \}\ \textcolor{keywordflow}{catch}\ \{\ \}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00197}00197\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Swallow\ the\ exception\ so\ callers\ (especially\ fire-\/and-\/forget\ callers)\ don't\ observe\ it.}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00198}00198\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00199}00199\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00200}00200\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{finally}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00201}00201\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00202}00202\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_afe69f6fc4811892022c273a234f84ed7}{OnPropertyChanged}}(nameof(\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a06011271607451b7a924017a009d8bd2}{Items}}));}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00203}00203\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00204}00204\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00205}00205\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00206}00206\ \textcolor{preprocessor}{\ \ \ \ \#endregion}}
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00207}00207\ }
+\DoxyCodeLine{\Hypertarget{_list_view_model_base_8cs_source_l00208}00208\ \}}
+
+\end{DoxyCode}
