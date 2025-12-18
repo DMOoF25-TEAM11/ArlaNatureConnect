@@ -392,7 +392,7 @@ classDiagram
     lastName
     email
     address
-    aktiveStatus
+    activeStatus
   }
 
     class Farm {
@@ -409,8 +409,8 @@ classDiagram
     note for Role "Defines a role that can be assigned to users for access control."
     note for Farm "Represents a farm entity with specific attributes."
 
-    Person "*" -- "1" Role : has >
-    Farm "0..*" -- "1" Person : has >
+    Person "*" -- "1" Role : has
+    Farm "0..*" -- "1" Person : has
 ```
    
 ### Class Descriptions

@@ -132,7 +132,7 @@ Additional documentation and resources for the Arla Nature Connect project can b
 | UC-002   | [Artifacts][UC-002-Artifacts] |
 | UC-002B  |
 | UC-003   |
-| UC-004   |
+| UC-004   | [Artifacts][UC-004-Artifacts] |
 | UC-010	 |
 
 
@@ -160,3 +160,4 @@ Additional documentation and resources for the Arla Nature Connect project can b
 [UC-001-ERD]:   docs/UseCase001-LoginAndRoleaccess/UC001-ER.md
 
 [UC-002-Artifacts]:    docs/UseCase002-AdministrateFarmsAndUsers/UC002-Artifacts.md
+[UC-004-Artifacts]:    docs/UseCase004-RegisterNatureAreas/UC004-Artifacts.md
