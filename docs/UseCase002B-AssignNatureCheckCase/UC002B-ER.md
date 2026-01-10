@@ -69,6 +69,23 @@ erDiagram
 | `FARMS` → `ADDRESS` | **N : 1** | Many farms can share an address (NOT NULL per domain model) |
 | `FARMS` → `PERSONS` | **N : 1** | Many farms can have the same owner (NOT NULL per domain model) |
 
+## Table Origins
+
+| Table | Origin | Description |
+|-------|--------|-------------|
+| **ROLES** | UC002 | Role definitions (Consultant, Employee, Farmer) |
+| **ADDRESSES** | UC002 | Address information for persons and farms |
+| **PERSONS** | UC002 | Person information (owners, consultants, employees) |
+| **FARMS** | UC002 | Farm information with owner and address |
+| **NATURE_CHECK_CASES** | UC002B | Nature Check Case assignments (new for UC002B) |
+
+**Important:** The `NATURE_CHECK_CASES` table is created via **Entity Framework Core Migrations**, not direct SQL scripts. The table is defined by:
+- Entity: `NatureCheckCase` (in `src/ArlaNatureConnect.Domain/Entities/NatureCheckCase.cs`)
+- Configuration: `NatureCheckCaseConfiguration` (in `src/ArlaNatureConnect.Infrastructure/Persistence/Configurations/NatureCheckCaseConfiguration.cs`)
+- DbSet: `AppDbContext.NatureCheckCases` (in `src/ArlaNatureConnect.Infrastructure/Persistence/AppDbContext.cs`)
+
+When EF Core Migrations are run (`Add-Migration` and `Update-Database`), they generate and apply the SQL DDL to create the table in the database.
+
 ## Field Details
 
 ### NATURE_CHECK_CASES

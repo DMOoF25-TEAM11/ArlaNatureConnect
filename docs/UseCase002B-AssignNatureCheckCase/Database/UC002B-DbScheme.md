@@ -55,13 +55,23 @@
 
 ---
 
+### **Entity Framework Core Implementation**
+
+**Note:** In Entity Framework Core implementation:
+- All data access uses EF Core repositories with LINQ queries
+- Notifications are generated from NatureCheckCase data (not stored in database)
+- No stored procedures or views needed
+
+---
+
 ### **Business Rules**
 1. A `ConsultantId` must reference a `Person` with the role "Consultant"
 2. An `AssignedByPersonId` must reference a `Person` with the role "Employee"
 3. `Status` should be one of: "Assigned", "InProgress", "Completed", "Cancelled"
-4. `CreatedAt` is automatically set to `SYSUTCDATETIME()` when the case is created
+4. `CreatedAt` is automatically set by EF Core when the case is created
 5. `AssignedAt` is set when the case is assigned (can be the same as `CreatedAt` for immediate assignment)
 6. Multiple cases can exist for the same farm (soft rule: typically only one active case per farm)
+7. All operations use Entity Framework Core repositories, not stored procedures
 
 ---
 
