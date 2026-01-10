@@ -72,7 +72,7 @@
 
       <Button x:Name="FarmsButton"
                         Command="{Binding NavigationCommand}"
-                        CommandParameter="Farms"
+                        CommandParameter="FarmsWhoHaveNatureArea"
                         Content="Natur Check"
                         Style="{StaticResource ArlaNavButton}"/>
 
