@@ -1,0 +1,4 @@
+var _person_configuration_8cs =
+[
+    [ "ArlaNatureConnect.Infrastructure.Persistence.Configurations.PersonConfiguration", "class_arla_nature_connect_1_1_infrastructure_1_1_persistence_1_1_configurations_1_1_person_configuration.html", "class_arla_nature_connect_1_1_infrastructure_1_1_persistence_1_1_configurations_1_1_person_configuration" ]
+];

@@ -1,0 +1,25 @@
+\doxysection{Arla\+Nature\+Connect.\+Core.\+Services Namespace Reference}
+\hypertarget{namespace_arla_nature_connect_1_1_core_1_1_services}{}\label{namespace_arla_nature_connect_1_1_core_1_1_services}\index{ArlaNatureConnect.Core.Services@{ArlaNatureConnect.Core.Services}}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service}{App\+Message\+Service}}
+\item 
+class \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_connection_string_service}{Connection\+String\+Service}}
+\item 
+interface \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service}{IApp\+Message\+Service}}
+\begin{DoxyCompactList}\small\item\em Provides a simple application-\/wide message store that exposes informational and error messages for the UI and other components. \end{DoxyCompactList}\item 
+interface \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_connection_string_service}{IConnection\+String\+Service}}
+\begin{DoxyCompactList}\small\item\em Abstraction responsible for managing the application\textquotesingle{}s database connection string. \end{DoxyCompactList}\item 
+interface \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_get_address_from_cvr}{IGet\+Address\+From\+Cvr}}
+\begin{DoxyCompactList}\small\item\em Contract for looking up company information from the CVR API. \end{DoxyCompactList}\item 
+interface \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_nature_check_case_service}{INature\+Check\+Case\+Service}}
+\item 
+interface \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services}{IStatus\+Info\+Services}}
+\begin{DoxyCompactList}\small\item\em Provides application-\/wide status information and control for UI components and services. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_nature_check_case_service}{Nature\+Check\+Case\+Service}}
+\item 
+class \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_privilege_service}{Privilege\+Service}}
+\item 
+class \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service}{Status\+Info\+Service}}
+\begin{DoxyCompactList}\small\item\em Centralizes app-\/wide status reporting so multiple components can signal loading and database-\/connection state in a consistent way. This prevents UI flicker and race conditions by keeping {\ttfamily Is\+Loading\+Or\+Saving} true until every independent caller finishes (reference-\/counted tokens), so the UI and other consumers observe reliable state. \end{DoxyCompactList}\end{DoxyCompactItemize}

@@ -1,0 +1,4 @@
+var class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_page_contents_1_1_consultant_1_1_consultant_tasks =
+[
+    [ "ConsultantTasks", "class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_page_contents_1_1_consultant_1_1_consultant_tasks.html#a6bc149f14a8dd4eb21b4439e3664eb0f", null ]
+];

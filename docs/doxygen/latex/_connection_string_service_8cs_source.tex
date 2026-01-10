@@ -1,0 +1,254 @@
+\doxysection{Connection\+String\+Service.\+cs}
+\hypertarget{_connection_string_service_8cs_source}{}\label{_connection_string_service_8cs_source}\index{src/ArlaNatureConnect.Core/Services/ConnectionStringService.cs@{src/ArlaNatureConnect.Core/Services/ConnectionStringService.cs}}
+\mbox{\hyperlink{_connection_string_service_8cs}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00001}00001\ \textcolor{keyword}{using\ }System.Runtime.InteropServices;}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00002}00002\ \textcolor{keyword}{using\ }System.Security.Cryptography;}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00003}00003\ \textcolor{keyword}{using\ }System.Text;}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00004}00004\ \textcolor{keyword}{using\ }System.Diagnostics;}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00005}00005\ \textcolor{keyword}{using\ }Microsoft.Data.SqlClient;}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00006}00006\ }
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00007}00007\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_core_1_1_services}{ArlaNatureConnect.Core.Services}};}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00008}00008\ }
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00009}\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_connection_string_service}{00009}}\ \textcolor{keyword}{public}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_connection_string_service_a835e71ce2250e9346ea1f3c6a8694d1f}{ConnectionStringService}}\ :\ \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_connection_string_service}{IConnectionStringService}}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00010}00010\ \{}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00011}00011\ \ \ \ \ \textcolor{keyword}{private}\ readonly\ \textcolor{keywordtype}{string}\ \_fileName\ =\ \textcolor{stringliteral}{"{}conn.dat"{}};}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00012}00012\ \ \ \ \ \textcolor{keyword}{private}\ readonly\ \textcolor{keywordtype}{string}\ \_filePath;}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00013}00013\ }
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00014}\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_connection_string_service_a835e71ce2250e9346ea1f3c6a8694d1f}{00014}}\ \ \ \ \ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_connection_string_service_a835e71ce2250e9346ea1f3c6a8694d1f}{ConnectionStringService}}()}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00015}00015\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00016}00016\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{string}\ appData\ =\ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00017}00017\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{string}\ dir\ =\ Path.Combine(appData,\ \textcolor{stringliteral}{"{}ArlaNatureConnect"{}});}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00018}00018\ \ \ \ \ \ \ \ \ Directory.CreateDirectory(dir);}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00019}00019\ \ \ \ \ \ \ \ \ \_filePath\ =\ Path.Combine(dir,\ \_fileName);}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00020}00020\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00021}00021\ }
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00022}\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_connection_string_service_a3bceac31dde0332cf472a80e98461f66}{00022}}\ \ \ \ \ \textcolor{keyword}{public}\ Task<bool>\ \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_connection_string_service_a3bceac31dde0332cf472a80e98461f66}{ExistsAsync}}()\ =>\ Task.FromResult(File.Exists(\_filePath));}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00023}00023\ }
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00024}\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_connection_string_service_aaa1c206c07349855115f658668eba2c2}{00024}}\ \ \ \ \ \textcolor{keyword}{public}\ async\ Task<string?>\ \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_connection_string_service_aaa1c206c07349855115f658668eba2c2}{ReadAsync}}()}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00025}00025\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00026}00026\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!File.Exists(\_filePath))\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{null};}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00027}00027\ }
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00028}00028\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Try\ to\ open\ and\ read\ the\ file\ directly\ with\ sharing\ allowed.}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00029}00029\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ If\ the\ file\ is\ temporarily\ locked,\ retry\ until\ timeout.}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00030}00030\ \ \ \ \ \ \ \ \ TimeSpan\ timeout\ =\ TimeSpan.FromSeconds(5);}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00031}00031\ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }CancellationTokenSource\ cts\ =\ \textcolor{keyword}{new}\ CancellationTokenSource(timeout);}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00032}00032\ \ \ \ \ \ \ \ \ CancellationToken\ ct\ =\ cts.Token;}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00033}00033\ \ \ \ \ \ \ \ \ TimeSpan\ delay\ =\ TimeSpan.FromMilliseconds(100);}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00034}00034\ }
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00035}00035\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (\textcolor{keyword}{true})}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00036}00036\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00037}00037\ \ \ \ \ \ \ \ \ \ \ \ \ ct.ThrowIfCancellationRequested();}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00038}00038\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00039}00039\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00040}00040\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Allow\ others\ to\ read/write\ while\ we\ read\ to\ avoid\ blocking\ writers.}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00041}00041\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }FileStream\ fs\ =\ \textcolor{keyword}{new}(\_filePath,\ FileMode.Open,\ FileAccess.Read,\ FileShare.ReadWrite,\ 4096,\ useAsync:\ \textcolor{keyword}{true});}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00042}00042\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (fs.Length\ ==\ 0)\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{null};}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00043}00043\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{byte}[]\ encrypted\ =\ \textcolor{keyword}{new}\ \textcolor{keywordtype}{byte}[fs.Length];}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00044}00044\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ offset\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00045}00045\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (offset\ <\ encrypted.Length)}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00046}00046\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00047}00047\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ read\ =\ await\ fs.ReadAsync(encrypted.AsMemory(offset,\ encrypted.Length\ -\/\ offset)).ConfigureAwait(\textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00048}00048\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (read\ ==\ 0)\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00049}00049\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ offset\ +=\ read;}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00050}00050\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00051}00051\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ await\ DecryptAsync(encrypted).ConfigureAwait(\textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00052}00052\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00053}00053\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{catch}\ (OperationCanceledException)}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00054}00054\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00055}00055\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \textcolor{keyword}{new}\ IOException(\textcolor{stringliteral}{"{}Timed\ out\ waiting\ to\ read\ the\ connection\ file."{}});}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00056}00056\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00057}00057\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{catch}\ (IOException)}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00058}00058\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00059}00059\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ File\ currently\ locked\ by\ a\ writer\ -\/>\ wait\ and\ retry}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00060}00060\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00061}00061\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00062}00062\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ await\ Task.Delay(delay,\ ct).ConfigureAwait(\textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00063}00063\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00064}00064\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{catch}\ (OperationCanceledException)}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00065}00065\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00066}00066\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \textcolor{keyword}{new}\ IOException(\textcolor{stringliteral}{"{}Timed\ out\ waiting\ to\ read\ the\ connection\ file."{}});}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00067}00067\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00068}00068\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00069}00069\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{catch}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00070}00070\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00071}00071\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \textcolor{keyword}{new}\ InvalidOperationException(\textcolor{stringliteral}{"{}Failed\ to\ read\ or\ decrypt\ the\ connection\ string."{}});}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00072}00072\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00073}00073\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00074}00074\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00075}00075\ }
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00076}00076\ }
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00077}\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_connection_string_service_a2428987ca7426f58bb0ac5e52b0d839c}{00077}}\ \ \ \ \ \textcolor{keyword}{public}\ async\ Task\ \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_connection_string_service_a2428987ca7426f58bb0ac5e52b0d839c}{SaveAsync}}(\textcolor{keywordtype}{string}\ connectionString)}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00078}00078\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00079}00079\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!await\ \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_connection_string_service_a4fc71060e8526b4a650dc93afb77d1c3}{CanConnectionStringConnect}}(connectionString).ConfigureAwait(\textcolor{keyword}{false}))}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00080}00080\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \textcolor{keyword}{new}\ InvalidOperationException(\textcolor{stringliteral}{"{}Cannot\ connect\ to\ the\ database\ with\ the\ provided\ connection\ string."{}});}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00081}00081\ }
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00082}00082\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{byte}[]\ encrypted\ =\ await\ EncryptAsync(connectionString).ConfigureAwait(\textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00083}00083\ \ \ \ \ \ \ \ \ await\ File.WriteAllBytesAsync(\_filePath,\ encrypted).ConfigureAwait(\textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00084}00084\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00085}00085\ }
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00086}00086\ }
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00087}00087\ \textcolor{preprocessor}{\ \ \ \ \#region\ Encryption\ and\ Decryption}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00088}00088\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keyword}{static}\ Task<byte[]>\ EncryptAsync(\textcolor{keywordtype}{string}\ connectionString)}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00089}00089\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00090}00090\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{byte}[]\ bytes\ =\ Encoding.UTF8.GetBytes(connectionString);}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00091}00091\ }
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00092}00092\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00093}00093\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00094}00094\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00095}00095\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00096}00096\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{byte}[]\ encrypted\ =\ ProtectedData.Protect(bytes,\ \textcolor{keyword}{null},\ DataProtectionScope.CurrentUser);}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00097}00097\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Task.FromResult(encrypted);}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00098}00098\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00099}00099\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{catch}\ (Exception\ ex)}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00100}00100\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00101}00101\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \textcolor{keyword}{new}\ InvalidOperationException(\textcolor{stringliteral}{"{}Failed\ to\ protect\ data"{}},\ ex);}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00102}00102\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00103}00103\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00104}00104\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00105}00105\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00106}00106\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ EncryptNonWindowsOsAsync(connectionString);}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00107}00107\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00108}00108\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00109}00109\ }
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00110}00110\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keyword}{static}\ Task<byte[]>\ EncryptNonWindowsOsAsync(\textcolor{keywordtype}{string}\ connectionString)}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00111}00111\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00112}00112\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{byte}[]\ bytes\ =\ Encoding.UTF8.GetBytes(connectionString);}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00113}00113\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Cross-\/platform\ fallback\ using\ AES\ with\ a\ key\ derived\ from\ user+machine}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00114}00114\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00115}00115\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00116}00116\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{byte}[]\ key\ =\ DeriveKey();}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00117}00117\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }Aes\ aes\ =\ Aes.Create();}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00118}00118\ \ \ \ \ \ \ \ \ \ \ \ \ aes.Key\ =\ key;}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00119}00119\ \ \ \ \ \ \ \ \ \ \ \ \ aes.Mode\ =\ CipherMode.CBC;}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00120}00120\ \ \ \ \ \ \ \ \ \ \ \ \ aes.Padding\ =\ PaddingMode.PKCS7;}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00121}00121\ \ \ \ \ \ \ \ \ \ \ \ \ aes.GenerateIV();}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00122}00122\ }
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00123}00123\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }MemoryStream\ ms\ =\ \textcolor{keyword}{new}();}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00124}00124\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Prepend\ IV}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00125}00125\ \ \ \ \ \ \ \ \ \ \ \ \ ms.Write(aes.IV,\ 0,\ aes.IV.Length);}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00126}00126\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using}\ (CryptoStream\ cs\ =\ \textcolor{keyword}{new}(ms,\ aes.CreateEncryptor(),\ CryptoStreamMode.Write))}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00127}00127\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00128}00128\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cs.Write(bytes,\ 0,\ bytes.Length);}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00129}00129\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cs.FlushFinalBlock();}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00130}00130\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00131}00131\ }
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00132}00132\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Task.FromResult(ms.ToArray());}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00133}00133\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00134}00134\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{catch}\ (Exception\ ex)}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00135}00135\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00136}00136\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \textcolor{keyword}{new}\ InvalidOperationException(\textcolor{stringliteral}{"{}Failed\ to\ encrypt\ data"{}},\ ex);}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00137}00137\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00138}00138\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00139}00139\ }
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00140}00140\ }
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00141}00141\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keyword}{static}\ Task<string?>\ DecryptAsync(\textcolor{keywordtype}{byte}[]\ encryptedData)}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00142}00142\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00143}00143\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00144}00144\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00145}00145\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00146}00146\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00147}00147\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{byte}[]\ unprotected\ =\ ProtectedData.Unprotect(encryptedData,\ \textcolor{keyword}{null},\ DataProtectionScope.CurrentUser);}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00148}00148\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Task.FromResult<\textcolor{keywordtype}{string}?>(Encoding.UTF8.GetString(unprotected));}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00149}00149\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00150}00150\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{catch}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00151}00151\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00152}00152\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Task.FromResult<\textcolor{keywordtype}{string}?>(\textcolor{keyword}{null});}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00153}00153\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00154}00154\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00155}00155\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00156}00156\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00157}00157\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ DecryptNonWindowsOsAsync(encryptedData);}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00158}00158\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00159}00159\ }
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00160}00160\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00161}00161\ }
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00162}00162\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keyword}{static}\ Task<string?>\ DecryptNonWindowsOsAsync(\textcolor{keywordtype}{byte}[]\ encryptedData)}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00163}00163\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00164}00164\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00165}00165\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00166}00166\ \ \ \ \ \ \ \ \ \ \ \ \ Debug.WriteLine(\textcolor{stringliteral}{"{}Using\ AES\ decryption\ for\ connection\ string\ on\ non-\/Windows\ OS."{}});}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00167}00167\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{byte}[]\ key\ =\ DeriveKey();}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00168}00168\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }Aes\ aes\ =\ Aes.Create();}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00169}00169\ \ \ \ \ \ \ \ \ \ \ \ \ aes.Key\ =\ key;}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00170}00170\ \ \ \ \ \ \ \ \ \ \ \ \ aes.Mode\ =\ CipherMode.CBC;}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00171}00171\ \ \ \ \ \ \ \ \ \ \ \ \ aes.Padding\ =\ PaddingMode.PKCS7;}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00172}00172\ }
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00173}00173\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ IV\ is\ prepended}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00174}00174\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (encryptedData.Length\ <\ aes.BlockSize\ /\ 8)\ \textcolor{keywordflow}{return}\ Task.FromResult<\textcolor{keywordtype}{string}?>(\textcolor{keyword}{null});}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00175}00175\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{byte}[]\ iv\ =\ \textcolor{keyword}{new}\ \textcolor{keywordtype}{byte}[aes.BlockSize\ /\ 8];}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00176}00176\ \ \ \ \ \ \ \ \ \ \ \ \ Array.Copy(encryptedData,\ 0,\ iv,\ 0,\ iv.Length);}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00177}00177\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{byte}[]\ cipher\ =\ \textcolor{keyword}{new}\ \textcolor{keywordtype}{byte}[encryptedData.Length\ -\/\ iv.Length];}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00178}00178\ \ \ \ \ \ \ \ \ \ \ \ \ Array.Copy(encryptedData,\ iv.Length,\ cipher,\ 0,\ cipher.Length);}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00179}00179\ \ \ \ \ \ \ \ \ \ \ \ \ aes.IV\ =\ iv;}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00180}00180\ }
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00181}00181\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }MemoryStream\ ms\ =\ \textcolor{keyword}{new}();}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00182}00182\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using}\ (CryptoStream\ cs\ =\ \textcolor{keyword}{new}(ms,\ aes.CreateDecryptor(),\ CryptoStreamMode.Write))}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00183}00183\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00184}00184\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cs.Write(cipher,\ 0,\ cipher.Length);}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00185}00185\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cs.FlushFinalBlock();}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00186}00186\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00187}00187\ }
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00188}00188\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Task.FromResult<\textcolor{keywordtype}{string}?>(Encoding.UTF8.GetString(ms.ToArray()));}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00189}00189\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00190}00190\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{catch}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00191}00191\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00192}00192\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Task.FromResult<\textcolor{keywordtype}{string}?>(\textcolor{keyword}{null});}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00193}00193\ \ \ \ \ \ \ \ \ \}\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00194}00194\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00195}00195\ \textcolor{preprocessor}{\ \ \ \ \#endregion}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00196}00196\ }
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00197}00197\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{byte}[]\ DeriveKey()}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00198}00198\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00199}00199\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Derive\ a256-\/bit\ key\ from\ user\ and\ machine\ information\ and\ application\ base\ path.}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00200}00200\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ This\ makes\ the\ encrypted\ data\ specific\ to\ the\ current\ user\ on\ the\ current\ machine.}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00201}00201\ \ \ \ \ \ \ \ \ StringBuilder\ sb\ =\ \textcolor{keyword}{new}();}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00202}00202\ \ \ \ \ \ \ \ \ sb.Append(Environment.UserName\ ??\ \textcolor{keywordtype}{string}.Empty);}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00203}00203\ \ \ \ \ \ \ \ \ sb.Append(\textcolor{charliteral}{'|'});}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00204}00204\ \ \ \ \ \ \ \ \ sb.Append(Environment.MachineName\ ??\ \textcolor{keywordtype}{string}.Empty);}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00205}00205\ \ \ \ \ \ \ \ \ sb.Append(\textcolor{charliteral}{'|'});}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00206}00206\ \ \ \ \ \ \ \ \ sb.Append(AppDomain.CurrentDomain?.BaseDirectory\ ??\ \textcolor{keywordtype}{string}.Empty);}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00207}00207\ }
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00208}00208\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Use\ SHA256\ to\ produce\ a32-\/byte\ key.\ This\ is\ deterministic\ but\ tied\ to\ user+machine+app\ path.}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00209}00209\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ SHA256.HashData(Encoding.UTF8.GetBytes(sb.ToString()));}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00210}00210\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00211}00211\ }
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00212}\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_connection_string_service_a4fc71060e8526b4a650dc93afb77d1c3}{00212}}\ \ \ \ \ \textcolor{keyword}{public}\ async\ Task<bool>\ \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_connection_string_service_a4fc71060e8526b4a650dc93afb77d1c3}{CanConnectionStringConnect}}(\textcolor{keywordtype}{string}\ connectionString)}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00213}00213\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00214}00214\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\textcolor{keywordtype}{string}.IsNullOrWhiteSpace(connectionString))}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00215}00215\ \ \ \ \ \ \ \ \ \{\ }
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00216}00216\ \ \ \ \ \ \ \ \ \ \ \ \ Debug.WriteLine(\textcolor{stringliteral}{"{}Connection\ string\ is\ null\ or\ empty."{}});}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00217}00217\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00218}00218\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00219}00219\ }
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00220}00220\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Quick\ validation:\ ensure\ a\ data\ source\ is\ present\ and\ that\ we\ can\ open\ a\ connection}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00221}00221\ \ \ \ \ \ \ \ \ SqlConnectionStringBuilder\ builder\ =\ \textcolor{keyword}{new}\ SqlConnectionStringBuilder(connectionString);}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00222}00222\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\textcolor{keywordtype}{string}.IsNullOrWhiteSpace(builder.DataSource))}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00223}00223\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00224}00224\ \ \ \ \ \ \ \ \ \ \ \ \ Debug.WriteLine(\textcolor{stringliteral}{"{}Connection\ string\ is\ missing\ a\ server/data\ source.\ Please\ configure\ a\ valid\ SQL\ Server\ instance."{}});}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00225}00225\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00226}00226\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00227}00227\ }
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00228}00228\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Ensure\ a\ short\ timeout\ for\ the\ validation\ attempt}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00229}00229\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ originalTimeout\ =\ builder.ConnectTimeout;}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00230}00230\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (originalTimeout\ <=\ 0\ ||\ originalTimeout\ >\ 10)}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00231}00231\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00232}00232\ \ \ \ \ \ \ \ \ \ \ \ \ builder.ConnectTimeout\ =\ 5;}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00233}00233\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00234}00234\ }
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00235}00235\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00236}00236\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00237}00237\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }SqlConnection\ conn\ =\ \textcolor{keyword}{new}\ SqlConnection(builder.ConnectionString);}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00238}00238\ \ \ \ \ \ \ \ \ \ \ \ \ await\ conn.OpenAsync().ConfigureAwait(\textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00239}00239\ \ \ \ \ \ \ \ \ \ \ \ \ await\ conn.CloseAsync().ConfigureAwait(\textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00240}00240\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00241}00241\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{catch}\ (Exception\ ex)}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00242}00242\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00243}00243\ \ \ \ \ \ \ \ \ \ \ \ \ Debug.WriteLine(\$\textcolor{stringliteral}{"{}Connection\ string\ validation\ failed:\ \{ex\}"{}});}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00244}00244\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00245}00245\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00246}00246\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00247}00247\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_connection_string_service_8cs_source_l00248}00248\ \}}
+
+\end{DoxyCode}

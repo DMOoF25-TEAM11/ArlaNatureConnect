@@ -1,0 +1,143 @@
+\doxysection{Arla\+Nature\+Connect.\+Win\+UI.\+Commands.\+Relay\+Command Class Reference}
+\hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command}{}\label{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command}\index{ArlaNatureConnect.WinUI.Commands.RelayCommand@{ArlaNatureConnect.WinUI.Commands.RelayCommand}}
+
+
+Provides a basic implementation of the ICommand interface for relaying command logic.  
+
+
+Inheritance diagram for Arla\+Nature\+Connect.\+Win\+UI.\+Commands.\+Relay\+Command\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command_ab2c666573d1f7e9957624d1996a6075e}{Relay\+Command}} (Action execute, Func$<$ bool $>$? can\+Execute=null)
+\begin{DoxyCompactList}\small\item\em Initializes a new instance of the \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command}{Relay\+Command} class. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command_a64325d9fd85df3db50968d26a86d96bc}{Can\+Execute}} (object? parameter)
+\begin{DoxyCompactList}\small\item\em Determines whether the command can execute in its current state. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command_af0126f27a0c05d77e0befe7d3764b543}{Execute}} (object? parameter)
+\begin{DoxyCompactList}\small\item\em Executes the command. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command_a141b94beabdc0bd80db9610830d75723}{Raise\+Can\+Execute\+Changed}} ()
+\begin{DoxyCompactList}\small\item\em Raises the \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command_aeae39c73414bd95f65724cfdaf4a2b8d}{Can\+Execute\+Changed} event. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Events}
+\begin{DoxyCompactItemize}
+\item 
+Event\+Handler? \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command_aeae39c73414bd95f65724cfdaf4a2b8d}{Can\+Execute\+Changed}}
+\begin{DoxyCompactList}\small\item\em Occurs when changes occur that affect whether or not the command should execute. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Provides a basic implementation of the ICommand interface for relaying command logic. 
+
+Definition at line \mbox{\hyperlink{_relay_command_8cs_source_l00008}{8}} of file \mbox{\hyperlink{_relay_command_8cs_source}{Relay\+Command.\+cs}}.
+
+
+
+\label{doc-constructors}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command_ab2c666573d1f7e9957624d1996a6075e}\index{ArlaNatureConnect.WinUI.Commands.RelayCommand@{ArlaNatureConnect.WinUI.Commands.RelayCommand}!RelayCommand@{RelayCommand}}
+\index{RelayCommand@{RelayCommand}!ArlaNatureConnect.WinUI.Commands.RelayCommand@{ArlaNatureConnect.WinUI.Commands.RelayCommand}}
+\doxysubsubsection{\texorpdfstring{RelayCommand()}{RelayCommand()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command_ab2c666573d1f7e9957624d1996a6075e} 
+Arla\+Nature\+Connect.\+Win\+UI.\+Commands.\+Relay\+Command.\+Relay\+Command (\begin{DoxyParamCaption}\item[{Action}]{execute}{, }\item[{Func$<$ bool $>$?}]{can\+Execute}{ = {\ttfamily null}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Initializes a new instance of the \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command}{Relay\+Command} class. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em execute} & The action to execute when the command is invoked.\\
+\hline
+{\em can\+Execute} & A function that determines whether the command can execute. If null, the command is always executable.\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em Argument\+Null\+Exception} & Thrown if {\itshape execute}  is null.\\
+\hline
+\end{DoxyExceptions}
+
+
+Definition at line \mbox{\hyperlink{_relay_command_8cs_source_l00031}{31}} of file \mbox{\hyperlink{_relay_command_8cs_source}{Relay\+Command.\+cs}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command_a64325d9fd85df3db50968d26a86d96bc}\index{ArlaNatureConnect.WinUI.Commands.RelayCommand@{ArlaNatureConnect.WinUI.Commands.RelayCommand}!CanExecute@{CanExecute}}
+\index{CanExecute@{CanExecute}!ArlaNatureConnect.WinUI.Commands.RelayCommand@{ArlaNatureConnect.WinUI.Commands.RelayCommand}}
+\doxysubsubsection{\texorpdfstring{CanExecute()}{CanExecute()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command_a64325d9fd85df3db50968d26a86d96bc} 
+bool Arla\+Nature\+Connect.\+Win\+UI.\+Commands.\+Relay\+Command.\+Can\+Execute (\begin{DoxyParamCaption}\item[{object?}]{parameter}{}\end{DoxyParamCaption})}
+
+
+
+Determines whether the command can execute in its current state. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em parameter} & Data used by the command. This parameter is ignored.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} if the command can execute; otherwise, {\ttfamily false}.
+\end{DoxyReturn}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command_af0126f27a0c05d77e0befe7d3764b543}\index{ArlaNatureConnect.WinUI.Commands.RelayCommand@{ArlaNatureConnect.WinUI.Commands.RelayCommand}!Execute@{Execute}}
+\index{Execute@{Execute}!ArlaNatureConnect.WinUI.Commands.RelayCommand@{ArlaNatureConnect.WinUI.Commands.RelayCommand}}
+\doxysubsubsection{\texorpdfstring{Execute()}{Execute()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command_af0126f27a0c05d77e0befe7d3764b543} 
+void Arla\+Nature\+Connect.\+Win\+UI.\+Commands.\+Relay\+Command.\+Execute (\begin{DoxyParamCaption}\item[{object?}]{parameter}{}\end{DoxyParamCaption})}
+
+
+
+Executes the command. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em parameter} & Data used by the command. This parameter is ignored.\\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command_a141b94beabdc0bd80db9610830d75723}\index{ArlaNatureConnect.WinUI.Commands.RelayCommand@{ArlaNatureConnect.WinUI.Commands.RelayCommand}!RaiseCanExecuteChanged@{RaiseCanExecuteChanged}}
+\index{RaiseCanExecuteChanged@{RaiseCanExecuteChanged}!ArlaNatureConnect.WinUI.Commands.RelayCommand@{ArlaNatureConnect.WinUI.Commands.RelayCommand}}
+\doxysubsubsection{\texorpdfstring{RaiseCanExecuteChanged()}{RaiseCanExecuteChanged()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command_a141b94beabdc0bd80db9610830d75723} 
+void Arla\+Nature\+Connect.\+Win\+UI.\+Commands.\+Relay\+Command.\+Raise\+Can\+Execute\+Changed (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Raises the \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command_aeae39c73414bd95f65724cfdaf4a2b8d}{Can\+Execute\+Changed} event. 
+
+
+
+Definition at line \mbox{\hyperlink{_relay_command_8cs_source_l00053}{53}} of file \mbox{\hyperlink{_relay_command_8cs_source}{Relay\+Command.\+cs}}.
+
+
+
+\label{doc-event-members}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command_doc-event-members}
+\doxysubsection{Event Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command_aeae39c73414bd95f65724cfdaf4a2b8d}\index{ArlaNatureConnect.WinUI.Commands.RelayCommand@{ArlaNatureConnect.WinUI.Commands.RelayCommand}!CanExecuteChanged@{CanExecuteChanged}}
+\index{CanExecuteChanged@{CanExecuteChanged}!ArlaNatureConnect.WinUI.Commands.RelayCommand@{ArlaNatureConnect.WinUI.Commands.RelayCommand}}
+\doxysubsubsection{\texorpdfstring{CanExecuteChanged}{CanExecuteChanged}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command_aeae39c73414bd95f65724cfdaf4a2b8d} 
+Event\+Handler? Arla\+Nature\+Connect.\+Win\+UI.\+Commands.\+Relay\+Command.\+Can\+Execute\+Changed}
+
+
+
+Occurs when changes occur that affect whether or not the command should execute. 
+
+
+
+Definition at line \mbox{\hyperlink{_relay_command_8cs_source_l00023}{23}} of file \mbox{\hyperlink{_relay_command_8cs_source}{Relay\+Command.\+cs}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Arla\+Nature\+Connect.\+Win\+UI/\+Arla\+Nature\+Connect.\+Win\+UI/\+Commands/\mbox{\hyperlink{_relay_command_8cs}{Relay\+Command.\+cs}}\end{DoxyCompactItemize}

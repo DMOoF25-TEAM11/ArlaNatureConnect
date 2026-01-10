@@ -1,0 +1,4 @@
+var _arla_employee_assign_nature_check_8xaml_8cs =
+[
+    [ "ArlaNatureConnect.WinUI.Views.Controls.PageContents.ArlaEmployee.ArlaEmployeeAssignNatureCheck", "class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_page_contents_1_1_arla_employee1ac80ee89ebfd1b9a6f466ad4fdc2440.html", "class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_page_contents_1_1_arla_employee1ac80ee89ebfd1b9a6f466ad4fdc2440" ]
+];

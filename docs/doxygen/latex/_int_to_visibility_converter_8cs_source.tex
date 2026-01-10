@@ -1,0 +1,36 @@
+\doxysection{Int\+To\+Visibility\+Converter.\+cs}
+\hypertarget{_int_to_visibility_converter_8cs_source}{}\label{_int_to_visibility_converter_8cs_source}\index{src/ArlaNatureConnect.WinUI/ArlaNatureConnect.WinUI/Converters/IntToVisibilityConverter.cs@{src/ArlaNatureConnect.WinUI/ArlaNatureConnect.WinUI/Converters/IntToVisibilityConverter.cs}}
+\mbox{\hyperlink{_int_to_visibility_converter_8cs}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_int_to_visibility_converter_8cs_source_l00001}00001\ \textcolor{keyword}{using\ }Microsoft.UI.Xaml;}
+\DoxyCodeLine{\Hypertarget{_int_to_visibility_converter_8cs_source_l00002}00002\ \textcolor{keyword}{using\ }Microsoft.UI.Xaml.Data;}
+\DoxyCodeLine{\Hypertarget{_int_to_visibility_converter_8cs_source_l00003}00003\ }
+\DoxyCodeLine{\Hypertarget{_int_to_visibility_converter_8cs_source_l00004}00004\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_converters}{ArlaNatureConnect.WinUI.Converters}};}
+\DoxyCodeLine{\Hypertarget{_int_to_visibility_converter_8cs_source_l00005}00005\ }
+\DoxyCodeLine{\Hypertarget{_int_to_visibility_converter_8cs_source_l00009}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_converters_1_1_int_to_visibility_converter}{00009}}\ \textcolor{keyword}{public}\ \textcolor{keyword}{sealed}\ \textcolor{keyword}{partial\ class\ }\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_converters_1_1_int_to_visibility_converter}{IntToVisibilityConverter}}\ :\ IValueConverter}
+\DoxyCodeLine{\Hypertarget{_int_to_visibility_converter_8cs_source_l00010}00010\ \{}
+\DoxyCodeLine{\Hypertarget{_int_to_visibility_converter_8cs_source_l00011}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_converters_1_1_int_to_visibility_converter_ae529707d946297da6360a848c95a16eb}{00011}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{object}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_converters_1_1_int_to_visibility_converter_ae529707d946297da6360a848c95a16eb}{Convert}}(\textcolor{keywordtype}{object}\ value,\ Type\ targetType,\ \textcolor{keywordtype}{object}\ parameter,\ \textcolor{keywordtype}{string}\ language)}
+\DoxyCodeLine{\Hypertarget{_int_to_visibility_converter_8cs_source_l00012}00012\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_int_to_visibility_converter_8cs_source_l00013}00013\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ intValue\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{_int_to_visibility_converter_8cs_source_l00014}00014\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{_int_to_visibility_converter_8cs_source_l00015}00015\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (value\ is\ \textcolor{keywordtype}{int}\ i)}
+\DoxyCodeLine{\Hypertarget{_int_to_visibility_converter_8cs_source_l00016}00016\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_int_to_visibility_converter_8cs_source_l00017}00017\ \ \ \ \ \ \ \ \ \ \ \ \ intValue\ =\ i;}
+\DoxyCodeLine{\Hypertarget{_int_to_visibility_converter_8cs_source_l00018}00018\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_int_to_visibility_converter_8cs_source_l00019}00019\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (value\ is\ \textcolor{keywordtype}{long}\ l)}
+\DoxyCodeLine{\Hypertarget{_int_to_visibility_converter_8cs_source_l00020}00020\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_int_to_visibility_converter_8cs_source_l00021}00021\ \ \ \ \ \ \ \ \ \ \ \ \ intValue\ =\ (int)l;}
+\DoxyCodeLine{\Hypertarget{_int_to_visibility_converter_8cs_source_l00022}00022\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_int_to_visibility_converter_8cs_source_l00023}00023\ }
+\DoxyCodeLine{\Hypertarget{_int_to_visibility_converter_8cs_source_l00024}00024\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ intValue\ >\ 0\ ?\ Visibility.Visible\ :\ Visibility.Collapsed;}
+\DoxyCodeLine{\Hypertarget{_int_to_visibility_converter_8cs_source_l00025}00025\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_int_to_visibility_converter_8cs_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{_int_to_visibility_converter_8cs_source_l00036}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_converters_1_1_int_to_visibility_converter_a7fea1aee14ae6f33e340d391258f32a0}{00036}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{object}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_converters_1_1_int_to_visibility_converter_a7fea1aee14ae6f33e340d391258f32a0}{ConvertBack}}(\textcolor{keywordtype}{object}\ value,\ Type\ targetType,\ \textcolor{keywordtype}{object}\ parameter,\ \textcolor{keywordtype}{string}\ language)}
+\DoxyCodeLine{\Hypertarget{_int_to_visibility_converter_8cs_source_l00037}00037\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_int_to_visibility_converter_8cs_source_l00038}00038\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Not\ needed\ for\ one-\/way\ binding}}
+\DoxyCodeLine{\Hypertarget{_int_to_visibility_converter_8cs_source_l00039}00039\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \textcolor{keyword}{new}\ NotImplementedException();}
+\DoxyCodeLine{\Hypertarget{_int_to_visibility_converter_8cs_source_l00040}00040\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_int_to_visibility_converter_8cs_source_l00041}00041\ \}}
+\DoxyCodeLine{\Hypertarget{_int_to_visibility_converter_8cs_source_l00042}00042\ }
+
+\end{DoxyCode}

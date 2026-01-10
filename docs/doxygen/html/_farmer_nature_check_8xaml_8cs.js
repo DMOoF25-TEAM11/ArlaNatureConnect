@@ -1,0 +1,4 @@
+var _farmer_nature_check_8xaml_8cs =
+[
+    [ "ArlaNatureConnect.WinUI.Views.Controls.PageContents.Farmer.FarmerNatureCheck", "class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_page_contents_1_1_farmer_1_1_farmer_nature_check.html", "class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_page_contents_1_1_farmer_1_1_farmer_nature_check" ]
+];

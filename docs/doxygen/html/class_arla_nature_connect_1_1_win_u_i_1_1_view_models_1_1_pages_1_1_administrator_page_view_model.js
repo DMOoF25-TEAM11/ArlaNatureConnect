@@ -1,0 +1,4 @@
+var class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_administrator_page_view_model =
+[
+    [ "AdministratorPageViewModel", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_administrator_page_view_model.html#a046c3f6b0f8371a5ee94b3e71500da10", null ]
+];

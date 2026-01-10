@@ -1,0 +1,25 @@
+\doxysection{Administrator\+Page\+View\+Model.\+cs}
+\hypertarget{_administrator_page_view_model_8cs_source}{}\label{_administrator_page_view_model_8cs_source}\index{src/ArlaNatureConnect.WinUI/ArlaNatureConnect.WinUI/ViewModels/Pages/AdministratorPageViewModel.cs@{src/ArlaNatureConnect.WinUI/ArlaNatureConnect.WinUI/ViewModels/Pages/AdministratorPageViewModel.cs}}
+\mbox{\hyperlink{_administrator_page_view_model_8cs}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_administrator_page_view_model_8cs_source_l00001}00001\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_services}{ArlaNatureConnect.WinUI.Services}};}
+\DoxyCodeLine{\Hypertarget{_administrator_page_view_model_8cs_source_l00002}00002\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts}{ArlaNatureConnect.WinUI.ViewModels.Abstracts}};}
+\DoxyCodeLine{\Hypertarget{_administrator_page_view_model_8cs_source_l00003}00003\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu}{ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu}};}
+\DoxyCodeLine{\Hypertarget{_administrator_page_view_model_8cs_source_l00004}00004\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_page_contents_1_1_administrator}{ArlaNatureConnect.WinUI.Views.Controls.PageContents.Administrator}};}
+\DoxyCodeLine{\Hypertarget{_administrator_page_view_model_8cs_source_l00005}00005\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_side_menu}{ArlaNatureConnect.WinUI.Views.Controls.SideMenu}};}
+\DoxyCodeLine{\Hypertarget{_administrator_page_view_model_8cs_source_l00006}00006\ }
+\DoxyCodeLine{\Hypertarget{_administrator_page_view_model_8cs_source_l00007}\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages}{00007}}\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages}{ArlaNatureConnect.WinUI.ViewModels.Pages}};}
+\DoxyCodeLine{\Hypertarget{_administrator_page_view_model_8cs_source_l00008}00008\ }
+\DoxyCodeLine{\Hypertarget{_administrator_page_view_model_8cs_source_l00009}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_administrator_page_view_model}{00009}}\ \textcolor{keyword}{public}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_administrator_page_view_model_a046c3f6b0f8371a5ee94b3e71500da10}{AdministratorPageViewModel}}\ :\ NavigationViewModelBase}
+\DoxyCodeLine{\Hypertarget{_administrator_page_view_model_8cs_source_l00010}00010\ \{}
+\DoxyCodeLine{\Hypertarget{_administrator_page_view_model_8cs_source_l00011}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_administrator_page_view_model_a046c3f6b0f8371a5ee94b3e71500da10}{00011}}\ \ \ \ \ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_administrator_page_view_model_a046c3f6b0f8371a5ee94b3e71500da10}{AdministratorPageViewModel}}(\mbox{\hyperlink{interface_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_i_navigation_handler}{INavigationHandler}}\ navigationHandler)}
+\DoxyCodeLine{\Hypertarget{_administrator_page_view_model_8cs_source_l00012}00012\ \ \ \ \ \ \ \ \ :\ base(navigationHandler)}
+\DoxyCodeLine{\Hypertarget{_administrator_page_view_model_8cs_source_l00013}00013\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_administrator_page_view_model_8cs_source_l00014}00014\ \ \ \ \ \ \ \ \ SideMenuControlType\ =\ typeof(\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_side_menu_1_1_administrator_page_side_menu_u_c}{AdministratorPageSideMenuUC}});}
+\DoxyCodeLine{\Hypertarget{_administrator_page_view_model_8cs_source_l00015}00015\ \ \ \ \ \ \ \ \ SideMenuViewModelType\ =\ typeof(\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_administratb0dcabd1a48acf37397bb421b86acd21}{AdministratorPageSideMenuUCViewModel}});}
+\DoxyCodeLine{\Hypertarget{_administrator_page_view_model_8cs_source_l00016}00016\ }
+\DoxyCodeLine{\Hypertarget{_administrator_page_view_model_8cs_source_l00017}00017\ \ \ \ \ \ \ \ \ NavigateToView(()\ =>\ \textcolor{keyword}{new}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_page_contents_1_1_administrator45ff6fa0207d6eb5556f30733ad6527a}{AdministratorDashboardUC}}());}
+\DoxyCodeLine{\Hypertarget{_administrator_page_view_model_8cs_source_l00018}00018\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_administrator_page_view_model_8cs_source_l00019}00019\ \}}
+
+\end{DoxyCode}

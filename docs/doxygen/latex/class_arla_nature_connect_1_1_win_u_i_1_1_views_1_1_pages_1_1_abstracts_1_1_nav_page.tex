@@ -1,0 +1,116 @@
+\doxysection{Arla\+Nature\+Connect.\+Win\+UI.\+Views.\+Pages.\+Abstracts.\+Nav\+Page Class Reference}
+\hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_abstracts_1_1_nav_page}{}\label{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_abstracts_1_1_nav_page}\index{ArlaNatureConnect.WinUI.Views.Pages.Abstracts.NavPage@{ArlaNatureConnect.WinUI.Views.Pages.Abstracts.NavPage}}
+
+
+Base page that hosts a navigation-\/enabled view-\/model and wires common navigation lifecycle behavior.  
+
+
+Inheritance diagram for Arla\+Nature\+Connect.\+Win\+UI.\+Views.\+Pages.\+Abstracts.\+Nav\+Page\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=1.183099cm]{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_abstracts_1_1_nav_page}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+override async void \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_abstracts_1_1_nav_page_a675de3eb252c14dfdf6e048ee0d23afb}{On\+Navigated\+To}} (Microsoft.\+UI.\+Xaml.\+Navigation.\+Navigation\+Event\+Args e)
+\begin{DoxyCompactList}\small\item\em Called when the page is navigated to. This implementation\+: \end{DoxyCompactList}\item 
+override void \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_abstracts_1_1_nav_page_a8d0971be36c3c0a976b04ebd73537c39}{On\+Navigated\+From}} (Microsoft.\+UI.\+Xaml.\+Navigation.\+Navigation\+Event\+Args e)
+\begin{DoxyCompactList}\small\item\em Called when the page is navigated away from. Restores the application\textquotesingle{}s main window side menu to its previous children by delegating to INavigation\+View\+Model\+Base.\+Restore\+Main\+Window\+Side\+Menu on the view-\/model. Derived pages should call {\ttfamily base.\+On\+Navigated\+From(e)} to ensure the side-\/menu is restored. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_navigation_view_model_base}{INavigation\+View\+Model\+Base}}? \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_abstracts_1_1_nav_page_abb79715fa6bebfec790c7d554ddd51a8}{View\+Model}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The view-\/model the page hosts. Must implement \doxylink{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_navigation_view_model_base}{INavigation\+View\+Model\+Base} and be set before navigating to this page. The page will call \doxylink{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_navigation_view_model_base_ab25eb387c5cce8587f0bfa8a82c03311}{INavigation\+View\+Model\+Base.\+Initialize\+Async(\+Role?)} during navigation. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Base page that hosts a navigation-\/enabled view-\/model and wires common navigation lifecycle behavior. 
+
+Why this class exists\+:
+\begin{DoxyItemize}
+\item Centralizes the common setup performed when navigating to role-\/based pages\+: validating the view-\/model, invoking its asynchronous initializer with the current \doxylink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_role}{Role}, selecting the default navigation item and attaching the side menu to the main window.
+\item Keeps page classes small by moving shared navigation/side-\/menu wiring to a single abstract base.
+\item Ensures consistent behavior (initialization, default selection, side-\/menu attach/restore) across all pages that present role-\/scoped dashboards or content. 
+\end{DoxyItemize}
+
+Definition at line \mbox{\hyperlink{_nav_page_8cs_source_l00019}{19}} of file \mbox{\hyperlink{_nav_page_8cs_source}{Nav\+Page.\+cs}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_abstracts_1_1_nav_page_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_abstracts_1_1_nav_page_a8d0971be36c3c0a976b04ebd73537c39}\index{ArlaNatureConnect.WinUI.Views.Pages.Abstracts.NavPage@{ArlaNatureConnect.WinUI.Views.Pages.Abstracts.NavPage}!OnNavigatedFrom@{OnNavigatedFrom}}
+\index{OnNavigatedFrom@{OnNavigatedFrom}!ArlaNatureConnect.WinUI.Views.Pages.Abstracts.NavPage@{ArlaNatureConnect.WinUI.Views.Pages.Abstracts.NavPage}}
+\doxysubsubsection{\texorpdfstring{OnNavigatedFrom()}{OnNavigatedFrom()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_abstracts_1_1_nav_page_a8d0971be36c3c0a976b04ebd73537c39} 
+override void Arla\+Nature\+Connect.\+Win\+UI.\+Views.\+Pages.\+Abstracts.\+Nav\+Page.\+On\+Navigated\+From (\begin{DoxyParamCaption}\item[{Microsoft.\+UI.\+Xaml.\+Navigation.\+Navigation\+Event\+Args}]{e}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+Called when the page is navigated away from. Restores the application\textquotesingle{}s main window side menu to its previous children by delegating to INavigation\+View\+Model\+Base.\+Restore\+Main\+Window\+Side\+Menu on the view-\/model. Derived pages should call {\ttfamily base.\+On\+Navigated\+From(e)} to ensure the side-\/menu is restored. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em e} & Navigation event arguments provided by the framework.\\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{_nav_page_8cs_source_l00068}{68}} of file \mbox{\hyperlink{_nav_page_8cs_source}{Nav\+Page.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_abstracts_1_1_nav_page_a675de3eb252c14dfdf6e048ee0d23afb}\index{ArlaNatureConnect.WinUI.Views.Pages.Abstracts.NavPage@{ArlaNatureConnect.WinUI.Views.Pages.Abstracts.NavPage}!OnNavigatedTo@{OnNavigatedTo}}
+\index{OnNavigatedTo@{OnNavigatedTo}!ArlaNatureConnect.WinUI.Views.Pages.Abstracts.NavPage@{ArlaNatureConnect.WinUI.Views.Pages.Abstracts.NavPage}}
+\doxysubsubsection{\texorpdfstring{OnNavigatedTo()}{OnNavigatedTo()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_abstracts_1_1_nav_page_a675de3eb252c14dfdf6e048ee0d23afb} 
+override async void Arla\+Nature\+Connect.\+Win\+UI.\+Views.\+Pages.\+Abstracts.\+Nav\+Page.\+On\+Navigated\+To (\begin{DoxyParamCaption}\item[{Microsoft.\+UI.\+Xaml.\+Navigation.\+Navigation\+Event\+Args}]{e}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+Called when the page is navigated to. This implementation\+: 
+
+
+\begin{DoxyItemize}
+\item Validates that View\+Model is set and throws Invalid\+Operation\+Exception otherwise.
+\item If the navigation parameter is a \doxylink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_role}{Role}, invokes \doxylink{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_navigation_view_model_base_ab25eb387c5cce8587f0bfa8a82c03311}{INavigation\+View\+Model\+Base.\+Initialize\+Async}.
+\item Executes the view-\/model\textquotesingle{}s \doxylink{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_navigation_view_model_base_a3d6fc15f61b44cdc797012a73b700d08}{INavigation\+View\+Model\+Base.\+Navigation\+Command} with Default\+Navigation\+View\+Item\+Tag to select the default content.
+\item Attaches the view-\/model\textquotesingle{}s side menu to the main window via \doxylink{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_navigation_view_model_base_a319f67019c3dec61b81067cff35f58b5}{INavigation\+View\+Model\+Base.\+Attach\+Side\+Menu\+To\+Main\+Window}.
+\end{DoxyItemize}
+
+Derived pages may override but should call {\ttfamily base.\+On\+Navigated\+To(e)} to preserve this common behavior.
+
+
+\begin{DoxyParams}{Parameters}
+{\em e} & Navigation event arguments provided by the framework.\\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{_nav_page_8cs_source_l00039}{39}} of file \mbox{\hyperlink{_nav_page_8cs_source}{Nav\+Page.\+cs}}.
+
+
+
+\label{doc-property-members}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_abstracts_1_1_nav_page_doc-property-members}
+\doxysubsection{Property Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_abstracts_1_1_nav_page_abb79715fa6bebfec790c7d554ddd51a8}\index{ArlaNatureConnect.WinUI.Views.Pages.Abstracts.NavPage@{ArlaNatureConnect.WinUI.Views.Pages.Abstracts.NavPage}!ViewModel@{ViewModel}}
+\index{ViewModel@{ViewModel}!ArlaNatureConnect.WinUI.Views.Pages.Abstracts.NavPage@{ArlaNatureConnect.WinUI.Views.Pages.Abstracts.NavPage}}
+\doxysubsubsection{\texorpdfstring{ViewModel}{ViewModel}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_abstracts_1_1_nav_page_abb79715fa6bebfec790c7d554ddd51a8} 
+\mbox{\hyperlink{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_navigation_view_model_base}{INavigation\+View\+Model\+Base}}? Arla\+Nature\+Connect.\+Win\+UI.\+Views.\+Pages.\+Abstracts.\+Nav\+Page.\+View\+Model\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+The view-\/model the page hosts. Must implement \doxylink{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_navigation_view_model_base}{INavigation\+View\+Model\+Base} and be set before navigating to this page. The page will call \doxylink{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_navigation_view_model_base_ab25eb387c5cce8587f0bfa8a82c03311}{INavigation\+View\+Model\+Base.\+Initialize\+Async(\+Role?)} during navigation. 
+
+
+
+Definition at line \mbox{\hyperlink{_nav_page_8cs_source_l00026}{26}} of file \mbox{\hyperlink{_nav_page_8cs_source}{Nav\+Page.\+cs}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Arla\+Nature\+Connect.\+Win\+UI/\+Arla\+Nature\+Connect.\+Win\+UI/\+Views/\+Pages/\+Abstracts/\mbox{\hyperlink{_nav_page_8cs}{Nav\+Page.\+cs}}\end{DoxyCompactItemize}

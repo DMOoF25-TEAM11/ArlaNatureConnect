@@ -1,0 +1,5 @@
+var class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_consultant_page_side_menu_u_c_view_model =
+[
+    [ "ConsultantPageSideMenuUCViewModel", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_consultant_page_side_menu_u_c_view_model.html#ab9908d04f01715ec140cc0df70d693d9", null ],
+    [ "InitializeAsync", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_consultant_page_side_menu_u_c_view_model.html#a133aadbe061041467b17aee22261fe8c", null ]
+];

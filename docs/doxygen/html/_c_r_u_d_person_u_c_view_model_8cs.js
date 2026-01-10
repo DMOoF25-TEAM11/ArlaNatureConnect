@@ -1,0 +1,4 @@
+var _c_r_u_d_person_u_c_view_model_8cs =
+[
+    [ "ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC.CRUDPersonUCViewModel", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model.html", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c_view_model" ]
+];

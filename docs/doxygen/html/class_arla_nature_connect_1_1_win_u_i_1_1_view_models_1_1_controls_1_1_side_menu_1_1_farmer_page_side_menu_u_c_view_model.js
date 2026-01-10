@@ -1,0 +1,9 @@
+var class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_farmer_page_side_menu_u_c_view_model =
+[
+    [ "FarmerPageSideMenuUCViewModel", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_farmer_page_side_menu_u_c_view_model.html#afa3b4e7c842e7ebaf422bd790f016e1d", null ],
+    [ "InitializeAsync", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_farmer_page_side_menu_u_c_view_model.html#a10bf713bcff97f78685973a64f1b106e", null ],
+    [ "DashboardsCommand", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_farmer_page_side_menu_u_c_view_model.html#ab37d204c29775666e8c944fa6621adbb", null ],
+    [ "NaturCheckCommand", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_farmer_page_side_menu_u_c_view_model.html#a0739867cfcdbae6a46d802677970ca6f", null ],
+    [ "NavItems", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_farmer_page_side_menu_u_c_view_model.html#a5b08db2752a4df295882817fc1d2f35a", null ],
+    [ "TasksCommand", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_farmer_page_side_menu_u_c_view_model.html#a76185e160137f5b247f1fae645911071", null ]
+];

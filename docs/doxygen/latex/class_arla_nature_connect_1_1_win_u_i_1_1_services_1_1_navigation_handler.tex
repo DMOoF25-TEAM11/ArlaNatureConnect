@@ -1,0 +1,192 @@
+\doxysection{Arla\+Nature\+Connect.\+Win\+UI.\+Services.\+Navigation\+Handler Class Reference}
+\hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_navigation_handler}{}\label{class_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_navigation_handler}\index{ArlaNatureConnect.WinUI.Services.NavigationHandler@{ArlaNatureConnect.WinUI.Services.NavigationHandler}}
+
+
+Concrete frame-\/based navigation handler used by the \doxylink{namespace_arla_nature_connect_1_1_win_u_i}{Win\+UI} application. This class implements \doxylink{interface_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_i_navigation_handler}{INavigation\+Handler} and provides the actual navigation behavior using a Frame instance.  
+
+
+Inheritance diagram for Arla\+Nature\+Connect.\+Win\+UI.\+Services.\+Navigation\+Handler\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_navigation_handler}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_navigation_handler_ab1b543a8be5c468abce8e38ca5ceb1d1}{Initialize}} (Frame frame)
+\begin{DoxyCompactList}\small\item\em Initialize the navigation handler with the application frame. Must be called before navigation methods.
+
+
+\begin{DoxyParams}{Parameters}
+{\em frame} & The Frame used for navigation.\\
+\hline
+\end{DoxyParams}
+ \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_navigation_handler_a1c8d16477dd9e577511c951d02cbee5d}{Navigate}} (Type page\+Type, object? parameter=null)
+\begin{DoxyCompactList}\small\item\em Navigate to the specified page type with an optional parameter.
+
+
+\begin{DoxyParams}{Parameters}
+{\em page\+Type} & The page System.\+Type to navigate to (e.\+g. typeof(\+My\+Page)).\\
+\hline
+{\em parameter} & Optional parameter passed to the destination page.\\
+\hline
+\end{DoxyParams}
+ \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_navigation_handler_a89fa4eea812235f89fd4031cedcb21ff}{Go\+Back}} ()
+\begin{DoxyCompactList}\small\item\em Attempts to navigate back. Returns {\ttfamily true} if navigation occurred.
+
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} when the frame was able to navigate back; otherwise {\ttfamily false}.
+\end{DoxyReturn}
+ \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_navigation_handler_a87b78a426ff5fdfbd0b03c79a0e4ada4}{Can\+Go\+Back}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Indicates whether the frame can navigate back. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Concrete frame-\/based navigation handler used by the \doxylink{namespace_arla_nature_connect_1_1_win_u_i}{Win\+UI} application. This class implements \doxylink{interface_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_i_navigation_handler}{INavigation\+Handler} and provides the actual navigation behavior using a Frame instance. 
+
+Why we have it\+: This concrete implementation decouples navigation consumers (view-\/models, services) from platform-\/specific navigation logic while still providing a simple API. By depending on \doxylink{interface_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_i_navigation_handler}{INavigation\+Handler}, callers become testable and DI-\/friendly.
+
+How to use\+:
+\begin{DoxyItemize}
+\item Register the implementation in the DI container (for example {\ttfamily \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_navigation_handler}{Navigation\+Handler}}).
+\item Initialize the implementation once with the application\textquotesingle{}s main Frame (typically from the main window).
+\item Inject \doxylink{interface_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_i_navigation_handler}{INavigation\+Handler} into view-\/models or services and call \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_navigation_handler_a1c8d16477dd9e577511c951d02cbee5d}{Navigate(\+Type, object?)}, \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_navigation_handler_a89fa4eea812235f89fd4031cedcb21ff}{Go\+Back},. or inspect \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_navigation_handler_a87b78a426ff5fdfbd0b03c79a0e4ada4}{Can\+Go\+Back} as needed.
+\end{DoxyItemize}
+
+Example\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{comment}{//\ Register\ in\ Program/Startup}}
+\DoxyCodeLine{services.AddSingleton<INavigationHandler,\ NavigationHandler>();}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{//\ Initialize\ (MainWindow\ code-\/behind)}}
+\DoxyCodeLine{var\ nav\ =\ App.HostInstance.Services.GetRequiredService<INavigationHandler>();}
+\DoxyCodeLine{nav.Initialize(this.MainFrame);}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{//\ Usage\ in\ a\ view-\/model}}
+\DoxyCodeLine{\textcolor{keyword}{public}\ \textcolor{keyword}{class\ }LoginViewModel}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{private}\ readonly\ INavigationHandler\ \_navigation;}
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{public}\ LoginViewModel(INavigationHandler\ navigation)\ \{\ \_navigation\ =\ navigation;\ \}}
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{void}\ OnLoginSuccess()\ =>\ \_navigation.Navigate(typeof(HomePage),\ userRole);}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+ 
+
+Definition at line \mbox{\hyperlink{_navigation_handler_8cs_source_l00040}{40}} of file \mbox{\hyperlink{_navigation_handler_8cs_source}{Navigation\+Handler.\+cs}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_navigation_handler_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_navigation_handler_a89fa4eea812235f89fd4031cedcb21ff}\index{ArlaNatureConnect.WinUI.Services.NavigationHandler@{ArlaNatureConnect.WinUI.Services.NavigationHandler}!GoBack@{GoBack}}
+\index{GoBack@{GoBack}!ArlaNatureConnect.WinUI.Services.NavigationHandler@{ArlaNatureConnect.WinUI.Services.NavigationHandler}}
+\doxysubsubsection{\texorpdfstring{GoBack()}{GoBack()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_navigation_handler_a89fa4eea812235f89fd4031cedcb21ff} 
+bool Arla\+Nature\+Connect.\+Win\+UI.\+Services.\+Navigation\+Handler.\+Go\+Back (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Attempts to navigate back. Returns {\ttfamily true} if navigation occurred.
+
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} when the frame was able to navigate back; otherwise {\ttfamily false}.
+\end{DoxyReturn}
+ 
+
+
+
+Implements \mbox{\hyperlink{interface_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_i_navigation_handler_aafe1704d1fe61fbf7ac01b54f9926081}{Arla\+Nature\+Connect.\+Win\+UI.\+Services.\+INavigation\+Handler}}.
+
+
+
+Definition at line \mbox{\hyperlink{_navigation_handler_8cs_source_l00063}{63}} of file \mbox{\hyperlink{_navigation_handler_8cs_source}{Navigation\+Handler.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_navigation_handler_ab1b543a8be5c468abce8e38ca5ceb1d1}\index{ArlaNatureConnect.WinUI.Services.NavigationHandler@{ArlaNatureConnect.WinUI.Services.NavigationHandler}!Initialize@{Initialize}}
+\index{Initialize@{Initialize}!ArlaNatureConnect.WinUI.Services.NavigationHandler@{ArlaNatureConnect.WinUI.Services.NavigationHandler}}
+\doxysubsubsection{\texorpdfstring{Initialize()}{Initialize()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_navigation_handler_ab1b543a8be5c468abce8e38ca5ceb1d1} 
+void Arla\+Nature\+Connect.\+Win\+UI.\+Services.\+Navigation\+Handler.\+Initialize (\begin{DoxyParamCaption}\item[{Frame}]{frame}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Initialize the navigation handler with the application frame. Must be called before navigation methods.
+
+
+\begin{DoxyParams}{Parameters}
+{\em frame} & The Frame used for navigation.\\
+\hline
+\end{DoxyParams}
+ 
+
+
+
+Implements \mbox{\hyperlink{interface_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_i_navigation_handler_afee8e41e14cc90fb18baa365be7eb013}{Arla\+Nature\+Connect.\+Win\+UI.\+Services.\+INavigation\+Handler}}.
+
+
+
+Definition at line \mbox{\hyperlink{_navigation_handler_8cs_source_l00045}{45}} of file \mbox{\hyperlink{_navigation_handler_8cs_source}{Navigation\+Handler.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_navigation_handler_a1c8d16477dd9e577511c951d02cbee5d}\index{ArlaNatureConnect.WinUI.Services.NavigationHandler@{ArlaNatureConnect.WinUI.Services.NavigationHandler}!Navigate@{Navigate}}
+\index{Navigate@{Navigate}!ArlaNatureConnect.WinUI.Services.NavigationHandler@{ArlaNatureConnect.WinUI.Services.NavigationHandler}}
+\doxysubsubsection{\texorpdfstring{Navigate()}{Navigate()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_navigation_handler_a1c8d16477dd9e577511c951d02cbee5d} 
+virtual void Arla\+Nature\+Connect.\+Win\+UI.\+Services.\+Navigation\+Handler.\+Navigate (\begin{DoxyParamCaption}\item[{Type}]{page\+Type}{, }\item[{object?}]{parameter}{ = {\ttfamily null}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Navigate to the specified page type with an optional parameter.
+
+
+\begin{DoxyParams}{Parameters}
+{\em page\+Type} & The page System.\+Type to navigate to (e.\+g. typeof(\+My\+Page)).\\
+\hline
+{\em parameter} & Optional parameter passed to the destination page.\\
+\hline
+\end{DoxyParams}
+ 
+
+
+
+Implements \mbox{\hyperlink{interface_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_i_navigation_handler_a5abc4891e86edbf8164afc6555f99c44}{Arla\+Nature\+Connect.\+Win\+UI.\+Services.\+INavigation\+Handler}}.
+
+
+
+Definition at line \mbox{\hyperlink{_navigation_handler_8cs_source_l00052}{52}} of file \mbox{\hyperlink{_navigation_handler_8cs_source}{Navigation\+Handler.\+cs}}.
+
+
+
+\label{doc-property-members}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_navigation_handler_doc-property-members}
+\doxysubsection{Property Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_navigation_handler_a87b78a426ff5fdfbd0b03c79a0e4ada4}\index{ArlaNatureConnect.WinUI.Services.NavigationHandler@{ArlaNatureConnect.WinUI.Services.NavigationHandler}!CanGoBack@{CanGoBack}}
+\index{CanGoBack@{CanGoBack}!ArlaNatureConnect.WinUI.Services.NavigationHandler@{ArlaNatureConnect.WinUI.Services.NavigationHandler}}
+\doxysubsubsection{\texorpdfstring{CanGoBack}{CanGoBack}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_navigation_handler_a87b78a426ff5fdfbd0b03c79a0e4ada4} 
+bool Arla\+Nature\+Connect.\+Win\+UI.\+Services.\+Navigation\+Handler.\+Can\+Go\+Back\hspace{0.3cm}{\ttfamily [get]}}
+
+
+
+Indicates whether the frame can navigate back. 
+
+
+
+Implements \mbox{\hyperlink{interface_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_i_navigation_handler_a8c496204b528be5bc3d9a9e5b2340498}{Arla\+Nature\+Connect.\+Win\+UI.\+Services.\+INavigation\+Handler}}.
+
+
+
+Definition at line \mbox{\hyperlink{_navigation_handler_8cs_source_l00075}{75}} of file \mbox{\hyperlink{_navigation_handler_8cs_source}{Navigation\+Handler.\+cs}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Arla\+Nature\+Connect.\+Win\+UI/\+Arla\+Nature\+Connect.\+Win\+UI/\+Services/\mbox{\hyperlink{_navigation_handler_8cs}{Navigation\+Handler.\+cs}}\end{DoxyCompactItemize}

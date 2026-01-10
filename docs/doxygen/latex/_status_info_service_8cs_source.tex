@@ -1,0 +1,153 @@
+\doxysection{Status\+Info\+Service.\+cs}
+\hypertarget{_status_info_service_8cs_source}{}\label{_status_info_service_8cs_source}\index{src/ArlaNatureConnect.Core/Services/StatusInfoService.cs@{src/ArlaNatureConnect.Core/Services/StatusInfoService.cs}}
+\mbox{\hyperlink{_status_info_service_8cs}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00001}00001\ \textcolor{keyword}{using\ }System.ComponentModel;}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00002}00002\ \textcolor{keyword}{using\ }System.Runtime.CompilerServices;}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00003}00003\ }
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00004}00004\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_core_1_1_services}{ArlaNatureConnect.Core.Services}};}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00005}00005\ }
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00027}\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service}{00027}}\ \textcolor{keyword}{public}\ \textcolor{keyword}{partial\ class\ }\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_ad171253d5cc36b1a54161aab1a5f20fb}{StatusInfoService}}\ :\ \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services}{IStatusInfoServices}}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00028}00028\ \{}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00029}00029\ \textcolor{preprocessor}{\ \ \ \ \#region\ Fields}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00030}00030\ \ \ \ \ \textcolor{comment}{//\ Reference-\/count\ for\ active\ loading\ callers.\ Use\ lock-\/based\ synchronization\ to\ be\ thread-\/safe.}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00031}00031\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{int}\ \_loadingCount;}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00032}00032\ \ \ \ \ \textcolor{comment}{//\ 0\ =\ false,\ 1\ =\ true\ for\ DB\ connectivity\ state.}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00033}00033\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{int}\ \_hasDbConnection;}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00034}00034\ \ \ \ \ \textcolor{comment}{//\ disposed\ guard\ (0\ =\ false,\ 1\ =\ true)}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00035}00035\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{int}\ \_disposed;}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00036}00036\ \ \ \ \ \textcolor{comment}{//\ Use\ System.Threading.Lock\ for\ synchronization}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00037}00037\ \ \ \ \ \textcolor{keyword}{private}\ readonly\ \textcolor{keywordtype}{object}\ \_syncLock\ =\ \textcolor{keyword}{new}();}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00038}00038\ \textcolor{preprocessor}{\ \ \ \ \#endregion}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00039}00039\ }
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00040}00040\ \textcolor{preprocessor}{\ \ \ \ \#region\ Event\ handlers}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00041}\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_a1fbe9997e086f552078af48be24fa9da}{00041}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{event}\ EventHandler?\ \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_a1fbe9997e086f552078af48be24fa9da}{StatusInfoChanged}};}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00042}\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_a25c6d6f7ffef4c2dc3746ee05514ffd3}{00042}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{event}\ PropertyChangedEventHandler?\ \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_a25c6d6f7ffef4c2dc3746ee05514ffd3}{PropertyChanged}};}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00043}00043\ \textcolor{preprocessor}{\ \ \ \ \#endregion}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00044}00044\ }
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00045}\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_ad171253d5cc36b1a54161aab1a5f20fb}{00045}}\ \ \ \ \ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_ad171253d5cc36b1a54161aab1a5f20fb}{StatusInfoService}}()}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00046}00046\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00047}00047\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00048}00048\ }
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00049}00049\ \textcolor{preprocessor}{\ \ \ \ \#region\ Properties}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00050}00050\ }
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00063}\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_a14a9927fde51d0b81532f2f331192e45}{00063}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_a14a9927fde51d0b81532f2f331192e45}{IsLoadingOrSaving}}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00064}00064\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00065}00065\ \ \ \ \ \ \ \ \ \textcolor{keyword}{get}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00066}00066\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00067}00067\ \ \ \ \ \ \ \ \ \ \ \ \ lock\ (\_syncLock)}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00068}00068\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00069}00069\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_loadingCount\ >\ 0;}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00070}00070\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00071}00071\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00072}00072\ \ \ \ \ \ \ \ \ \textcolor{comment}{//set}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00073}00073\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\{}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00074}00074\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \ bool\ notify\ =\ false;}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00075}00075\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \ lock\ (\_syncLock)}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00076}00076\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \ \{}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00077}00077\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ \ bool\ currently\ =\ \_loadingCount\ >\ 0;}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00078}00078\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ \ if\ (currently\ ==\ value)\ return;}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00079}00079\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ \ \_loadingCount\ =\ value\ ?\ 1\ :\ 0;}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00080}00080\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ \ notify\ =\ true;}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00081}00081\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \ \}}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00082}00082\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \ if\ (notify)\ NotifyStatusChanged(nameof(IsLoadingOrSaving));}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00083}00083\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\}}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00084}00084\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00085}00085\ }
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00093}\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_acfa61e3af8ce29dd3eebf13006d055ce}{00093}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_acfa61e3af8ce29dd3eebf13006d055ce}{HasDbConnection}}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00094}00094\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00095}00095\ \ \ \ \ \ \ \ \ \textcolor{keyword}{get}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00096}00096\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00097}00097\ \ \ \ \ \ \ \ \ \ \ \ \ lock\ (\_syncLock)}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00098}00098\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00099}00099\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_hasDbConnection\ !=\ 0;}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00100}00100\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00101}00101\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00102}00102\ \ \ \ \ \ \ \ \ \textcolor{keyword}{set}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00103}00103\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00104}00104\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ notify\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00105}00105\ \ \ \ \ \ \ \ \ \ \ \ \ lock\ (\_syncLock)}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00106}00106\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00107}00107\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ newVal\ =\ value\ ?\ 1\ :\ 0;}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00108}00108\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_hasDbConnection\ ==\ newVal)\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00109}00109\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_hasDbConnection\ =\ newVal;}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00110}00110\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ notify\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00111}00111\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00112}00112\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (notify)\ NotifyStatusChanged(nameof(\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_acfa61e3af8ce29dd3eebf13006d055ce}{HasDbConnection}}));}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00113}00113\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00114}00114\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00115}00115\ }
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00116}00116\ \textcolor{preprocessor}{\ \ \ \ \#endregion}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00117}00117\ }
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00118}00118\ \textcolor{preprocessor}{\ \ \ \ \#region\ Helpers}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00119}\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_a36019cb1e19d30edd1e8429416715ae9}{00119}}\ \ \ \ \ \textcolor{keyword}{protected}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_a36019cb1e19d30edd1e8429416715ae9}{OnPropertyChanged}}([CallerMemberName]\ \textcolor{keywordtype}{string}?\ name\ =\ \textcolor{keyword}{null})}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00120}00120\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00121}00121\ \ \ \ \ \ \ \ \ PropertyChangedEventHandler?\ handler\ =\ \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_a25c6d6f7ffef4c2dc3746ee05514ffd3}{PropertyChanged}};}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00122}00122\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{\ handler?.Invoke(\textcolor{keyword}{this},\ \textcolor{keyword}{new}\ PropertyChangedEventArgs(name));\ \}\ \textcolor{keywordflow}{catch}\ \{\ \}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00123}00123\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00124}00124\ }
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00125}00125\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{void}\ NotifyStatusChanged([CallerMemberName]\ \textcolor{keywordtype}{string}?\ propertyName\ =\ \textcolor{keyword}{null})}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00126}00126\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00127}00127\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_a36019cb1e19d30edd1e8429416715ae9}{OnPropertyChanged}}(propertyName);}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00128}00128\ \ \ \ \ \ \ \ \ EventHandler?\ statusHandler\ =\ \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_a1fbe9997e086f552078af48be24fa9da}{StatusInfoChanged}};}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00129}00129\ }
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00130}00130\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{\ statusHandler?.Invoke(\textcolor{keyword}{this},\ EventArgs.Empty);\ \}\ \textcolor{keywordflow}{catch}\ \{\ \}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00131}00131\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00132}00132\ }
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00133}00133\ }
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00148}\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_a8325649a903df53b29fd5cca9081b19b}{00148}}\ \ \ \ \ \textcolor{keyword}{public}\ IDisposable\ \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_a8325649a903df53b29fd5cca9081b19b}{BeginLoadingOrSaving}}()}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00149}00149\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00150}00150\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ newVal;}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00151}00151\ \ \ \ \ \ \ \ \ lock\ (\_syncLock)}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00152}00152\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00153}00153\ \ \ \ \ \ \ \ \ \ \ \ \ \_loadingCount++;}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00154}00154\ \ \ \ \ \ \ \ \ \ \ \ \ newVal\ =\ \_loadingCount;}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00155}00155\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00156}00156\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (newVal\ ==\ 1)\ NotifyStatusChanged(nameof(\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_a14a9927fde51d0b81532f2f331192e45}{IsLoadingOrSaving}}));}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00157}00157\ }
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00158}00158\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Return\ a\ disposable\ token\ that\ decrements\ the\ counter\ when\ disposed.}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00159}00159\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ ActionOnDispose(()\ =>}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00160}00160\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00161}00161\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \textcolor{keyword}{raise}\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00162}00162\ \ \ \ \ \ \ \ \ \ \ \ \ lock\ (\_syncLock)}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00163}00163\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00164}00164\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_loadingCount\ >\ 0)}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00165}00165\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00166}00166\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_loadingCount-\/-\/;}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00167}00167\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_loadingCount\ ==\ 0)\ \textcolor{keyword}{raise}\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00168}00168\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00169}00169\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00170}00170\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\textcolor{keyword}{raise})\ NotifyStatusChanged(nameof(\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_a14a9927fde51d0b81532f2f331192e45}{IsLoadingOrSaving}}));}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00171}00171\ \ \ \ \ \ \ \ \ \});}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00172}00172\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00173}00173\ }
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00177}\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_aa3cdf9959a05f457e32656b859a593df}{00177}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_status_info_service_aa3cdf9959a05f457e32656b859a593df}{Dispose}}()}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00178}00178\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00179}00179\ \ \ \ \ \ \ \ \ lock\ (\_syncLock)}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00180}00180\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00181}00181\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_disposed\ ==\ 1)\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00182}00182\ \ \ \ \ \ \ \ \ \ \ \ \ \_disposed\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00183}00183\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00184}00184\ \ \ \ \ \ \ \ \ GC.SuppressFinalize(\textcolor{keyword}{this});}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00185}00185\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00186}00186\ }
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00195}00195\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keyword}{sealed}\ \textcolor{keyword}{partial\ class\ }ActionOnDispose(Action\ onDispose)\ :\ IDisposable}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00196}00196\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00197}00197\ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}\ readonly\ Action\ \_onDispose\ =\ onDispose}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00198}00198\ \ \ \ \ \ \ \ \ \ \ \ \ ??\ \textcolor{keywordflow}{throw}\ \textcolor{keyword}{new}\ ArgumentNullException(nameof(onDispose));}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00199}00199\ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{int}\ \_disposed;}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00200}00200\ }
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00201}00201\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Inline\ comment:\ Ensure\ the\ action\ only\ runs\ once\ even\ if\ Dispose\ is\ called\ repeatedly.}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00202}00202\ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{void}\ Dispose()}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00203}00203\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00204}00204\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Interlocked.Exchange(ref\ \_disposed,\ 1)\ ==\ 0)}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00205}00205\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00206}00206\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{\ \_onDispose();\ \}\ \textcolor{keywordflow}{catch}\ \{\ \}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00207}00207\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00208}00208\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00209}00209\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00210}00210\ }
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00211}00211\ \textcolor{preprocessor}{\ \ \ \ \#endregion}}
+\DoxyCodeLine{\Hypertarget{_status_info_service_8cs_source_l00212}00212\ \}}
+
+\end{DoxyCode}

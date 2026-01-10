@@ -1,0 +1,328 @@
+\doxysection{Navigation\+View\+Model\+Base.\+cs}
+\hypertarget{_navigation_view_model_base_8cs_source}{}\label{_navigation_view_model_base_8cs_source}\index{src/ArlaNatureConnect.WinUI/ArlaNatureConnect.WinUI/ViewModels/Abstracts/NavigationViewModelBase.cs@{src/ArlaNatureConnect.WinUI/ArlaNatureConnect.WinUI/ViewModels/Abstracts/NavigationViewModelBase.cs}}
+\mbox{\hyperlink{_navigation_view_model_base_8cs}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00001}00001\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_domain_1_1_entities}{ArlaNatureConnect.Domain.Entities}};}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00002}00002\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_commands}{ArlaNatureConnect.WinUI.Commands}};}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00003}00003\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_services}{ArlaNatureConnect.WinUI.Services}};}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00004}00004\ }
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00005}00005\ \textcolor{keyword}{using\ }Microsoft.Extensions.DependencyInjection;}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00006}00006\ \textcolor{keyword}{using\ }Microsoft.UI.Xaml;}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00007}00007\ \textcolor{keyword}{using\ }Microsoft.UI.Xaml.Controls;}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00008}00008\ \textcolor{keyword}{using\ }Microsoft.UI.Xaml.Media;}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00009}00009\ }
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00010}00010\ \textcolor{keyword}{using\ }System.Diagnostics;}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00011}00011\ \textcolor{keyword}{using\ }System.Reflection;}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00012}00012\ \textcolor{keyword}{using\ }System.Windows.Input;}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00013}00013\ }
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00014}00014\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts}{ArlaNatureConnect.WinUI.ViewModels.Abstracts}};}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00015}00015\ }
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00077}00077\ \textcolor{keyword}{public}\ \textcolor{keyword}{abstract}\ \textcolor{keyword}{class\ }NavigationViewModelBase(INavigationHandler\ navigationHandler)\ :\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base}{ViewModelBase}},\ \mbox{\hyperlink{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_navigation_view_model_base}{INavigationViewModelBase}}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00078}00078\ \{}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00079}00079\ \textcolor{preprocessor}{\ \ \ \ \#region\ Fields}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00080}00080\ \ \ \ \ \textcolor{comment}{//\ Keep\ the\ handler\ as\ the\ interface\ type.\ Casting\ to\ a\ concrete\ NavigationHandler}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00081}00081\ \ \ \ \ \textcolor{comment}{//\ breaks\ tests\ that\ supply\ a\ mocked\ INavigationHandler\ (Castle\ proxy).}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00082}00082\ \ \ \ \ \textcolor{keyword}{private}\ readonly\ INavigationHandler\ \_navigationHandler\ =\ navigationHandler\ ??\ \textcolor{keywordflow}{throw}\ \textcolor{keyword}{new}\ ArgumentNullException(nameof(navigationHandler));}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00083}00083\ }
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00084}00084\ \ \ \ \ \textcolor{comment}{//\ Side\ menu\ handling\ fields\ moved\ from\ view}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00085}00085\ \ \ \ \ \textcolor{keyword}{private}\ UIElement[]?\ \_previousSideMenuChildren;}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00086}00086\ \ \ \ \ \textcolor{keyword}{private}\ UIElement?\ \_addedSideMenuControl;}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00087}00087\ \ \ \ \ \textcolor{keyword}{private}\ IServiceScope?\ \_sideMenuScope;}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00088}00088\ }
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00089}00089\ \ \ \ \ \textcolor{comment}{//\ NEW:\ type\ of\ the\ side\ menu\ control\ to\ attach\ (set\ by\ derived\ VMs)}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00090}00090\ \ \ \ \ \textcolor{keyword}{protected}\ Type?\ SideMenuControlType\ \{\ \textcolor{keyword}{get};\ \textcolor{keyword}{set};\ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00091}00091\ \ \ \ \ \textcolor{comment}{//\ NEW:\ explicit\ side\ menu\ view-\/model\ type\ to\ resolve\ via\ DI}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00092}00092\ \ \ \ \ \textcolor{keyword}{protected}\ Type?\ SideMenuViewModelType\ \{\ \textcolor{keyword}{get};\ \textcolor{keyword}{set};\ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00093}00093\ \textcolor{preprocessor}{\ \ \ \ \#endregion}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00094}00094\ \textcolor{preprocessor}{\ \ \ \ \#region\ Fields\ Commands}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00095}00095\ }
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00096}00096\ \ \ \ \ \textcolor{keyword}{public}\ RelayCommand<Person>?\ ChooseUserCommand\ \{\ \textcolor{keyword}{get};\ \textcolor{keyword}{protected}\ \textcolor{keyword}{set};\ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00097}00097\ \textcolor{preprocessor}{\ \ \ \ \#endregion}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00098}00098\ \textcolor{preprocessor}{\ \ \ \ \#region\ Properties}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00104}00104\ \ \ \ \ \textcolor{keyword}{public}\ RelayCommand<object>?\ NavigationCommand\ \{\ \textcolor{keyword}{get};\ \textcolor{keyword}{protected}\ \textcolor{keyword}{set};\ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00105}00105\ }
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00110}00110\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{bool}\ IsLoading}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00111}00111\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00112}00112\ \ \ \ \ \ \ \ \ \textcolor{keyword}{get};}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00113}00113\ \ \ \ \ \ \ \ \ \textcolor{keyword}{protected}\ \textcolor{keyword}{set}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00114}00114\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00115}00115\ \ \ \ \ \ \ \ \ \ \ \ \ field\ =\ value;}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00116}00116\ \ \ \ \ \ \ \ \ \ \ \ \ OnPropertyChanged();}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00117}00117\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00118}00118\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00119}00119\ }
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00123}00123\ \ \ \ \ \textcolor{keyword}{public}\ UserControl?\ CurrentContent}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00124}00124\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00125}00125\ \ \ \ \ \ \ \ \ \textcolor{keyword}{get};}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00126}00126\ \ \ \ \ \ \ \ \ \textcolor{keyword}{protected}\ \textcolor{keyword}{set}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00127}00127\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00128}00128\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (field\ ==\ value)\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00129}00129\ \ \ \ \ \ \ \ \ \ \ \ \ field\ =\ value;}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00130}00130\ \ \ \ \ \ \ \ \ \ \ \ \ OnPropertyChanged();}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00131}00131\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00132}00132\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00133}00133\ \textcolor{preprocessor}{\ \ \ \ \#endregion}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00134}00134\ \textcolor{preprocessor}{\ \ \ \ \#region\ Commands}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00135}00135\ \ \ \ \ ICommand?\ INavigationViewModelBase.NavigationCommand\ =>\ NavigationCommand;}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00136}00136\ \textcolor{preprocessor}{\ \ \ \ \#endregion}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00137}00137\ \textcolor{preprocessor}{\ \ \ \ \#region\ Helpers}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00142}00142\ \ \ \ \ \textcolor{comment}{//protected\ void\ InitializeNavigation(string\ defaultTag\ =\ "{}"{})}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00143}00143\ \ \ \ \ \textcolor{comment}{//\{}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00144}00144\ \ \ \ \ \textcolor{comment}{//\ \ \ \ \_currentNavigationTag\ =\ defaultTag;}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00145}00145\ \ \ \ \ \textcolor{comment}{//\ \ \ \ \_navigationTag\ =\ defaultTag\ ??\ string.Empty;}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00146}00146\ \ \ \ \ \textcolor{comment}{//\ \ \ \ NavigationCommand\ =\ new\ RelayCommand<object>(NavigateToView,\ CanNavigate);}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00147}00147\ \ \ \ \ \textcolor{comment}{//\}}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00148}00148\ }
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00156}00156\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{virtual}\ Task\ InitializeAsync(Role?\ role)}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00157}00157\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00158}00158\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Inline\ comment:\ default\ implementation\ intentionally\ returns\ a\ completed\ task}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00159}00159\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ so\ that\ callers\ can\ await\ InitializeAsync\ without\ checking\ for\ null/override.}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00160}00160\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Task.CompletedTask;}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00161}00161\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00162}00162\ }
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00169}00169\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ CanNavigate(\textcolor{keywordtype}{object}?\ parameter)}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00170}00170\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00171}00171\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (parameter\ ==\ \textcolor{keyword}{null})\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00172}00172\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (parameter\ is\ \textcolor{keywordtype}{string}\ s)\ \textcolor{keywordflow}{return}\ !\textcolor{keywordtype}{string}.IsNullOrWhiteSpace(s);}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00173}00173\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ allow\ any\ delegate}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00174}00174\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (parameter\ is\ Delegate)\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00175}00175\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00176}00176\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00177}00177\ }
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00192}00192\ \ \ \ \ \textcolor{keyword}{protected}\ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ NavigateToView(\textcolor{keywordtype}{object}?\ parameter)}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00193}00193\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00194}00194\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (parameter\ ==\ \textcolor{keyword}{null})}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00195}00195\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00196}00196\ }
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00197}00197\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00198}00198\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00199}00199\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{switch}\ (parameter)}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00200}00200\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00201}00201\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Func<UserControl?>\ contentFunc:}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00202}00202\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00203}00203\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00204}00204\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Create\ the\ control\ and\ set\ it\ as\ current\ content}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00205}00205\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ UserControl?\ ctrl\ =\ contentFunc();}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00206}00206\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ctrl\ !=\ \textcolor{keyword}{null})}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00207}00207\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00208}00208\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ctrl.DataContext\ =\ \textcolor{keyword}{this};}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00209}00209\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ CurrentContent\ =\ ctrl;}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00210}00210\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00211}00211\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00212}00212\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{catch}\ (Exception\ ex)}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00213}00213\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00214}00214\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \textcolor{keyword}{new}\ Exception(\textcolor{stringliteral}{"{}NavigateToView:\ contentFunc\ threw"{}},\ ex);}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00215}00215\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00216}00216\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00217}00217\ }
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00218}00218\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00219}00219\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \textcolor{keyword}{new}\ InvalidOperationException(\textcolor{stringliteral}{"{}NavigateToView:\ unsupported\ parameter\ type"{}});}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00220}00220\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00221}00221\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00222}00222\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{catch}\ (Exception\ ex)}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00223}00223\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00224}00224\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \textcolor{keyword}{new}\ Exception(\textcolor{stringliteral}{"{}NavigateToView:\ unexpected\ error"{}},\ ex);}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00225}00225\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00226}00226\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00227}00227\ }
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00228}00228\ \textcolor{preprocessor}{\ \ \ \ \#endregion}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00229}00229\ \textcolor{preprocessor}{\ \ \ \ \#region\ SideMenu\ Handling}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00234}00234\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{void}\ AttachToView(Microsoft.UI.Xaml.Controls.Page?\ page)}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00235}00235\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00236}00236\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (page\ ==\ \textcolor{keyword}{null})\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00237}00237\ }
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00238}00238\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Subscribe\ to\ lifecycle\ events}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00239}00239\ \ \ \ \ \ \ \ \ page.Loaded\ +=\ Page\_Loaded;}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00240}00240\ \ \ \ \ \ \ \ \ page.Unloaded\ +=\ Page\_Unloaded;}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00241}00241\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00242}00242\ }
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00247}00247\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{void}\ AttachSideMenuToMainWindow()}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00248}00248\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00249}00249\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00250}00250\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00251}00251\ \ \ \ \ \ \ \ \ \ \ \ \ MainWindow?\ mainWindow\ =\ App.HostInstance?.Services.GetService<MainWindow>();}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00252}00252\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mainWindow?.Content\ is\ not\ FrameworkElement\ root)\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00253}00253\ \ \ \ \ \ \ \ \ \ \ \ \ Panel?\ sideMenuPanel\ =\ FindSideMenuPanel(root);}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00254}00254\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (sideMenuPanel\ ==\ \textcolor{keyword}{null})\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00255}00255\ }
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00256}00256\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//if\ (\_addedSideMenuControl\ is\ FrameworkElement\ added\ \&\&\ sideMenuPanel.Children.Contains(added))}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00257}00257\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\{}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00258}00258\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \ //\ If\ control\ already\ added,\ ensure\ DataContext\ points\ to\ the\ current\ page\ VM}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00259}00259\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \ //added.DataContext\ =\ this;}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00260}00260\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \ return;}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00261}00261\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\}}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00262}00262\ }
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00263}00263\ \ \ \ \ \ \ \ \ \ \ \ \ \_previousSideMenuChildren\ =\ [..\ sideMenuPanel.Children.Cast<UIElement>()];}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00264}00264\ \ \ \ \ \ \ \ \ \ \ \ \ sideMenuPanel.Children.Clear();}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00265}00265\ }
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00266}00266\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{object}?\ resolvedVm\ =\ \textcolor{keyword}{null};}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00267}00267\ \ \ \ \ \ \ \ \ \ \ \ \ UserControl?\ control\ =\ \textcolor{keyword}{null};}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00268}00268\ }
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00269}00269\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Prefer\ explicit\ type\ if\ provided;\ create\ a\ scope\ for\ scoped\ services\ so\ DI\ lifetime\ is\ correct}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00270}00270\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (SideMenuViewModelType\ !=\ \textcolor{keyword}{null}\ \&\&\ App.HostInstance\ !=\ \textcolor{keyword}{null})}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00271}00271\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00272}00272\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00273}00273\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00274}00274\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ dispose\ previous\ scope\ if\ any}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00275}00275\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_sideMenuScope?.Dispose();}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00276}00276\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_sideMenuScope\ =\ App.HostInstance.Services.CreateScope();}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00277}00277\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ resolvedVm\ =\ \_sideMenuScope.ServiceProvider.GetService(SideMenuViewModelType);}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00278}00278\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00279}00279\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{catch}\ \{\ resolvedVm\ =\ \textcolor{keyword}{null};\ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00280}00280\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00281}00281\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00282}00282\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00283}00283\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Fallback\ convention:\ replace\ Views.Controls.SideMenu\ namespace\ with\ ViewModels.Controls.SideMenu\ and\ append\ ViewModel}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00284}00284\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (control\ !=\ \textcolor{keyword}{null})}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00285}00285\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00286}00286\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Type\ controlType\ =\ control.GetType();}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00287}00287\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{string}?\ ns\ =\ controlType.Namespace;}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00288}00288\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\textcolor{keywordtype}{string}.IsNullOrWhiteSpace(ns)\ \&\&\ ns.Contains(\textcolor{stringliteral}{"{}Views.Controls.SideMenu"{}}))}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00289}00289\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00290}00290\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{string}\ vmNs\ =\ ns.Replace(\textcolor{stringliteral}{"{}Views.Controls.SideMenu"{}},\ \textcolor{stringliteral}{"{}ViewModels.Controls.SideMenu"{}});}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00291}00291\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{string}\ vmFull\ =\ vmNs\ +\ \textcolor{stringliteral}{"{}."{}}\ +\ controlType.Name\ +\ \textcolor{stringliteral}{"{}ViewModel"{}};}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00292}00292\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Type?\ vmType\ =\ Type.GetType(vmFull);}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00293}00293\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (vmType\ !=\ \textcolor{keyword}{null})}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00294}00294\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00295}00295\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00296}00296\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00297}00297\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_sideMenuScope?.Dispose();}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00298}00298\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_sideMenuScope\ =\ App.HostInstance?.Services.CreateScope();}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00299}00299\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ resolvedVm\ =\ \_sideMenuScope?.ServiceProvider.GetService(vmType);}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00300}00300\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00301}00301\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{catch}\ \{\ resolvedVm\ =\ \textcolor{keyword}{null};\ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00302}00302\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00303}00303\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00304}00304\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00305}00305\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00306}00306\ }
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00307}00307\ }
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00308}00308\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 1)\ If\ explicit\ view\ type\ provided\ by\ VM,\ try\ to\ resolve\ or\ instantiate\ it}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00309}00309\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (SideMenuControlType\ !=\ \textcolor{keyword}{null}\ \&\&\ typeof(UserControl).IsAssignableFrom(SideMenuControlType))}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00310}00310\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00311}00311\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ control\ =\ App.HostInstance?.Services.GetService(SideMenuControlType)\ as\ UserControl}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00312}00312\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ??\ Activator.CreateInstance(SideMenuControlType)\ as\ UserControl;}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00313}00313\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00314}00314\ }
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00315}00315\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 2)\ If\ VM\ type\ was\ resolved\ but\ no\ control\ yet,\ try\ convention-\/based\ view\ lookup}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00316}00316\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (control\ ==\ \textcolor{keyword}{null}\ \&\&\ resolvedVm\ !=\ \textcolor{keyword}{null})}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00317}00317\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00318}00318\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Type\ vmType\ =\ resolvedVm.GetType();}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00319}00319\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Example\ convention:\ ViewModels.Controls.SideMenu.XxxViewModel\ -\/>\ Views.Controls.SideMenu.XxxUC}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00320}00320\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{string}\ vmNs\ =\ vmType.Namespace\ ??\ \textcolor{keywordtype}{string}.Empty;}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00321}00321\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{string}\ viewNs\ =\ vmNs.Replace(\textcolor{stringliteral}{"{}ViewModels"{}},\ \textcolor{stringliteral}{"{}Views"{}});}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00322}00322\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{string}\ viewName\ =\ vmType.Name.Replace(\textcolor{stringliteral}{"{}ViewModel"{}},\ \textcolor{stringliteral}{"{}UC"{}});\ \textcolor{comment}{//\ adjust\ if\ project\ uses\ different\ suffix}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00323}00323\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{string}\ fullViewType\ =\ \$\textcolor{stringliteral}{"{}\{viewNs\}.\{viewName\}"{}};}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00324}00324\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Type?\ viewType\ =\ Type.GetType(fullViewType);}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00325}00325\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (viewType\ !=\ \textcolor{keyword}{null}\ \&\&\ typeof(UserControl).IsAssignableFrom(viewType))}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00326}00326\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00327}00327\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ control\ =\ App.HostInstance?.Services.GetService(viewType)\ as\ UserControl}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00328}00328\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ??\ Activator.CreateInstance(viewType)\ as\ UserControl;}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00329}00329\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00330}00330\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00331}00331\ }
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00332}00332\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 3)\ Final\ safety:\ if\ still\ null,\ bail\ out\ instead\ of\ dereferencing}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00333}00333\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (control\ ==\ \textcolor{keyword}{null})}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00334}00334\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00335}00335\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ log\ or\ handle\ the\ missing\ view;\ restore\ previous\ children}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00336}00336\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_previousSideMenuChildren\ !=\ \textcolor{keyword}{null})}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00337}00337\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00338}00338\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{foreach}\ (UIElement\ child\ \textcolor{keywordflow}{in}\ \_previousSideMenuChildren)\ sideMenuPanel.Children.Add(child);}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00339}00339\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_previousSideMenuChildren\ =\ \textcolor{keyword}{null};}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00340}00340\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00341}00341\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00342}00342\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00343}00343\ }
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00344}00344\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ now\ safe\ to\ set\ DataContext\ and\ add\ the\ control}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00345}00345\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (resolvedVm\ !=\ \textcolor{keyword}{null})}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00346}00346\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00347}00347\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Preferred\ typed\ call\ if\ using\ the\ concrete\ base\ type}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00348}00348\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (resolvedVm\ is\ SideMenuViewModelBase\ sideVm)}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00349}00349\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00350}00350\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sideVm.SetHostPageViewModel(\textcolor{keyword}{this});}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00351}00351\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00352}00352\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00353}00353\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00354}00354\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Fallback:\ try\ to\ call\ a\ SetHostPageViewModel\ method\ if\ present}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00355}00355\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ MethodInfo?\ method\ =\ resolvedVm.GetType().GetMethod(\textcolor{stringliteral}{"{}SetHostPageViewModel"{}},\ [typeof(\textcolor{keywordtype}{object})]);}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00356}00356\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ method?.Invoke(resolvedVm,\ [\textcolor{keyword}{this}]);}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00357}00357\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00358}00358\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00359}00359\ }
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00360}00360\ \ \ \ \ \ \ \ \ \ \ \ \ control.DataContext\ =\ resolvedVm\ ??\ \textcolor{keyword}{this};}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00361}00361\ \ \ \ \ \ \ \ \ \ \ \ \ \_addedSideMenuControl\ =\ control;}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00362}00362\ \ \ \ \ \ \ \ \ \ \ \ \ sideMenuPanel.Children.Add(control);}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00363}00363\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00364}00364\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{catch}\ \{\ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00365}00365\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00366}00366\ }
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00367}00367\ }
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00372}00372\ \ \ \ \ \textcolor{comment}{//public\ virtual\ void\ RestoreMainWindowSideMenu()}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00373}00373\ \ \ \ \ \textcolor{comment}{//\{}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00374}00374\ \ \ \ \ \textcolor{comment}{//\ \ \ \ //\ If\ the\ main\ window's\ XamlRoot\ isn't\ available,\ the\ window\ is\ closed\ or\ not\ ready.}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00375}00375\ \ \ \ \ \textcolor{comment}{//\ \ \ \ if\ (App.MainWindowXamlRoot\ ==\ null)\ return;}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00376}00376\ }
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00377}00377\ \ \ \ \ \textcolor{comment}{//\ \ \ \ try}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00378}00378\ \ \ \ \ \textcolor{comment}{//\ \ \ \ \{}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00379}00379\ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ \ MainWindow?\ mainWindow\ =\ App.HostInstance?.Services.GetService<MainWindow>();}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00380}00380\ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ \ if\ (mainWindow?.Content\ is\ not\ FrameworkElement\ root)\ return;}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00381}00381\ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ \ Panel?\ sideMenuPanel\ =\ FindSideMenuPanel(root);\ if\ (sideMenuPanel\ ==\ null)\ return;}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00382}00382\ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ \ if\ (\_previousSideMenuChildren\ ==\ null)\ return;}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00383}00383\ }
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00384}00384\ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ \ sideMenuPanel.Children.Clear();}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00385}00385\ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ \ foreach\ (UIElement\ child\ in\ \_previousSideMenuChildren)\ sideMenuPanel.Children.Add(child);}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00386}00386\ }
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00387}00387\ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ \ \_previousSideMenuChildren\ =\ null;}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00388}00388\ }
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00389}00389\ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ \ //\ Dispose\ scope\ for\ resolved\ side-\/menu\ VM\ if\ created}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00390}00390\ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ \ try\ \{\ \_sideMenuScope?.Dispose();\ \}\ catch\ \{\ \}}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00391}00391\ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ \ \_sideMenuScope\ =\ null;}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00392}00392\ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ \ \_addedSideMenuControl\ =\ null;}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00393}00393\ \ \ \ \ \textcolor{comment}{//\ \ \ \ \}}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00394}00394\ \ \ \ \ \textcolor{comment}{//\ \ \ \ catch\ \{\ \}}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00395}00395\ \ \ \ \ \textcolor{comment}{//\}}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00396}00396\ }
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00397}00397\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{void}\ Page\_Loaded(\textcolor{keywordtype}{object}?\ sender,\ RoutedEventArgs\ e)\ =>\ AttachSideMenuToMainWindow();}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00398}00398\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{void}\ Page\_Unloaded(\textcolor{keywordtype}{object}?\ sender,\ RoutedEventArgs\ e)}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00399}00399\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00400}00400\ \ \ \ \ \ \ \ \ \textcolor{comment}{//RestoreMainWindowSideMenu();}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00401}00401\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (sender\ is\ Page\ page)}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00402}00402\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00403}00403\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ detach\ handlers\ to\ avoid\ leaks}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00404}00404\ \ \ \ \ \ \ \ \ \ \ \ \ page.Loaded\ -\/=\ Page\_Loaded;}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00405}00405\ \ \ \ \ \ \ \ \ \ \ \ \ page.Unloaded\ -\/=\ Page\_Unloaded;}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00406}00406\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00407}00407\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00408}00408\ }
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00415}00415\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keyword}{static}\ Panel?\ FindSideMenuPanel(FrameworkElement\ root)}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00416}00416\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00417}00417\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (root\ ==\ \textcolor{keyword}{null})\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{null};}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00418}00418\ }
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00419}00419\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Try\ straightforward\ FindName\ first}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00420}00420\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (root.FindName(\textcolor{stringliteral}{"{}SideMenu"{}})\ is\ Panel\ p)}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00421}00421\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ p;}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00422}00422\ }
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00423}00423\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Fallback:\ traverse\ visual\ tree}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00424}00424\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00425}00425\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00426}00426\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ count\ =\ VisualTreeHelper.GetChildrenCount(root);}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00427}00427\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ count;\ i++)}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00428}00428\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00429}00429\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ DependencyObject\ child\ =\ VisualTreeHelper.GetChild(root,\ i);}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00430}00430\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (child\ is\ Panel\ panel\ \&\&\ panel.Name\ ==\ \textcolor{stringliteral}{"{}SideMenu"{}})\ \textcolor{keywordflow}{return}\ panel;}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00431}00431\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (child\ is\ FrameworkElement\ fe)}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00432}00432\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00433}00433\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Panel?\ found\ =\ FindSideMenuPanel(fe);}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00434}00434\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (found\ !=\ \textcolor{keyword}{null})\ \textcolor{keywordflow}{return}\ found;}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00435}00435\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00436}00436\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00437}00437\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00438}00438\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{catch}\ \{\ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00439}00439\ }
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00440}00440\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{null};}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00441}00441\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00442}00442\ }
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00443}00443\ \textcolor{preprocessor}{\ \ \ \ \#endregion}}
+\DoxyCodeLine{\Hypertarget{_navigation_view_model_base_8cs_source_l00444}00444\ \}}
+
+\end{DoxyCode}

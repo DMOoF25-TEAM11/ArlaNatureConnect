@@ -1,0 +1,13 @@
+var class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_arla_employee_assign_nature_cd8ae37150869aafe478663d5f35cfc6 =
+[
+    [ "Reset", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_arla_employee_assign_nature_cd8ae37150869aafe478663d5f35cfc6.html#ace8671d92d216e34c882660c29b095d9", null ],
+    [ "City", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_arla_employee_assign_nature_cd8ae37150869aafe478663d5f35cfc6.html#a4bb4bf338e7f4190a2914499fcb72029", null ],
+    [ "Country", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_arla_employee_assign_nature_cd8ae37150869aafe478663d5f35cfc6.html#aef43b06975b500d331f54d43e79a3d8f", null ],
+    [ "Cvr", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_arla_employee_assign_nature_cd8ae37150869aafe478663d5f35cfc6.html#a24cb702776d93b4b90f2e686f35c2323", null ],
+    [ "Name", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_arla_employee_assign_nature_cd8ae37150869aafe478663d5f35cfc6.html#a02db077ac405d336fc6dd9b6cc06575d", null ],
+    [ "OwnerEmail", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_arla_employee_assign_nature_cd8ae37150869aafe478663d5f35cfc6.html#a845103bf75a8d97ba766c94718110c9b", null ],
+    [ "OwnerFirstName", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_arla_employee_assign_nature_cd8ae37150869aafe478663d5f35cfc6.html#a5363f1b828feea1fcc6b9bfc8d11469f", null ],
+    [ "OwnerLastName", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_arla_employee_assign_nature_cd8ae37150869aafe478663d5f35cfc6.html#a1ead9495c4d1e6085fb8ea5266a0a1a6", null ],
+    [ "PostalCode", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_arla_employee_assign_nature_cd8ae37150869aafe478663d5f35cfc6.html#a2196d31072d5b248d106fb2f40ae4149", null ],
+    [ "Street", "class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_arla_employee_assign_nature_cd8ae37150869aafe478663d5f35cfc6.html#af98ae4a04cd97ce9e827d16e4fd7211c", null ]
+];

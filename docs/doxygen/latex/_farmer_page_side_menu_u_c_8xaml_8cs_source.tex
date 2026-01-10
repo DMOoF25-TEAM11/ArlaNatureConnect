@@ -1,0 +1,81 @@
+\doxysection{Farmer\+Page\+Side\+Menu\+UC.\+xaml.\+cs}
+\hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source}{}\label{_farmer_page_side_menu_u_c_8xaml_8cs_source}\index{src/ArlaNatureConnect.WinUI/ArlaNatureConnect.WinUI/Views/Controls/SideMenu/FarmerPageSideMenuUC.xaml.cs@{src/ArlaNatureConnect.WinUI/ArlaNatureConnect.WinUI/Views/Controls/SideMenu/FarmerPageSideMenuUC.xaml.cs}}
+\mbox{\hyperlink{_farmer_page_side_menu_u_c_8xaml_8cs}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00001}00001\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu}{ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu}};\ \textcolor{comment}{//\ for\ FarmerSideMenuUCViewModel}}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00002}00002\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_abstracts}{ArlaNatureConnect.WinUI.Views.Controls.Abstracts}};}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00003}00003\ }
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00004}00004\ \textcolor{keyword}{using\ }Microsoft.Extensions.DependencyInjection;}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00005}00005\ \textcolor{keyword}{using\ }Microsoft.UI.Xaml;\ \textcolor{comment}{//\ Ensure\ this\ is\ included\ for\ RoutedEventArgs}}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00006}00006\ }
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00007}00007\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_side_menu}{ArlaNatureConnect.WinUI.Views.Controls.SideMenu}};}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00008}00008\ }
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00013}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_side_menu_1_1_farmer_page_side_menu_u_c}{00013}}\ \textcolor{keyword}{public}\ \textcolor{keyword}{sealed}\ \textcolor{keyword}{partial\ class\ }\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_side_menu_1_1_farmer_page_side_menu_u_c_aa00ce73fb7d8e7779f1a86277fd158be}{FarmerPageSideMenuUC}}\ :\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_abstracts_1_1_side_menu_base_u_c_a58e8864b8fc1744eec4cc9ded43e9b8f}{SideMenuBaseUC}}}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00014}00014\ \{}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00015}00015\ \ \ \ \ \textcolor{keyword}{private}\ IServiceScope?\ \_sideMenuScope;}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00016}00016\ }
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00017}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_side_menu_1_1_farmer_page_side_menu_u_c_aa00ce73fb7d8e7779f1a86277fd158be}{00017}}\ \ \ \ \ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_side_menu_1_1_farmer_page_side_menu_u_c_aa00ce73fb7d8e7779f1a86277fd158be}{FarmerPageSideMenuUC}}()}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00018}00018\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00019}00019\ \ \ \ \ \ \ \ \ InitializeComponent();}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00020}00020\ \ \ \ \ \ \ \ \ Loaded\ +=\ FarmerPageSideMenuUC\_Loaded;}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00021}00021\ \ \ \ \ \ \ \ \ Unloaded\ +=\ FarmerPageSideMenuUC\_Unloaded;}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00022}00022\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00023}00023\ }
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00024}00024\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{void}\ FarmerPageSideMenuUC\_Unloaded(\textcolor{keywordtype}{object}\ sender,\ RoutedEventArgs\ e)}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00025}00025\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00026}00026\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00027}00027\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00028}00028\ \ \ \ \ \ \ \ \ \ \ \ \ \_sideMenuScope?.Dispose();}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00029}00029\ \ \ \ \ \ \ \ \ \ \ \ \ \_sideMenuScope\ =\ \textcolor{keyword}{null};}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00030}00030\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00031}00031\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{catch}\ \{\ \}}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00032}00032\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00033}00033\ }
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00034}00034\ \ \ \ \ \textcolor{keyword}{private}\ async\ \textcolor{keywordtype}{void}\ FarmerPageSideMenuUC\_Loaded(\textcolor{keywordtype}{object}\ sender,\ RoutedEventArgs\ e)}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00035}00035\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00036}00036\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ At\ runtime,\ ensure\ the\ view-\/model\ initializes\ and\ loads\ persons.}}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00037}00037\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Design-\/time\ DataContext\ is\ set\ via\ d:DataContext\ in\ XAML;\ at\ runtime\ it\ comes\ from\ the\ parent/page.}}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00038}00038\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_farmer_page_side_menu_u_c_view_model}{FarmerPageSideMenuUCViewModel}}?\ vm\ =\ DataContext\ as\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_farmer_page_side_menu_u_c_view_model}{FarmerPageSideMenuUCViewModel}};}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00039}00039\ }
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00040}00040\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ If\ the\ DataContext\ is\ not\ the\ expected\ side-\/menu\ VM,\ try\ resolving\ it\ from\ DI\ and\ assign\ it\ so\ bindings\ work.}}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00041}00041\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (vm\ ==\ \textcolor{keyword}{null})}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00042}00042\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00043}00043\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00044}00044\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00045}00045\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Create\ a\ scope\ and\ resolve\ the\ scoped\ view-\/model\ so\ its\ scoped\ dependencies\ are\ honored.}}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00046}00046\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_sideMenuScope?.Dispose();}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00047}00047\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_sideMenuScope\ =\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_app}{App}}.\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_app_a0aa62a7a04419f5e8af40c25248a4834}{HostInstance}}?.Services.CreateScope();}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00048}00048\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ vm\ =\ \_sideMenuScope?.ServiceProvider.GetService<\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_farmer_page_side_menu_u_c_view_model}{FarmerPageSideMenuUCViewModel}}>();}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00049}00049\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (vm\ !=\ \textcolor{keyword}{null})}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00050}00050\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00051}00051\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ DataContext\ =\ vm;}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00052}00052\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00053}00053\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00054}00054\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{catch}}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00055}00055\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00056}00056\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ swallow\ -\/\ resolution\ is\ best-\/effort}}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00057}00057\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00058}00058\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00059}00059\ }
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00060}00060\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (vm\ !=\ \textcolor{keyword}{null})}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00061}00061\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00062}00062\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Optionally\ reflect\ loading\ state\ in\ the\ UI.}}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00063}00063\ \ \ \ \ \ \ \ \ \ \ \ \ vm.IsLoading\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00064}00064\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00065}00065\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00066}00066\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ await\ vm.\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_farmer_page_side_menu_u_c_view_model_a10bf713bcff97f78685973a64f1b106e}{InitializeAsync}}();\ \textcolor{comment}{//\ populates\ AvailablePersons}}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00067}00067\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00068}00068\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{finally}}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00069}00069\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00070}00070\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ vm.IsLoading\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00071}00071\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00072}00072\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00073}00073\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00074}00074\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00075}00075\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ If\ DataContext\ is\ not\ the\ expected\ VM,\ there's\ likely\ no\ runtime\ binding/injection.}}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00076}00076\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ In\ that\ case,\ AvailablePersons\ will\ be\ empty\ and\ ComboBox\ won't\ show\ items.}}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00077}00077\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00078}00078\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_farmer_page_side_menu_u_c_8xaml_8cs_source_l00079}00079\ \}}
+
+\end{DoxyCode}

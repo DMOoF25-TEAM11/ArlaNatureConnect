@@ -1,0 +1,104 @@
+\doxysection{Start\+Window.\+xaml.\+cs}
+\hypertarget{_start_window_8xaml_8cs_source}{}\label{_start_window_8xaml_8cs_source}\index{src/ArlaNatureConnect.WinUI/ArlaNatureConnect.WinUI/StartWindow.xaml.cs@{src/ArlaNatureConnect.WinUI/ArlaNatureConnect.WinUI/StartWindow.xaml.cs}}
+\mbox{\hyperlink{_start_window_8xaml_8cs}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00001}00001\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_dialogs}{ArlaNatureConnect.WinUI.Dialogs}};}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00002}00002\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_view_models}{ArlaNatureConnect.WinUI.ViewModels}};}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00003}00003\ }
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00004}00004\ \textcolor{keyword}{using\ }Microsoft.Extensions.DependencyInjection;}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00005}00005\ \textcolor{keyword}{using\ }Microsoft.UI.Xaml;}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00006}00006\ \textcolor{keyword}{using\ }Microsoft.UI.Xaml.Controls;}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00007}00007\ }
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00008}00008\ \textcolor{keyword}{using\ }System.Diagnostics;}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00009}00009\ }
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00010}00010\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i}{ArlaNatureConnect.WinUI}};}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00011}00011\ }
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00012}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_start_window}{00012}}\ \textcolor{keyword}{public}\ \textcolor{keyword}{sealed}\ \textcolor{keyword}{partial\ class\ }\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_start_window_ae7c960225f8c34fd1def81f8d96db274}{StartWindow}}\ :\ Window}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00013}00013\ \{}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00014}00014\ \ \ \ \ \textcolor{keyword}{private}\ readonly\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_start_window_view_model}{StartWindowViewModel}}\ \_viewModel;}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00015}00015\ \ \ \ \ \textcolor{keyword}{private}\ readonly\ TaskCompletionSource<bool>\ \_initializationTcs\ =\ \textcolor{keyword}{new}(TaskCreationOptions.RunContinuationsAsynchronously);}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00016}00016\ }
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00017}00017\ \ \ \ \ \textcolor{comment}{//\ Danish\ translations\ as\ private\ consts}}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00018}00018\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{string}\ \_connectionFailedTitle\ =\ \textcolor{stringliteral}{"{}Databaseforbindelse\ mislykkedes"{}};}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00019}00019\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{string}\ \_connectionFailedContentSuffix\ =\ \textcolor{stringliteral}{"{}\(\backslash\)n\(\backslash\)nKontroller\ venligst\ servernavn,\ netværksforbindelse\ og\ legitimationsoplysninger."{}};}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00020}00020\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{string}\ \_retryButtonText\ =\ \textcolor{stringliteral}{"{}Prøv\ igen"{}};}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00021}00021\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{string}\ \_cancelButtonText\ =\ \textcolor{stringliteral}{"{}Annuller"{}};}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00023}00023\ \ \ \ \ \textcolor{comment}{//\ Public\ task\ the\ host\ can\ await\ to\ know\ when\ startup\ (including\ connection\ dialog)\ is\ done}}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00024}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_start_window_a69b9b503b21eae5e7d04a0b215c0e455}{00024}}\ \ \ \ \ \textcolor{keyword}{public}\ Task\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_start_window_a69b9b503b21eae5e7d04a0b215c0e455}{Initialization}}\ =>\ \_initializationTcs.Task;}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00026}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_start_window_ae7c960225f8c34fd1def81f8d96db274}{00026}}\ \ \ \ \ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_start_window_ae7c960225f8c34fd1def81f8d96db274}{StartWindow}}()}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00027}00027\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00028}00028\ \ \ \ \ \ \ \ \ \_viewModel\ =\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_app}{App}}.\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_app_a0aa62a7a04419f5e8af40c25248a4834}{HostInstance}}.Services.GetRequiredService<\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_start_window_view_model}{StartWindowViewModel}}>();}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00029}00029\ }
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00030}00030\ \ \ \ \ \ \ \ \ InitializeComponent();}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00031}00031\ }
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00032}00032\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Attach\ to\ the\ root\ content\ Loaded\ event\ if\ available}}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00033}00033\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Content\ is\ FrameworkElement\ fe)}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00034}00034\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00035}00035\ \ \ \ \ \ \ \ \ \ \ \ \ fe.Loaded\ +=\ StartWindow\_Loaded;}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00036}00036\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00037}00037\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00038}00038\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00039}00039\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Fallback:\ call\ the\ async\ loader\ directly}}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00040}00040\ \ \ \ \ \ \ \ \ \ \ \ \ StartWindow\_Loaded(\textcolor{keyword}{null},\ \textcolor{keyword}{null});}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00041}00041\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00042}00042\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00043}00043\ }
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00044}00044\ \ \ \ \ \textcolor{keyword}{private}\ async\ \textcolor{keywordtype}{void}\ StartWindow\_Loaded(\textcolor{keywordtype}{object}?\ sender,\ RoutedEventArgs?\ e)}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00045}00045\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00046}00046\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00047}00047\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00048}00048\ \ \ \ \ \ \ \ \ \ \ \ \ await\ \_viewModel.InitializeAsync(ShowConnectionDialogAndSaveAsync,\ ShowConnectionErrorAsync);}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00049}00049\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00050}00050\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{catch}\ (Exception\ ex)}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00051}00051\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00052}00052\ \ \ \ \ \ \ \ \ \ \ \ \ Debug.WriteLine(\$\textcolor{stringliteral}{"{}Error\ during\ initialization:\ \{ex\}"{}});}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00053}00053\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00054}00054\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{finally}}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00055}00055\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00056}00056\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Mark\ initialization\ complete\ regardless\ of\ result\ so\ host\ won't\ wait\ forever}}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00057}00057\ \ \ \ \ \ \ \ \ \ \ \ \ \_initializationTcs.TrySetResult(\textcolor{keyword}{true});}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00058}00058\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00059}00059\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00060}00060\ }
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00061}00061\ \ \ \ \ \textcolor{keyword}{private}\ async\ Task\ ShowConnectionErrorAsync(\textcolor{keywordtype}{string}\ message)}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00062}00062\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00063}00063\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Show\ a\ simple\ content\ dialog\ to\ inform\ the\ user\ and\ allow\ retry}}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00064}00064\ \ \ \ \ \ \ \ \ ContentDialog\ dialog\ =\ \textcolor{keyword}{new}\ ContentDialog()}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00065}00065\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00066}00066\ \ \ \ \ \ \ \ \ \ \ \ \ Title\ =\ \_connectionFailedTitle,}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00067}00067\ \ \ \ \ \ \ \ \ \ \ \ \ Content\ =\ message\ +\ \_connectionFailedContentSuffix,}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00068}00068\ \ \ \ \ \ \ \ \ \ \ \ \ PrimaryButtonText\ =\ \_retryButtonText,}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00069}00069\ \ \ \ \ \ \ \ \ \ \ \ \ CloseButtonText\ =\ \_cancelButtonText,}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00070}00070\ \ \ \ \ \ \ \ \ \ \ \ \ XamlRoot\ =\ (Content\ as\ FrameworkElement)?.XamlRoot}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00071}00071\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00072}00072\ }
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00073}00073\ \ \ \ \ \ \ \ \ ContentDialogResult\ result\ =\ await\ dialog.ShowAsync();}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00074}00074\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (result\ ==\ ContentDialogResult.Primary)}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00075}00075\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00076}00076\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ No-\/op\ here;\ caller\ will\ re-\/open\ the\ connection\ dialog\ if\ needed}}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00077}00077\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00078}00078\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00079}00079\ }
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00080}00080\ \ \ \ \ \textcolor{keyword}{private}\ async\ Task\ ShowConnectionDialogAndSaveAsync()}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00081}00081\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00082}00082\ \ \ \ \ \ \ \ \ ConnectionDialog\ dialog\ =\ \textcolor{keyword}{new}\ ConnectionDialog();}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00083}00083\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ ensure\ the\ dialog\ is\ hosted\ correctly}}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00084}00084\ \ \ \ \ \ \ \ \ dialog.XamlRoot\ =\ (Content\ as\ FrameworkElement)?.XamlRoot;}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00085}00085\ }
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00086}00086\ \ \ \ \ \ \ \ \ ConnectionDialogViewModel\ vm\ =\ dialog.DataContext\ as\ ConnectionDialogViewModel\ ??\ \textcolor{keyword}{new}\ ConnectionDialogViewModel();}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00087}00087\ }
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00088}00088\ \ \ \ \ \ \ \ \ ContentDialogResult\ result\ =\ await\ dialog.ShowAsync();}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00089}00089\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (result\ ==\ ContentDialogResult.Primary)}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00090}00090\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00091}00091\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{string}?\ cs\ =\ vm.\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_connection_dialog_view_model_acdda780a0161043b3a5fc173e731c7cd}{ConnectionString}}?.Trim();}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00092}00092\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\textcolor{keywordtype}{string}.IsNullOrEmpty(cs))}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00093}00093\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00094}00094\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ await\ \_viewModel.SaveConnectionStringAsync(cs);}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00095}00095\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00096}00096\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00097}00097\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_start_window_8xaml_8cs_source_l00098}00098\ \}}
+
+\end{DoxyCode}

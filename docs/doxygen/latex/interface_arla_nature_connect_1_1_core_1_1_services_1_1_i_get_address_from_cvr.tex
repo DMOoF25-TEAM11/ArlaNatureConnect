@@ -1,0 +1,75 @@
+\doxysection{Arla\+Nature\+Connect.\+Core.\+Services.\+IGet\+Address\+From\+Cvr Interface Reference}
+\hypertarget{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_get_address_from_cvr}{}\label{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_get_address_from_cvr}\index{ArlaNatureConnect.Core.Services.IGetAddressFromCvr@{ArlaNatureConnect.Core.Services.IGetAddressFromCvr}}
+
+
+Contract for looking up company information from the CVR API.  
+
+
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static Get\+Address\+From\+Cvr.? Api\+Result \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_get_address_from_cvr_af24a90cc0523d8e1f36e266b52928ff2}{Get\+Company\+Info}} (string name, Get\+Address\+From\+Cvr.\+IHttp\+Client? http\+Client=null)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Contract for looking up company information from the CVR API. 
+
+Inheriting XML documentation with {\ttfamily \texorpdfstring{$<$}{<}inheritdoc/\texorpdfstring{$>$}{>}}\+:
+\begin{DoxyItemize}
+\item Document the behavior on the contract (interface or base class).
+\item Implement the contract in an implementing type and place {\ttfamily \texorpdfstring{$<$}{<}inheritdoc/\texorpdfstring{$>$}{>}} on the implementing member.
+\item The implementation will automatically inherit the documentation from the contract, keeping docs DRY and ensuring the contract remains the single source of truth for behavior and remarks.
+\end{DoxyItemize}
+
+Why we have it\+:
+\begin{DoxyItemize}
+\item Avoids duplicating the same XML comments on every implementation.
+\item Keeps documentation consistent between interface and implementations.
+\end{DoxyItemize}
+
+Code example\+: 
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{comment}{//\ The\ interface\ documents\ the\ contract:}}
+\DoxyCodeLine{\textcolor{keyword}{public}\ \textcolor{keyword}{interface\ }IGetAddressFromCvr}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{abstract}\ GetAddressFromCvr.ApiResult?\ GetCompanyInfo(\textcolor{keywordtype}{string}\ name,\ GetAddressFromCvr.IHttpClient?\ httpClient\ =\ \textcolor{keyword}{null});}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{//\ An\ implementing\ type\ can\ inherit\ the\ documentation\ using\ <inheritdoc/>:}}
+\DoxyCodeLine{\textcolor{keyword}{public}\ \textcolor{keyword}{class\ }MyCvrLookup\ :\ IGetAddressFromCvr}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{static}\ GetAddressFromCvr.ApiResult?\ GetCompanyInfo(\textcolor{keywordtype}{string}\ name,\ GetAddressFromCvr.IHttpClient?\ httpClient\ =\ \textcolor{keyword}{null})}
+\DoxyCodeLine{\ \ \ \ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \textcolor{comment}{//\ Forward\ to\ shared\ implementation}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ GetAddressFromCvr.GetCompanyInfo(name,\ httpClient);}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{//\ Usage}}
+\DoxyCodeLine{var\ info\ =\ MyCvrLookup.GetCompanyInfo(\textcolor{stringliteral}{"{}Arla\ Foods"{}});}
+
+\end{DoxyCode}
+ 
+
+Definition at line \mbox{\hyperlink{_i_get_address_from_cvr_8cs_source_l00045}{45}} of file \mbox{\hyperlink{_i_get_address_from_cvr_8cs_source}{IGet\+Address\+From\+Cvr.\+cs}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_get_address_from_cvr_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_get_address_from_cvr_af24a90cc0523d8e1f36e266b52928ff2}\index{ArlaNatureConnect.Core.Services.IGetAddressFromCvr@{ArlaNatureConnect.Core.Services.IGetAddressFromCvr}!GetCompanyInfo@{GetCompanyInfo}}
+\index{GetCompanyInfo@{GetCompanyInfo}!ArlaNatureConnect.Core.Services.IGetAddressFromCvr@{ArlaNatureConnect.Core.Services.IGetAddressFromCvr}}
+\doxysubsubsection{\texorpdfstring{GetCompanyInfo()}{GetCompanyInfo()}}
+{\footnotesize\ttfamily \label{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_get_address_from_cvr_af24a90cc0523d8e1f36e266b52928ff2} 
+Get\+Address\+From\+Cvr.? Api\+Result Arla\+Nature\+Connect.\+Core.\+Services.\+IGet\+Address\+From\+Cvr.\+Get\+Company\+Info (\begin{DoxyParamCaption}\item[{string}]{name}{, }\item[{Get\+Address\+From\+Cvr.\+IHttp\+Client?}]{http\+Client}{ = {\ttfamily null}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [abstract]}}
+
+
+
+The documentation for this interface was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Arla\+Nature\+Connect.\+Core/\+Services/\mbox{\hyperlink{_i_get_address_from_cvr_8cs}{IGet\+Address\+From\+Cvr.\+cs}}\end{DoxyCompactItemize}

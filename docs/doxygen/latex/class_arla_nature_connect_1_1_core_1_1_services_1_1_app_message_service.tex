@@ -1,0 +1,345 @@
+\doxysection{Arla\+Nature\+Connect.\+Core.\+Services.\+App\+Message\+Service Class Reference}
+\hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service}{}\label{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service}\index{ArlaNatureConnect.Core.Services.AppMessageService@{ArlaNatureConnect.Core.Services.AppMessageService}}
+Inheritance diagram for Arla\+Nature\+Connect.\+Core.\+Services.\+App\+Message\+Service\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_a48eb60146f59c48e9d99a9f82eb11ce1}{App\+Message\+Service}} ()
+\item 
+void \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_ae4fe7b650d00ecf5c6254206f3576c1e}{Add\+Info\+Message}} (string message)
+\begin{DoxyCompactList}\small\item\em Adds an informational message to the application message service. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_a32bebc5c00f2fdd6b9a4ee475a8ab592}{Add\+Error\+Message}} (string message)
+\begin{DoxyCompactList}\small\item\em Adds an error message to the application message service. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_ab3fbe468a579d59bbb09d9e32dfadf37}{Clear\+Error\+Messages}} ()
+\begin{DoxyCompactList}\small\item\em Clears all stored error messages. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_ac867cca7340ee351db2080da4f7f03a1}{On\+App\+Message\+Changed}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+string \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_a855983ea0933939fd069a06e8d81d589}{\+\_\+confirm\+Delete}} = "{}Er du sikker på, at du vil slette "{} + \+\_\+\+ENTITY\+\_\+\+NAME\+\_\+\+PLACEHOLDER + "{}?"{}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const string \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_a166a60f818328b804e6302b3abace064}{\+\_\+error\+Entity\+Not\+Found}} = \+\_\+\+ERROR\+\_\+\+PREFIX + "{}Kunne ikke finde "{} + \+\_\+\+ENTITY\+\_\+\+NAME\+\_\+\+PLACEHOLDER + "{}."{}
+\item 
+const string \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_a96fd5bf17c629e30c87a7f4ed50eea3b}{\+\_\+info\+Deleted}} = \+\_\+\+INFO\+\_\+\+PREFIX + \+\_\+\+ENTITY\+\_\+\+NAME\+\_\+\+PLACEHOLDER + "{} er slettet."{}
+\item 
+const string \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_aa79e17df97fc050bd2b85f7adf27a9d0}{\+\_\+info\+Saved}} = \+\_\+\+INFO\+\_\+\+PREFIX + \+\_\+\+ENTITY\+\_\+\+NAME\+\_\+\+PLACEHOLDER + "{} er gemt."{}
+\item 
+const string \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_a0cb6247f5e1a5534fcbda72642b91424}{\+\_\+confirm\+Delete\+Title}} = "{}Bekræft sletning af "{} + \+\_\+\+ENTITY\+\_\+\+NAME\+\_\+\+PLACEHOLDER
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+string? \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_a6e5dc2b8cf72444d85349bbc3b27e7ba}{Entity\+Name}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em An optional name of the current entity or context the messages relate to. \end{DoxyCompactList}\item 
+IEnumerable$<$ string $>$ \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_ae7df372be3612ddf9927fd987c3f5cb9}{Status\+Messages}} = \mbox{[}$\,$\mbox{]}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em A read-\/only collection of informational status messages. \end{DoxyCompactList}\item 
+IEnumerable$<$ string $>$ \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_a137130f9e76a1d5f9da411c138f7395f}{Error\+Messages}} = \mbox{[}$\,$\mbox{]}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em A read-\/only collection of error messages. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_ac8c8d566695ea053cec09e577fd5df2d}{Has\+Status\+Messages}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Returns {\ttfamily true} when there is at least one informational (status) message available. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_a12558ed3d57b59aec1440f582c149b2e}{Has\+Error\+Messages}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Returns {\ttfamily true} when there is at least one error message available. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Events}
+\begin{DoxyCompactItemize}
+\item 
+Event\+Handler? \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_a200b69d16cd455592488048bbacec74c}{App\+Message\+Changed}}
+\item 
+Property\+Changed\+Event\+Handler? \mbox{\hyperlink{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_ae6c9d6db8e1d9ee73d846887d773d1fe}{Property\+Changed}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line \mbox{\hyperlink{_app_message_service_8cs_source_l00005}{5}} of file \mbox{\hyperlink{_app_message_service_8cs_source}{App\+Message\+Service.\+cs}}.
+
+
+
+\label{doc-constructors}
+\Hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_a48eb60146f59c48e9d99a9f82eb11ce1}\index{ArlaNatureConnect.Core.Services.AppMessageService@{ArlaNatureConnect.Core.Services.AppMessageService}!AppMessageService@{AppMessageService}}
+\index{AppMessageService@{AppMessageService}!ArlaNatureConnect.Core.Services.AppMessageService@{ArlaNatureConnect.Core.Services.AppMessageService}}
+\doxysubsubsection{\texorpdfstring{AppMessageService()}{AppMessageService()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_a48eb60146f59c48e9d99a9f82eb11ce1} 
+Arla\+Nature\+Connect.\+Core.\+Services.\+App\+Message\+Service.\+App\+Message\+Service (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{_app_message_service_8cs_source_l00055}{55}} of file \mbox{\hyperlink{_app_message_service_8cs_source}{App\+Message\+Service.\+cs}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_a32bebc5c00f2fdd6b9a4ee475a8ab592}\index{ArlaNatureConnect.Core.Services.AppMessageService@{ArlaNatureConnect.Core.Services.AppMessageService}!AddErrorMessage@{AddErrorMessage}}
+\index{AddErrorMessage@{AddErrorMessage}!ArlaNatureConnect.Core.Services.AppMessageService@{ArlaNatureConnect.Core.Services.AppMessageService}}
+\doxysubsubsection{\texorpdfstring{AddErrorMessage()}{AddErrorMessage()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_a32bebc5c00f2fdd6b9a4ee475a8ab592} 
+void Arla\+Nature\+Connect.\+Core.\+Services.\+App\+Message\+Service.\+Add\+Error\+Message (\begin{DoxyParamCaption}\item[{string}]{message}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Adds an error message to the application message service. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em message} & The error message to add. Must not be {\ttfamily null} or empty.\\
+\hline
+\end{DoxyParams}
+
+
+Implementations should raise property change notifications for \doxylink{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_a137130f9e76a1d5f9da411c138f7395f}{Error\+Messages} and \doxylink{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_a12558ed3d57b59aec1440f582c149b2e}{Has\+Error\+Messages} when a message is added. 
+
+Implements \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service_a8cfd40fb17088b829cb9970e468a1566}{Arla\+Nature\+Connect.\+Core.\+Services.\+IApp\+Message\+Service}}.
+
+
+
+Definition at line \mbox{\hyperlink{_app_message_service_8cs_source_l00069}{69}} of file \mbox{\hyperlink{_app_message_service_8cs_source}{App\+Message\+Service.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_ae4fe7b650d00ecf5c6254206f3576c1e}\index{ArlaNatureConnect.Core.Services.AppMessageService@{ArlaNatureConnect.Core.Services.AppMessageService}!AddInfoMessage@{AddInfoMessage}}
+\index{AddInfoMessage@{AddInfoMessage}!ArlaNatureConnect.Core.Services.AppMessageService@{ArlaNatureConnect.Core.Services.AppMessageService}}
+\doxysubsubsection{\texorpdfstring{AddInfoMessage()}{AddInfoMessage()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_ae4fe7b650d00ecf5c6254206f3576c1e} 
+void Arla\+Nature\+Connect.\+Core.\+Services.\+App\+Message\+Service.\+Add\+Info\+Message (\begin{DoxyParamCaption}\item[{string}]{message}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Adds an informational message to the application message service. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em message} & The informational message to add. Must not be {\ttfamily null} or empty.\\
+\hline
+\end{DoxyParams}
+
+
+Implementations should raise property change notifications for \doxylink{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_ae7df372be3612ddf9927fd987c3f5cb9}{Status\+Messages} and \doxylink{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_ac8c8d566695ea053cec09e577fd5df2d}{Has\+Status\+Messages} when a message is added. 
+
+Implements \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service_a190969dd3fdc919ead86b13a5a798d02}{Arla\+Nature\+Connect.\+Core.\+Services.\+IApp\+Message\+Service}}.
+
+
+
+Definition at line \mbox{\hyperlink{_app_message_service_8cs_source_l00059}{59}} of file \mbox{\hyperlink{_app_message_service_8cs_source}{App\+Message\+Service.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_ab3fbe468a579d59bbb09d9e32dfadf37}\index{ArlaNatureConnect.Core.Services.AppMessageService@{ArlaNatureConnect.Core.Services.AppMessageService}!ClearErrorMessages@{ClearErrorMessages}}
+\index{ClearErrorMessages@{ClearErrorMessages}!ArlaNatureConnect.Core.Services.AppMessageService@{ArlaNatureConnect.Core.Services.AppMessageService}}
+\doxysubsubsection{\texorpdfstring{ClearErrorMessages()}{ClearErrorMessages()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_ab3fbe468a579d59bbb09d9e32dfadf37} 
+void Arla\+Nature\+Connect.\+Core.\+Services.\+App\+Message\+Service.\+Clear\+Error\+Messages (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Clears all stored error messages. 
+
+Implementations should raise property change notifications for \doxylink{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_a137130f9e76a1d5f9da411c138f7395f}{Error\+Messages} and \doxylink{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_a12558ed3d57b59aec1440f582c149b2e}{Has\+Error\+Messages} after clearing. 
+
+Implements \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service_a277079035558952913fed395653ea0ef}{Arla\+Nature\+Connect.\+Core.\+Services.\+IApp\+Message\+Service}}.
+
+
+
+Definition at line \mbox{\hyperlink{_app_message_service_8cs_source_l00079}{79}} of file \mbox{\hyperlink{_app_message_service_8cs_source}{App\+Message\+Service.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_ac867cca7340ee351db2080da4f7f03a1}\index{ArlaNatureConnect.Core.Services.AppMessageService@{ArlaNatureConnect.Core.Services.AppMessageService}!OnAppMessageChanged@{OnAppMessageChanged}}
+\index{OnAppMessageChanged@{OnAppMessageChanged}!ArlaNatureConnect.Core.Services.AppMessageService@{ArlaNatureConnect.Core.Services.AppMessageService}}
+\doxysubsubsection{\texorpdfstring{OnAppMessageChanged()}{OnAppMessageChanged()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_ac867cca7340ee351db2080da4f7f03a1} 
+void Arla\+Nature\+Connect.\+Core.\+Services.\+App\+Message\+Service.\+On\+App\+Message\+Changed (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+Definition at line \mbox{\hyperlink{_app_message_service_8cs_source_l00085}{85}} of file \mbox{\hyperlink{_app_message_service_8cs_source}{App\+Message\+Service.\+cs}}.
+
+
+
+\label{doc-variable-members}
+\Hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_a855983ea0933939fd069a06e8d81d589}\index{ArlaNatureConnect.Core.Services.AppMessageService@{ArlaNatureConnect.Core.Services.AppMessageService}!\_confirmDelete@{\_confirmDelete}}
+\index{\_confirmDelete@{\_confirmDelete}!ArlaNatureConnect.Core.Services.AppMessageService@{ArlaNatureConnect.Core.Services.AppMessageService}}
+\doxysubsubsection{\texorpdfstring{\_confirmDelete}{\_confirmDelete}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_a855983ea0933939fd069a06e8d81d589} 
+string Arla\+Nature\+Connect.\+Core.\+Services.\+App\+Message\+Service.\+\_\+confirm\+Delete = "{}Er du sikker på, at du vil slette "{} + \+\_\+\+ENTITY\+\_\+\+NAME\+\_\+\+PLACEHOLDER + "{}?"{}\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line \mbox{\hyperlink{_app_message_service_8cs_source_l00020}{20}} of file \mbox{\hyperlink{_app_message_service_8cs_source}{App\+Message\+Service.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_a0cb6247f5e1a5534fcbda72642b91424}\index{ArlaNatureConnect.Core.Services.AppMessageService@{ArlaNatureConnect.Core.Services.AppMessageService}!\_confirmDeleteTitle@{\_confirmDeleteTitle}}
+\index{\_confirmDeleteTitle@{\_confirmDeleteTitle}!ArlaNatureConnect.Core.Services.AppMessageService@{ArlaNatureConnect.Core.Services.AppMessageService}}
+\doxysubsubsection{\texorpdfstring{\_confirmDeleteTitle}{\_confirmDeleteTitle}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_a0cb6247f5e1a5534fcbda72642b91424} 
+const string Arla\+Nature\+Connect.\+Core.\+Services.\+App\+Message\+Service.\+\_\+confirm\+Delete\+Title = "{}Bekræft sletning af "{} + \+\_\+\+ENTITY\+\_\+\+NAME\+\_\+\+PLACEHOLDER\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [protected]}}
+
+
+
+Definition at line \mbox{\hyperlink{_app_message_service_8cs_source_l00019}{19}} of file \mbox{\hyperlink{_app_message_service_8cs_source}{App\+Message\+Service.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_a166a60f818328b804e6302b3abace064}\index{ArlaNatureConnect.Core.Services.AppMessageService@{ArlaNatureConnect.Core.Services.AppMessageService}!\_errorEntityNotFound@{\_errorEntityNotFound}}
+\index{\_errorEntityNotFound@{\_errorEntityNotFound}!ArlaNatureConnect.Core.Services.AppMessageService@{ArlaNatureConnect.Core.Services.AppMessageService}}
+\doxysubsubsection{\texorpdfstring{\_errorEntityNotFound}{\_errorEntityNotFound}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_a166a60f818328b804e6302b3abace064} 
+const string Arla\+Nature\+Connect.\+Core.\+Services.\+App\+Message\+Service.\+\_\+error\+Entity\+Not\+Found = \+\_\+\+ERROR\+\_\+\+PREFIX + "{}Kunne ikke finde "{} + \+\_\+\+ENTITY\+\_\+\+NAME\+\_\+\+PLACEHOLDER + "{}."{}\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [protected]}}
+
+
+
+Definition at line \mbox{\hyperlink{_app_message_service_8cs_source_l00013}{13}} of file \mbox{\hyperlink{_app_message_service_8cs_source}{App\+Message\+Service.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_a96fd5bf17c629e30c87a7f4ed50eea3b}\index{ArlaNatureConnect.Core.Services.AppMessageService@{ArlaNatureConnect.Core.Services.AppMessageService}!\_infoDeleted@{\_infoDeleted}}
+\index{\_infoDeleted@{\_infoDeleted}!ArlaNatureConnect.Core.Services.AppMessageService@{ArlaNatureConnect.Core.Services.AppMessageService}}
+\doxysubsubsection{\texorpdfstring{\_infoDeleted}{\_infoDeleted}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_a96fd5bf17c629e30c87a7f4ed50eea3b} 
+const string Arla\+Nature\+Connect.\+Core.\+Services.\+App\+Message\+Service.\+\_\+info\+Deleted = \+\_\+\+INFO\+\_\+\+PREFIX + \+\_\+\+ENTITY\+\_\+\+NAME\+\_\+\+PLACEHOLDER + "{} er slettet."{}\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [protected]}}
+
+
+
+Definition at line \mbox{\hyperlink{_app_message_service_8cs_source_l00016}{16}} of file \mbox{\hyperlink{_app_message_service_8cs_source}{App\+Message\+Service.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_aa79e17df97fc050bd2b85f7adf27a9d0}\index{ArlaNatureConnect.Core.Services.AppMessageService@{ArlaNatureConnect.Core.Services.AppMessageService}!\_infoSaved@{\_infoSaved}}
+\index{\_infoSaved@{\_infoSaved}!ArlaNatureConnect.Core.Services.AppMessageService@{ArlaNatureConnect.Core.Services.AppMessageService}}
+\doxysubsubsection{\texorpdfstring{\_infoSaved}{\_infoSaved}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_aa79e17df97fc050bd2b85f7adf27a9d0} 
+const string Arla\+Nature\+Connect.\+Core.\+Services.\+App\+Message\+Service.\+\_\+info\+Saved = \+\_\+\+INFO\+\_\+\+PREFIX + \+\_\+\+ENTITY\+\_\+\+NAME\+\_\+\+PLACEHOLDER + "{} er gemt."{}\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [protected]}}
+
+
+
+Definition at line \mbox{\hyperlink{_app_message_service_8cs_source_l00017}{17}} of file \mbox{\hyperlink{_app_message_service_8cs_source}{App\+Message\+Service.\+cs}}.
+
+
+
+\label{doc-property-members}
+\Hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_doc-property-members}
+\doxysubsection{Property Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_a6e5dc2b8cf72444d85349bbc3b27e7ba}\index{ArlaNatureConnect.Core.Services.AppMessageService@{ArlaNatureConnect.Core.Services.AppMessageService}!EntityName@{EntityName}}
+\index{EntityName@{EntityName}!ArlaNatureConnect.Core.Services.AppMessageService@{ArlaNatureConnect.Core.Services.AppMessageService}}
+\doxysubsubsection{\texorpdfstring{EntityName}{EntityName}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_a6e5dc2b8cf72444d85349bbc3b27e7ba} 
+string? Arla\+Nature\+Connect.\+Core.\+Services.\+App\+Message\+Service.\+Entity\+Name\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+An optional name of the current entity or context the messages relate to. 
+
+Consumers can set this to provide additional context for displayed messages (for example, the identifier of the record currently being edited). Implementations should raise INotify\+Property\+Changed.\+Property\+Changed when the value changes. 
+
+Implements \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service_a79f436975260633ee8e3209a0c04b2fa}{Arla\+Nature\+Connect.\+Core.\+Services.\+IApp\+Message\+Service}}.
+
+
+
+Definition at line \mbox{\hyperlink{_app_message_service_8cs_source_l00023}{23}} of file \mbox{\hyperlink{_app_message_service_8cs_source}{App\+Message\+Service.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_a137130f9e76a1d5f9da411c138f7395f}\index{ArlaNatureConnect.Core.Services.AppMessageService@{ArlaNatureConnect.Core.Services.AppMessageService}!ErrorMessages@{ErrorMessages}}
+\index{ErrorMessages@{ErrorMessages}!ArlaNatureConnect.Core.Services.AppMessageService@{ArlaNatureConnect.Core.Services.AppMessageService}}
+\doxysubsubsection{\texorpdfstring{ErrorMessages}{ErrorMessages}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_a137130f9e76a1d5f9da411c138f7395f} 
+IEnumerable$<$string$>$ Arla\+Nature\+Connect.\+Core.\+Services.\+App\+Message\+Service.\+Error\+Messages = \mbox{[}$\,$\mbox{]}\hspace{0.3cm}{\ttfamily [get]}}
+
+
+
+A read-\/only collection of error messages. 
+
+Error messages are typically displayed prominently to the user. Implementations may include additional information such as timestamps or error codes, but this interface only exposes the textual messages. 
+
+Implements \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service_a7d0ec25d845e1d476061b5a24cfc3dcd}{Arla\+Nature\+Connect.\+Core.\+Services.\+IApp\+Message\+Service}}.
+
+
+
+Definition at line \mbox{\hyperlink{_app_message_service_8cs_source_l00038}{38}} of file \mbox{\hyperlink{_app_message_service_8cs_source}{App\+Message\+Service.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_a12558ed3d57b59aec1440f582c149b2e}\index{ArlaNatureConnect.Core.Services.AppMessageService@{ArlaNatureConnect.Core.Services.AppMessageService}!HasErrorMessages@{HasErrorMessages}}
+\index{HasErrorMessages@{HasErrorMessages}!ArlaNatureConnect.Core.Services.AppMessageService@{ArlaNatureConnect.Core.Services.AppMessageService}}
+\doxysubsubsection{\texorpdfstring{HasErrorMessages}{HasErrorMessages}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_a12558ed3d57b59aec1440f582c149b2e} 
+bool Arla\+Nature\+Connect.\+Core.\+Services.\+App\+Message\+Service.\+Has\+Error\+Messages\hspace{0.3cm}{\ttfamily [get]}}
+
+
+
+Returns {\ttfamily true} when there is at least one error message available. 
+
+
+
+Implements \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service_aaee201c210ee27c315c1bd2c3d460f7b}{Arla\+Nature\+Connect.\+Core.\+Services.\+IApp\+Message\+Service}}.
+
+
+
+Definition at line \mbox{\hyperlink{_app_message_service_8cs_source_l00049}{49}} of file \mbox{\hyperlink{_app_message_service_8cs_source}{App\+Message\+Service.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_ac8c8d566695ea053cec09e577fd5df2d}\index{ArlaNatureConnect.Core.Services.AppMessageService@{ArlaNatureConnect.Core.Services.AppMessageService}!HasStatusMessages@{HasStatusMessages}}
+\index{HasStatusMessages@{HasStatusMessages}!ArlaNatureConnect.Core.Services.AppMessageService@{ArlaNatureConnect.Core.Services.AppMessageService}}
+\doxysubsubsection{\texorpdfstring{HasStatusMessages}{HasStatusMessages}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_ac8c8d566695ea053cec09e577fd5df2d} 
+bool Arla\+Nature\+Connect.\+Core.\+Services.\+App\+Message\+Service.\+Has\+Status\+Messages\hspace{0.3cm}{\ttfamily [get]}}
+
+
+
+Returns {\ttfamily true} when there is at least one informational (status) message available. 
+
+
+
+Implements \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service_a790a7ab0ebf460345b6e7af4be13b2bb}{Arla\+Nature\+Connect.\+Core.\+Services.\+IApp\+Message\+Service}}.
+
+
+
+Definition at line \mbox{\hyperlink{_app_message_service_8cs_source_l00048}{48}} of file \mbox{\hyperlink{_app_message_service_8cs_source}{App\+Message\+Service.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_ae7df372be3612ddf9927fd987c3f5cb9}\index{ArlaNatureConnect.Core.Services.AppMessageService@{ArlaNatureConnect.Core.Services.AppMessageService}!StatusMessages@{StatusMessages}}
+\index{StatusMessages@{StatusMessages}!ArlaNatureConnect.Core.Services.AppMessageService@{ArlaNatureConnect.Core.Services.AppMessageService}}
+\doxysubsubsection{\texorpdfstring{StatusMessages}{StatusMessages}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_ae7df372be3612ddf9927fd987c3f5cb9} 
+IEnumerable$<$string$>$ Arla\+Nature\+Connect.\+Core.\+Services.\+App\+Message\+Service.\+Status\+Messages = \mbox{[}$\,$\mbox{]}\hspace{0.3cm}{\ttfamily [get]}}
+
+
+
+A read-\/only collection of informational status messages. 
+
+The collection is intended to be consumed by the UI (for example, rendered in a status panel). Implementations may return an immutable snapshot or a live view. Consumers should not attempt to modify the returned collection directly. 
+
+Implements \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service_a8c65e9e9ecce944000ac28d472f2d100}{Arla\+Nature\+Connect.\+Core.\+Services.\+IApp\+Message\+Service}}.
+
+
+
+Definition at line \mbox{\hyperlink{_app_message_service_8cs_source_l00024}{24}} of file \mbox{\hyperlink{_app_message_service_8cs_source}{App\+Message\+Service.\+cs}}.
+
+
+
+\label{doc-event-members}
+\Hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_doc-event-members}
+\doxysubsection{Event Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_a200b69d16cd455592488048bbacec74c}\index{ArlaNatureConnect.Core.Services.AppMessageService@{ArlaNatureConnect.Core.Services.AppMessageService}!AppMessageChanged@{AppMessageChanged}}
+\index{AppMessageChanged@{AppMessageChanged}!ArlaNatureConnect.Core.Services.AppMessageService@{ArlaNatureConnect.Core.Services.AppMessageService}}
+\doxysubsubsection{\texorpdfstring{AppMessageChanged}{AppMessageChanged}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_a200b69d16cd455592488048bbacec74c} 
+Event\+Handler? Arla\+Nature\+Connect.\+Core.\+Services.\+App\+Message\+Service.\+App\+Message\+Changed}
+
+
+
+Definition at line \mbox{\hyperlink{_app_message_service_8cs_source_l00052}{52}} of file \mbox{\hyperlink{_app_message_service_8cs_source}{App\+Message\+Service.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_ae6c9d6db8e1d9ee73d846887d773d1fe}\index{ArlaNatureConnect.Core.Services.AppMessageService@{ArlaNatureConnect.Core.Services.AppMessageService}!PropertyChanged@{PropertyChanged}}
+\index{PropertyChanged@{PropertyChanged}!ArlaNatureConnect.Core.Services.AppMessageService@{ArlaNatureConnect.Core.Services.AppMessageService}}
+\doxysubsubsection{\texorpdfstring{PropertyChanged}{PropertyChanged}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_core_1_1_services_1_1_app_message_service_ae6c9d6db8e1d9ee73d846887d773d1fe} 
+Property\+Changed\+Event\+Handler? Arla\+Nature\+Connect.\+Core.\+Services.\+App\+Message\+Service.\+Property\+Changed}
+
+
+
+Definition at line \mbox{\hyperlink{_app_message_service_8cs_source_l00053}{53}} of file \mbox{\hyperlink{_app_message_service_8cs_source}{App\+Message\+Service.\+cs}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Arla\+Nature\+Connect.\+Core/\+Services/\mbox{\hyperlink{_app_message_service_8cs}{App\+Message\+Service.\+cs}}\end{DoxyCompactItemize}

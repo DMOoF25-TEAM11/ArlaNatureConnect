@@ -1,0 +1,4 @@
+var class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_page_contents_1_1_arla_employee1ac80ee89ebfd1b9a6f466ad4fdc2440 =
+[
+    [ "ArlaEmployeeAssignNatureCheck", "class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_page_contents_1_1_arla_employee1ac80ee89ebfd1b9a6f466ad4fdc2440.html#ab5f5d3af423e1ee33a010aca127e2170", null ]
+];

@@ -1,0 +1,254 @@
+\doxysection{Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+List\+View\+Model\+Base\texorpdfstring{$<$}{<} TRepos, TEntity \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g}{}\label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g}\index{ArlaNatureConnect.WinUI.ViewModels.Abstracts.ListViewModelBase$<$ TRepos, TEntity $>$@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.ListViewModelBase$<$ TRepos, TEntity $>$}}
+
+
+Base View\+Model for list views. Provides the foundational properties and methods needed to manage and interact with a list of entities in the user interface, including loading entities and handling common operations.  
+
+
+Inheritance diagram for Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+List\+View\+Model\+Base\texorpdfstring{$<$}{<} TRepos, TEntity \texorpdfstring{$>$}{>}\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=0.779076cm]{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+async Task \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a495292bf770a1f778460459a80c1288d}{Load\+All\+Async}} (Cancellation\+Token ct=default)
+\begin{DoxyCompactList}\small\item\em Loads all entities from the repository and populates the \doxylink{namespace_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items}{Items} collection. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a2f28c364f9a89b72dffab6e7bb0e0b6f}{List\+View\+Model\+Base}} (\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services}{IStatus\+Info\+Services}} status\+Info\+Services, \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service}{IApp\+Message\+Service}} app\+Message\+Service, TRepos repository, bool auto\+Load=true)
+\begin{DoxyCompactList}\small\item\em Initializes a new instance of the \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g}{List\+View\+Model\+Base$<$\+TRepos,\+TEntity$>$} class. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a2d3a9ca4161f15299a7b4f385bc88d65}{On\+Selected\+Item\+Changed}} (TEntity? item)
+\begin{DoxyCompactList}\small\item\em Hook invoked synchronously when the Selected\+Item property changes. Derived classes may override to update dependent state (for example load a form). Implementations should avoid long-\/running work since this is invoked on the caller thread. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions inherited from \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base}{Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+View\+Model\+Base}}}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_afe69f6fc4811892022c273a234f84ed7}{On\+Property\+Changed}} (\mbox{[}Caller\+Member\+Name\mbox{]} string? name=null)
+\begin{DoxyCompactList}\small\item\em Raises the \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_a84af6959822f5dac7b036413ef1084e0}{Property\+Changed} event for the property specified by {\itshape name} . \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+TEntity? \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a7e5ea1a5d80664499249609899a4488f}{\+\_\+selected\+Item}}
+\item 
+TRepos \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a90f6ff42274d1b27273318adae28e428}{\+\_\+items}}
+\begin{DoxyCompactList}\small\item\em \doxylink{namespace_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items}{Items} used to access entities of type {\itshape TEntity} . \end{DoxyCompactList}\item 
+\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services}{IStatus\+Info\+Services}} \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_ad682524142e5db8a42385c2e14b7f39d}{\+\_\+status\+Info\+Services}}
+\begin{DoxyCompactList}\small\item\em Service used to report loading and connectivity status to the UI. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service}{IApp\+Message\+Service}} \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a471f7c22f0a615d475d2fb9bd7f1abb3}{\+\_\+app\+Message\+Service}}
+\begin{DoxyCompactList}\small\item\em Service used to report application messages and errors to the UI. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+TEntity? \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_ac6c514ea7eec5dd47a71e3a4c199d99d}{Selected\+Item}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+Observable\+Collection$<$ TEntity $>$ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a06011271607451b7a924017a009d8bd2}{Items}} = \mbox{[}$\,$\mbox{]}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Collection of entities exposed to the view. Observable\+Collection ensures UI updates when items change. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Events}
+\begin{DoxyCompactItemize}
+\item 
+Event\+Handler$<$ TEntity?$>$? \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a01967c9faff0eccd4265737c8aaa1ed4}{Selected\+Entity\+Changed}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Events inherited from \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base}{Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+View\+Model\+Base}}}
+\begin{DoxyCompactItemize}
+\item 
+Property\+Changed\+Event\+Handler? \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_a84af6959822f5dac7b036413ef1084e0}{Property\+Changed}}
+\begin{DoxyCompactList}\small\item\em Occurs when a property value changes. Consumers (typically UI bindings) subscribe to this event to be notified that a property value has changed. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Base View\+Model for list views. Provides the foundational properties and methods needed to manage and interact with a list of entities in the user interface, including loading entities and handling common operations. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em TRepos} & The type of the repository used to access the entities. Must implement \doxylink{interface_arla_nature_connect_1_1_core_1_1_abstract_1_1_i_repository-1-g}{IRepository$<$\+T$>$}.\\
+\hline
+{\em TEntity} & The type of the entities being managed. Must be a reference type.\\
+\hline
+\end{DoxyTemplParams}
+
+
+Derive concrete list view models from this class to obtain a repository reference, shared status and messaging services, and a standard asynchronous Load\+Async(\+Guid) pattern. \begin{Desc}
+\item[Type Constraints]\begin{description}
+\item[{\em TRepos} : {\em IRepository$<$TEntity$>$}]\item[{\em TEntity} : {\em IEntity}]\end{description}
+\end{Desc}
+
+
+Definition at line \mbox{\hyperlink{_list_view_model_base_8cs_source_l00024}{24}} of file \mbox{\hyperlink{_list_view_model_base_8cs_source}{List\+View\+Model\+Base.\+cs}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a2f28c364f9a89b72dffab6e7bb0e0b6f}\index{ArlaNatureConnect.WinUI.ViewModels.Abstracts.ListViewModelBase$<$ TRepos, TEntity $>$@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.ListViewModelBase$<$ TRepos, TEntity $>$}!ListViewModelBase@{ListViewModelBase}}
+\index{ListViewModelBase@{ListViewModelBase}!ArlaNatureConnect.WinUI.ViewModels.Abstracts.ListViewModelBase$<$ TRepos, TEntity $>$@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.ListViewModelBase$<$ TRepos, TEntity $>$}}
+\doxysubsubsection{\texorpdfstring{ListViewModelBase()}{ListViewModelBase()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a2f28c364f9a89b72dffab6e7bb0e0b6f} 
+Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+List\+View\+Model\+Base$<$ TRepos, TEntity $>$.List\+View\+Model\+Base (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services}{IStatus\+Info\+Services}}}]{status\+Info\+Services}{, }\item[{\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service}{IApp\+Message\+Service}}}]{app\+Message\+Service}{, }\item[{TRepos}]{repository}{, }\item[{bool}]{auto\+Load}{ = {\ttfamily true}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+Initializes a new instance of the \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g}{List\+View\+Model\+Base$<$\+TRepos,\+TEntity$>$} class. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em status\+Info\+Services} & Service used to report status information such as loading state and DB connectivity. \\
+\hline
+{\em app\+Message\+Service} & Service used to surface application messages and errors to the UI. \\
+\hline
+{\em repository} & \doxylink{namespace_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items}{Items} used to access {\itshape TEntity}  instances.\\
+\hline
+{\em auto\+Load} & If true the \doxylink{namespace_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items}{Items} collection will be automatically loaded by calling \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a495292bf770a1f778460459a80c1288d}{Load\+All\+Async}; otherwise loading is deferred.\\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{_list_view_model_base_8cs_source_l00062}{62}} of file \mbox{\hyperlink{_list_view_model_base_8cs_source}{List\+View\+Model\+Base.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a495292bf770a1f778460459a80c1288d}\index{ArlaNatureConnect.WinUI.ViewModels.Abstracts.ListViewModelBase$<$ TRepos, TEntity $>$@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.ListViewModelBase$<$ TRepos, TEntity $>$}!LoadAllAsync@{LoadAllAsync}}
+\index{LoadAllAsync@{LoadAllAsync}!ArlaNatureConnect.WinUI.ViewModels.Abstracts.ListViewModelBase$<$ TRepos, TEntity $>$@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.ListViewModelBase$<$ TRepos, TEntity $>$}}
+\doxysubsubsection{\texorpdfstring{LoadAllAsync()}{LoadAllAsync()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a495292bf770a1f778460459a80c1288d} 
+async Task Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+List\+View\+Model\+Base$<$ TRepos, TEntity $>$.Load\+All\+Async (\begin{DoxyParamCaption}\item[{Cancellation\+Token}]{ct}{ = {\ttfamily default}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Loads all entities from the repository and populates the \doxylink{namespace_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items}{Items} collection. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ct} & Cancellation token.\\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{_list_view_model_base_8cs_source_l00179}{179}} of file \mbox{\hyperlink{_list_view_model_base_8cs_source}{List\+View\+Model\+Base.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a2d3a9ca4161f15299a7b4f385bc88d65}\index{ArlaNatureConnect.WinUI.ViewModels.Abstracts.ListViewModelBase$<$ TRepos, TEntity $>$@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.ListViewModelBase$<$ TRepos, TEntity $>$}!OnSelectedItemChanged@{OnSelectedItemChanged}}
+\index{OnSelectedItemChanged@{OnSelectedItemChanged}!ArlaNatureConnect.WinUI.ViewModels.Abstracts.ListViewModelBase$<$ TRepos, TEntity $>$@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.ListViewModelBase$<$ TRepos, TEntity $>$}}
+\doxysubsubsection{\texorpdfstring{OnSelectedItemChanged()}{OnSelectedItemChanged()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a2d3a9ca4161f15299a7b4f385bc88d65} 
+virtual void Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+List\+View\+Model\+Base$<$ TRepos, TEntity $>$.On\+Selected\+Item\+Changed (\begin{DoxyParamCaption}\item[{TEntity?}]{item}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Hook invoked synchronously when the Selected\+Item property changes. Derived classes may override to update dependent state (for example load a form). Implementations should avoid long-\/running work since this is invoked on the caller thread. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em item} & The newly selected item (may be null).\\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{_list_view_model_base_8cs_source_l00169}{169}} of file \mbox{\hyperlink{_list_view_model_base_8cs_source}{List\+View\+Model\+Base.\+cs}}.
+
+
+
+\label{doc-variable-members}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a471f7c22f0a615d475d2fb9bd7f1abb3}\index{ArlaNatureConnect.WinUI.ViewModels.Abstracts.ListViewModelBase$<$ TRepos, TEntity $>$@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.ListViewModelBase$<$ TRepos, TEntity $>$}!\_appMessageService@{\_appMessageService}}
+\index{\_appMessageService@{\_appMessageService}!ArlaNatureConnect.WinUI.ViewModels.Abstracts.ListViewModelBase$<$ TRepos, TEntity $>$@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.ListViewModelBase$<$ TRepos, TEntity $>$}}
+\doxysubsubsection{\texorpdfstring{\_appMessageService}{\_appMessageService}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a471f7c22f0a615d475d2fb9bd7f1abb3} 
+\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_app_message_service}{IApp\+Message\+Service}} Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+List\+View\+Model\+Base$<$ TRepos, TEntity $>$.\+\_\+app\+Message\+Service\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Service used to report application messages and errors to the UI. 
+
+
+
+Definition at line \mbox{\hyperlink{_list_view_model_base_8cs_source_l00045}{45}} of file \mbox{\hyperlink{_list_view_model_base_8cs_source}{List\+View\+Model\+Base.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a90f6ff42274d1b27273318adae28e428}\index{ArlaNatureConnect.WinUI.ViewModels.Abstracts.ListViewModelBase$<$ TRepos, TEntity $>$@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.ListViewModelBase$<$ TRepos, TEntity $>$}!\_items@{\_items}}
+\index{\_items@{\_items}!ArlaNatureConnect.WinUI.ViewModels.Abstracts.ListViewModelBase$<$ TRepos, TEntity $>$@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.ListViewModelBase$<$ TRepos, TEntity $>$}}
+\doxysubsubsection{\texorpdfstring{\_items}{\_items}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a90f6ff42274d1b27273318adae28e428} 
+TRepos Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+List\+View\+Model\+Base$<$ TRepos, TEntity $>$.\+\_\+items\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+\doxylink{namespace_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_items}{Items} used to access entities of type {\itshape TEntity} . 
+
+
+
+Definition at line \mbox{\hyperlink{_list_view_model_base_8cs_source_l00035}{35}} of file \mbox{\hyperlink{_list_view_model_base_8cs_source}{List\+View\+Model\+Base.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a7e5ea1a5d80664499249609899a4488f}\index{ArlaNatureConnect.WinUI.ViewModels.Abstracts.ListViewModelBase$<$ TRepos, TEntity $>$@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.ListViewModelBase$<$ TRepos, TEntity $>$}!\_selectedItem@{\_selectedItem}}
+\index{\_selectedItem@{\_selectedItem}!ArlaNatureConnect.WinUI.ViewModels.Abstracts.ListViewModelBase$<$ TRepos, TEntity $>$@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.ListViewModelBase$<$ TRepos, TEntity $>$}}
+\doxysubsubsection{\texorpdfstring{\_selectedItem}{\_selectedItem}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a7e5ea1a5d80664499249609899a4488f} 
+TEntity? Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+List\+View\+Model\+Base$<$ TRepos, TEntity $>$.\+\_\+selected\+Item\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line \mbox{\hyperlink{_list_view_model_base_8cs_source_l00030}{30}} of file \mbox{\hyperlink{_list_view_model_base_8cs_source}{List\+View\+Model\+Base.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_ad682524142e5db8a42385c2e14b7f39d}\index{ArlaNatureConnect.WinUI.ViewModels.Abstracts.ListViewModelBase$<$ TRepos, TEntity $>$@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.ListViewModelBase$<$ TRepos, TEntity $>$}!\_statusInfoServices@{\_statusInfoServices}}
+\index{\_statusInfoServices@{\_statusInfoServices}!ArlaNatureConnect.WinUI.ViewModels.Abstracts.ListViewModelBase$<$ TRepos, TEntity $>$@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.ListViewModelBase$<$ TRepos, TEntity $>$}}
+\doxysubsubsection{\texorpdfstring{\_statusInfoServices}{\_statusInfoServices}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_ad682524142e5db8a42385c2e14b7f39d} 
+\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_status_info_services}{IStatus\+Info\+Services}} Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+List\+View\+Model\+Base$<$ TRepos, TEntity $>$.\+\_\+status\+Info\+Services\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Service used to report loading and connectivity status to the UI. 
+
+
+
+Definition at line \mbox{\hyperlink{_list_view_model_base_8cs_source_l00040}{40}} of file \mbox{\hyperlink{_list_view_model_base_8cs_source}{List\+View\+Model\+Base.\+cs}}.
+
+
+
+\label{doc-property-members}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_doc-property-members}
+\doxysubsection{Property Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a06011271607451b7a924017a009d8bd2}\index{ArlaNatureConnect.WinUI.ViewModels.Abstracts.ListViewModelBase$<$ TRepos, TEntity $>$@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.ListViewModelBase$<$ TRepos, TEntity $>$}!Items@{Items}}
+\index{Items@{Items}!ArlaNatureConnect.WinUI.ViewModels.Abstracts.ListViewModelBase$<$ TRepos, TEntity $>$@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.ListViewModelBase$<$ TRepos, TEntity $>$}}
+\doxysubsubsection{\texorpdfstring{Items}{Items}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a06011271607451b7a924017a009d8bd2} 
+Observable\+Collection$<$TEntity$>$ Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+List\+View\+Model\+Base$<$ TRepos, TEntity $>$.Items = \mbox{[}$\,$\mbox{]}\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Collection of entities exposed to the view. Observable\+Collection ensures UI updates when items change. 
+
+
+
+Definition at line \mbox{\hyperlink{_list_view_model_base_8cs_source_l00151}{151}} of file \mbox{\hyperlink{_list_view_model_base_8cs_source}{List\+View\+Model\+Base.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_ac6c514ea7eec5dd47a71e3a4c199d99d}\index{ArlaNatureConnect.WinUI.ViewModels.Abstracts.ListViewModelBase$<$ TRepos, TEntity $>$@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.ListViewModelBase$<$ TRepos, TEntity $>$}!SelectedItem@{SelectedItem}}
+\index{SelectedItem@{SelectedItem}!ArlaNatureConnect.WinUI.ViewModels.Abstracts.ListViewModelBase$<$ TRepos, TEntity $>$@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.ListViewModelBase$<$ TRepos, TEntity $>$}}
+\doxysubsubsection{\texorpdfstring{SelectedItem}{SelectedItem}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_ac6c514ea7eec5dd47a71e3a4c199d99d} 
+TEntity? Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+List\+View\+Model\+Base$<$ TRepos, TEntity $>$.Selected\+Item\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Definition at line \mbox{\hyperlink{_list_view_model_base_8cs_source_l00126}{126}} of file \mbox{\hyperlink{_list_view_model_base_8cs_source}{List\+View\+Model\+Base.\+cs}}.
+
+
+
+\label{doc-event-members}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_doc-event-members}
+\doxysubsection{Event Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a01967c9faff0eccd4265737c8aaa1ed4}\index{ArlaNatureConnect.WinUI.ViewModels.Abstracts.ListViewModelBase$<$ TRepos, TEntity $>$@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.ListViewModelBase$<$ TRepos, TEntity $>$}!SelectedEntityChanged@{SelectedEntityChanged}}
+\index{SelectedEntityChanged@{SelectedEntityChanged}!ArlaNatureConnect.WinUI.ViewModels.Abstracts.ListViewModelBase$<$ TRepos, TEntity $>$@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.ListViewModelBase$<$ TRepos, TEntity $>$}}
+\doxysubsubsection{\texorpdfstring{SelectedEntityChanged}{SelectedEntityChanged}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_list_view_model_base-2-g_a01967c9faff0eccd4265737c8aaa1ed4} 
+Event\+Handler$<$TEntity?$>$? Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+List\+View\+Model\+Base$<$ TRepos, TEntity $>$.Selected\+Entity\+Changed}
+
+
+
+Definition at line \mbox{\hyperlink{_list_view_model_base_8cs_source_l00048}{48}} of file \mbox{\hyperlink{_list_view_model_base_8cs_source}{List\+View\+Model\+Base.\+cs}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Arla\+Nature\+Connect.\+Win\+UI/\+Arla\+Nature\+Connect.\+Win\+UI/\+View\+Models/\+Abstracts/\mbox{\hyperlink{_list_view_model_base_8cs}{List\+View\+Model\+Base.\+cs}}\end{DoxyCompactItemize}

@@ -1,0 +1,24 @@
+var searchData=
+[
+  ['iaddressrepository_2ecs_0',['IAddressRepository.cs',['../_i_address_repository_8cs.html',1,'']]],
+  ['iappmessageservice_2ecs_1',['IAppMessageService.cs',['../_i_app_message_service_8cs.html',1,'']]],
+  ['ibuttonwrapper_2ecs_2',['IButtonWrapper.cs',['../_i_button_wrapper_8cs.html',1,'']]],
+  ['iconnectionstringservice_2ecs_3',['IConnectionStringService.cs',['../_i_connection_string_service_8cs.html',1,'']]],
+  ['ientity_2ecs_4',['IEntity.cs',['../_i_entity_8cs.html',1,'']]],
+  ['ifarmrepository_2ecs_5',['IFarmRepository.cs',['../_i_farm_repository_8cs.html',1,'']]],
+  ['igetaddressfromcvr_2ecs_6',['IGetAddressFromCvr.cs',['../_i_get_address_from_cvr_8cs.html',1,'']]],
+  ['inatureareacoordinaterepository_2ecs_7',['INatureAreaCoordinateRepository.cs',['../_i_nature_area_coordinate_repository_8cs.html',1,'']]],
+  ['inatureareaimagerepository_2ecs_8',['INatureAreaImageRepository.cs',['../_i_nature_area_image_repository_8cs.html',1,'']]],
+  ['inaturearearepository_2ecs_9',['INatureAreaRepository.cs',['../_i_nature_area_repository_8cs.html',1,'']]],
+  ['inaturecheckcaserepository_2ecs_10',['INatureCheckCaseRepository.cs',['../_i_nature_check_case_repository_8cs.html',1,'']]],
+  ['inaturecheckcaseservice_2ecs_11',['INatureCheckCaseService.cs',['../_i_nature_check_case_service_8cs.html',1,'']]],
+  ['inavigationhandler_2ecs_12',['INavigationHandler.cs',['../_i_navigation_handler_8cs.html',1,'']]],
+  ['inavigationviewmodelbase_2ecs_13',['INavigationViewModelBase.cs',['../_i_navigation_view_model_base_8cs.html',1,'']]],
+  ['inttovisibilityconverter_2ecs_14',['IntToVisibilityConverter.cs',['../_int_to_visibility_converter_8cs.html',1,'']]],
+  ['invertboolconverter_2ecs_15',['InvertBoolConverter.cs',['../_invert_bool_converter_8cs.html',1,'']]],
+  ['ipersonrepository_2ecs_16',['IPersonRepository.cs',['../_i_person_repository_8cs.html',1,'']]],
+  ['iprivilegeservice_2ecs_17',['IPrivilegeService.cs',['../_i_privilege_service_8cs.html',1,'']]],
+  ['irepository_2ecs_18',['IRepository.cs',['../_i_repository_8cs.html',1,'']]],
+  ['irolerepository_2ecs_19',['IRoleRepository.cs',['../_i_role_repository_8cs.html',1,'']]],
+  ['istatusinfoservices_2ecs_20',['IStatusInfoServices.cs',['../_i_status_info_services_8cs.html',1,'']]]
+];

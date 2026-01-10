@@ -1,10 +1,28 @@
 # Use Case 004 - Register Nature Areas
 This document outlines the artifacts associated with Use Case 004 - Register Nature Areas. The purpose of this use case is to facilitate the registration and management of nature areas within the system.
 
+## Table of Contents
+- [User Story](#user-story)
+- [Use Case Brief](#user-case-brief)
+- [Preconditions](#preconditions)
+- [Postconditions](#postconditions)
+- [Primary success scenario (happy path)](#primary-success-scenario-happy-path)
+- [System Sequence Diagram](#system-sequence-diagram)
+- [OC - Operations Contracts](#oc---operations-contracts)
+  - [Operation Contract: RegisterNatureArea](#operation-contract-registernaturearea)
+- [Sequence Diagram](#sequence-diagram)
+- [Domain Model](#domain-model)
+  - [Domain Model Diagram](#domain-model-diagram)
+  - [Domain Model Description](#domain-model-description)
+- [DCD Diagram](#dcd-diagram)
+- [ER - Entity Relationship Diagram](#er---entity-relationship-diagram)
+
 ## User Story
 As an Employee,
 I want to register new nature areas
 so that they can be managed and preserved effectively.
+
+---
 
 ## User Case Brief
 Employees can register new nature areas by providing necessary details such as area name, coordinates, size, and type of the area.
@@ -40,6 +58,8 @@ The system will store this information and allow for future management and updat
 1. System confirms the successful registration of the nature area.
 1. Employee receives confirmation and can view the registered nature area.
 
+---
+
 ## System Sequence Diagram
 - ID: UC-004-SSD
 - Cross references:
@@ -60,6 +80,9 @@ sequenceDiagram
   System->>System: ValidateAndSaveNatureArea(natureAreaDto)
   System-->>RegisterNatureAreaUC: RegistrationResult(success, id, errors)
 ```
+
+---
+
 ## OC - Operations Contracts
 - ID: UC-004-OC
 - Cross references:
@@ -108,6 +131,8 @@ sequenceDiagram
   end
 ```
 
+---
+
 ## Domain Model
 
 - ID: UC-004-DM
@@ -141,7 +166,9 @@ classDiagram
 - **Employee**: The primary actor who registers nature areas. See UC-002-DM
 - **Farm**: Represents a farm that can contain multiple nature areas. See UC-002-DM
 
-### DCD Diagram
+---
+ 
+## DCD Diagram
 ```mermaid
 ---
   title: "UC004: Domain Class Diagram for Registering Nature Areas (DCD)"
@@ -195,6 +222,8 @@ classDiagram
   %% Generic Repository inheritance
   NatureAreaRepository ..|> Repository~TEntity~ : inheritance
   ```
+
+  ---
 
   ### DCD Description
   See [DCD] for detailed descriptions of the entities, repositories, and their relationships involved in registering nature areas.

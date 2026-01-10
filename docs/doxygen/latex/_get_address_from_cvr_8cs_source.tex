@@ -1,0 +1,108 @@
+\doxysection{Get\+Address\+From\+Cvr.\+cs}
+\hypertarget{_get_address_from_cvr_8cs_source}{}\label{_get_address_from_cvr_8cs_source}\index{src/ArlaNatureConnect.Core/Services/GetAddressFromCvr.cs@{src/ArlaNatureConnect.Core/Services/GetAddressFromCvr.cs}}
+\mbox{\hyperlink{_get_address_from_cvr_8cs}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00001}00001\ \textcolor{keyword}{using\ }System;}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00002}00002\ \textcolor{keyword}{using\ }System.Net;}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00003}00003\ \textcolor{keyword}{using\ }System.Net.Http;}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00004}00004\ \textcolor{keyword}{using\ }System.Runtime.InteropServices;}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00005}00005\ \textcolor{keyword}{using\ }System.Text.Json;}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00006}00006\ }
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00007}00007\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_core_1_1_services}{ArlaNatureConnect.Core.Services}};}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00008}00008\ }
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00055}00055\ \textcolor{keyword}{public}\ \textcolor{keyword}{class\ }GetAddressFromCvr()\ :\ \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_get_address_from_cvr}{IGetAddressFromCvr}}}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00056}00056\ \{}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00057}00057\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{string}\ \_API\_URL\ =\ \textcolor{stringliteral}{"{}https://cvrapi.dk/api?search=\{0\}\&country=dk"{}};}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00058}00058\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{string}\ \_USER\_AGENT\ =\ \textcolor{stringliteral}{"{}Student\ UCL\ -\/\ Arla\ Nature\ Connect\ -\/\ Jens\ Tirsvad\ Nielsen\ -\/\ +601126257062"{}};}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00059}00059\ }
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00060}00060\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{class\ }ApiResult}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00061}00061\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00062}00062\ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{string}\ VAT\ \{\ \textcolor{keyword}{get};\ \textcolor{keyword}{set};\ \}\ =\ \textcolor{keyword}{null}!;}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00063}00063\ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}\ required\ \textcolor{keywordtype}{string}\ Name\ \{\ \textcolor{keyword}{get};\ \textcolor{keyword}{set};\ \}\ =\ \textcolor{keyword}{null}!;}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00064}00064\ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{string}\ Address\ \{\ \textcolor{keyword}{get};\ \textcolor{keyword}{set};\ \}\ =\ \textcolor{keyword}{null}!;}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00065}00065\ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{string}\ Zipcode\ \{\ \textcolor{keyword}{get};\ \textcolor{keyword}{set};\ \}\ =\ \textcolor{keyword}{null}!;}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00066}00066\ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{string}\ City\ \{\ \textcolor{keyword}{get};\ \textcolor{keyword}{set};\ \}\ =\ \textcolor{keyword}{null}!;}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00067}00067\ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{bool}\ \textcolor{keyword}{@protected}\ \{\ \textcolor{keyword}{get};\ \textcolor{keyword}{set};\ \}}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00068}00068\ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{string}\ Phone\ \{\ \textcolor{keyword}{get};\ \textcolor{keyword}{set};\ \}\ =\ \textcolor{keyword}{null}!;}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00069}00069\ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{string}\ Email\ \{\ \textcolor{keyword}{get};\ \textcolor{keyword}{set};\ \}\ =\ \textcolor{keyword}{null}!;}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00070}00070\ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{string}\ Fax\ \{\ \textcolor{keyword}{get};\ \textcolor{keyword}{set};\ \}\ =\ \textcolor{keyword}{null}!;}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00071}00071\ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{string}\ Startdate\ \{\ \textcolor{keyword}{get};\ \textcolor{keyword}{set};\ \}\ =\ \textcolor{keyword}{null}!;}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00072}00072\ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{string}\ Enddate\ \{\ \textcolor{keyword}{get};\ \textcolor{keyword}{set};\ \}\ =\ \textcolor{keyword}{null}!;}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00073}00073\ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{string}\ Employees\ \{\ \textcolor{keyword}{get};\ \textcolor{keyword}{set};\ \}\ =\ \textcolor{keyword}{null}!;}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00074}00074\ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{string}\ Addressco\ \{\ \textcolor{keyword}{get};\ \textcolor{keyword}{set};\ \}\ =\ \textcolor{keyword}{null}!;}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00075}00075\ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{int}\ Industrycode\ \{\ \textcolor{keyword}{get};\ \textcolor{keyword}{set};\ \}}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00076}00076\ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{string}\ Industrydesc\ \{\ \textcolor{keyword}{get};\ \textcolor{keyword}{set};\ \}\ =\ \textcolor{keyword}{null}!;}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00077}00077\ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{int}\ Companycode\ \{\ \textcolor{keyword}{get};\ \textcolor{keyword}{set};\ \}}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00078}00078\ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{string}\ Companydesc\ \{\ \textcolor{keyword}{get};\ \textcolor{keyword}{set};\ \}\ =\ \textcolor{keyword}{null}!;}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00079}00079\ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{string}\ Creditstartdate\ \{\ \textcolor{keyword}{get};\ \textcolor{keyword}{set};\ \}\ =\ \textcolor{keyword}{null}!;}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00080}00080\ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{int}?\ Creditstatus\ \{\ \textcolor{keyword}{get};\ \textcolor{keyword}{set};\ \}}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00081}00081\ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{bool}\ Creditbankrupt\ \{\ \textcolor{keyword}{get};\ \textcolor{keyword}{set};\ \}}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00082}00082\ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}\ ApiOwners[]\ Owners\ \{\ \textcolor{keyword}{get};\ \textcolor{keyword}{set};\ \}\ =\ \textcolor{keyword}{null}!;}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00083}00083\ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}\ ApipPoductionunits[]\ Productionunits\ \{\ \textcolor{keyword}{get};\ \textcolor{keyword}{set};\ \}\ =\ \textcolor{keyword}{null}!;}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00084}00084\ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{int}\ T\ \{\ \textcolor{keyword}{get};\ \textcolor{keyword}{set};\ \}}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00085}00085\ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{int}\ Version\ \{\ \textcolor{keyword}{get};\ \textcolor{keyword}{set};\ \}}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00086}00086\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00087}00087\ }
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00088}00088\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{class\ }ApiOwners}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00089}00089\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00090}00090\ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{string}\ Name\ \{\ \textcolor{keyword}{get};\ \textcolor{keyword}{set};\ \}\ =\ \textcolor{keyword}{null}!;}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00091}00091\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00092}00092\ }
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00093}00093\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{class\ }ApipPoductionunits}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00094}00094\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00095}00095\ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{string}\ Address\ \{\ \textcolor{keyword}{get};\ \textcolor{keyword}{set};\ \}\ =\ \textcolor{keyword}{null}!;}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00096}00096\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00097}00097\ }
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00104}00104\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{interface\ }IHttpClient}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00105}00105\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00106}00106\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{string}\ DownloadString(\textcolor{keywordtype}{string}\ url);}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00107}00107\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00108}00108\ }
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00109}00109\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keyword}{class\ }DefaultHttpClient\ :\ IHttpClient}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00110}00110\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00112}00112\ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{string}\ DownloadString(\textcolor{keywordtype}{string}\ url)}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00113}00113\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00114}00114\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Use\ HttpClient\ to\ ensure\ TLS\ and\ explicit\ status\ handling}}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00115}00115\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Inline\ note:\ normally\ reusing\ a\ single\ HttpClient\ instance\ is\ recommended\ to\ avoid\ socket\ exhaustion,}}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00116}00116\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ but\ here\ we\ create\ a\ short-\/lived\ instance\ for\ simplicity\ and\ to\ keep\ behavior\ deterministic\ in\ tests.}}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00117}00117\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using}\ (HttpClient\ httpClient\ =\ \textcolor{keyword}{new}\ HttpClient())}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00118}00118\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00119}00119\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ httpClient.DefaultRequestHeaders.UserAgent.ParseAdd(\_USER\_AGENT);}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00120}00120\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ httpClient.Timeout\ =\ TimeSpan.FromSeconds(15);}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00121}00121\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ HttpResponseMessage\ response\ =\ httpClient.GetAsync(url).GetAwaiter().GetResult();}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00122}00122\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ response.EnsureSuccessStatusCode();}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00123}00123\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ response.Content.ReadAsStringAsync().GetAwaiter().GetResult();}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00124}00124\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00125}00125\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00126}00126\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00127}00127\ }
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00149}00149\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{static}\ ApiResult?\ GetCompanyInfo(\textcolor{keywordtype}{string}\ name,\ IHttpClient?\ httpClient\ =\ \textcolor{keyword}{null})}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00150}00150\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00151}00151\ \ \ \ \ \ \ \ \ httpClient\ ??=\ \textcolor{keyword}{new}\ DefaultHttpClient();}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00152}00152\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00153}00153\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00154}00154\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{string}\ resultContent\ =\ httpClient.DownloadString(\textcolor{keywordtype}{string}.Format(\_API\_URL,\ name));}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00155}00155\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\textcolor{keywordtype}{string}.IsNullOrWhiteSpace(resultContent))}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00156}00156\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{null};}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00157}00157\ \ \ \ \ \ \ \ \ \ \ \ \ JsonSerializerOptions\ options\ =\ \textcolor{keyword}{new}\ JsonSerializerOptions\ \{\ PropertyNameCaseInsensitive\ =\ \textcolor{keyword}{true}\ \};}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00158}00158\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ JsonSerializer.Deserialize<ApiResult>(resultContent,\ options);}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00159}00159\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00160}00160\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{catch}\ (COMException)}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00161}00161\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00162}00162\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Handle\ COM\ interop\ errors\ from\ serializer\ or\ underlying\ calls\ gracefully\ for\ tests}}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00163}00163\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{null};}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00164}00164\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00165}00165\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{catch}\ (WebException)}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00166}00166\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00167}00167\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ network\ errors\ -\/\ bubble\ up\ or\ return\ null\ depending\ on\ callers;\ return\ null\ for\ tests}}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00168}00168\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{null};}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00169}00169\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00170}00170\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{catch}\ (HttpRequestException)}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00171}00171\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00172}00172\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ network\ errors\ from\ HttpClient\ -\/\ return\ null\ for\ tests}}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00173}00173\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{null};}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00174}00174\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00175}00175\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_get_address_from_cvr_8cs_source_l00176}00176\ \}}
+
+\end{DoxyCode}

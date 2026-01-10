@@ -1,0 +1,46 @@
+\doxysection{Nav\+Page.\+cs}
+\hypertarget{_nav_page_8cs_source}{}\label{_nav_page_8cs_source}\index{src/ArlaNatureConnect.WinUI/ArlaNatureConnect.WinUI/Views/Pages/Abstracts/NavPage.cs@{src/ArlaNatureConnect.WinUI/ArlaNatureConnect.WinUI/Views/Pages/Abstracts/NavPage.cs}}
+\mbox{\hyperlink{_nav_page_8cs}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_nav_page_8cs_source_l00001}00001\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_domain_1_1_entities}{ArlaNatureConnect.Domain.Entities}};}
+\DoxyCodeLine{\Hypertarget{_nav_page_8cs_source_l00002}00002\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts}{ArlaNatureConnect.WinUI.ViewModels.Abstracts}};}
+\DoxyCodeLine{\Hypertarget{_nav_page_8cs_source_l00003}00003\ }
+\DoxyCodeLine{\Hypertarget{_nav_page_8cs_source_l00004}00004\ \textcolor{keyword}{using\ }Microsoft.UI.Xaml.Controls;}
+\DoxyCodeLine{\Hypertarget{_nav_page_8cs_source_l00005}00005\ }
+\DoxyCodeLine{\Hypertarget{_nav_page_8cs_source_l00006}\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages}{00006}}\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_abstracts}{ArlaNatureConnect.WinUI.Views.Pages.Abstracts}};}
+\DoxyCodeLine{\Hypertarget{_nav_page_8cs_source_l00007}00007\ }
+\DoxyCodeLine{\Hypertarget{_nav_page_8cs_source_l00019}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_abstracts_1_1_nav_page}{00019}}\ \textcolor{keyword}{public}\ \textcolor{keyword}{abstract}\ \textcolor{keyword}{partial\ class\ }\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_abstracts_1_1_nav_page}{NavPage}}\ :\ Page}
+\DoxyCodeLine{\Hypertarget{_nav_page_8cs_source_l00020}00020\ \{}
+\DoxyCodeLine{\Hypertarget{_nav_page_8cs_source_l00021}00021\ }
+\DoxyCodeLine{\Hypertarget{_nav_page_8cs_source_l00026}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_abstracts_1_1_nav_page_abb79715fa6bebfec790c7d554ddd51a8}{00026}}\ \ \ \ \ \textcolor{keyword}{public}\ \mbox{\hyperlink{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_navigation_view_model_base}{INavigationViewModelBase}}?\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_abstracts_1_1_nav_page_abb79715fa6bebfec790c7d554ddd51a8}{ViewModel}}\ \{\ \textcolor{keyword}{get};\ \textcolor{keyword}{set};\ \}}
+\DoxyCodeLine{\Hypertarget{_nav_page_8cs_source_l00027}00027\ }
+\DoxyCodeLine{\Hypertarget{_nav_page_8cs_source_l00039}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_abstracts_1_1_nav_page_a675de3eb252c14dfdf6e048ee0d23afb}{00039}}\ \ \ \ \ \textcolor{keyword}{protected}\ \textcolor{keyword}{override}\ async\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_abstracts_1_1_nav_page_a675de3eb252c14dfdf6e048ee0d23afb}{OnNavigatedTo}}(Microsoft.UI.Xaml.Navigation.NavigationEventArgs\ e)}
+\DoxyCodeLine{\Hypertarget{_nav_page_8cs_source_l00040}00040\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_nav_page_8cs_source_l00041}00041\ \ \ \ \ \ \ \ \ base.OnNavigatedTo(e);}
+\DoxyCodeLine{\Hypertarget{_nav_page_8cs_source_l00042}00042\ }
+\DoxyCodeLine{\Hypertarget{_nav_page_8cs_source_l00043}00043\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_abstracts_1_1_nav_page_abb79715fa6bebfec790c7d554ddd51a8}{ViewModel}}\ is\ \textcolor{keyword}{null})}
+\DoxyCodeLine{\Hypertarget{_nav_page_8cs_source_l00044}00044\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_nav_page_8cs_source_l00045}00045\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \textcolor{keyword}{new}\ InvalidOperationException(\textcolor{stringliteral}{"{}ViewModel\ must\ be\ set\ before\ navigating\ to\ NavPage."{}});}
+\DoxyCodeLine{\Hypertarget{_nav_page_8cs_source_l00046}00046\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_nav_page_8cs_source_l00047}00047\ }
+\DoxyCodeLine{\Hypertarget{_nav_page_8cs_source_l00048}00048\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (e.Parameter\ is\ \mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_role}{Role}}\ role)}
+\DoxyCodeLine{\Hypertarget{_nav_page_8cs_source_l00049}00049\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_nav_page_8cs_source_l00050}00050\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (role\ is\ \textcolor{keyword}{null})}
+\DoxyCodeLine{\Hypertarget{_nav_page_8cs_source_l00051}00051\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_nav_page_8cs_source_l00052}00052\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \textcolor{keyword}{new}\ ArgumentNullException(nameof(role),\ \textcolor{stringliteral}{"{}Role\ parameter\ cannot\ be\ null\ when\ navigating\ to\ NavPage."{}});}
+\DoxyCodeLine{\Hypertarget{_nav_page_8cs_source_l00053}00053\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_nav_page_8cs_source_l00054}00054\ \ \ \ \ \ \ \ \ \ \ \ \ await\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_abstracts_1_1_nav_page_abb79715fa6bebfec790c7d554ddd51a8}{ViewModel}}.InitializeAsync(role);}
+\DoxyCodeLine{\Hypertarget{_nav_page_8cs_source_l00055}00055\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_nav_page_8cs_source_l00056}00056\ }
+\DoxyCodeLine{\Hypertarget{_nav_page_8cs_source_l00057}00057\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Attach\ SideMenu\ via\ ViewModel}}
+\DoxyCodeLine{\Hypertarget{_nav_page_8cs_source_l00058}00058\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_abstracts_1_1_nav_page_abb79715fa6bebfec790c7d554ddd51a8}{ViewModel}}?.AttachSideMenuToMainWindow();}
+\DoxyCodeLine{\Hypertarget{_nav_page_8cs_source_l00059}00059\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_nav_page_8cs_source_l00060}00060\ }
+\DoxyCodeLine{\Hypertarget{_nav_page_8cs_source_l00061}00061\ }
+\DoxyCodeLine{\Hypertarget{_nav_page_8cs_source_l00068}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_abstracts_1_1_nav_page_a8d0971be36c3c0a976b04ebd73537c39}{00068}}\ \ \ \ \ \textcolor{keyword}{protected}\ \textcolor{keyword}{override}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_abstracts_1_1_nav_page_a8d0971be36c3c0a976b04ebd73537c39}{OnNavigatedFrom}}(Microsoft.UI.Xaml.Navigation.NavigationEventArgs\ e)}
+\DoxyCodeLine{\Hypertarget{_nav_page_8cs_source_l00069}00069\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_nav_page_8cs_source_l00070}00070\ \ \ \ \ \ \ \ \ base.OnNavigatedFrom(e);}
+\DoxyCodeLine{\Hypertarget{_nav_page_8cs_source_l00071}00071\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_nav_page_8cs_source_l00072}00072\ \}}
+
+\end{DoxyCode}

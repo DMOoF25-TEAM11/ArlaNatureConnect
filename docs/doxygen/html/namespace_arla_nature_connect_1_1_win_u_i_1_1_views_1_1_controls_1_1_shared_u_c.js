@@ -1,0 +1,5 @@
+var namespace_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_shared_u_c =
+[
+    [ "CRUDNatureAreaUC", "class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_nature_area_u_c.html", "class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_nature_area_u_c" ],
+    [ "CRUDPersonUC", "class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c.html", "class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_person_u_c" ]
+];

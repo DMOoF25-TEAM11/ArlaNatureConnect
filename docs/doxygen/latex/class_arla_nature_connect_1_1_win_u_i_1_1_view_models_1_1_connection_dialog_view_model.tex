@@ -1,0 +1,222 @@
+\doxysection{Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Connection\+Dialog\+View\+Model Class Reference}
+\hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_connection_dialog_view_model}{}\label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_connection_dialog_view_model}\index{ArlaNatureConnect.WinUI.ViewModels.ConnectionDialogViewModel@{ArlaNatureConnect.WinUI.ViewModels.ConnectionDialogViewModel}}
+
+
+View\+Model for a dialog that helps users construct a database connection string.  
+
+
+Inheritance diagram for Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Connection\+Dialog\+View\+Model\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_connection_dialog_view_model}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_connection_dialog_view_model_a6b134ebfbcafb58ff74fb467bee43627}{Connection\+Dialog\+View\+Model}} ()
+\begin{DoxyCompactList}\small\item\em Initializes a new instance of the \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_connection_dialog_view_model}{Connection\+Dialog\+View\+Model} class and resets fields to their default values. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_connection_dialog_view_model_ab406fe565b68f7c98fdf6980939e917f}{Reset\+Fields}} (bool update\+Connection\+String=false)
+\begin{DoxyCompactList}\small\item\em Reset all input fields to their default values. Optionally recomposes the connection string from fields. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+string? \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_connection_dialog_view_model_acdda780a0161043b3a5fc173e731c7cd}{Connection\+String}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets the full connection string composed from individual fields. When set, the connection string is parsed into individual fields unless updates are suppressed. \end{DoxyCompactList}\item 
+string? \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_connection_dialog_view_model_a622f9084d51bccba372dcfef52f6b3f4}{Server\+Name}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets the server/data source name. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_connection_dialog_view_model_a00c614836bbb4e52165b6df9ba1ae316}{Integrated\+Security}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets a value indicating whether integrated security (Windows authentication) should be used. \end{DoxyCompactList}\item 
+string? \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_connection_dialog_view_model_ae29b61d03b8ef940f4492c772abdb26c}{User\+Name}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets the SQL user name (used when \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_connection_dialog_view_model_a00c614836bbb4e52165b6df9ba1ae316}{Integrated\+Security} is {\ttfamily false}). \end{DoxyCompactList}\item 
+string? \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_connection_dialog_view_model_a82306c3335c48b6a7d7be0d6878eede5}{Password}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets the SQL password (used when \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_connection_dialog_view_model_a00c614836bbb4e52165b6df9ba1ae316}{Integrated\+Security} is {\ttfamily false}). \end{DoxyCompactList}\item 
+string? \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_connection_dialog_view_model_afa6504c2fd861dcdd00de6bea5bb86d2}{Database\+Name}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets the database/initial catalog name. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_connection_dialog_view_model_a7b6673d661447a0977040c4477d3cc2f}{Encrypt}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets a value indicating whether to enable encryption for the connection. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_connection_dialog_view_model_a904f5c3fd6312442b3d609340b72e0e9}{Trust\+Server\+Certificate}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets a value indicating whether to trust the server certificate. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Protected Member Functions inherited from \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base}{Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+View\+Model\+Base}}}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_afe69f6fc4811892022c273a234f84ed7}{On\+Property\+Changed}} (\mbox{[}Caller\+Member\+Name\mbox{]} string? name=null)
+\begin{DoxyCompactList}\small\item\em Raises the \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_a84af6959822f5dac7b036413ef1084e0}{Property\+Changed} event for the property specified by {\itshape name} . \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Events inherited from \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base}{Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+View\+Model\+Base}}}
+\begin{DoxyCompactItemize}
+\item 
+Property\+Changed\+Event\+Handler? \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_view_model_base_a84af6959822f5dac7b036413ef1084e0}{Property\+Changed}}
+\begin{DoxyCompactList}\small\item\em Occurs when a property value changes. Consumers (typically UI bindings) subscribe to this event to be notified that a property value has changed. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+View\+Model for a dialog that helps users construct a database connection string. 
+
+Definition at line \mbox{\hyperlink{_connection_dialog_view_model_8cs_source_l00011}{11}} of file \mbox{\hyperlink{_connection_dialog_view_model_8cs_source}{Connection\+Dialog\+View\+Model.\+cs}}.
+
+
+
+\label{doc-constructors}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_connection_dialog_view_model_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_connection_dialog_view_model_a6b134ebfbcafb58ff74fb467bee43627}\index{ArlaNatureConnect.WinUI.ViewModels.ConnectionDialogViewModel@{ArlaNatureConnect.WinUI.ViewModels.ConnectionDialogViewModel}!ConnectionDialogViewModel@{ConnectionDialogViewModel}}
+\index{ConnectionDialogViewModel@{ConnectionDialogViewModel}!ArlaNatureConnect.WinUI.ViewModels.ConnectionDialogViewModel@{ArlaNatureConnect.WinUI.ViewModels.ConnectionDialogViewModel}}
+\doxysubsubsection{\texorpdfstring{ConnectionDialogViewModel()}{ConnectionDialogViewModel()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_connection_dialog_view_model_a6b134ebfbcafb58ff74fb467bee43627} 
+Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Connection\+Dialog\+View\+Model.\+Connection\+Dialog\+View\+Model (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Initializes a new instance of the \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_connection_dialog_view_model}{Connection\+Dialog\+View\+Model} class and resets fields to their default values. 
+
+
+
+Definition at line \mbox{\hyperlink{_connection_dialog_view_model_8cs_source_l00068}{68}} of file \mbox{\hyperlink{_connection_dialog_view_model_8cs_source}{Connection\+Dialog\+View\+Model.\+cs}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_connection_dialog_view_model_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_connection_dialog_view_model_ab406fe565b68f7c98fdf6980939e917f}\index{ArlaNatureConnect.WinUI.ViewModels.ConnectionDialogViewModel@{ArlaNatureConnect.WinUI.ViewModels.ConnectionDialogViewModel}!ResetFields@{ResetFields}}
+\index{ResetFields@{ResetFields}!ArlaNatureConnect.WinUI.ViewModels.ConnectionDialogViewModel@{ArlaNatureConnect.WinUI.ViewModels.ConnectionDialogViewModel}}
+\doxysubsubsection{\texorpdfstring{ResetFields()}{ResetFields()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_connection_dialog_view_model_ab406fe565b68f7c98fdf6980939e917f} 
+void Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Connection\+Dialog\+View\+Model.\+Reset\+Fields (\begin{DoxyParamCaption}\item[{bool}]{update\+Connection\+String}{ = {\ttfamily false}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Reset all input fields to their default values. Optionally recomposes the connection string from fields. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em update\+Connection\+String} & If {\ttfamily true}, the connection string will be recomposed after reset.\\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{_connection_dialog_view_model_8cs_source_l00213}{213}} of file \mbox{\hyperlink{_connection_dialog_view_model_8cs_source}{Connection\+Dialog\+View\+Model.\+cs}}.
+
+
+
+\label{doc-property-members}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_connection_dialog_view_model_doc-property-members}
+\doxysubsection{Property Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_connection_dialog_view_model_acdda780a0161043b3a5fc173e731c7cd}\index{ArlaNatureConnect.WinUI.ViewModels.ConnectionDialogViewModel@{ArlaNatureConnect.WinUI.ViewModels.ConnectionDialogViewModel}!ConnectionString@{ConnectionString}}
+\index{ConnectionString@{ConnectionString}!ArlaNatureConnect.WinUI.ViewModels.ConnectionDialogViewModel@{ArlaNatureConnect.WinUI.ViewModels.ConnectionDialogViewModel}}
+\doxysubsubsection{\texorpdfstring{ConnectionString}{ConnectionString}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_connection_dialog_view_model_acdda780a0161043b3a5fc173e731c7cd} 
+string? Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Connection\+Dialog\+View\+Model.\+Connection\+String\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Gets or sets the full connection string composed from individual fields. When set, the connection string is parsed into individual fields unless updates are suppressed. 
+
+
+
+Definition at line \mbox{\hyperlink{_connection_dialog_view_model_8cs_source_l00080}{80}} of file \mbox{\hyperlink{_connection_dialog_view_model_8cs_source}{Connection\+Dialog\+View\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_connection_dialog_view_model_afa6504c2fd861dcdd00de6bea5bb86d2}\index{ArlaNatureConnect.WinUI.ViewModels.ConnectionDialogViewModel@{ArlaNatureConnect.WinUI.ViewModels.ConnectionDialogViewModel}!DatabaseName@{DatabaseName}}
+\index{DatabaseName@{DatabaseName}!ArlaNatureConnect.WinUI.ViewModels.ConnectionDialogViewModel@{ArlaNatureConnect.WinUI.ViewModels.ConnectionDialogViewModel}}
+\doxysubsubsection{\texorpdfstring{DatabaseName}{DatabaseName}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_connection_dialog_view_model_afa6504c2fd861dcdd00de6bea5bb86d2} 
+string? Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Connection\+Dialog\+View\+Model.\+Database\+Name\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Gets or sets the database/initial catalog name. 
+
+
+
+Definition at line \mbox{\hyperlink{_connection_dialog_view_model_8cs_source_l00158}{158}} of file \mbox{\hyperlink{_connection_dialog_view_model_8cs_source}{Connection\+Dialog\+View\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_connection_dialog_view_model_a7b6673d661447a0977040c4477d3cc2f}\index{ArlaNatureConnect.WinUI.ViewModels.ConnectionDialogViewModel@{ArlaNatureConnect.WinUI.ViewModels.ConnectionDialogViewModel}!Encrypt@{Encrypt}}
+\index{Encrypt@{Encrypt}!ArlaNatureConnect.WinUI.ViewModels.ConnectionDialogViewModel@{ArlaNatureConnect.WinUI.ViewModels.ConnectionDialogViewModel}}
+\doxysubsubsection{\texorpdfstring{Encrypt}{Encrypt}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_connection_dialog_view_model_a7b6673d661447a0977040c4477d3cc2f} 
+bool Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Connection\+Dialog\+View\+Model.\+Encrypt\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Gets or sets a value indicating whether to enable encryption for the connection. 
+
+
+
+Definition at line \mbox{\hyperlink{_connection_dialog_view_model_8cs_source_l00173}{173}} of file \mbox{\hyperlink{_connection_dialog_view_model_8cs_source}{Connection\+Dialog\+View\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_connection_dialog_view_model_a00c614836bbb4e52165b6df9ba1ae316}\index{ArlaNatureConnect.WinUI.ViewModels.ConnectionDialogViewModel@{ArlaNatureConnect.WinUI.ViewModels.ConnectionDialogViewModel}!IntegratedSecurity@{IntegratedSecurity}}
+\index{IntegratedSecurity@{IntegratedSecurity}!ArlaNatureConnect.WinUI.ViewModels.ConnectionDialogViewModel@{ArlaNatureConnect.WinUI.ViewModels.ConnectionDialogViewModel}}
+\doxysubsubsection{\texorpdfstring{IntegratedSecurity}{IntegratedSecurity}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_connection_dialog_view_model_a00c614836bbb4e52165b6df9ba1ae316} 
+bool Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Connection\+Dialog\+View\+Model.\+Integrated\+Security\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Gets or sets a value indicating whether integrated security (Windows authentication) should be used. 
+
+
+
+Definition at line \mbox{\hyperlink{_connection_dialog_view_model_8cs_source_l00113}{113}} of file \mbox{\hyperlink{_connection_dialog_view_model_8cs_source}{Connection\+Dialog\+View\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_connection_dialog_view_model_a82306c3335c48b6a7d7be0d6878eede5}\index{ArlaNatureConnect.WinUI.ViewModels.ConnectionDialogViewModel@{ArlaNatureConnect.WinUI.ViewModels.ConnectionDialogViewModel}!Password@{Password}}
+\index{Password@{Password}!ArlaNatureConnect.WinUI.ViewModels.ConnectionDialogViewModel@{ArlaNatureConnect.WinUI.ViewModels.ConnectionDialogViewModel}}
+\doxysubsubsection{\texorpdfstring{Password}{Password}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_connection_dialog_view_model_a82306c3335c48b6a7d7be0d6878eede5} 
+string? Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Connection\+Dialog\+View\+Model.\+Password\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Gets or sets the SQL password (used when \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_connection_dialog_view_model_a00c614836bbb4e52165b6df9ba1ae316}{Integrated\+Security} is {\ttfamily false}). 
+
+
+
+Definition at line \mbox{\hyperlink{_connection_dialog_view_model_8cs_source_l00143}{143}} of file \mbox{\hyperlink{_connection_dialog_view_model_8cs_source}{Connection\+Dialog\+View\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_connection_dialog_view_model_a622f9084d51bccba372dcfef52f6b3f4}\index{ArlaNatureConnect.WinUI.ViewModels.ConnectionDialogViewModel@{ArlaNatureConnect.WinUI.ViewModels.ConnectionDialogViewModel}!ServerName@{ServerName}}
+\index{ServerName@{ServerName}!ArlaNatureConnect.WinUI.ViewModels.ConnectionDialogViewModel@{ArlaNatureConnect.WinUI.ViewModels.ConnectionDialogViewModel}}
+\doxysubsubsection{\texorpdfstring{ServerName}{ServerName}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_connection_dialog_view_model_a622f9084d51bccba372dcfef52f6b3f4} 
+string? Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Connection\+Dialog\+View\+Model.\+Server\+Name\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Gets or sets the server/data source name. 
+
+
+
+Definition at line \mbox{\hyperlink{_connection_dialog_view_model_8cs_source_l00098}{98}} of file \mbox{\hyperlink{_connection_dialog_view_model_8cs_source}{Connection\+Dialog\+View\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_connection_dialog_view_model_a904f5c3fd6312442b3d609340b72e0e9}\index{ArlaNatureConnect.WinUI.ViewModels.ConnectionDialogViewModel@{ArlaNatureConnect.WinUI.ViewModels.ConnectionDialogViewModel}!TrustServerCertificate@{TrustServerCertificate}}
+\index{TrustServerCertificate@{TrustServerCertificate}!ArlaNatureConnect.WinUI.ViewModels.ConnectionDialogViewModel@{ArlaNatureConnect.WinUI.ViewModels.ConnectionDialogViewModel}}
+\doxysubsubsection{\texorpdfstring{TrustServerCertificate}{TrustServerCertificate}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_connection_dialog_view_model_a904f5c3fd6312442b3d609340b72e0e9} 
+bool Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Connection\+Dialog\+View\+Model.\+Trust\+Server\+Certificate\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Gets or sets a value indicating whether to trust the server certificate. 
+
+
+
+Definition at line \mbox{\hyperlink{_connection_dialog_view_model_8cs_source_l00188}{188}} of file \mbox{\hyperlink{_connection_dialog_view_model_8cs_source}{Connection\+Dialog\+View\+Model.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_connection_dialog_view_model_ae29b61d03b8ef940f4492c772abdb26c}\index{ArlaNatureConnect.WinUI.ViewModels.ConnectionDialogViewModel@{ArlaNatureConnect.WinUI.ViewModels.ConnectionDialogViewModel}!UserName@{UserName}}
+\index{UserName@{UserName}!ArlaNatureConnect.WinUI.ViewModels.ConnectionDialogViewModel@{ArlaNatureConnect.WinUI.ViewModels.ConnectionDialogViewModel}}
+\doxysubsubsection{\texorpdfstring{UserName}{UserName}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_connection_dialog_view_model_ae29b61d03b8ef940f4492c772abdb26c} 
+string? Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Connection\+Dialog\+View\+Model.\+User\+Name\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Gets or sets the SQL user name (used when \doxylink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_connection_dialog_view_model_a00c614836bbb4e52165b6df9ba1ae316}{Integrated\+Security} is {\ttfamily false}). 
+
+
+
+Definition at line \mbox{\hyperlink{_connection_dialog_view_model_8cs_source_l00128}{128}} of file \mbox{\hyperlink{_connection_dialog_view_model_8cs_source}{Connection\+Dialog\+View\+Model.\+cs}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Arla\+Nature\+Connect.\+Win\+UI/\+Arla\+Nature\+Connect.\+Win\+UI/\+View\+Models/\mbox{\hyperlink{_connection_dialog_view_model_8cs}{Connection\+Dialog\+View\+Model.\+cs}}\end{DoxyCompactItemize}

@@ -1,0 +1,186 @@
+\doxysection{Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+INavigation\+View\+Model\+Base Interface Reference}
+\hypertarget{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_navigation_view_model_base}{}\label{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_navigation_view_model_base}\index{ArlaNatureConnect.WinUI.ViewModels.Abstracts.INavigationViewModelBase@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.INavigationViewModelBase}}
+
+
+Contract for view-\/models that drive role-\/aware navigation and side-\/menu integration in \doxylink{namespace_arla_nature_connect_1_1_win_u_i}{Win\+UI} pages.  
+
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+Task \mbox{\hyperlink{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_navigation_view_model_base_ab25eb387c5cce8587f0bfa8a82c03311}{Initialize\+Async}} (\mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_role}{Role}}? role)
+\begin{DoxyCompactList}\small\item\em Optional asynchronous initializer invoked when navigating to a page that hosts this view-\/model. Implementations should accept a \doxylink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_role}{Role} describing the current user\textquotesingle{}s role and perform any required asynchronous initialization (for example loading available users). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_navigation_view_model_base_a59bb02d7168f76362aae8d4b22240959}{Attach\+To\+View}} (Page? page)
+\begin{DoxyCompactList}\small\item\em Attach the view-\/model to a page instance so the view-\/model can subscribe to lifecycle events (Loaded/\+Unloaded) and perform view-\/related wiring if necessary. Passing {\ttfamily null} should be a no-\/op. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_navigation_view_model_base_a319f67019c3dec61b81067cff35f58b5}{Attach\+Side\+Menu\+To\+Main\+Window}} ()
+\begin{DoxyCompactList}\small\item\em Attach the view-\/model\textquotesingle{}s side-\/menu UI to the application\textquotesingle{}s main window side menu area. Implementations typically replace the main window\textquotesingle{}s side-\/menu children with a dedicated control bound to this view-\/model. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command}{Relay\+Command}}$<$ \mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_person}{Person}} $>$? \mbox{\hyperlink{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_navigation_view_model_base_a2da2bd8413bff257c2d3aa55a2c4c944}{Choose\+User\+Command}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Command used to choose a \doxylink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_person}{Person} (for example selecting a farmer or consultant from a list). The command receives a \doxylink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_person}{Person} instance as its parameter and performs selection logic in the view-\/model. \end{DoxyCompactList}\item 
+ICommand? \mbox{\hyperlink{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_navigation_view_model_base_a3d6fc15f61b44cdc797012a73b700d08}{Navigation\+Command}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em General navigation command used by the side menu/navigation UI. Accepts different parameter shapes\+: a string tag, a delegate producing a tag, or an Action. Invoking this command instructs the view-\/model to switch the current content view or perform a page-\/level action. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_navigation_view_model_base_abe37826660851f5a6c2ad569bc425210}{Is\+Loading}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Indicates whether the view-\/model is currently performing an asynchronous operation (for example loading candidate users). The view can bind to this property to show progress indicators. \end{DoxyCompactList}\item 
+User\+Control? \mbox{\hyperlink{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_navigation_view_model_base_ad5cfda993c6193cf1376fbba2b889ff7}{Current\+Content}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The currently active content control for the page. Implementations often create simple User\+Control instances and set their Data\+Context to the view-\/model so the page can host dynamic content in a content area. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Contract for view-\/models that drive role-\/aware navigation and side-\/menu integration in \doxylink{namespace_arla_nature_connect_1_1_win_u_i}{Win\+UI} pages. 
+
+Why this interface exists\+:
+\begin{DoxyItemize}
+\item Provides a minimal surface that pages and controls can depend on without referencing concrete view-\/model types.
+\item Encapsulates navigation-\/related commands, observable properties and lifecycle hooks used by the application\textquotesingle{}s navigation pages (for example pages that display dashboards, lists and task content per user/role).
+\item Makes it easier to write unit tests and UI components that operate against an interface rather than concrete implementations, enabling mocking and decoupling between views and view-\/model implementations.
+\end{DoxyItemize}\hypertarget{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_navigation_view_model_base_autotoc_md0}{}\doxysubsubsection{\texorpdfstring{Inheriting XML Documentation with }{Inheriting XML Documentation with }}\label{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_navigation_view_model_base_autotoc_md0}
+Implementations of this interface can use the {\ttfamily \texorpdfstring{$<$}{<}inheritdoc/\texorpdfstring{$>$}{>}} XML documentation tag to inherit the documentation supplied here. This keeps documentation DRY (don\textquotesingle{}t repeat yourself) and ensures that the contract and its implementors remain synchronized when remarks change. 
+
+How to use and why we have it\+:
+\begin{DoxyItemize}
+\item Use {\ttfamily \texorpdfstring{$<$}{<}inheritdoc/\texorpdfstring{$>$}{>}} on members of concrete types (classes, structs, other interfaces) that implement this interface to automatically inherit summaries and parameter/returns documentation.
+\item This is helpful for large APIs where the behaviour is documented on the contract and multiple implementations should present the same documentation in IDE tooltips and generated API docs.
+\end{DoxyItemize}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{comment}{//\ Example:\ inherit\ docs\ from\ the\ interface\ on\ a\ concrete\ view-\/model\ implementation}}
+\DoxyCodeLine{\textcolor{keyword}{public}\ \textcolor{keyword}{class\ }ExampleNavigationViewModel\ :\ INavigationViewModelBase}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\ \ \ \ \textcolor{comment}{//\ Inherit\ the\ property\ and\ command\ documentation\ from\ the\ interface}}
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{public}\ RelayCommand<Owner>?\ ChooseUserCommand\ \{\ \textcolor{keyword}{get};\ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{public}\ ICommand?\ NavigationCommand\ \{\ \textcolor{keyword}{get};\ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{bool}\ IsLoadingOrSaving\ \{\ \textcolor{keyword}{get};\ \textcolor{keyword}{private}\ \textcolor{keyword}{set};\ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{public}\ UserControl?\ CurrentContent\ \{\ \textcolor{keyword}{get};\ \textcolor{keyword}{private}\ \textcolor{keyword}{set};\ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{public}\ Task\ InitializeAsync(Role?\ role)\ =>\ Task.CompletedTask;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{void}\ AttachToView(Page?\ page)\ \{\ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{void}\ AttachSideMenuToMainWindow()\ \{\ \}}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+ 
+
+Definition at line \mbox{\hyperlink{_i_navigation_view_model_base_8cs_source_l00066}{66}} of file \mbox{\hyperlink{_i_navigation_view_model_base_8cs_source}{INavigation\+View\+Model\+Base.\+cs}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_navigation_view_model_base_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_navigation_view_model_base_a319f67019c3dec61b81067cff35f58b5}\index{ArlaNatureConnect.WinUI.ViewModels.Abstracts.INavigationViewModelBase@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.INavigationViewModelBase}!AttachSideMenuToMainWindow@{AttachSideMenuToMainWindow}}
+\index{AttachSideMenuToMainWindow@{AttachSideMenuToMainWindow}!ArlaNatureConnect.WinUI.ViewModels.Abstracts.INavigationViewModelBase@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.INavigationViewModelBase}}
+\doxysubsubsection{\texorpdfstring{AttachSideMenuToMainWindow()}{AttachSideMenuToMainWindow()}}
+{\footnotesize\ttfamily \label{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_navigation_view_model_base_a319f67019c3dec61b81067cff35f58b5} 
+void Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+INavigation\+View\+Model\+Base.\+Attach\+Side\+Menu\+To\+Main\+Window (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Attach the view-\/model\textquotesingle{}s side-\/menu UI to the application\textquotesingle{}s main window side menu area. Implementations typically replace the main window\textquotesingle{}s side-\/menu children with a dedicated control bound to this view-\/model. 
+
+\Hypertarget{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_navigation_view_model_base_a59bb02d7168f76362aae8d4b22240959}\index{ArlaNatureConnect.WinUI.ViewModels.Abstracts.INavigationViewModelBase@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.INavigationViewModelBase}!AttachToView@{AttachToView}}
+\index{AttachToView@{AttachToView}!ArlaNatureConnect.WinUI.ViewModels.Abstracts.INavigationViewModelBase@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.INavigationViewModelBase}}
+\doxysubsubsection{\texorpdfstring{AttachToView()}{AttachToView()}}
+{\footnotesize\ttfamily \label{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_navigation_view_model_base_a59bb02d7168f76362aae8d4b22240959} 
+void Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+INavigation\+View\+Model\+Base.\+Attach\+To\+View (\begin{DoxyParamCaption}\item[{Page?}]{page}{}\end{DoxyParamCaption})}
+
+
+
+Attach the view-\/model to a page instance so the view-\/model can subscribe to lifecycle events (Loaded/\+Unloaded) and perform view-\/related wiring if necessary. Passing {\ttfamily null} should be a no-\/op. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em page} & The page to attach to, or {\ttfamily null} to detach/no-\/op.\\
+\hline
+\end{DoxyParams}
+\Hypertarget{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_navigation_view_model_base_ab25eb387c5cce8587f0bfa8a82c03311}\index{ArlaNatureConnect.WinUI.ViewModels.Abstracts.INavigationViewModelBase@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.INavigationViewModelBase}!InitializeAsync@{InitializeAsync}}
+\index{InitializeAsync@{InitializeAsync}!ArlaNatureConnect.WinUI.ViewModels.Abstracts.INavigationViewModelBase@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.INavigationViewModelBase}}
+\doxysubsubsection{\texorpdfstring{InitializeAsync()}{InitializeAsync()}}
+{\footnotesize\ttfamily \label{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_navigation_view_model_base_ab25eb387c5cce8587f0bfa8a82c03311} 
+Task Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+INavigation\+View\+Model\+Base.\+Initialize\+Async (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_role}{Role}}?}]{role}{}\end{DoxyParamCaption})}
+
+
+
+Optional asynchronous initializer invoked when navigating to a page that hosts this view-\/model. Implementations should accept a \doxylink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_role}{Role} describing the current user\textquotesingle{}s role and perform any required asynchronous initialization (for example loading available users). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em role} & The role used to scope initialization; may be {\ttfamily null} when no role is provided.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A task that completes when initialization is finished.
+\end{DoxyReturn}
+
+
+\label{doc-property-members}
+\Hypertarget{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_navigation_view_model_base_doc-property-members}
+\doxysubsection{Property Documentation}
+\Hypertarget{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_navigation_view_model_base_a2da2bd8413bff257c2d3aa55a2c4c944}\index{ArlaNatureConnect.WinUI.ViewModels.Abstracts.INavigationViewModelBase@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.INavigationViewModelBase}!ChooseUserCommand@{ChooseUserCommand}}
+\index{ChooseUserCommand@{ChooseUserCommand}!ArlaNatureConnect.WinUI.ViewModels.Abstracts.INavigationViewModelBase@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.INavigationViewModelBase}}
+\doxysubsubsection{\texorpdfstring{ChooseUserCommand}{ChooseUserCommand}}
+{\footnotesize\ttfamily \label{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_navigation_view_model_base_a2da2bd8413bff257c2d3aa55a2c4c944} 
+\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command}{Relay\+Command}}$<$\mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_person}{Person}}$>$? Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+INavigation\+View\+Model\+Base.\+Choose\+User\+Command\hspace{0.3cm}{\ttfamily [get]}}
+
+
+
+Command used to choose a \doxylink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_person}{Person} (for example selecting a farmer or consultant from a list). The command receives a \doxylink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_person}{Person} instance as its parameter and performs selection logic in the view-\/model. 
+
+
+
+Definition at line \mbox{\hyperlink{_i_navigation_view_model_base_8cs_source_l00074}{74}} of file \mbox{\hyperlink{_i_navigation_view_model_base_8cs_source}{INavigation\+View\+Model\+Base.\+cs}}.
+
+\Hypertarget{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_navigation_view_model_base_ad5cfda993c6193cf1376fbba2b889ff7}\index{ArlaNatureConnect.WinUI.ViewModels.Abstracts.INavigationViewModelBase@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.INavigationViewModelBase}!CurrentContent@{CurrentContent}}
+\index{CurrentContent@{CurrentContent}!ArlaNatureConnect.WinUI.ViewModels.Abstracts.INavigationViewModelBase@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.INavigationViewModelBase}}
+\doxysubsubsection{\texorpdfstring{CurrentContent}{CurrentContent}}
+{\footnotesize\ttfamily \label{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_navigation_view_model_base_ad5cfda993c6193cf1376fbba2b889ff7} 
+User\+Control? Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+INavigation\+View\+Model\+Base.\+Current\+Content\hspace{0.3cm}{\ttfamily [get]}}
+
+
+
+The currently active content control for the page. Implementations often create simple User\+Control instances and set their Data\+Context to the view-\/model so the page can host dynamic content in a content area. 
+
+
+
+Definition at line \mbox{\hyperlink{_i_navigation_view_model_base_8cs_source_l00094}{94}} of file \mbox{\hyperlink{_i_navigation_view_model_base_8cs_source}{INavigation\+View\+Model\+Base.\+cs}}.
+
+\Hypertarget{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_navigation_view_model_base_abe37826660851f5a6c2ad569bc425210}\index{ArlaNatureConnect.WinUI.ViewModels.Abstracts.INavigationViewModelBase@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.INavigationViewModelBase}!IsLoading@{IsLoading}}
+\index{IsLoading@{IsLoading}!ArlaNatureConnect.WinUI.ViewModels.Abstracts.INavigationViewModelBase@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.INavigationViewModelBase}}
+\doxysubsubsection{\texorpdfstring{IsLoading}{IsLoading}}
+{\footnotesize\ttfamily \label{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_navigation_view_model_base_abe37826660851f5a6c2ad569bc425210} 
+bool Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+INavigation\+View\+Model\+Base.\+Is\+Loading\hspace{0.3cm}{\ttfamily [get]}}
+
+
+
+Indicates whether the view-\/model is currently performing an asynchronous operation (for example loading candidate users). The view can bind to this property to show progress indicators. 
+
+
+
+Definition at line \mbox{\hyperlink{_i_navigation_view_model_base_8cs_source_l00088}{88}} of file \mbox{\hyperlink{_i_navigation_view_model_base_8cs_source}{INavigation\+View\+Model\+Base.\+cs}}.
+
+\Hypertarget{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_navigation_view_model_base_a3d6fc15f61b44cdc797012a73b700d08}\index{ArlaNatureConnect.WinUI.ViewModels.Abstracts.INavigationViewModelBase@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.INavigationViewModelBase}!NavigationCommand@{NavigationCommand}}
+\index{NavigationCommand@{NavigationCommand}!ArlaNatureConnect.WinUI.ViewModels.Abstracts.INavigationViewModelBase@{ArlaNatureConnect.WinUI.ViewModels.Abstracts.INavigationViewModelBase}}
+\doxysubsubsection{\texorpdfstring{NavigationCommand}{NavigationCommand}}
+{\footnotesize\ttfamily \label{interface_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts_1_1_i_navigation_view_model_base_a3d6fc15f61b44cdc797012a73b700d08} 
+ICommand? Arla\+Nature\+Connect.\+Win\+UI.\+View\+Models.\+Abstracts.\+INavigation\+View\+Model\+Base.\+Navigation\+Command\hspace{0.3cm}{\ttfamily [get]}}
+
+
+
+General navigation command used by the side menu/navigation UI. Accepts different parameter shapes\+: a string tag, a delegate producing a tag, or an Action. Invoking this command instructs the view-\/model to switch the current content view or perform a page-\/level action. 
+
+
+
+Definition at line \mbox{\hyperlink{_i_navigation_view_model_base_8cs_source_l00081}{81}} of file \mbox{\hyperlink{_i_navigation_view_model_base_8cs_source}{INavigation\+View\+Model\+Base.\+cs}}.
+
+
+
+The documentation for this interface was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Arla\+Nature\+Connect.\+Win\+UI/\+Arla\+Nature\+Connect.\+Win\+UI/\+View\+Models/\+Abstracts/\mbox{\hyperlink{_i_navigation_view_model_base_8cs}{INavigation\+View\+Model\+Base.\+cs}}\end{DoxyCompactItemize}

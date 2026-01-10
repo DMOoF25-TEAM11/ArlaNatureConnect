@@ -1,0 +1,101 @@
+\doxysection{Login\+Page\+View\+Model.\+cs}
+\hypertarget{_login_page_view_model_8cs_source}{}\label{_login_page_view_model_8cs_source}\index{src/ArlaNatureConnect.WinUI/ArlaNatureConnect.WinUI/ViewModels/Pages/LoginPageViewModel.cs@{src/ArlaNatureConnect.WinUI/ArlaNatureConnect.WinUI/ViewModels/Pages/LoginPageViewModel.cs}}
+\mbox{\hyperlink{_login_page_view_model_8cs}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00001}00001\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_domain_1_1_entities}{ArlaNatureConnect.Domain.Entities}};}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00002}00002\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_commands}{ArlaNatureConnect.WinUI.Commands}};}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00003}00003\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_services}{ArlaNatureConnect.WinUI.Services}};}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00004}00004\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_abstracts}{ArlaNatureConnect.WinUI.ViewModels.Abstracts}};}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00005}00005\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages}{ArlaNatureConnect.WinUI.Views.Pages}};}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00006}00006\ }
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00007}00007\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages}{ArlaNatureConnect.WinUI.ViewModels.Pages}};}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00008}00008\ }
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00023}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_login_page_view_model}{00023}}\ \textcolor{keyword}{public}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_login_page_view_model_aac2a048c37732075454bef32ffad0a39}{LoginPageViewModel}}\ :\ NavigationViewModelBase}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00024}00024\ \{}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00025}00025\ \textcolor{preprocessor}{\ \ \ \ \#region\ Fields}}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00027}00027\ \ \ \ \ \textcolor{keyword}{private}\ readonly\ \mbox{\hyperlink{interface_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_i_navigation_handler}{INavigationHandler}}\ \_navigationHandler;}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00028}00028\ }
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00029}00029\ \textcolor{preprocessor}{\ \ \ \ \#endregion}}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00030}00030\ }
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00031}00031\ \textcolor{preprocessor}{\ \ \ \ \#region\ Commands}}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00032}00032\ }
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00037}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_login_page_view_model_a9e0dcaa3deb5243253e5517580269758}{00037}}\ \ \ \ \ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command}{RelayCommand<string>}}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_login_page_view_model_a9e0dcaa3deb5243253e5517580269758}{SelectRoleCommand}}\ \{\ \textcolor{keyword}{get};\ \}}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00038}00038\ }
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00039}00039\ \textcolor{preprocessor}{\ \ \ \ \#endregion}}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00040}00040\ }
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00041}00041\ \textcolor{preprocessor}{\ \ \ \ \#region\ Properties}}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00042}00042\ }
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00046}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_login_page_view_model_a66934d61ac416879e95738116d7e7082}{00046}}\ \ \ \ \ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_role}{Role}}?\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_login_page_view_model_a66934d61ac416879e95738116d7e7082}{SelectedRole}}}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00047}00047\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00048}00048\ \ \ \ \ \ \ \ \ \textcolor{keyword}{get};}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00049}00049\ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keyword}{set}}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00050}00050\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00051}00051\ \ \ \ \ \ \ \ \ \ \ \ \ field\ =\ value;}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00052}00052\ \ \ \ \ \ \ \ \ \ \ \ \ OnPropertyChanged();}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00053}00053\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00054}00054\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00055}00055\ }
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00056}00056\ \textcolor{preprocessor}{\ \ \ \ \#endregion}}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00057}00057\ }
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00058}00058\ \textcolor{preprocessor}{\ \ \ \ \#region\ Constructor}}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00059}00059\ }
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00060}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_login_page_view_model_aac2a048c37732075454bef32ffad0a39}{00060}}\ \ \ \ \ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_login_page_view_model_aac2a048c37732075454bef32ffad0a39}{LoginPageViewModel}}(\mbox{\hyperlink{interface_arla_nature_connect_1_1_win_u_i_1_1_services_1_1_i_navigation_handler}{INavigationHandler}}\ navigationHandler)}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00061}00061\ \ \ \ \ \ \ \ \ :\ base(navigationHandler)}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00062}00062\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00063}00063\ \ \ \ \ \ \ \ \ \_navigationHandler\ =\ navigationHandler\ ??\ \textcolor{keywordflow}{throw}\ \textcolor{keyword}{new}\ ArgumentNullException(nameof(navigationHandler));}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00064}00064\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_login_page_view_model_a9e0dcaa3deb5243253e5517580269758}{SelectRoleCommand}}\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_commands_1_1_relay_command}{RelayCommand<string>}}(SelectRole);}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00065}00065\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00066}00066\ }
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00067}00067\ \textcolor{preprocessor}{\ \ \ \ \#endregion}}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00068}00068\ }
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00069}00069\ \textcolor{preprocessor}{\ \ \ \ \#region\ OnSelectRole\ Command}}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00070}00070\ }
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00075}00075\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{void}\ SelectRole(\textcolor{keywordtype}{string}?\ roleName)}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00076}00076\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00077}00077\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\textcolor{keywordtype}{string}.IsNullOrWhiteSpace(roleName))}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00078}00078\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00079}00079\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00080}00080\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00081}00081\ }
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00082}00082\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Navigate\ based\ on\ role}}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00083}00083\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{switch}\ (roleName.ToLowerInvariant())}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00084}00084\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00085}00085\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{stringliteral}{"{}farmer"{}}:}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00086}00086\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{stringliteral}{"{}landmand"{}}:}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00087}00087\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Create\ a\ role\ object\ for\ the\ selected\ role}}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00088}00088\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SelectedRole\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_role}{Role}}\ \{\ Name\ =\ roleName\ \};}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00089}00089\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_navigationHandler.Navigate(typeof(\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_farmer_page}{FarmerPage}}),\ SelectedRole);}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00090}00090\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00091}00091\ }
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00092}00092\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{stringliteral}{"{}consultant"{}}:}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00093}00093\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{stringliteral}{"{}konsulent"{}}:}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00094}00094\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Create\ a\ role\ object\ for\ the\ selected\ role}}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00095}00095\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SelectedRole\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_role}{Role}}\ \{\ Name\ =\ roleName\ \};}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00096}00096\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_navigationHandler.Navigate(typeof(\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_consultant_page}{ConsultantPage}}),\ SelectedRole);}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00097}00097\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00098}00098\ }
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00099}00099\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{stringliteral}{"{}arlaemployee"{}}:}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00100}00100\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{stringliteral}{"{}arla\ medarbejder"{}}:}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00101}00101\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{stringliteral}{"{}arlamedarbejder"{}}:}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00102}00102\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Create\ a\ role\ object\ for\ the\ selected\ role}}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00103}00103\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SelectedRole\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_role}{Role}}\ \{\ Name\ =\ roleName\ \};}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00104}00104\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_navigationHandler.Navigate(typeof(\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_arla_employee_page}{ArlaEmployeePage}}),\ SelectedRole);}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00105}00105\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00106}00106\ }
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00107}00107\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{stringliteral}{"{}administrator"{}}:}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00108}00108\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Create\ a\ role\ object\ for\ the\ selected\ role}}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00109}00109\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SelectedRole\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_domain_1_1_entities_1_1_role}{Role}}\ \{\ Name\ =\ roleName\ \};}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00110}00110\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_navigationHandler.Navigate(typeof(AdministratorPage),\ SelectedRole);}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00111}00111\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00112}00112\ }
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00113}00113\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00114}00114\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Unknown\ role,\ do\ nothing\ -\/\ don't\ set\ SelectedRole}}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00115}00115\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00116}00116\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00117}00117\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00118}00118\ }
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00119}00119\ \textcolor{preprocessor}{\ \ \ \ \#endregion}}
+\DoxyCodeLine{\Hypertarget{_login_page_view_model_8cs_source_l00120}00120\ \}}
+
+\end{DoxyCode}

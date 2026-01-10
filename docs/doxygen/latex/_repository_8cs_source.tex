@@ -1,0 +1,90 @@
+\doxysection{Repository.\+cs}
+\hypertarget{_repository_8cs_source}{}\label{_repository_8cs_source}\index{src/ArlaNatureConnect.Infrastructure/Repositories/Repository.cs@{src/ArlaNatureConnect.Infrastructure/Repositories/Repository.cs}}
+\mbox{\hyperlink{_repository_8cs}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00001}00001\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_core_1_1_abstract}{ArlaNatureConnect.Core.Abstract}};}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00002}00002\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_domain_1_1_abstract}{ArlaNatureConnect.Domain.Abstract}};}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00003}00003\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_infrastructure_1_1_persistence}{ArlaNatureConnect.Infrastructure.Persistence}};}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00004}00004\ }
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00005}00005\ \textcolor{keyword}{using\ }Microsoft.EntityFrameworkCore;}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00006}00006\ }
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00007}00007\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_infrastructure_1_1_repositories}{ArlaNatureConnect.Infrastructure.Repositories}};}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00008}00008\ }
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00037}00037\ \textcolor{keyword}{public}\ \textcolor{keyword}{abstract}\ \textcolor{keyword}{class\ }Repository<TEntity>(IDbContextFactory<\mbox{\hyperlink{namespace_arla_nature_connect_1_1_infrastructure_1_1_persistence_ad9d53c96f53dae1c20c0c2b0aea99dae}{AppDbContext}}>\ factory)\ :\ IRepository<TEntity>}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00038}00038\ \ \ \ \ where\ TEntity\ :\ class,\ IEntity}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00039}00039\ \{}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00040}00040\ \ \ \ \ \textcolor{keyword}{protected}\ readonly\ IDbContextFactory<AppDbContext>\ \_factory\ =\ factory;\ \textcolor{comment}{//\ factory\ used\ to\ create\ AppDbContext\ instances}}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00041}00041\ }
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00042}00042\ \textcolor{preprocessor}{\ \ \ \ \#region\ CRUD\ Operations}}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00044}00044\ \ \ \ \ \textcolor{keyword}{public}\ async\ Task<TEntity>\ AddAsync(TEntity\ entity,\ CancellationToken\ cancellationToken\ =\ \textcolor{keywordflow}{default})}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00045}00045\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00046}00046\ \ \ \ \ \ \ \ \ await\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_infrastructure_1_1_persistence_ad9d53c96f53dae1c20c0c2b0aea99dae}{AppDbContext}}\ ctx\ =\ \_factory.CreateDbContext();}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00047}00047\ \ \ \ \ \ \ \ \ DbSet<TEntity>\ dbSet\ =\ ctx.Set<TEntity>();}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00048}00048\ \ \ \ \ \ \ \ \ await\ dbSet.AddAsync(entity,\ cancellationToken);}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00049}00049\ \ \ \ \ \ \ \ \ await\ ctx.SaveChangesAsync(cancellationToken);}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00050}00050\ }
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00051}00051\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Reload\ the\ persisted\ entity\ from\ the\ database\ so\ any\ DB-\/generated\ values\ (like\ Id)\ are\ populated.}}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00052}00052\ \ \ \ \ \ \ \ \ TEntity?\ persisted\ =\ await\ dbSet.FindAsync([entity.Id],\ cancellationToken);}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00053}00053\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ persisted\ ??\ entity;}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00054}00054\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00055}00055\ }
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00057}00057\ \ \ \ \ \textcolor{keyword}{public}\ async\ Task<IEnumerable<TEntity>>\ AddRangeAsync(IEnumerable<TEntity>\ entities,\ CancellationToken\ cancellationToken\ =\ \textcolor{keywordflow}{default})}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00058}00058\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00059}00059\ \ \ \ \ \ \ \ \ await\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_infrastructure_1_1_persistence_ad9d53c96f53dae1c20c0c2b0aea99dae}{AppDbContext}}\ ctx\ =\ \_factory.CreateDbContext();}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00060}00060\ \ \ \ \ \ \ \ \ DbSet<TEntity>\ dbSet\ =\ ctx.Set<TEntity>();}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00061}00061\ \ \ \ \ \ \ \ \ await\ dbSet.AddRangeAsync(entities,\ cancellationToken);}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00062}00062\ \ \ \ \ \ \ \ \ await\ ctx.SaveChangesAsync(cancellationToken);}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00063}00063\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ entities;}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00064}00064\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00065}00065\ }
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00067}00067\ \ \ \ \ \textcolor{keyword}{public}\ async\ Task\ DeleteAsync(Guid\ \textcolor{keywordtype}{id},\ CancellationToken\ cancellationToken\ =\ \textcolor{keywordflow}{default})}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00068}00068\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00069}00069\ \ \ \ \ \ \ \ \ await\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_infrastructure_1_1_persistence_ad9d53c96f53dae1c20c0c2b0aea99dae}{AppDbContext}}\ ctx\ =\ \_factory.CreateDbContext();}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00070}00070\ \ \ \ \ \ \ \ \ DbSet<TEntity>\ dbSet\ =\ ctx.Set<TEntity>();}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00071}00071\ \ \ \ \ \ \ \ \ TEntity?\ entity\ =\ await\ dbSet.FindAsync([\textcolor{keywordtype}{id}],\ cancellationToken);}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00072}00072\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (entity\ !=\ \textcolor{keyword}{null})}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00073}00073\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00074}00074\ \ \ \ \ \ \ \ \ \ \ \ \ dbSet.Remove(entity);}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00075}00075\ \ \ \ \ \ \ \ \ \ \ \ \ await\ ctx.SaveChangesAsync(cancellationToken);}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00076}00076\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00077}00077\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00078}00078\ }
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00080}00080\ \ \ \ \ \textcolor{keyword}{public}\ async\ Task<IEnumerable<TEntity>>\ GetAllAsync(CancellationToken\ cancellationToken\ =\ \textcolor{keywordflow}{default})}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00081}00081\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00082}00082\ \ \ \ \ \ \ \ \ await\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_infrastructure_1_1_persistence_ad9d53c96f53dae1c20c0c2b0aea99dae}{AppDbContext}}\ ctx\ =\ \_factory.CreateDbContext();}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00083}00083\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ await\ ctx.Set<TEntity>().ToListAsync(cancellationToken);}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00084}00084\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00085}00085\ }
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00087}00087\ \ \ \ \ \textcolor{keyword}{public}\ async\ Task<TEntity?>\ GetByIdAsync(Guid\ \textcolor{keywordtype}{id},\ CancellationToken\ cancellationToken\ =\ \textcolor{keywordflow}{default})}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00088}00088\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00089}00089\ \ \ \ \ \ \ \ \ await\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_infrastructure_1_1_persistence_ad9d53c96f53dae1c20c0c2b0aea99dae}{AppDbContext}}\ ctx\ =\ \_factory.CreateDbContext();}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00090}00090\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ await\ ctx.Set<TEntity>().FindAsync([\textcolor{keywordtype}{id}],\ cancellationToken);}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00091}00091\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00092}00092\ }
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00094}00094\ \ \ \ \ \textcolor{keyword}{public}\ async\ Task\ UpdateAsync(TEntity\ entity,\ CancellationToken\ cancellationToken\ =\ \textcolor{keywordflow}{default})}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00095}00095\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00096}00096\ \ \ \ \ \ \ \ \ await\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_infrastructure_1_1_persistence_ad9d53c96f53dae1c20c0c2b0aea99dae}{AppDbContext}}\ ctx\ =\ \_factory.CreateDbContext();}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00097}00097\ \ \ \ \ \ \ \ \ DbSet<TEntity>\ dbSet\ =\ ctx.Set<TEntity>();}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00098}00098\ }
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00099}00099\ \ \ \ \ \ \ \ \ TEntity?\ tracked\ =\ await\ dbSet.FindAsync([entity.Id],\ cancellationToken);}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00100}00100\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tracked\ ==\ \textcolor{keyword}{null})}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00101}00101\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00102}00102\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ No\ tracked\ entity\ in\ this\ context\ —\ attach\ but\ avoid\ re-\/attaching\ navigation\ graph}}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00103}00103\ \ \ \ \ \ \ \ \ \ \ \ \ ctx.Attach(entity);}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00104}00104\ \ \ \ \ \ \ \ \ \ \ \ \ ctx.Entry(entity).State\ =\ EntityState.Modified;}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00105}00105\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00106}00106\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00107}00107\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00108}00108\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Copy\ scalar/foreign-\/key\ values\ into\ the\ tracked\ instance,\ avoid\ copying\ navigation\ objects}}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00109}00109\ \ \ \ \ \ \ \ \ \ \ \ \ ctx.Entry(tracked).CurrentValues.SetValues(entity);}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00110}00110\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ If\ you\ need\ to\ update\ FK\ properties\ explicitly:}}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00111}00111\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ ctx.Entry(tracked).Property("{}RoleId"{}).CurrentValue\ =\ entity.GetType().GetProperty("{}RoleId"{})?.GetValue(entity);}}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00112}00112\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Leave\ navigation\ properties\ untouched\ or\ handle\ them\ explicitly\ to\ avoid\ duplicate\ instances.}}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00113}00113\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00114}00114\ }
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00115}00115\ \ \ \ \ \ \ \ \ await\ ctx.SaveChangesAsync(cancellationToken);}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00116}00116\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00117}00117\ \textcolor{preprocessor}{\ \ \ \ \#endregion}}
+\DoxyCodeLine{\Hypertarget{_repository_8cs_source_l00118}00118\ \}}
+
+\end{DoxyCode}

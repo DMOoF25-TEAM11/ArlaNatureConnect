@@ -1,0 +1,135 @@
+\doxysection{Nature\+Check\+Case\+Repository.\+cs}
+\hypertarget{_nature_check_case_repository_8cs_source}{}\label{_nature_check_case_repository_8cs_source}\index{src/ArlaNatureConnect.Infrastructure/Repositories/NatureCheckCaseRepository.cs@{src/ArlaNatureConnect.Infrastructure/Repositories/NatureCheckCaseRepository.cs}}
+\mbox{\hyperlink{_nature_check_case_repository_8cs}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00001}00001\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_core_1_1_abstract}{ArlaNatureConnect.Core.Abstract}};}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00002}00002\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_domain_1_1_entities}{ArlaNatureConnect.Domain.Entities}};}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00003}00003\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_domain_1_1_enums}{ArlaNatureConnect.Domain.Enums}};}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00004}00004\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_infrastructure_1_1_persistence}{ArlaNatureConnect.Infrastructure.Persistence}};}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00005}00005\ }
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00006}00006\ \textcolor{keyword}{using\ }Microsoft.EntityFrameworkCore;}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00007}00007\ }
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00008}00008\ \textcolor{keyword}{using\ }System.Runtime.InteropServices;}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00009}00009\ }
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00010}00010\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_infrastructure_1_1_repositories}{ArlaNatureConnect.Infrastructure.Repositories}};}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00011}00011\ }
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00012}00012\ \textcolor{comment}{//\ Purpose:\ EF\ Core\ repository\ for\ NatureCheckCase\ entities.}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00013}00013\ \textcolor{comment}{//\ Notes:\ Adds\ queries\ for\ active\ cases\ while\ reusing\ base\ CRUD\ behavior.}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00014}00014\ \textcolor{keyword}{public}\ \textcolor{keyword}{class\ }NatureCheckCaseRepository(IDbContextFactory<\mbox{\hyperlink{namespace_arla_nature_connect_1_1_infrastructure_1_1_persistence_ad9d53c96f53dae1c20c0c2b0aea99dae}{AppDbContext}}>\ factory)\ :\ Repository<NatureCheckCase>(factory),\ INatureCheckCaseRepository}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00015}00015\ \{}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00016}00016\ }
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00017}00017\ \textcolor{preprocessor}{\ \ \ \ \#region\ Commands}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00018}00018\ }
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00019}00019\ \ \ \ \ \textcolor{keyword}{public}\ async\ Task<IReadOnlyList<NatureCheckCase>>\ GetActiveCasesAsync(CancellationToken\ cancellationToken\ =\ \textcolor{keywordflow}{default})}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00020}00020\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00021}00021\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00022}00022\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00023}00023\ }
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00024}00024\ \ \ \ \ \ \ \ \ \ \ \ \ await\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_infrastructure_1_1_persistence_ad9d53c96f53dae1c20c0c2b0aea99dae}{AppDbContext}}\ ctx\ =\ \_factory.CreateDbContext();}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00026}00026\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Get\ all\ cases\ -\/\ EF\ Core\ will\ convert\ Status\ from\ string\ to\ enum\ via\ HasConversion}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00027}00027\ \ \ \ \ \ \ \ \ \ \ \ \ List<NatureCheckCase>\ allCases\ =\ await\ ctx.NatureCheckCases}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00028}00028\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .AsNoTracking()}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00029}00029\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .ToListAsync(cancellationToken)}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00030}00030\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .ConfigureAwait(\textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00031}00031\ }
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00032}00032\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Filter\ for\ active\ statuses\ after\ materialization}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00033}00033\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ EF\ Core\ should\ have\ converted\ Status\ from\ string\ to\ enum\ by\ now}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00034}00034\ \ \ \ \ \ \ \ \ \ \ \ \ List<NatureCheckCase>\ activeCases\ =\ [..\ allCases}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00035}00035\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .Where(c\ =>\ c.Status\ ==\ \mbox{\hyperlink{namespace_arla_nature_connect_1_1_domain_1_1_enums_a51de6ec6ae8534ab1bbd1f3bec819374}{NatureCheckCaseStatus}}.Assigned\ ||}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00036}00036\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ c.Status\ ==\ \mbox{\hyperlink{namespace_arla_nature_connect_1_1_domain_1_1_enums_a51de6ec6ae8534ab1bbd1f3bec819374}{NatureCheckCaseStatus}}.InProgress)];}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00037}00037\ }
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00038}00038\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ activeCases;}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00039}00039\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00040}00040\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{catch}\ (COMException)}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00041}00041\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00042}00042\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Swallow\ COM\ exceptions\ that\ may\ occur\ when\ DI/WinRT\ factory\ access\ fails\ on\ certain\ test\ environments}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00043}00043\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ [];}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00044}00044\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00045}00045\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{catch}\ (Exception)}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00046}00046\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00047}00047\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ In\ keeping\ with\ other\ repository\ implementations,\ return\ an\ empty\ list\ on\ error\ to\ avoid\ bubbling\ infrastructure\ exceptions}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00048}00048\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ [];}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00049}00049\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00050}00050\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00051}00051\ }
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00052}00052\ \ \ \ \ \textcolor{keyword}{public}\ async\ Task<bool>\ FarmHasActiveCaseAsync(Guid\ farmId,\ CancellationToken\ cancellationToken\ =\ \textcolor{keywordflow}{default})}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00053}00053\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00054}00054\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00055}00055\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00056}00056\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Load\ all\ cases\ for\ the\ farm\ and\ filter\ in\ memory\ to\ work\ around\ potential\ EF\ Core\ translation\ issues}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00057}00057\ \ \ \ \ \ \ \ \ \ \ \ \ await\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_infrastructure_1_1_persistence_ad9d53c96f53dae1c20c0c2b0aea99dae}{AppDbContext}}\ ctx\ =\ \_factory.CreateDbContext();}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00058}00058\ \ \ \ \ \ \ \ \ \ \ \ \ List<NatureCheckCase>\ farmCases\ =\ await\ ctx.NatureCheckCases}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00059}00059\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .AsNoTracking()}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00060}00060\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .Where(c\ =>\ c.FarmId\ ==\ farmId)}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00061}00061\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .ToListAsync(cancellationToken)}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00062}00062\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .ConfigureAwait(\textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00063}00063\ }
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00064}00064\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Check\ for\ active\ statuses\ after\ materialization}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00065}00065\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ farmCases.Any(c\ =>}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00066}00066\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ c.Status\ ==\ \mbox{\hyperlink{namespace_arla_nature_connect_1_1_domain_1_1_enums_a51de6ec6ae8534ab1bbd1f3bec819374}{NatureCheckCaseStatus}}.Assigned\ ||}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00067}00067\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ c.Status\ ==\ \mbox{\hyperlink{namespace_arla_nature_connect_1_1_domain_1_1_enums_a51de6ec6ae8534ab1bbd1f3bec819374}{NatureCheckCaseStatus}}.InProgress);}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00068}00068\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00069}00069\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{catch}\ (COMException)}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00070}00070\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00071}00071\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00072}00072\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00073}00073\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{catch}\ (Exception)}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00074}00074\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00075}00075\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00076}00076\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00077}00077\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00078}00078\ }
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00079}00079\ \ \ \ \ \textcolor{keyword}{public}\ async\ Task<IReadOnlyList<NatureCheckCase>>\ GetAssignedCasesForConsultantAsync(Guid\ consultantId,\ CancellationToken\ cancellationToken\ =\ \textcolor{keywordflow}{default})}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00080}00080\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00081}00081\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00082}00082\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00083}00083\ \ \ \ \ \ \ \ \ \ \ \ \ await\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_infrastructure_1_1_persistence_ad9d53c96f53dae1c20c0c2b0aea99dae}{AppDbContext}}\ ctx\ =\ \_factory.CreateDbContext();}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00084}00084\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ await\ ctx.NatureCheckCases}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00085}00085\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .AsNoTracking()}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00086}00086\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .Where(c\ =>\ c.ConsultantId\ ==\ consultantId\ \&\&\ c.Status\ ==\ \mbox{\hyperlink{namespace_arla_nature_connect_1_1_domain_1_1_enums_a51de6ec6ae8534ab1bbd1f3bec819374}{NatureCheckCaseStatus}}.Assigned)}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00087}00087\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .OrderByDescending(c\ =>\ c.AssignedAt\ ??\ c.CreatedAt)}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00088}00088\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .ToListAsync(cancellationToken)}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00089}00089\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .ConfigureAwait(\textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00090}00090\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00091}00091\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{catch}\ (COMException)}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00092}00092\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00093}00093\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ [];}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00094}00094\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00095}00095\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{catch}\ (Exception)}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00096}00096\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00097}00097\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ [];}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00098}00098\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00099}00099\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00100}00100\ }
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00101}00101\ \ \ \ \ \textcolor{keyword}{public}\ async\ Task<NatureCheckCase?>\ GetActiveCaseForFarmAsync(Guid\ farmId,\ CancellationToken\ cancellationToken\ =\ \textcolor{keywordflow}{default})}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00102}00102\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00103}00103\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00104}00104\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00105}00105\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Load\ all\ cases\ for\ the\ farm\ and\ filter\ in\ memory\ to\ work\ around\ potential\ EF\ Core\ translation\ issues}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00106}00106\ \ \ \ \ \ \ \ \ \ \ \ \ await\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_infrastructure_1_1_persistence_ad9d53c96f53dae1c20c0c2b0aea99dae}{AppDbContext}}\ ctx\ =\ \_factory.CreateDbContext();}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00107}00107\ \ \ \ \ \ \ \ \ \ \ \ \ List<NatureCheckCase>\ farmCases\ =\ await\ ctx.NatureCheckCases}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00108}00108\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .Where(c\ =>\ c.FarmId\ ==\ farmId)}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00109}00109\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .ToListAsync(cancellationToken)}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00110}00110\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .ConfigureAwait(\textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00111}00111\ }
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00112}00112\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Find\ the\ first\ active\ case}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00113}00113\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ farmCases.FirstOrDefault(c\ =>}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00114}00114\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ c.Status\ ==\ \mbox{\hyperlink{namespace_arla_nature_connect_1_1_domain_1_1_enums_a51de6ec6ae8534ab1bbd1f3bec819374}{NatureCheckCaseStatus}}.Assigned\ ||}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00115}00115\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ c.Status\ ==\ \mbox{\hyperlink{namespace_arla_nature_connect_1_1_domain_1_1_enums_a51de6ec6ae8534ab1bbd1f3bec819374}{NatureCheckCaseStatus}}.InProgress);}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00116}00116\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00117}00117\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{catch}\ (COMException)}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00118}00118\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00119}00119\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{null};}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00120}00120\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00121}00121\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{catch}\ (Exception)}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00122}00122\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00123}00123\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{null};}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00124}00124\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00125}00125\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00126}00126\ \textcolor{preprocessor}{\ \ \ \ \#endregion}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00127}00127\ \}}
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00128}00128\ }
+\DoxyCodeLine{\Hypertarget{_nature_check_case_repository_8cs_source_l00129}00129\ }
+
+\end{DoxyCode}

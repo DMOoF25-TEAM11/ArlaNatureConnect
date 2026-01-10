@@ -1,0 +1,131 @@
+\doxysection{App.\+xaml.\+cs}
+\hypertarget{_app_8xaml_8cs_source}{}\label{_app_8xaml_8cs_source}\index{src/ArlaNatureConnect.WinUI/ArlaNatureConnect.WinUI/App.xaml.cs@{src/ArlaNatureConnect.WinUI/ArlaNatureConnect.WinUI/App.xaml.cs}}
+\mbox{\hyperlink{_app_8xaml_8cs}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00001}00001\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_infrastructure}{ArlaNatureConnect.Infrastructure}};\ \textcolor{comment}{//\ extension\ AddInfrastructure}}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00002}00002\ }
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00003}00003\ \textcolor{keyword}{using\ }Microsoft.Extensions.DependencyInjection;\ \textcolor{comment}{//\ Add\ this\ using\ directive}}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00004}00004\ \textcolor{keyword}{using\ }Microsoft.Extensions.Hosting;}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00005}00005\ }
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00006}\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i}{00006}}\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i}{ArlaNatureConnect.WinUI}};}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00007}00007\ }
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00008}00008\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_core_1_1_services}{ArlaNatureConnect.Core.Services}};}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00009}00009\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_services}{ArlaNatureConnect.WinUI.Services}};}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00010}00010\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_view_models}{ArlaNatureConnect.WinUI.ViewModels}};}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00011}00011\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls}{ArlaNatureConnect.WinUI.ViewModels.Controls}};}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00012}00012\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c}{ArlaNatureConnect.WinUI.ViewModels.Controls.SharedUC}};}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00013}00013\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu}{ArlaNatureConnect.WinUI.ViewModels.Controls.SideMenu}};}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00014}00014\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages}{ArlaNatureConnect.WinUI.ViewModels.Pages}};}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00015}00015\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages}{ArlaNatureConnect.WinUI.Views.Pages}};}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00016}00016\ }
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00017}00017\ \textcolor{keyword}{using\ }Microsoft.UI.Xaml;}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00018}00018\ }
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00019}00019\ }
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00023}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_app}{00023}}\ \textcolor{keyword}{public}\ \textcolor{keyword}{partial\ class\ }\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_app_aea243fec7be1833c9ec892fb3aa26a2a}{App}}\ :\ Application}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00024}00024\ \{}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00025}00025\ \ \ \ \ \textcolor{keyword}{private}\ Window?\ \_window;}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00026}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_app_a0aa62a7a04419f5e8af40c25248a4834}{00026}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{static}\ IHost\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_app_a0aa62a7a04419f5e8af40c25248a4834}{HostInstance}}\ \{\ \textcolor{keyword}{get};\ \textcolor{keyword}{private}\ \textcolor{keyword}{set};\ \}\ =\ \textcolor{keyword}{null}!;}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00027}00027\ }
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00032}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_app_aea243fec7be1833c9ec892fb3aa26a2a}{00032}}\ \ \ \ \ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_app_aea243fec7be1833c9ec892fb3aa26a2a}{App}}()}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00033}00033\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00034}00034\ \ \ \ \ \ \ \ \ InitializeComponent();}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00035}00035\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00036}00036\ }
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00041}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_app_a63713ace01a30fc83df94d0b393b1292}{00041}}\ \ \ \ \ \textcolor{keyword}{protected}\ \textcolor{keyword}{override}\ async\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_app_a63713ace01a30fc83df94d0b393b1292}{OnLaunched}}(Microsoft.UI.Xaml.LaunchActivatedEventArgs\ args)}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00042}00042\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00043}00043\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ show\ start\ window\ first}}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00044}00044\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_app_a0aa62a7a04419f5e8af40c25248a4834}{HostInstance}}\ =\ Host.CreateDefaultBuilder()}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00045}00045\ \ \ \ \ \ \ \ \ \ \ \ \ .ConfigureServices((context,\ services)\ =>}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00046}00046\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00047}00047\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ services}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00048}00048\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .AddInfrastructure()}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00049}00049\ }
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00050}00050\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Windows}}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00051}00051\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .AddScoped<\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_start_window}{StartWindow}}>()}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00052}00052\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .AddScoped<StartWindowViewModel>()}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00053}00053\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .AddSingleton<\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_main_window}{MainWindow}}>()}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00054}00054\ }
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00055}00055\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Services}}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00056}00056\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .AddSingleton<INavigationHandler,\ NavigationHandler>()}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00057}00057\ }
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00058}00058\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Control\ ViewModels}}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00059}00059\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .AddSingleton<\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_status_bar_u_c_view_model}{StatusBarUCViewModel}}>()}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00060}00060\ }
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00061}00061\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Page\ ViewModels}}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00062}00062\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .AddScoped<LoginPageViewModel>()}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00063}00063\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .AddScoped<\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_administrator_page_view_model}{AdministratorPageViewModel}}>()}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00064}00064\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .AddScoped<ArlaEmployeePageViewModel>()}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00065}00065\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .AddScoped<\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_consultant_page_view_model}{ConsultantPageViewModel}}>()}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00066}00066\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .AddScoped<FarmerPageViewModel>()}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00067}00067\ }
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00068}00068\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Feature\ ViewModels}}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00069}00069\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .AddScoped<\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_pages_1_1_arla_employee_assign_nature_check_view_model}{ArlaEmployeeAssignNatureCheckViewModel}}>()}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00070}00070\ }
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00071}00071\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Side\ Menu\ ViewModels}}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00072}00072\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .AddScoped<AdministratorPageSideMenuUCViewModel>()}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00073}00073\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .AddScoped<\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_arla_employcf6424180727820a3e3760662c2f0d08}{ArlaEmployeePageSideMenuUCViewModel}}>()}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00074}00074\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .AddScoped<ConsultantPageSideMenuUCViewModel>()}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00075}00075\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .AddScoped<\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_side_menu_1_1_farmer_page_side_menu_u_c_view_model}{FarmerPageSideMenuUCViewModel}}>()}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00076}00076\ }
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00077}00077\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Shared\ Control\ ViewModels}}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00078}00078\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .AddScoped<CRUDPersonUCViewModel>()}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00079}00079\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .AddScoped<\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_view_models_1_1_controls_1_1_shared_u_c_1_1_c_r_u_d_nature_area_u_c_view_model}{CRUDNatureAreaUCViewModel}}>()}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00080}00080\ }
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00081}00081\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Pages}}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00082}00082\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .AddScoped<LoginPage>()}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00083}00083\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .AddScoped<\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_administrator_page}{AdministratorPage}}>()}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00084}00084\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .AddScoped<ArlaEmployeePage>()}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00085}00085\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .AddScoped<\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_pages_1_1_consultant_page}{ConsultantPage}}>()}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00086}00086\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .AddScoped<FarmerPage>()}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00087}00087\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ;}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00088}00088\ }
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00089}00089\ \ \ \ \ \ \ \ \ \ \ \ \ \})}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00090}00090\ \ \ \ \ \ \ \ \ \ \ \ \ .Build();}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00091}00091\ }
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00092}00092\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Resolve\ IConnectionStringService\ from\ DI}}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00093}00093\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_connection_string_service}{IConnectionStringService}}\ connService\ =\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_app_a0aa62a7a04419f5e8af40c25248a4834}{HostInstance}}.Services.GetRequiredService<\mbox{\hyperlink{interface_arla_nature_connect_1_1_core_1_1_services_1_1_i_connection_string_service}{IConnectionStringService}}>();}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00094}00094\ }
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00095}00095\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_start_window}{StartWindow}}\ start\ =\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_app_a0aa62a7a04419f5e8af40c25248a4834}{HostInstance}}.Services.GetRequiredService<\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_start_window}{StartWindow}}>();}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00096}00096\ \ \ \ \ \ \ \ \ start.Activate();}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00097}00097\ }
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00098}00098\ \ \ \ \ \ \ \ \ Task[]\ taskInit\ =}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00099}00099\ \ \ \ \ \ \ \ \ [}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00100}00100\ \ \ \ \ \ \ \ \ \ \ \ \ Task.Delay(400),\ \ \ \ \ \ \ \textcolor{comment}{//\ simulate\ initialization}}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00101}00101\ \ \ \ \ \ \ \ \ \ \ \ \ start.Initialization,\ \ \textcolor{comment}{//\ task\ from\ StartWindow}}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00102}00102\ \ \ \ \ \ \ \ \ ];}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00103}00103\ \ \ \ \ \ \ \ \ await\ Task.WhenAll(taskInit);}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00104}00104\ }
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00105}00105\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ resolve\ and\ show\ main\ window\ from\ DI\ so\ its\ dependencies\ are\ injected}}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00106}00106\ \ \ \ \ \ \ \ \ \_window\ =\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_app_a0aa62a7a04419f5e8af40c25248a4834}{HostInstance}}.Services.GetRequiredService<\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_main_window}{MainWindow}}>();}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00107}00107\ \ \ \ \ \ \ \ \ \_window.Activate();}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00108}00108\ }
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00109}00109\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ close\ start\ window}}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00110}00110\ \ \ \ \ \ \ \ \ start.Close();}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00111}00111\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00112}00112\ }
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00113}00113\ \textcolor{preprocessor}{\ \ \ \ \#region\ Helpers}}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00118}\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_app_a0281af3cd402c5dc9371e2cf5e9b1336}{00118}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{static}\ XamlRoot?\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_app_a0281af3cd402c5dc9371e2cf5e9b1336}{MainWindowXamlRoot}}}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00119}00119\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00120}00120\ \ \ \ \ \ \ \ \ \textcolor{keyword}{get}}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00121}00121\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00122}00122\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00123}00123\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00124}00124\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ If\ HostInstance\ is\ built\ and\ MainWindow\ is\ registered\ as\ a\ singleton,\ resolve\ it\ and\ return\ its\ Content.XamlRoot}}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00125}00125\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_main_window}{MainWindow}}?\ mainWindow\ =\ \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_app_a0aa62a7a04419f5e8af40c25248a4834}{HostInstance}}?.Services.GetService<\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_main_window}{MainWindow}}>();}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00126}00126\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mainWindow?.Content\ is\ FrameworkElement\ fe)}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00127}00127\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00128}00128\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ fe.XamlRoot;}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00129}00129\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00130}00130\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00131}00131\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{catch}}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00132}00132\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00133}00133\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ ignore\ resolution\ failures}}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00134}00134\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00135}00135\ }
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00136}00136\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{null};}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00137}00137\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00138}00138\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00139}00139\ \textcolor{preprocessor}{\ \ \ \ \#endregion}}
+\DoxyCodeLine{\Hypertarget{_app_8xaml_8cs_source_l00140}00140\ \}}
+
+\end{DoxyCode}

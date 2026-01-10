@@ -1,0 +1,94 @@
+\doxysection{Arla\+Nature\+Connect.\+Win\+UI.\+Views.\+Controls.\+Abstracts.\+Side\+Menu\+Base\+UC Class Reference}
+\hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_abstracts_1_1_side_menu_base_u_c}{}\label{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_abstracts_1_1_side_menu_base_u_c}\index{ArlaNatureConnect.WinUI.Views.Controls.Abstracts.SideMenuBaseUC@{ArlaNatureConnect.WinUI.Views.Controls.Abstracts.SideMenuBaseUC}}
+
+
+Generic base User\+Control for side-\/menu user controls. Handles subscribing/unsubscribing to Data\+Context Property\+Changed and optionally calling a parameterless Initialize\+Async() method on the view-\/model if present. Derived side-\/menu controls can override hooks to react to VM set / property changes.  
+
+
+Inheritance diagram for Arla\+Nature\+Connect.\+Win\+UI.\+Views.\+Controls.\+Abstracts.\+Side\+Menu\+Base\+UC\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=0.838323cm]{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_abstracts_1_1_side_menu_base_u_c}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_abstracts_1_1_side_menu_base_u_c_a58e8864b8fc1744eec4cc9ded43e9b8f}{Side\+Menu\+Base\+UC}} ()
+\item 
+virtual void \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_abstracts_1_1_side_menu_base_u_c_a28ae5ebfe6528fc4b04e38224703e32f}{On\+View\+Model\+Set}} (INotify\+Property\+Changed view\+Model)
+\begin{DoxyCompactList}\small\item\em Hook invoked when a new view-\/model is set on the Data\+Context. Override to react in derived controls. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_abstracts_1_1_side_menu_base_u_c_a976e2b3f6210df3a15bdccb45e5717a6}{View\+Model\+\_\+\+Property\+Changed}} (object? sender, Property\+Changed\+Event\+Args e)
+\begin{DoxyCompactList}\small\item\em Hook invoked when a property on the current view-\/model changes. Override to react in derived controls. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_abstracts_1_1_side_menu_base_u_c_aa949cb4fd5df6db91fbbd4621b08de5c}{Update\+Button\+Styles}} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Generic base User\+Control for side-\/menu user controls. Handles subscribing/unsubscribing to Data\+Context Property\+Changed and optionally calling a parameterless Initialize\+Async() method on the view-\/model if present. Derived side-\/menu controls can override hooks to react to VM set / property changes. 
+
+Definition at line \mbox{\hyperlink{_side_menu_base_u_c_8cs_source_l00017}{17}} of file \mbox{\hyperlink{_side_menu_base_u_c_8cs_source}{Side\+Menu\+Base\+UC.\+cs}}.
+
+
+
+\label{doc-constructors}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_abstracts_1_1_side_menu_base_u_c_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_abstracts_1_1_side_menu_base_u_c_a58e8864b8fc1744eec4cc9ded43e9b8f}\index{ArlaNatureConnect.WinUI.Views.Controls.Abstracts.SideMenuBaseUC@{ArlaNatureConnect.WinUI.Views.Controls.Abstracts.SideMenuBaseUC}!SideMenuBaseUC@{SideMenuBaseUC}}
+\index{SideMenuBaseUC@{SideMenuBaseUC}!ArlaNatureConnect.WinUI.Views.Controls.Abstracts.SideMenuBaseUC@{ArlaNatureConnect.WinUI.Views.Controls.Abstracts.SideMenuBaseUC}}
+\doxysubsubsection{\texorpdfstring{SideMenuBaseUC()}{SideMenuBaseUC()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_abstracts_1_1_side_menu_base_u_c_a58e8864b8fc1744eec4cc9ded43e9b8f} 
+Arla\+Nature\+Connect.\+Win\+UI.\+Views.\+Controls.\+Abstracts.\+Side\+Menu\+Base\+UC.\+Side\+Menu\+Base\+UC (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+Definition at line \mbox{\hyperlink{_side_menu_base_u_c_8cs_source_l00021}{21}} of file \mbox{\hyperlink{_side_menu_base_u_c_8cs_source}{Side\+Menu\+Base\+UC.\+cs}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_abstracts_1_1_side_menu_base_u_c_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_abstracts_1_1_side_menu_base_u_c_a28ae5ebfe6528fc4b04e38224703e32f}\index{ArlaNatureConnect.WinUI.Views.Controls.Abstracts.SideMenuBaseUC@{ArlaNatureConnect.WinUI.Views.Controls.Abstracts.SideMenuBaseUC}!OnViewModelSet@{OnViewModelSet}}
+\index{OnViewModelSet@{OnViewModelSet}!ArlaNatureConnect.WinUI.Views.Controls.Abstracts.SideMenuBaseUC@{ArlaNatureConnect.WinUI.Views.Controls.Abstracts.SideMenuBaseUC}}
+\doxysubsubsection{\texorpdfstring{OnViewModelSet()}{OnViewModelSet()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_abstracts_1_1_side_menu_base_u_c_a28ae5ebfe6528fc4b04e38224703e32f} 
+virtual void Arla\+Nature\+Connect.\+Win\+UI.\+Views.\+Controls.\+Abstracts.\+Side\+Menu\+Base\+UC.\+On\+View\+Model\+Set (\begin{DoxyParamCaption}\item[{INotify\+Property\+Changed}]{view\+Model}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Hook invoked when a new view-\/model is set on the Data\+Context. Override to react in derived controls. 
+
+
+
+Definition at line \mbox{\hyperlink{_side_menu_base_u_c_8cs_source_l00102}{102}} of file \mbox{\hyperlink{_side_menu_base_u_c_8cs_source}{Side\+Menu\+Base\+UC.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_abstracts_1_1_side_menu_base_u_c_aa949cb4fd5df6db91fbbd4621b08de5c}\index{ArlaNatureConnect.WinUI.Views.Controls.Abstracts.SideMenuBaseUC@{ArlaNatureConnect.WinUI.Views.Controls.Abstracts.SideMenuBaseUC}!UpdateButtonStyles@{UpdateButtonStyles}}
+\index{UpdateButtonStyles@{UpdateButtonStyles}!ArlaNatureConnect.WinUI.Views.Controls.Abstracts.SideMenuBaseUC@{ArlaNatureConnect.WinUI.Views.Controls.Abstracts.SideMenuBaseUC}}
+\doxysubsubsection{\texorpdfstring{UpdateButtonStyles()}{UpdateButtonStyles()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_abstracts_1_1_side_menu_base_u_c_aa949cb4fd5df6db91fbbd4621b08de5c} 
+virtual void Arla\+Nature\+Connect.\+Win\+UI.\+Views.\+Controls.\+Abstracts.\+Side\+Menu\+Base\+UC.\+Update\+Button\+Styles (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line \mbox{\hyperlink{_side_menu_base_u_c_8cs_source_l00118}{118}} of file \mbox{\hyperlink{_side_menu_base_u_c_8cs_source}{Side\+Menu\+Base\+UC.\+cs}}.
+
+\Hypertarget{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_abstracts_1_1_side_menu_base_u_c_a976e2b3f6210df3a15bdccb45e5717a6}\index{ArlaNatureConnect.WinUI.Views.Controls.Abstracts.SideMenuBaseUC@{ArlaNatureConnect.WinUI.Views.Controls.Abstracts.SideMenuBaseUC}!ViewModel\_PropertyChanged@{ViewModel\_PropertyChanged}}
+\index{ViewModel\_PropertyChanged@{ViewModel\_PropertyChanged}!ArlaNatureConnect.WinUI.Views.Controls.Abstracts.SideMenuBaseUC@{ArlaNatureConnect.WinUI.Views.Controls.Abstracts.SideMenuBaseUC}}
+\doxysubsubsection{\texorpdfstring{ViewModel\_PropertyChanged()}{ViewModel\_PropertyChanged()}}
+{\footnotesize\ttfamily \label{class_arla_nature_connect_1_1_win_u_i_1_1_views_1_1_controls_1_1_abstracts_1_1_side_menu_base_u_c_a976e2b3f6210df3a15bdccb45e5717a6} 
+virtual void Arla\+Nature\+Connect.\+Win\+UI.\+Views.\+Controls.\+Abstracts.\+Side\+Menu\+Base\+UC.\+View\+Model\+\_\+\+Property\+Changed (\begin{DoxyParamCaption}\item[{object?}]{sender}{, }\item[{Property\+Changed\+Event\+Args}]{e}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Hook invoked when a property on the current view-\/model changes. Override to react in derived controls. 
+
+
+
+Definition at line \mbox{\hyperlink{_side_menu_base_u_c_8cs_source_l00110}{110}} of file \mbox{\hyperlink{_side_menu_base_u_c_8cs_source}{Side\+Menu\+Base\+UC.\+cs}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Arla\+Nature\+Connect.\+Win\+UI/\+Arla\+Nature\+Connect.\+Win\+UI/\+Views/\+Controls/\+Abstracts/\mbox{\hyperlink{_side_menu_base_u_c_8cs}{Side\+Menu\+Base\+UC.\+cs}}\end{DoxyCompactItemize}
