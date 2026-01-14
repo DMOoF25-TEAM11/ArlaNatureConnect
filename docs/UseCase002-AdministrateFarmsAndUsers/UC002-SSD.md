@@ -1,3 +1,7 @@
+# UC002-SSD – Administrate Farms and Users (Original)
+
+This is the original System Sequence Diagram before updating to match Larmann's UML conventions.
+
 ```mermaid
 ---
 title: UC002 - System Sequence Diagram
@@ -31,3 +35,5 @@ sequenceDiagram
         System-->>Admin: Confirmation / Refresh list
     end
 ```
+
+**Note:** This is the original diagram. See UC002-SSD-v2.md for the updated version that follows Larmann's UML conventions.

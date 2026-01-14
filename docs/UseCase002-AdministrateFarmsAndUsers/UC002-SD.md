@@ -1,3 +1,7 @@
+## UC002 – Sequence Diagram (Original)
+
+This is the original sequence diagram before updating to match the actual implementation.
+
 ```mermaid
 ---
 title: UC002 - Sequence Diagram (MVVM)
@@ -34,7 +38,7 @@ sequenceDiagram
     Store-->>-RoleRepo: Role
     RoleRepo-->>-Service: Role (validated)
     Service->>+UserRepo: InsertUser(mappedUser)
-    UserRepo->>+Store: EXEC uspCreateUser @FirstName, @LastName, @Email, @RoleId, @Address, @FarmParams
+    UserRepo->>+Store: Insert INTO Users (FirstName, LastName, Email, RoleId, Address, FarmParams) VALUES (@FirstName, @LastName, @Email, @RoleId, @Address, @FarmParams)
     Store-->>-UserRepo: CreatedUserId
     UserRepo-->>-Service: CreatedUserId
     Service-->>-VM: CreatedUserResponse(createdUserId)
@@ -62,7 +66,7 @@ sequenceDiagram
     Store-->>-RoleRepo: Role
     RoleRepo-->>-Service: Role (validated)
     Service->>+UserRepo: UpdateUser(mappedUser)
-    UserRepo->>+Store: EXEC uspUpdateUser @UserId, @FirstName, @LastName, @Email, @RoleId, @Address, @FarmParams, @Version
+    UserRepo->>+Store: UPDATE Users SET FirstName = @FirstName, LastName = @LastName, Email = @Email, RoleId = @RoleId, Address = @Address, FarmParams = @FarmParams, Version = @Version WHERE Id = @UserId
     Store-->>-UserRepo: User
     UserRepo-->>-Service: User
     Service-->>-VM: User
@@ -83,3 +87,5 @@ sequenceDiagram
 
     note over Admin,View: UI remains responsive. ViewModel uses async commands and CancellationToken
 ```
+
+**Note:** This is the original diagram that used UserService, UserRepository, and stored procedures. See UC002-SD-v2.md for the updated version that matches the actual implementation.

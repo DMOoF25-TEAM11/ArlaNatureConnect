@@ -38,19 +38,21 @@ sequenceDiagram
         activate FarmerPage
         FarmerPage ->> FarmerPageViewModel: InitializeAsync(role)
         activate FarmerPageViewModel
-        FarmerPage ->> FarmerPageSideMenuUCViewModel: InitializeAsync()
+        FarmerPageViewModel ->> FarmerPageViewModel: AttachSideMenuToMainWindow()
+        FarmerPageViewModel ->> FarmerPageSideMenuUCViewModel: InitializeAsync()
         activate FarmerPageSideMenuUCViewModel
+        FarmerPageSideMenuUCViewModel ->> FarmerPageSideMenuUCViewModel: LoadAvailablePersonsAsync("Farmer")
         FarmerPageSideMenuUCViewModel ->> IPersonRepository: GetPersonsByRoleAsync("Farmer")
         activate IPersonRepository
-        IPersonRepository -->> FarmerPageSideMenuUCViewModel: persons
+        IPersonRepository -->> FarmerPageSideMenuUCViewModel: IEnumerable~Person~
         deactivate IPersonRepository
-        FarmerPageSideMenuUCViewModel -->> FarmerPage: UpdateAvailablePersons()
+        FarmerPageSideMenuUCViewModel ->> FarmerPageSideMenuUCViewModel: TrySetAvailablePersons(persons)
+        FarmerPageSideMenuUCViewModel -->> FarmerPageViewModel: void
+        FarmerPageViewModel -->> FarmerPage: void
         FarmerPage -->> User: DisplayPersonDropdown()
-        User ->> FarmerPage: SelectPerson(person)
-        FarmerPage ->> FarmerPageSideMenuUCViewModel: SelectedPerson = person
+        User ->> FarmerPageSideMenuUCViewModel: SelectedPerson = person
         FarmerPageSideMenuUCViewModel ->> FarmerPageViewModel: ChooseUserCommand.Execute(person)
-        FarmerPageViewModel ->> FarmerPage: UpdateDashboard(person)
-        FarmerPage -->> User: DisplayPersonSpecificDashboard()
+        FarmerPageViewModel -->> User: DisplayPersonSpecificDashboard()
         deactivate FarmerPageSideMenuUCViewModel
         deactivate FarmerPageViewModel
         deactivate FarmerPage
@@ -59,19 +61,21 @@ sequenceDiagram
         activate ConsultantPage
         ConsultantPage ->> ConsultantPageViewModel: InitializeAsync(role)
         activate ConsultantPageViewModel
-        ConsultantPage ->> ConsultantPageSideMenuUCViewModel: InitializeAsync()
+        ConsultantPageViewModel ->> ConsultantPageViewModel: AttachSideMenuToMainWindow()
+        ConsultantPageViewModel ->> ConsultantPageSideMenuUCViewModel: InitializeAsync()
         activate ConsultantPageSideMenuUCViewModel
+        ConsultantPageSideMenuUCViewModel ->> ConsultantPageSideMenuUCViewModel: LoadAvailablePersonsAsync("Consultant")
         ConsultantPageSideMenuUCViewModel ->> IPersonRepository: GetPersonsByRoleAsync("Consultant")
         activate IPersonRepository
-        IPersonRepository -->> ConsultantPageSideMenuUCViewModel: persons
+        IPersonRepository -->> ConsultantPageSideMenuUCViewModel: IEnumerable~Person~
         deactivate IPersonRepository
-        ConsultantPageSideMenuUCViewModel -->> ConsultantPage: UpdateAvailablePersons()
+        ConsultantPageSideMenuUCViewModel ->> ConsultantPageSideMenuUCViewModel: TrySetAvailablePersons(persons)
+        ConsultantPageSideMenuUCViewModel -->> ConsultantPageViewModel: void
+        ConsultantPageViewModel -->> ConsultantPage: void
         ConsultantPage -->> User: DisplayPersonDropdown()
-        User ->> ConsultantPage: SelectPerson(person)
-        ConsultantPage ->> ConsultantPageSideMenuUCViewModel: SelectedPerson = person
+        User ->> ConsultantPageSideMenuUCViewModel: SelectedPerson = person
         ConsultantPageSideMenuUCViewModel ->> ConsultantPageViewModel: ChooseUserCommand.Execute(person)
-        ConsultantPageViewModel ->> ConsultantPage: UpdateDashboard(person)
-        ConsultantPage -->> User: DisplayPersonSpecificDashboard()
+        ConsultantPageViewModel -->> User: DisplayPersonSpecificDashboard()
         deactivate ConsultantPageSideMenuUCViewModel
         deactivate ConsultantPageViewModel
         deactivate ConsultantPage
@@ -80,10 +84,12 @@ sequenceDiagram
         activate ArlaEmployeePage
         ArlaEmployeePage ->> ArlaEmployeePageViewModel: InitializeAsync(role)
         activate ArlaEmployeePageViewModel
+        ArlaEmployeePageViewModel ->> ArlaEmployeePageViewModel: AttachSideMenuToMainWindow()
         ArlaEmployeePageViewModel ->> ArlaEmployeeAssignNatureCheckViewModel: InitializeAsync()
         activate ArlaEmployeeAssignNatureCheckViewModel
-        ArlaEmployeeAssignNatureCheckViewModel -->> ArlaEmployeePageViewModel: context loaded
+        ArlaEmployeeAssignNatureCheckViewModel -->> ArlaEmployeePageViewModel: void
         deactivate ArlaEmployeeAssignNatureCheckViewModel
+        ArlaEmployeePageViewModel -->> ArlaEmployeePage: void
         ArlaEmployeePage -->> User: DisplayEmployeeDashboard()
         deactivate ArlaEmployeePageViewModel
         deactivate ArlaEmployeePage
